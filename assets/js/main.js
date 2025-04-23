@@ -728,9 +728,8 @@ function initSidebarMenu() {
     // Handle all menu item clicks including those in the main menu and submenu
     document.querySelector('.sidebar-menu').addEventListener('click', (e) => {
         const link = e.target.closest('a');
-        
-        if (!link) return; // If click wasn't on a link, ignore it
-        
+        if (!link) return;
+
         // If it's a submenu toggle, handle the toggle
         if (link.classList.contains('submenu-toggle')) {
             e.preventDefault();
@@ -753,17 +752,9 @@ function initSidebarMenu() {
             if (submenu) {
                 submenu.style.display = menuItem.classList.contains('open') ? 'block' : 'none';
             }
-            return;
-        }
-        
-        // For regular menu items, navigate to the href
-        const href = link.getAttribute('href');
-        if (href && href !== '#') {
-            e.preventDefault();
-            window.location.href = href;
         }
     });
-    
+
     // Set active menu item based on current URL
     const currentPath = window.location.pathname;
     const menuItems = document.querySelectorAll('.sidebar-menu a');

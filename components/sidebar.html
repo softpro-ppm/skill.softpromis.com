@@ -9,11 +9,11 @@
 
     <!-- Quick Actions -->
     <div class="quick-actions">
-        <button class="quick-action-btn">
+        <button class="quick-action-btn" data-action="new-report">
             <i class="fas fa-plus"></i>
             <span>New Report</span>
         </button>
-        <button class="quick-action-btn">
+        <button class="quick-action-btn" data-action="export">
             <i class="fas fa-download"></i>
             <span>Export</span>
         </button>
@@ -22,31 +22,67 @@
     <!-- Main Menu -->
     <ul class="sidebar-menu">
         <li class="menu-item">
-            <a href="/dashboard">
+            <a href="/dashboard" onclick="window.location.href='/dashboard'; return false;">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
                 <span class="menu-badge">5</span>
             </a>
         </li>
         <li class="menu-item">
-            <a href="/training-partners">
+            <a href="/training-partners" onclick="window.location.href='/training-partners'; return false;">
                 <i class="fas fa-handshake"></i>
                 <span>Training Partners</span>
                 <span class="menu-badge">12</span>
             </a>
         </li>
         <li class="menu-item">
-            <a href="/training-centers">
+            <a href="/training-centers" onclick="window.location.href='/training-centers'; return false;">
                 <i class="fas fa-building"></i>
                 <span>Training Centers</span>
                 <span class="menu-badge">8</span>
             </a>
         </li>
         <li class="menu-item">
-            <a href="/students">
+            <a href="/students" onclick="window.location.href='/students'; return false;">
                 <i class="fas fa-user-graduate"></i>
                 <span>Students</span>
                 <span class="menu-badge">256</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/schemes" onclick="window.location.href='/schemes'; return false;">
+                <i class="fas fa-project-diagram"></i>
+                <span>Schemes</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/sectors" onclick="window.location.href='/sectors'; return false;">
+                <i class="fas fa-industry"></i>
+                <span>Sectors</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/courses" onclick="window.location.href='/courses'; return false;">
+                <i class="fas fa-book"></i>
+                <span>Courses</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/batches" onclick="window.location.href='/batches'; return false;">
+                <i class="fas fa-users"></i>
+                <span>Batches</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/assessments" onclick="window.location.href='/assessments'; return false;">
+                <i class="fas fa-tasks"></i>
+                <span>Assessments</span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/certificates" onclick="window.location.href='/certificates'; return false;">
+                <i class="fas fa-certificate"></i>
+                <span>Certificates</span>
             </a>
         </li>
 
@@ -62,55 +98,55 @@
             </a>
             <ul class="submenu">
                 <li>
-                    <a href="/reports/enrollment">
+                    <a href="/reports/enrollment" onclick="window.location.href='/reports/enrollment'; return false;">
                         <i class="fas fa-users"></i>
                         <span>Student Enrollment</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/reports/attendance">
+                    <a href="/reports/attendance" onclick="window.location.href='/reports/attendance'; return false;">
                         <i class="fas fa-clipboard-check"></i>
                         <span>Attendance Report</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/reports/performance">
+                    <a href="/reports/performance" onclick="window.location.href='/reports/performance'; return false;">
                         <i class="fas fa-chart-line"></i>
                         <span>Performance Report</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/reports/financial">
+                    <a href="/reports/financial" onclick="window.location.href='/reports/financial'; return false;">
                         <i class="fas fa-dollar-sign"></i>
                         <span>Financial Report</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/reports/training-center">
+                    <a href="/reports/training-center" onclick="window.location.href='/reports/training-center'; return false;">
                         <i class="fas fa-school"></i>
                         <span>Training Center Report</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/reports/student-progress">
+                    <a href="/reports/student-progress" onclick="window.location.href='/reports/student-progress'; return false;">
                         <i class="fas fa-graduation-cap"></i>
                         <span>Student Progress</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/reports/training-partner">
+                    <a href="/reports/training-partner" onclick="window.location.href='/reports/training-partner'; return false;">
                         <i class="fas fa-handshake"></i>
                         <span>Training Partner Report</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/reports/program">
+                    <a href="/reports/program" onclick="window.location.href='/reports/program'; return false;">
                         <i class="fas fa-book"></i>
                         <span>Program Effectiveness</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/reports/financial-analysis">
+                    <a href="/reports/financial-analysis" onclick="window.location.href='/reports/financial-analysis'; return false;">
                         <i class="fas fa-chart-pie"></i>
                         <span>Financial Analysis</span>
                     </a>
@@ -123,13 +159,13 @@
             <span class="menu-section-text">System</span>
         </li>
         <li class="menu-item">
-            <a href="/settings">
+            <a href="/settings" onclick="window.location.href='/settings'; return false;">
                 <i class="fas fa-cog"></i>
                 <span>Settings</span>
             </a>
         </li>
         <li class="menu-item">
-            <a href="/help">
+            <a href="/help" onclick="window.location.href='/help'; return false;">
                 <i class="fas fa-question-circle"></i>
                 <span>Help & Support</span>
             </a>
