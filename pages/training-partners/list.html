@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Partners - Softpro Skill Solutions</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/table.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <img src="../../assets/images/logo.png" alt="Softpro Skill Solutions" class="logo">
+            <span class="brand-text">Softpro Skill Solutions</span>
+        </div>
+        <div class="navbar-right">
+            <div class="user-profile">
+                <span class="user-name">John Doe</span>
+                <img src="../../assets/images/user-avatar.png" alt="User" class="user-avatar">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="menu-item">
+                <a href="../../index.html">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="menu-item active">
+                <a href="list.html">
+                    <i class="fas fa-building"></i>
+                    <span>Training Partners</span>
+                </a>
+            </li>
+            <!-- Other menu items... -->
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Training Partners</h1>
+                <button class="btn btn-primary" onclick="window.location.href='add.html'">
+                    <i class="fas fa-plus"></i>
+                    Add New Partner
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="table-filters">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search partners...">
+                    </div>
+                    <div class="filter-group">
+                        <select id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Organization Name</th>
+                                <th>Registration Number</th>
+                                <th>Contact Person</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Softpro Skill Solutions</td>
+                                <td>TP001</td>
+                                <td>John Smith</td>
+                                <td>john@softpro.com</td>
+                                <td>+91 9876543210</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td class="actions">
+                                    <button class="btn-icon" title="View" onclick="window.location.href='view.html?id=1'">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-icon" title="Edit" onclick="window.location.href='edit.html?id=1'">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-icon btn-danger" title="Delete" onclick="confirmDelete(1)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tech Training Institute</td>
+                                <td>TP002</td>
+                                <td>Sarah Johnson</td>
+                                <td>sarah@techtraining.com</td>
+                                <td>+91 9876543211</td>
+                                <td><span class="badge badge-success">Active</span></td>
+                                <td class="actions">
+                                    <button class="btn-icon" title="View" onclick="window.location.href='view.html?id=2'">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-icon" title="Edit" onclick="window.location.href='edit.html?id=2'">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-icon btn-danger" title="Delete" onclick="confirmDelete(2)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- More rows can be added here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <div class="pagination">
+                        <button class="btn btn-secondary" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="page-info">Page 1 of 1</span>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/training-partners.js"></script>
+</body>
+</html> 
