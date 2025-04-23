@@ -41,40 +41,6 @@ function initSidebar() {
     };
     document.querySelector('.navbar').appendChild(toggleBtn);
 
-    // Handle submenu toggles
-    const submenuToggles = document.querySelectorAll('.submenu-toggle');
-    submenuToggles.forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            const menuItem = this.closest('.has-submenu');
-            
-            // Close other open submenus
-            document.querySelectorAll('.has-submenu.open').forEach(item => {
-                if (item !== menuItem) {
-                    item.classList.remove('open');
-                }
-            });
-            
-            menuItem.classList.toggle('open');
-        });
-    });
-
-    // Set active menu item based on current URL
-    const currentPath = window.location.pathname;
-    const menuItems = document.querySelectorAll('.sidebar-menu a');
-    
-    menuItems.forEach(item => {
-        if (item.getAttribute('href') === currentPath) {
-            item.closest('.menu-item').classList.add('active');
-            
-            // If it's in a submenu, open the parent
-            const submenuParent = item.closest('.has-submenu');
-            if (submenuParent) {
-                submenuParent.classList.add('open');
-            }
-        }
-    });
-
     // Close sidebar when clicking outside on mobile
     document.addEventListener('click', function(e) {
         if (window.innerWidth <= 992) {
@@ -759,60 +725,62 @@ function updateBreadcrumbs() {
 
 // Sidebar Menu Navigation
 function initSidebarMenu() {
-    const menuItems = document.querySelectorAll('.menu-item a');
-    const submenuToggles = document.querySelectorAll('.submenu-toggle');
-    
-    // Handle regular menu item clicks
-    menuItems.forEach(item => {
-        if (!item.classList.contains('submenu-toggle')) {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                const href = item.getAttribute('href');
-                if (href && href !== '#') {
-                    window.location.href = href;
-                }
-            });
-        }
-    });
-    
-    // Handle submenu toggles
-    submenuToggles.forEach(toggle => {
-        toggle.addEventListener('click', (e) => {
+    // Handle all menu item clicks including those in the main menu and submenu
+    document.querySelector('.sidebar-menu').addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        
+        if (!link) return; // If click wasn't on a link, ignore it
+        
+        // If it's a submenu toggle, handle the toggle
+        if (link.classList.contains('submenu-toggle')) {
             e.preventDefault();
-            const parent = toggle.closest('.has-submenu');
-            const submenu = parent.querySelector('.submenu');
+            const menuItem = link.closest('.has-submenu');
             
             // Close other open submenus
-            document.querySelectorAll('.has-submenu.open').forEach(openMenu => {
-                if (openMenu !== parent) {
-                    openMenu.classList.remove('open');
-                    const openSubmenu = openMenu.querySelector('.submenu');
-                    if (openSubmenu) {
-                        openSubmenu.style.display = 'none';
+            document.querySelectorAll('.has-submenu.open').forEach(item => {
+                if (item !== menuItem) {
+                    item.classList.remove('open');
+                    const submenu = item.querySelector('.submenu');
+                    if (submenu) {
+                        submenu.style.display = 'none';
                     }
                 }
             });
             
             // Toggle current submenu
-            parent.classList.toggle('open');
+            menuItem.classList.toggle('open');
+            const submenu = menuItem.querySelector('.submenu');
             if (submenu) {
-                submenu.style.display = parent.classList.contains('open') ? 'block' : 'none';
+                submenu.style.display = menuItem.classList.contains('open') ? 'block' : 'none';
             }
-        });
+            return;
+        }
+        
+        // For regular menu items, navigate to the href
+        const href = link.getAttribute('href');
+        if (href && href !== '#') {
+            e.preventDefault();
+            window.location.href = href;
+        }
     });
     
     // Set active menu item based on current URL
     const currentPath = window.location.pathname;
+    const menuItems = document.querySelectorAll('.sidebar-menu a');
+    
     menuItems.forEach(item => {
         const href = item.getAttribute('href');
-        if (href && href !== '#' && currentPath.includes(href)) {
-            item.classList.add('active');
-            const parent = item.closest('.has-submenu');
-            if (parent) {
-                parent.classList.add('open');
-                const submenu = parent.querySelector('.submenu');
-                if (submenu) {
-                    submenu.style.display = 'block';
+        if (href && href !== '#' && (currentPath === href || currentPath.startsWith(href + '/'))) {
+            // Add active class to the menu item
+            item.closest('.menu-item')?.classList.add('active');
+            
+            // If it's in a submenu, open the parent menu
+            const parentSubmenu = item.closest('.submenu');
+            if (parentSubmenu) {
+                const parentMenuItem = parentSubmenu.closest('.has-submenu');
+                if (parentMenuItem) {
+                    parentMenuItem.classList.add('open');
+                    parentSubmenu.style.display = 'block';
                 }
             }
         }
@@ -821,11 +789,12 @@ function initSidebarMenu() {
 
 // Initialize all features
 document.addEventListener('DOMContentLoaded', () => {
+    initSidebar();
+    initSidebarMenu();
     initSidebarSearch();
     initQuickActions();
     initNotifications();
     initUserProfile();
     updateBreadcrumbs();
     updateNotificationBadge();
-    initSidebarMenu();
 }); 
