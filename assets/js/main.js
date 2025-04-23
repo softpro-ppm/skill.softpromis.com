@@ -757,6 +757,68 @@ function updateBreadcrumbs() {
     });
 }
 
+// Sidebar Menu Navigation
+function initSidebarMenu() {
+    const menuItems = document.querySelectorAll('.menu-item a');
+    const submenuToggles = document.querySelectorAll('.submenu-toggle');
+    
+    // Handle regular menu item clicks
+    menuItems.forEach(item => {
+        if (!item.classList.contains('submenu-toggle')) {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = item.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+            });
+        }
+    });
+    
+    // Handle submenu toggles
+    submenuToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const parent = toggle.closest('.has-submenu');
+            const submenu = parent.querySelector('.submenu');
+            
+            // Close other open submenus
+            document.querySelectorAll('.has-submenu.open').forEach(openMenu => {
+                if (openMenu !== parent) {
+                    openMenu.classList.remove('open');
+                    const openSubmenu = openMenu.querySelector('.submenu');
+                    if (openSubmenu) {
+                        openSubmenu.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Toggle current submenu
+            parent.classList.toggle('open');
+            if (submenu) {
+                submenu.style.display = parent.classList.contains('open') ? 'block' : 'none';
+            }
+        });
+    });
+    
+    // Set active menu item based on current URL
+    const currentPath = window.location.pathname;
+    menuItems.forEach(item => {
+        const href = item.getAttribute('href');
+        if (href && href !== '#' && currentPath.includes(href)) {
+            item.classList.add('active');
+            const parent = item.closest('.has-submenu');
+            if (parent) {
+                parent.classList.add('open');
+                const submenu = parent.querySelector('.submenu');
+                if (submenu) {
+                    submenu.style.display = 'block';
+                }
+            }
+        }
+    });
+}
+
 // Initialize all features
 document.addEventListener('DOMContentLoaded', () => {
     initSidebarSearch();
@@ -765,4 +827,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initUserProfile();
     updateBreadcrumbs();
     updateNotificationBadge();
+    initSidebarMenu();
 }); 
