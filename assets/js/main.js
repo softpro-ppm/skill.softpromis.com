@@ -7,6 +7,27 @@ document.addEventListener('DOMContentLoaded', function() {
     initNotifications();
     initDataTables();
     initCharts();
+    initFormAutoSave();
+    initTableRowActions();
+    initInputMasks();
+    
+    // Add floating label functionality
+    const floatingLabels = document.querySelectorAll('.form-group.floating-label');
+    floatingLabels.forEach(group => {
+        const input = group.querySelector('.form-control');
+        const label = group.querySelector('.form-label');
+        
+        if (input.value) {
+            label.classList.add('active');
+        }
+        
+        input.addEventListener('focus', () => label.classList.add('active'));
+        input.addEventListener('blur', () => {
+            if (!input.value) {
+                label.classList.remove('active');
+            }
+        });
+    });
 });
 
 // Sidebar Toggle
@@ -58,26 +79,166 @@ function initNotifications() {
     };
 }
 
-// Data Tables
+// Enhanced Data Tables
 function initDataTables() {
     const tables = document.querySelectorAll('.data-table');
     tables.forEach(table => {
         if (table.dataset.datatable !== 'false') {
-            new DataTable(table, {
+            // Wrap table in container
+            const container = document.createElement('div');
+            container.className = 'table-container';
+            table.parentNode.insertBefore(container, table);
+            
+            // Create table header
+            const header = document.createElement('div');
+            header.className = 'table-header';
+            
+            // Create search box
+            const searchBox = document.createElement('div');
+            searchBox.className = 'search-box';
+            const searchInput = document.createElement('input');
+            searchInput.type = 'text';
+            searchInput.placeholder = 'Enter custom Search text';
+            const clearSearch = document.createElement('button');
+            clearSearch.className = 'clear-search';
+            clearSearch.innerHTML = '×';
+            searchBox.appendChild(searchInput);
+            searchBox.appendChild(clearSearch);
+            
+            // Create action buttons
+            const actions = document.createElement('div');
+            actions.className = 'table-actions';
+            
+            // Left side buttons
+            const refreshBtn = document.createElement('button');
+            refreshBtn.className = 'btn-header';
+            refreshBtn.textContent = 'Refresh';
+            const resetBtn = document.createElement('button');
+            resetBtn.className = 'btn-header';
+            resetBtn.textContent = 'Reset Query';
+            
+            // Right side test buttons
+            const testBtn = document.createElement('button');
+            testBtn.className = 'btn-header btn-test';
+            testBtn.textContent = 'test';
+            const test2Btn = document.createElement('button');
+            test2Btn.className = 'btn-header btn-test';
+            test2Btn.textContent = 'test2';
+            const test3Btn = document.createElement('button');
+            test3Btn.className = 'btn-header btn-test';
+            test3Btn.textContent = 'test3';
+            
+            actions.appendChild(refreshBtn);
+            actions.appendChild(resetBtn);
+            actions.appendChild(testBtn);
+            actions.appendChild(test2Btn);
+            actions.appendChild(test3Btn);
+            
+            header.appendChild(searchBox);
+            header.appendChild(actions);
+            container.appendChild(header);
+            
+            // Move table into container
+            container.appendChild(table);
+            
+            // Initialize DataTable
+            const dataTable = new DataTable(table, {
+                dom: '<"table-responsive"t><"table-footer"<"table-info"i><"pagination-container"p>>',
+                pageLength: 10,
+                order: [[0, 'asc']],
                 responsive: true,
                 language: {
-                    search: "Search:",
-                    lengthMenu: "Show _MENU_ entries",
-                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                    infoEmpty: "Showing 0 to 0 of 0 entries",
-                    infoFiltered: "(filtered from _MAX_ total entries)",
+                    search: '',
+                    searchPlaceholder: 'Search...',
+                    lengthMenu: 'Show _MENU_ entries',
+                    info: 'This page total is _END_ | Filtered results total is _TOTAL_ | Original data total is _MAX_ | _SELECTED_ rows selected',
+                    infoEmpty: 'Showing 0 to 0 of 0 entries',
+                    infoFiltered: '',
                     paginate: {
-                        first: "First",
-                        last: "Last",
-                        next: "Next",
-                        previous: "Previous"
+                        first: '«',
+                        previous: '‹',
+                        next: '›',
+                        last: '»'
                     }
+                },
+                columnDefs: [
+                    {
+                        targets: '_all',
+                        sortable: true
+                    }
+                ],
+                initComplete: function() {
+                    // Add column filters
+                    this.api().columns().every(function() {
+                        const column = this;
+                        const header = $(column.header());
+                        
+                        // Add filter input
+                        const input = document.createElement('input');
+                        input.className = 'column-filter';
+                        input.placeholder = header.text();
+                        header.append(input);
+                        
+                        // Handle filter input
+                        input.addEventListener('keyup', function(e) {
+                            e.stopPropagation();
+                            column.search(this.value).draw();
+                        });
+                    });
+
+                    // Add pagination numbers
+                    const paginationContainer = document.querySelector('.pagination-container');
+                    const pagination = document.createElement('div');
+                    pagination.className = 'pagination';
+                    
+                    // Add page numbers
+                    for (let i = 1; i <= 5; i++) {
+                        const pageItem = document.createElement('li');
+                        pageItem.className = 'page-item' + (i === 1 ? ' active' : '');
+                        const pageLink = document.createElement('a');
+                        pageLink.className = 'page-link';
+                        pageLink.href = '#';
+                        pageLink.textContent = i;
+                        pageItem.appendChild(pageLink);
+                        pagination.appendChild(pageItem);
+                    }
+                    
+                    paginationContainer.appendChild(pagination);
                 }
+            });
+            
+            // Handle search
+            searchInput.addEventListener('keyup', function() {
+                dataTable.search(this.value).draw();
+            });
+            
+            // Handle clear search
+            clearSearch.addEventListener('click', function() {
+                searchInput.value = '';
+                dataTable.search('').draw();
+            });
+            
+            // Handle refresh
+            refreshBtn.addEventListener('click', function() {
+                dataTable.ajax.reload();
+            });
+            
+            // Handle reset
+            resetBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                dataTable.search('').order([0, 'asc']).draw();
+                const filters = document.querySelectorAll('.column-filter');
+                filters.forEach(filter => {
+                    filter.value = '';
+                });
+                dataTable.columns().search('').draw();
+            });
+
+            // Handle test buttons
+            [testBtn, test2Btn, test3Btn].forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('Test button clicked:', this.textContent);
+                });
             });
         }
     });
@@ -96,7 +257,7 @@ function initCharts() {
     });
 }
 
-// Form Validation
+// Enhanced Form Validation
 function validateForm(form) {
     let isValid = true;
     const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
@@ -117,7 +278,36 @@ function validateForm(form) {
             }
         }
     });
-    
+
+    // Email validation
+    const emailInputs = form.querySelectorAll('input[type="email"]');
+    emailInputs.forEach(input => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (input.value && !emailRegex.test(input.value)) {
+            isValid = false;
+            input.classList.add('is-invalid');
+            const feedback = input.nextElementSibling;
+            if (feedback && feedback.classList.contains('invalid-feedback')) {
+                feedback.textContent = 'Please enter a valid email address';
+                feedback.style.display = 'block';
+            }
+        }
+    });
+
+    // Password validation
+    const passwordInputs = form.querySelectorAll('input[type="password"]');
+    passwordInputs.forEach(input => {
+        if (input.value && input.value.length < 8) {
+            isValid = false;
+            input.classList.add('is-invalid');
+            const feedback = input.nextElementSibling;
+            if (feedback && feedback.classList.contains('invalid-feedback')) {
+                feedback.textContent = 'Password must be at least 8 characters long';
+                feedback.style.display = 'block';
+            }
+        }
+    });
+
     return isValid;
 }
 
@@ -287,4 +477,103 @@ style.textContent = `
     }
 `;
 
-document.head.appendChild(style); 
+document.head.appendChild(style);
+
+// Form Auto-save
+function initFormAutoSave() {
+    const forms = document.querySelectorAll('form[data-autosave]');
+    forms.forEach(form => {
+        const inputs = form.querySelectorAll('input, select, textarea');
+        const formId = form.id || 'form-' + Math.random().toString(36).substr(2, 9);
+        
+        // Load saved data
+        const savedData = localStorage.getItem(formId);
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            inputs.forEach(input => {
+                if (data[input.name]) {
+                    input.value = data[input.name];
+                }
+            });
+        }
+        
+        // Save on input change
+        inputs.forEach(input => {
+            input.addEventListener('change', function() {
+                const formData = {};
+                inputs.forEach(i => {
+                    formData[i.name] = i.value;
+                });
+                localStorage.setItem(formId, JSON.stringify(formData));
+            });
+        });
+    });
+}
+
+// Table Row Actions
+function initTableRowActions() {
+    const tables = document.querySelectorAll('.data-table');
+    tables.forEach(table => {
+        const actionButtons = table.querySelectorAll('.btn-action');
+        actionButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const action = this.dataset.action;
+                const row = this.closest('tr');
+                const rowData = {};
+                
+                // Get row data
+                row.querySelectorAll('td').forEach((cell, index) => {
+                    const header = table.querySelector('th').item(index).textContent;
+                    rowData[header] = cell.textContent;
+                });
+                
+                // Handle different actions
+                switch(action) {
+                    case 'edit':
+                        showEditModal(rowData);
+                        break;
+                    case 'delete':
+                        if (confirm('Are you sure you want to delete this record?')) {
+                            row.remove();
+                            showNotification('Record deleted successfully', 'success');
+                        }
+                        break;
+                    case 'view':
+                        showViewModal(rowData);
+                        break;
+                }
+            });
+        });
+    });
+}
+
+// Form Input Masks
+function initInputMasks() {
+    const maskedInputs = document.querySelectorAll('[data-mask]');
+    maskedInputs.forEach(input => {
+        const mask = input.dataset.mask;
+        switch(mask) {
+            case 'phone':
+                input.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 0) {
+                        value = value.match(new RegExp('.{1,10}'))[0];
+                        value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+                    }
+                    e.target.value = value;
+                });
+                break;
+            case 'date':
+                input.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 0) {
+                        value = value.match(new RegExp('.{1,8}'))[0];
+                        value = value.replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
+                    }
+                    e.target.value = value;
+                });
+                break;
+        }
+    });
+} 
