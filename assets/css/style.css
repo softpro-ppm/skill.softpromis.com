@@ -280,9 +280,9 @@ body {
     box-shadow: var(--box-shadow);
     padding: 0.75rem;
     transition: var(--transition);
-    flex: 0 1 calc(25% - 0.75rem);
+    width: 25%;
     min-width: 180px;
-    max-width: 220px;
+    max-width: none;
 }
 
 .card:hover {
@@ -771,13 +771,13 @@ textarea.form-control {
     }
 
     .card {
-        flex: 0 1 calc(50% - 0.75rem);
+        width: 50%;
     }
 }
 
 @media (max-width: 480px) {
     .card {
-        flex: 0 1 100%;
+        width: 100%;
     }
 }
 
