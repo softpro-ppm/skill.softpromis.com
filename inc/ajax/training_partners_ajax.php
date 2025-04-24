@@ -1,16 +1,16 @@
 <?php
-session_start();
+require_once '../../inc/auth_check.php';
 require_once '../../config.php';
 require_once '../functions.php';
 
-// Check if user is logged in
-if (!isset($_SESSION['user'])) {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized access']);
-    exit;
-}
-
 // Set headers for JSON response
 header('Content-Type: application/json');
+
+// Check if user has admin privileges
+if (!hasRole('Administrator')) {
+    echo json_encode(['success' => false, 'message' => 'Insufficient permissions']);
+    exit;
+}
 
 // Get the action
 $action = $_POST['action'] ?? '';

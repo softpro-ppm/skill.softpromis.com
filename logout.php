@@ -1,37 +1,7 @@
 <?php
-session_start();
-require_once 'config.php';
-
-// Check if it's a POST request with logout parameter
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['logout'])) {
-    header('Location: index.php');
-    exit;
-}
-
-// Get user token from session
-$token = $_SESSION['user']['token'] ?? null;
-
-if ($token) {
-    try {
-        // Connect to database
-        $pdo = new PDO(
-            "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
-            DB_USER,
-            DB_PASS,
-            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-        );
-
-        // Clear user's token and update last logout time
-        $stmt = $pdo->prepare("
-            UPDATE users 
-            SET token = NULL, 
-                last_logout = NOW() 
-            WHERE token = ?
-        ");
-        $stmt->execute([$token]);
-    } catch (PDOException $e) {
-        error_log("Logout error: " . $e->getMessage());
-    }
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
 // Clear all session variables
@@ -45,16 +15,10 @@ if (isset($_COOKIE[session_name()])) {
 // Destroy the session
 session_destroy();
 
-// Clear any other cookies
-if (isset($_COOKIE['remember_token'])) {
-    setcookie('remember_token', '', time() - 3600, '/');
-}
+// Set logout message
+$message = urlencode("You have been logged out successfully.");
 
-// Set a logout message in a temporary session
-session_start();
-$_SESSION['logout_message'] = 'You have been successfully logged out.';
-session_write_close();
-
-// Redirect to login page with a status parameter
-header('Location: index.php?status=logged_out');
-exit; 
+// Redirect to login page with message
+header("Location: index.php?message=" . $message);
+exit;
+?> 

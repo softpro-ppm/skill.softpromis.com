@@ -1,22 +1,44 @@
 <?php
 session_start();
 
-// Check if user is already logged in
+// If user is already logged in, redirect to dashboard
 if (isset($_SESSION['user'])) {
-    header('Location: dashboard.php');
+    // Check if there's a redirect URL stored in session
+    if (isset($_SESSION['redirect_after_login'])) {
+        $redirect = $_SESSION['redirect_after_login'];
+        unset($_SESSION['redirect_after_login']);
+        header('Location: ' . $redirect);
+    } else {
+        header('Location: dashboard.php');
+    }
     exit;
 }
 
-// Get logout message if exists
-$logoutMessage = $_SESSION['logout_message'] ?? null;
-unset($_SESSION['logout_message']);
+// Get messages
+$message = $_GET['message'] ?? null;
+$error = $_GET['error'] ?? null;
 
-// Get status parameter
-$status = $_GET['status'] ?? null;
+// Page title
+$pageTitle = "Login";
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - <?php echo SITE_NAME; ?></title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Softpro Skill Solutions - Login</title>

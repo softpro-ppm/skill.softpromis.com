@@ -1,23 +1,13 @@
 <?php
+// Include authentication check
+require_once 'inc/auth_check.php';
+
 // Include config file which already includes functions.php
 require_once 'config.php';
 
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Check if user is logged in
-if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
-    // Redirect to login page
-    header('Location: index.php');
-    exit;
-}
-
 // Check if user has admin privileges
-if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'Administrator') {
-    // Redirect to login page with unauthorized message
-    header('Location: index.php?error=unauthorized');
+if (!hasRole('Administrator')) {
+    header('Location: dashboard.php?error=' . urlencode('You do not have permission to access this page.'));
     exit;
 }
 
