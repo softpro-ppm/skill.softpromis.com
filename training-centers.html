@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Softpro Skill Solutions - Training Centers</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+          <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="index.html" role="button">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="dashboard.html" class="brand-link">
+      <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="info">
+          <a href="#" class="d-block">Admin User</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-item">
+            <a href="dashboard.html" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                Training Centers
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="training-centers.html" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Centers</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-graduation-cap"></i>
+              <p>
+                Courses
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="courses.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Courses</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="batches.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Batches</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Students
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="students.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Students</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="fees.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Fee Management</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chart-bar"></i>
+              <p>
+                Reports
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="reports.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>View Reports</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Training Centers</h1>
+          </div>
+          <div class="col-sm-6">
+            <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#addCenterModal">
+              <i class="fas fa-plus"></i> Add New Center
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="card">
+          <div class="card-body">
+            <table id="centersTable" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Center Name</th>
+                  <th>Address</th>
+                  <th>Contact Person</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Delhi Center</td>
+                  <td>123 Main Street, Delhi</td>
+                  <td>John Doe</td>
+                  <td>+91 9876543210</td>
+                  <td>delhi@softpro.com</td>
+                  <td><span class="badge badge-success">Active</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-info" onclick="editCenter(1)"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteCenter(1)"><i class="fas fa-trash"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Mumbai Center</td>
+                  <td>456 Business Park, Mumbai</td>
+                  <td>Jane Smith</td>
+                  <td>+91 9876543211</td>
+                  <td>mumbai@softpro.com</td>
+                  <td><span class="badge badge-success">Active</span></td>
+                  <td>
+                    <button class="btn btn-sm btn-info" onclick="editCenter(2)"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteCenter(2)"><i class="fas fa-trash"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <!-- Add Center Modal -->
+  <div class="modal fade" id="addCenterModal" tabindex="-1" role="dialog" aria-labelledby="addCenterModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addCenterModalLabel">Add New Training Center</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="addCenterForm">
+            <div class="form-group">
+              <label for="centerName">Center Name</label>
+              <input type="text" class="form-control" id="centerName" required>
+            </div>
+            <div class="form-group">
+              <label for="address">Address</label>
+              <textarea class="form-control" id="address" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="contactPerson">Contact Person</label>
+              <input type="text" class="form-control" id="contactPerson" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" class="form-control" id="phone" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+              <label for="status">Status</label>
+              <select class="form-control" id="status" required>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="saveCenter()">Save Center</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2024 <a href="#">Softpro Skill Solutions</a>.</strong>
+    All rights reserved.
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('#centersTable').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+
+  function editCenter(id) {
+    // Implement edit functionality
+    alert('Edit center with ID: ' + id);
+  }
+
+  function deleteCenter(id) {
+    if (confirm('Are you sure you want to delete this center?')) {
+      // Implement delete functionality
+      alert('Delete center with ID: ' + id);
+    }
+  }
+
+  function saveCenter() {
+    // Implement save functionality
+    const centerData = {
+      name: $('#centerName').val(),
+      address: $('#address').val(),
+      contactPerson: $('#contactPerson').val(),
+      phone: $('#phone').val(),
+      email: $('#email').val(),
+      status: $('#status').val()
+    };
+    
+    console.log('Saving center:', centerData);
+    $('#addCenterModal').modal('hide');
+    // Add the new center to the table
+    $('#centersTable').DataTable().row.add([
+      centerData.name,
+      centerData.address,
+      centerData.contactPerson,
+      centerData.phone,
+      centerData.email,
+      `<span class="badge badge-${centerData.status === 'active' ? 'success' : 'danger'}">${centerData.status}</span>`,
+      `<button class="btn btn-sm btn-info" onclick="editCenter(3)"><i class="fas fa-edit"></i></button>
+       <button class="btn btn-sm btn-danger" onclick="deleteCenter(3)"><i class="fas fa-trash"></i></button>`
+    ]).draw();
+  }
+</script>
+</body>
+</html> 
