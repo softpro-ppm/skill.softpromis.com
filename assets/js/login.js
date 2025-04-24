@@ -26,6 +26,8 @@ function handleLogin(event) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
     submitBtn.disabled = true;
 
+    console.log('Sending login request to:', 'inc/ajax/login_ajax.php');
+    
     // Make AJAX request to login endpoint
     $.ajax({
         url: 'inc/ajax/login_ajax.php',
@@ -37,6 +39,7 @@ function handleLogin(event) {
         },
         dataType: 'json',
         success: function(response) {
+            console.log('Login response:', response);
             if (response.success) {
                 // Store user data
                 storeUserData(response.user, rememberMe);
@@ -55,10 +58,16 @@ function handleLogin(event) {
             }
         },
         error: function(xhr, status, error) {
+            console.error('Login error details:', {
+                status: status,
+                error: error,
+                responseText: xhr.responseText,
+                statusCode: xhr.status,
+                readyState: xhr.readyState
+            });
             showError('An error occurred. Please try again later.');
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
-            console.error('Login error:', error);
         }
     });
 }
