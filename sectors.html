@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Courses</title>
+  <title>Softpro Skill Solutions - Sectors</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -99,13 +99,13 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="sectors.html" class="nav-link">
+                <a href="sectors.html" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sectors</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="courses.html" class="nav-link active">
+                <a href="courses.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Courses</p>
                 </a>
@@ -172,12 +172,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Courses</h1>
+            <h1 class="m-0">Sectors</h1>
           </div>
           <div class="col-sm-6">
             <div class="float-sm-right">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCourseModal">
-                <i class="fas fa-plus"></i> Add New Course
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSectorModal">
+                <i class="fas fa-plus"></i> Add New Sector
               </button>
             </div>
           </div>
@@ -191,16 +191,14 @@
       <div class="container-fluid">
         <div class="card">
           <div class="card-body">
-            <table id="coursesTable" class="table table-bordered table-striped">
+            <table id="sectorsTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Course Name</th>
-                  <th>Scheme</th>
-                  <th>Sector</th>
-                  <th>Duration</th>
-                  <th>Fee</th>
+                  <th>Sector Name</th>
                   <th>Description</th>
+                  <th>Total Courses</th>
+                  <th>Total Students</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -208,12 +206,10 @@
               <tbody>
                 <tr>
                   <td>1</td>
-                  <td>Web Development</td>
-                  <td>PMKVY 4.0</td>
                   <td>Information Technology</td>
-                  <td>3 months</td>
-                  <td>₹25,000</td>
-                  <td>Complete web development course covering HTML, CSS, JavaScript, and more</td>
+                  <td>IT and Software Development</td>
+                  <td>15</td>
+                  <td>250</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
                     <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
@@ -223,11 +219,9 @@
                 <tr>
                   <td>2</td>
                   <td>Digital Marketing</td>
-                  <td>Corporate Training</td>
-                  <td>Digital Marketing</td>
-                  <td>2 months</td>
-                  <td>₹20,000</td>
-                  <td>Comprehensive digital marketing course covering SEO, SEM, and social media</td>
+                  <td>Online Marketing and SEO</td>
+                  <td>10</td>
+                  <td>150</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
                     <button class="btn btn-sm btn-info"><i class="fas fa-edit"></i></button>
@@ -244,45 +238,21 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Course Modal -->
-  <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog" aria-labelledby="addCourseModalLabel" aria-hidden="true">
+  <!-- Add Sector Modal -->
+  <div class="modal fade" id="addSectorModal" tabindex="-1" role="dialog" aria-labelledby="addSectorModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addCourseModalLabel">Add New Course</h5>
+          <h5 class="modal-title" id="addSectorModalLabel">Add New Sector</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form id="addCourseForm">
+          <form id="addSectorForm">
             <div class="form-group">
-              <label for="courseName">Course Name</label>
-              <input type="text" class="form-control" id="courseName" required>
-            </div>
-            <div class="form-group">
-              <label for="scheme">Scheme</label>
-              <select class="form-control" id="scheme" required>
-                <option value="">Select Scheme</option>
-                <option value="1">PMKVY 4.0</option>
-                <option value="2">Corporate Training</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="sector">Sector</label>
-              <select class="form-control" id="sector" required>
-                <option value="">Select Sector</option>
-                <option value="1">Information Technology</option>
-                <option value="2">Digital Marketing</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="duration">Duration</label>
-              <input type="text" class="form-control" id="duration" required>
-            </div>
-            <div class="form-group">
-              <label for="fee">Fee</label>
-              <input type="number" class="form-control" id="fee" required>
+              <label for="sectorName">Sector Name</label>
+              <input type="text" class="form-control" id="sectorName" required>
             </div>
             <div class="form-group">
               <label for="description">Description</label>
@@ -292,7 +262,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Course</button>
+          <button type="button" class="btn btn-primary">Save Sector</button>
         </div>
       </div>
     </div>
@@ -317,7 +287,7 @@
 
 <script>
   $(function () {
-    $('#coursesTable').DataTable({
+    $('#sectorsTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,

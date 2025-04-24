@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Training Centers</title>
+  <title>Softpro Skill Solutions - Training Partners</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -70,15 +70,21 @@
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-building"></i>
               <p>
-                Training Centers
+                Training Partners
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link active">
+                <a href="training-partners.html" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Manage Centers</p>
+                  <p>Manage Partners</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="training-centers.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Training Centers</p>
                 </a>
               </li>
             </ul>
@@ -158,6 +164,23 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user-shield"></i>
+              <p>
+                User Management
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="roles.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Roles & Permissions</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -172,12 +195,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Training Centers</h1>
+            <h1 class="m-0">Training Partners</h1>
           </div>
           <div class="col-sm-6">
             <div class="float-sm-right">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCenterModal">
-                <i class="fas fa-plus"></i> Add New Center
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPartnerModal">
+                <i class="fas fa-plus"></i> Add New Partner
               </button>
             </div>
           </div>
@@ -191,59 +214,36 @@
       <div class="container-fluid">
         <div class="card">
           <div class="card-body">
-            <table id="centersTable" class="table table-bordered table-striped">
+            <table id="partnersTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Center Name</th>
-                  <th>Training Partner</th>
-                  <th>Address</th>
+                  <th>Name</th>
                   <th>Contact Person</th>
                   <th>Email</th>
                   <th>Phone</th>
+                  <th>Registration No</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>TC001</td>
-                  <td>Delhi Center</td>
+                  <td>TP001</td>
                   <td>Softpro Skill Solutions</td>
-                  <td>123 Main Street, Delhi</td>
-                  <td>Rajesh Kumar</td>
-                  <td>delhi@softpro.com</td>
-                  <td>9876543210</td>
+                  <td>John Smith</td>
+                  <td>contact@softpro.com</td>
+                  <td>1234567890</td>
+                  <td>REG123456</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCenterModal">
+                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewPartnerModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCenterModal">
+                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editPartnerModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCenterModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>TC002</td>
-                  <td>Mumbai Center</td>
-                  <td>Softpro Skill Solutions</td>
-                  <td>456 Business Park, Mumbai</td>
-                  <td>Priya Sharma</td>
-                  <td>mumbai@softpro.com</td>
-                  <td>9876543211</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCenterModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCenterModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCenterModal">
+                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deletePartnerModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -258,32 +258,21 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Center Modal -->
-  <div class="modal fade" id="addCenterModal" tabindex="-1" role="dialog" aria-labelledby="addCenterModalLabel" aria-hidden="true">
+  <!-- Add Partner Modal -->
+  <div class="modal fade" id="addPartnerModal" tabindex="-1" role="dialog" aria-labelledby="addPartnerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addCenterModalLabel">Add New Training Center</h5>
+          <h5 class="modal-title" id="addPartnerModalLabel">Add New Training Partner</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form id="addCenterForm">
+          <form id="addPartnerForm">
             <div class="form-group">
-              <label for="centerName">Center Name</label>
-              <input type="text" class="form-control" id="centerName" required>
-            </div>
-            <div class="form-group">
-              <label for="trainingPartner">Training Partner</label>
-              <select class="form-control" id="trainingPartner" required>
-                <option value="">Select Training Partner</option>
-                <option value="1">Softpro Skill Solutions</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="address">Address</label>
-              <textarea class="form-control" id="address" rows="3" required></textarea>
+              <label for="partnerName">Partner Name</label>
+              <input type="text" class="form-control" id="partnerName" required>
             </div>
             <div class="form-group">
               <label for="contactPerson">Contact Person</label>
@@ -298,51 +287,89 @@
               <input type="tel" class="form-control" id="phone" required>
             </div>
             <div class="form-group">
+              <label for="address">Address</label>
+              <textarea class="form-control" id="address" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="registrationNo">Registration Number</label>
+              <input type="text" class="form-control" id="registrationNo" required>
+            </div>
+            <div class="form-group">
               <label for="status">Status</label>
               <select class="form-control" id="status" required>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
             </div>
-            <div class="form-group">
-              <label>Authorized Schemes</label>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="scheme1">
-                    <label class="custom-control-label" for="scheme1">PMKVY 4.0</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="scheme2">
-                    <label class="custom-control-label" for="scheme2">DDU-GKY</label>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="scheme3">
-                    <label class="custom-control-label" for="scheme3">NSDC</label>
-                  </div>
-                </div>
-              </div>
-            </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Center</button>
+          <button type="button" class="btn btn-primary">Save Partner</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- View Center Modal -->
-  <div class="modal fade" id="viewCenterModal" tabindex="-1" role="dialog" aria-labelledby="viewCenterModalLabel" aria-hidden="true">
+  <!-- Edit Partner Modal -->
+  <div class="modal fade" id="editPartnerModal" tabindex="-1" role="dialog" aria-labelledby="editPartnerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="viewCenterModalLabel">View Training Center</h5>
+          <h5 class="modal-title" id="editPartnerModalLabel">Edit Training Partner</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="editPartnerForm">
+            <div class="form-group">
+              <label for="editPartnerName">Partner Name</label>
+              <input type="text" class="form-control" id="editPartnerName" required>
+            </div>
+            <div class="form-group">
+              <label for="editContactPerson">Contact Person</label>
+              <input type="text" class="form-control" id="editContactPerson" required>
+            </div>
+            <div class="form-group">
+              <label for="editEmail">Email</label>
+              <input type="email" class="form-control" id="editEmail" required>
+            </div>
+            <div class="form-group">
+              <label for="editPhone">Phone</label>
+              <input type="tel" class="form-control" id="editPhone" required>
+            </div>
+            <div class="form-group">
+              <label for="editAddress">Address</label>
+              <textarea class="form-control" id="editAddress" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="editRegistrationNo">Registration Number</label>
+              <input type="text" class="form-control" id="editRegistrationNo" required>
+            </div>
+            <div class="form-group">
+              <label for="editStatus">Status</label>
+              <select class="form-control" id="editStatus" required>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Partner Modal -->
+  <div class="modal fade" id="viewPartnerModal" tabindex="-1" role="dialog" aria-labelledby="viewPartnerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewPartnerModalLabel">View Training Partner</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -350,37 +377,37 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Center Name:</strong> <span id="viewCenterName"></span></p>
-              <p><strong>Training Partner:</strong> <span id="viewTrainingPartner"></span></p>
+              <p><strong>Partner Name:</strong> <span id="viewPartnerName"></span></p>
               <p><strong>Contact Person:</strong> <span id="viewContactPerson"></span></p>
               <p><strong>Email:</strong> <span id="viewEmail"></span></p>
+              <p><strong>Phone:</strong> <span id="viewPhone"></span></p>
             </div>
             <div class="col-md-6">
-              <p><strong>Phone:</strong> <span id="viewPhone"></span></p>
               <p><strong>Address:</strong> <span id="viewAddress"></span></p>
+              <p><strong>Registration No:</strong> <span id="viewRegistrationNo"></span></p>
               <p><strong>Status:</strong> <span id="viewStatus"></span></p>
             </div>
           </div>
           <div class="row mt-4">
             <div class="col-md-12">
-              <h6>Authorized Schemes</h6>
+              <h6>Associated Training Centers</h6>
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Scheme Name</th>
-                    <th>Type</th>
+                    <th>Center Name</th>
+                    <th>Location</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>PMKVY 4.0</td>
-                    <td>Government</td>
+                    <td>TC001</td>
+                    <td>Delhi</td>
                     <td><span class="badge badge-success">Active</span></td>
                   </tr>
                   <tr>
-                    <td>DDU-GKY</td>
-                    <td>Government</td>
+                    <td>TC002</td>
+                    <td>Mumbai</td>
                     <td><span class="badge badge-success">Active</span></td>
                   </tr>
                 </tbody>
@@ -390,6 +417,27 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Partner Modal -->
+  <div class="modal fade" id="deletePartnerModal" tabindex="-1" role="dialog" aria-labelledby="deletePartnerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deletePartnerModalLabel">Delete Training Partner</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this training partner? This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger">Delete</button>
         </div>
       </div>
     </div>
@@ -414,7 +462,7 @@
 
 <script>
   $(function () {
-    $('#centersTable').DataTable({
+    $('#partnersTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,

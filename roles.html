@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Training Centers</title>
+  <title>Softpro Skill Solutions - User Roles & Permissions</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -67,7 +67,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
               <p>
                 Training Centers
@@ -76,7 +76,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link active">
+                <a href="training-centers.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Centers</p>
                 </a>
@@ -158,6 +158,23 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-user-shield"></i>
+              <p>
+                User Management
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="roles.html" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Roles & Permissions</p>
+                </a>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -172,12 +189,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Training Centers</h1>
+            <h1 class="m-0">User Roles & Permissions</h1>
           </div>
           <div class="col-sm-6">
             <div class="float-sm-right">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCenterModal">
-                <i class="fas fa-plus"></i> Add New Center
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRoleModal">
+                <i class="fas fa-plus"></i> Add New Role
               </button>
             </div>
           </div>
@@ -191,59 +208,61 @@
       <div class="container-fluid">
         <div class="card">
           <div class="card-body">
-            <table id="centersTable" class="table table-bordered table-striped">
+            <table id="rolesTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Center Name</th>
-                  <th>Training Partner</th>
-                  <th>Address</th>
-                  <th>Contact Person</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Status</th>
+                  <th>Role Name</th>
+                  <th>Description</th>
+                  <th>Permissions</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>TC001</td>
-                  <td>Delhi Center</td>
-                  <td>Softpro Skill Solutions</td>
-                  <td>123 Main Street, Delhi</td>
-                  <td>Rajesh Kumar</td>
-                  <td>delhi@softpro.com</td>
-                  <td>9876543210</td>
-                  <td><span class="badge badge-success">Active</span></td>
+                  <td>Admin</td>
+                  <td>Superuser with unrestricted access to all modules and functionalities</td>
                   <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCenterModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCenterModal">
+                    <span class="badge badge-success">All Permissions</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#editRoleModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCenterModal">
+                    <button class="btn btn-sm btn-danger" disabled>
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>TC002</td>
-                  <td>Mumbai Center</td>
-                  <td>Softpro Skill Solutions</td>
-                  <td>456 Business Park, Mumbai</td>
-                  <td>Priya Sharma</td>
-                  <td>mumbai@softpro.com</td>
-                  <td>9876543211</td>
-                  <td><span class="badge badge-success">Active</span></td>
+                  <td>Reception/MIS</td>
+                  <td>Responsible for student onboarding, registration, and fee management</td>
                   <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCenterModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCenterModal">
+                    <span class="badge badge-primary">Student Management</span>
+                    <span class="badge badge-primary">Fee Management</span>
+                    <span class="badge badge-primary">Reports</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#editRoleModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCenterModal">
+                    <button class="btn btn-sm btn-danger">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Training Center</td>
+                  <td>Manages training delivery and student assessments</td>
+                  <td>
+                    <span class="badge badge-primary">Batch Management</span>
+                    <span class="badge badge-primary">Student Roster</span>
+                    <span class="badge badge-primary">Assessment Upload</span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#editRoleModal">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -258,71 +277,63 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Center Modal -->
-  <div class="modal fade" id="addCenterModal" tabindex="-1" role="dialog" aria-labelledby="addCenterModalLabel" aria-hidden="true">
+  <!-- Add Role Modal -->
+  <div class="modal fade" id="addRoleModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addCenterModalLabel">Add New Training Center</h5>
+          <h5 class="modal-title" id="addRoleModalLabel">Add New Role</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form id="addCenterForm">
+          <form id="addRoleForm">
             <div class="form-group">
-              <label for="centerName">Center Name</label>
-              <input type="text" class="form-control" id="centerName" required>
+              <label for="roleName">Role Name</label>
+              <input type="text" class="form-control" id="roleName" required>
             </div>
             <div class="form-group">
-              <label for="trainingPartner">Training Partner</label>
-              <select class="form-control" id="trainingPartner" required>
-                <option value="">Select Training Partner</option>
-                <option value="1">Softpro Skill Solutions</option>
-              </select>
+              <label for="roleDescription">Description</label>
+              <textarea class="form-control" id="roleDescription" rows="3" required></textarea>
             </div>
             <div class="form-group">
-              <label for="address">Address</label>
-              <textarea class="form-control" id="address" rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="contactPerson">Contact Person</label>
-              <input type="text" class="form-control" id="contactPerson" required>
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" required>
-            </div>
-            <div class="form-group">
-              <label for="phone">Phone</label>
-              <input type="tel" class="form-control" id="phone" required>
-            </div>
-            <div class="form-group">
-              <label for="status">Status</label>
-              <select class="form-control" id="status" required>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Authorized Schemes</label>
+              <label>Permissions</label>
               <div class="row">
                 <div class="col-md-4">
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="scheme1">
-                    <label class="custom-control-label" for="scheme1">PMKVY 4.0</label>
+                    <input type="checkbox" class="custom-control-input" id="permStudentManagement">
+                    <label class="custom-control-label" for="permStudentManagement">Student Management</label>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="scheme2">
-                    <label class="custom-control-label" for="scheme2">DDU-GKY</label>
+                    <input type="checkbox" class="custom-control-input" id="permFeeManagement">
+                    <label class="custom-control-label" for="permFeeManagement">Fee Management</label>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="scheme3">
-                    <label class="custom-control-label" for="scheme3">NSDC</label>
+                    <input type="checkbox" class="custom-control-input" id="permBatchManagement">
+                    <label class="custom-control-label" for="permBatchManagement">Batch Management</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="permAssessmentUpload">
+                    <label class="custom-control-label" for="permAssessmentUpload">Assessment Upload</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="permReports">
+                    <label class="custom-control-label" for="permReports">Reports</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="permUserManagement">
+                    <label class="custom-control-label" for="permUserManagement">User Management</label>
                   </div>
                 </div>
               </div>
@@ -331,65 +342,78 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Center</button>
+          <button type="button" class="btn btn-primary">Save Role</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- View Center Modal -->
-  <div class="modal fade" id="viewCenterModal" tabindex="-1" role="dialog" aria-labelledby="viewCenterModalLabel" aria-hidden="true">
+  <!-- Edit Role Modal -->
+  <div class="modal fade" id="editRoleModal" tabindex="-1" role="dialog" aria-labelledby="editRoleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="viewCenterModalLabel">View Training Center</h5>
+          <h5 class="modal-title" id="editRoleModalLabel">Edit Role</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <p><strong>Center Name:</strong> <span id="viewCenterName"></span></p>
-              <p><strong>Training Partner:</strong> <span id="viewTrainingPartner"></span></p>
-              <p><strong>Contact Person:</strong> <span id="viewContactPerson"></span></p>
-              <p><strong>Email:</strong> <span id="viewEmail"></span></p>
+          <form id="editRoleForm">
+            <div class="form-group">
+              <label for="editRoleName">Role Name</label>
+              <input type="text" class="form-control" id="editRoleName" required>
             </div>
-            <div class="col-md-6">
-              <p><strong>Phone:</strong> <span id="viewPhone"></span></p>
-              <p><strong>Address:</strong> <span id="viewAddress"></span></p>
-              <p><strong>Status:</strong> <span id="viewStatus"></span></p>
+            <div class="form-group">
+              <label for="editRoleDescription">Description</label>
+              <textarea class="form-control" id="editRoleDescription" rows="3" required></textarea>
             </div>
-          </div>
-          <div class="row mt-4">
-            <div class="col-md-12">
-              <h6>Authorized Schemes</h6>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Scheme Name</th>
-                    <th>Type</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>PMKVY 4.0</td>
-                    <td>Government</td>
-                    <td><span class="badge badge-success">Active</span></td>
-                  </tr>
-                  <tr>
-                    <td>DDU-GKY</td>
-                    <td>Government</td>
-                    <td><span class="badge badge-success">Active</span></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="form-group">
+              <label>Permissions</label>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="editPermStudentManagement">
+                    <label class="custom-control-label" for="editPermStudentManagement">Student Management</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="editPermFeeManagement">
+                    <label class="custom-control-label" for="editPermFeeManagement">Fee Management</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="editPermBatchManagement">
+                    <label class="custom-control-label" for="editPermBatchManagement">Batch Management</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="editPermAssessmentUpload">
+                    <label class="custom-control-label" for="editPermAssessmentUpload">Assessment Upload</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="editPermReports">
+                    <label class="custom-control-label" for="editPermReports">Reports</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="editPermUserManagement">
+                    <label class="custom-control-label" for="editPermUserManagement">User Management</label>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save Changes</button>
         </div>
       </div>
     </div>
@@ -414,7 +438,7 @@
 
 <script>
   $(function () {
-    $('#centersTable').DataTable({
+    $('#rolesTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
