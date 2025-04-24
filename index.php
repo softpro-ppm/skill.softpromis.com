@@ -13,67 +13,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
   <!-- Toastr -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-  <!-- SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <style>
-    .login-page {
-      background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
-    }
-    .login-box {
-      margin-top: 0;
-      padding-top: 100px;
-    }
-    .login-logo {
-      font-size: 2.1rem;
-      font-weight: 300;
-      margin-bottom: 0.9rem;
-      text-align: center;
-      color: #fff;
-    }
-    .login-logo img {
-      max-width: 150px;
-      margin-bottom: 1rem;
-    }
-    .login-card-body {
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    }
-    .input-group-text {
-      background-color: transparent;
-      border-right: none;
-    }
-    .form-control {
-      border-left: none;
-    }
-    .form-control:focus {
-      box-shadow: none;
-      border-color: #ced4da;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
-      border: none;
-      padding: 10px 20px;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #0056b3 0%, #520dc2 100%);
-    }
-    .social-auth-links {
-      margin: 10px 0;
-    }
-    .social-auth-links a {
-      margin: 0 5px;
-      color: #6c757d;
-      font-size: 1.2rem;
-    }
-    .social-auth-links a:hover {
-      color: #007bff;
-    }
-  </style>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/login.css">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <img src="https://via.placeholder.com/150" alt="Logo">
+    <img src="assets/img/logo.png" alt="Logo">
     <br>
     <b>Softpro</b> Skill Solutions
   </div>
@@ -88,7 +34,7 @@
               <i class="fas fa-envelope"></i>
             </span>
           </div>
-          <input type="email" class="form-control" placeholder="Email" name="email" required>
+          <input type="email" class="form-control" placeholder="Email" id="email" required>
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -96,17 +42,17 @@
               <i class="fas fa-lock"></i>
             </span>
           </div>
-          <input type="password" class="form-control" placeholder="Password" name="password" required>
+          <input type="password" class="form-control" placeholder="Password" id="password" required>
           <div class="input-group-append">
-            <span class="input-group-text">
-              <i class="fas fa-eye toggle-password"></i>
+            <span class="input-group-text toggle-password">
+              <i class="fas fa-eye"></i>
             </span>
           </div>
         </div>
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="remember" name="remember">
+              <input type="checkbox" id="remember">
               <label for="remember">
                 Remember Me
               </label>
@@ -118,15 +64,21 @@
         </div>
       </form>
 
-      <div class="social-auth-links text-center mb-3">
+      <div class="social-login">
         <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-outline-primary">
-          <i class="fab fa-google mr-2"></i> Sign in using Google
+        <a href="#" class="btn btn-outline-primary">
+          <i class="fab fa-google"></i>
+        </a>
+        <a href="#" class="btn btn-outline-primary">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" class="btn btn-outline-primary">
+          <i class="fab fa-linkedin-in"></i>
         </a>
       </div>
 
       <p class="mb-1">
-        <a href="forgot-password.php">I forgot my password</a>
+        <a href="forgot-password.php" class="forgot-password">I forgot my password</a>
       </p>
       <p class="mb-0">
         <a href="register.php" class="text-center">Register a new membership</a>
@@ -140,85 +92,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<script>
-$(document).ready(function() {
-  // Configure Toastr
-  toastr.options = {
-    closeButton: true,
-    progressBar: true,
-    positionClass: "toast-top-right",
-    timeOut: 3000
-  };
-
-  // Toggle password visibility
-  $('.toggle-password').click(function() {
-    const passwordInput = $('input[name="password"]');
-    const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
-    passwordInput.attr('type', type);
-    $(this).toggleClass('fa-eye fa-eye-slash');
-  });
-
-  // Form submission
-  $('#loginForm').on('submit', function(e) {
-    e.preventDefault();
-    
-    // Get form data
-    const formData = {
-      email: $('input[name="email"]').val(),
-      password: $('input[name="password"]').val(),
-      remember: $('input[name="remember"]').is(':checked')
-    };
-
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toastr.error('Please enter a valid email address');
-      return;
-    }
-
-    // Validate password length
-    if (formData.password.length < 6) {
-      toastr.error('Password must be at least 6 characters long');
-      return;
-    }
-
-    // Show loading state
-    const submitBtn = $(this).find('button[type="submit"]');
-    const originalText = submitBtn.html();
-    submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Signing in...').prop('disabled', true);
-
-    // Simulate server request
-    setTimeout(() => {
-      // Check credentials (this would be replaced with actual server validation)
-      if (formData.email === 'admin@example.com' && formData.password === 'password123') {
-        // Store user data in session storage
-        sessionStorage.setItem('user', JSON.stringify({
-          email: formData.email,
-          role: 'admin',
-          name: 'Admin User'
-        }));
-
-        // Show success message
-        toastr.success('Login successful! Redirecting...');
-
-        // Redirect to dashboard
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1000);
-      } else {
-        toastr.error('Invalid email or password');
-        submitBtn.html(originalText).prop('disabled', false);
-      }
-    }, 1500);
-  });
-
-  // Check for existing session
-  const user = sessionStorage.getItem('user');
-  if (user) {
-    window.location.href = 'dashboard.html';
-  }
-});
-</script>
+<!-- Custom JS -->
+<script src="assets/js/login.js"></script>
 </body>
 </html> 

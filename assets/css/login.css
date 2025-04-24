@@ -1,0 +1,152 @@
+/* Login Page Styles */
+.login-page {
+    background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    margin-top: 0;
+    padding-top: 50px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.login-logo {
+    font-size: 2.1rem;
+    font-weight: 300;
+    margin-bottom: 0.9rem;
+    text-align: center;
+    color: #fff;
+}
+
+.login-logo img {
+    max-width: 150px;
+    margin-bottom: 1rem;
+}
+
+.login-card-body {
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+.input-group-text {
+    background-color: transparent;
+    border-right: none;
+}
+
+.form-control {
+    border-left: none;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+    border: none;
+    padding: 10px 20px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #520dc2 100%);
+}
+
+/* Password Toggle Button */
+.toggle-password {
+    cursor: pointer;
+    color: #6c757d;
+}
+
+.toggle-password:hover {
+    color: #495057;
+}
+
+/* Remember Me Checkbox */
+.custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* Social Login Buttons */
+.social-login {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.social-login p {
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.social-login .btn {
+    margin: 0 5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    padding: 0;
+    line-height: 40px;
+    text-align: center;
+}
+
+.social-login .btn i {
+    font-size: 18px;
+}
+
+/* Forgot Password Link */
+.forgot-password {
+    color: #6c757d;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+/* Toast Notifications */
+.toast {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.toast-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.toast-error {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+/* Loading Spinner */
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    .login-box {
+        padding: 20px;
+    }
+    
+    .login-logo {
+        font-size: 1.8rem;
+    }
+    
+    .login-logo img {
+        max-width: 120px;
+    }
+} 
