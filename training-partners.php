@@ -1,23 +1,11 @@
 <?php
-// Include config file which already includes functions.php
+require_once 'inc/auth_check.php';  // Include authentication check
 require_once 'config.php';
-
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Check if user is logged in
-if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
-    // Redirect to login page
-    header('Location: index.php');
-    exit;
-}
+require_once 'inc/functions.php';
 
 // Check if user has admin privileges
-if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'Administrator') {
-    // Redirect to login page with unauthorized message
-    header('Location: index.php?error=unauthorized');
+if (!hasRole('Administrator')) {
+    header('Location: dashboard.php?error=' . urlencode('You do not have permission to access this page.'));
     exit;
 }
 
@@ -25,6 +13,25 @@ $pageTitle = 'Training Partners';
 $currentPage = 'training-partners';
 require_once 'includes/header.php';
 ?>
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fas fa-handshake"></i> Training Partners
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+                    <li class="breadcrumb-item active">Training Partners</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Main content -->
 <section class="content">
@@ -78,7 +85,7 @@ require_once 'includes/header.php';
                 <div class="modal-body">
                     <input type="hidden" name="partner_id" id="partner_id">
                     <div class="form-group">
-                        <label for="partner_name">Partner Name</label>
+                        <label for="partner_name">Partner Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="partner_name" name="partner_name" required>
                     </div>
                     <div class="form-group">
@@ -149,7 +156,7 @@ $(document).ready(function() {
         ajax: {
             url: 'inc/ajax/training_partners_ajax.php',
             type: 'POST',
-            data: { action: 'read' }
+            data: { action: 'list' }
         },
         columns: [
             { data: 'partner_name' },
@@ -164,7 +171,7 @@ $(document).ready(function() {
                 }
             },
             {
-                data: 'id',
+                data: 'partner_id',
                 render: function(data) {
                     return `
                         <button class="btn btn-sm btn-info edit-partner" data-id="${data}">
@@ -184,14 +191,12 @@ $(document).ready(function() {
         e.preventDefault();
         
         const formData = new FormData(this);
-        formData.append('action', $('#partner_id').val() ? 'update' : 'create');
+        formData.append('action', $('#partner_id').val() ? 'update' : 'add');
 
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
             type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
+            data: Object.fromEntries(formData),
             success: function(response) {
                 if (response.success) {
                     $('#partnerModal').modal('hide');
@@ -214,18 +219,21 @@ $(document).ready(function() {
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
             type: 'POST',
-            data: { action: 'get', id: id },
+            data: { 
+                action: 'get',
+                partner_id: id
+            },
             success: function(response) {
                 if (response.success) {
                     const partner = response.data;
-                    $('#partner_id').val(partner.id);
+                    $('#partner_id').val(partner.partner_id);
                     $('#partner_name').val(partner.partner_name);
                     $('#contact_person').val(partner.contact_person);
                     $('#email').val(partner.email);
                     $('#phone').val(partner.phone);
                     $('#address').val(partner.address);
                     $('#status').val(partner.status);
-                    $('#partnerModalLabel').text('Edit Partner');
+                    $('#partnerModalLabel').text('Edit Training Partner');
                     $('#partnerModal').modal('show');
                 } else {
                     toastr.error(response.message);
@@ -247,7 +255,10 @@ $(document).ready(function() {
             $.ajax({
                 url: 'inc/ajax/training_partners_ajax.php',
                 type: 'POST',
-                data: { action: 'delete', id: deleteId },
+                data: { 
+                    action: 'delete',
+                    partner_id: deleteId
+                },
                 success: function(response) {
                     if (response.success) {
                         $('#deleteModal').modal('hide');
