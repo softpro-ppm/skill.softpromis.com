@@ -17,6 +17,27 @@ function isDashboard() {
 }
 ?>
 <div class="sidebar">
+    <!-- Quick Search -->
+    <div class="sidebar-search">
+        <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" placeholder="Quick navigation..." class="search-input">
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <button class="quick-action-btn" data-action="new-report">
+            <i class="fas fa-plus"></i>
+            <span>New Report</span>
+        </button>
+        <button class="quick-action-btn" data-action="export">
+            <i class="fas fa-download"></i>
+            <span>Export</span>
+        </button>
+    </div>
+
+    <!-- Main Menu -->
     <ul class="sidebar-menu">
         <li class="menu-item <?php echo isDashboard() ? 'active' : ''; ?>">
             <a href="<?php echo $base_url; ?>index.php">
@@ -78,11 +99,32 @@ function isDashboard() {
                 <span>Results</span>
             </a>
         </li>
-        <li class="menu-item <?php echo isActiveSection('reports') ? 'active' : ''; ?>">
-            <a href="<?php echo $base_url; ?>pages/reports/dashboard.php">
-                <i class="fas fa-file-alt"></i>
+        <li class="menu-item has-submenu <?php echo isActiveSection('reports') ? 'open' : ''; ?>">
+            <a href="#" class="submenu-toggle">
+                <i class="fas fa-chart-bar"></i>
                 <span>Reports</span>
+                <i class="fas fa-chevron-right submenu-arrow"></i>
             </a>
+            <ul class="submenu">
+                <li><a href="<?php echo $base_url; ?>pages/reports/enrollment.php"><i class="fas fa-users"></i> Student Enrollment</a></li>
+                <li><a href="<?php echo $base_url; ?>pages/reports/attendance.php"><i class="fas fa-clipboard-check"></i> Attendance Report</a></li>
+                <li><a href="<?php echo $base_url; ?>pages/reports/performance.php"><i class="fas fa-chart-line"></i> Performance Report</a></li>
+                <li><a href="<?php echo $base_url; ?>pages/reports/financial.php"><i class="fas fa-dollar-sign"></i> Financial Report</a></li>
+                <li><a href="<?php echo $base_url; ?>pages/reports/training-center.php"><i class="fas fa-school"></i> Training Center Report</a></li>
+                <li><a href="<?php echo $base_url; ?>pages/reports/student-progress.php"><i class="fas fa-graduation-cap"></i> Student Progress</a></li>
+                <li><a href="<?php echo $base_url; ?>pages/reports/training-partner.php"><i class="fas fa-handshake"></i> Training Partner Report</a></li>
+                <li><a href="<?php echo $base_url; ?>pages/reports/program.php"><i class="fas fa-book"></i> Program Effectiveness</a></li>
+                <li><a href="<?php echo $base_url; ?>pages/reports/financial-analysis.php"><i class="fas fa-chart-pie"></i> Financial Analysis</a></li>
+            </ul>
         </li>
     </ul>
-</div> 
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+        <div class="collapse-sidebar">
+            <button class="collapse-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+    </div>
+</div>
