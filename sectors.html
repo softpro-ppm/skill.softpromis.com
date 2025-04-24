@@ -13,6 +13,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.0.0/dist/select2-bootstrap4.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -145,6 +148,18 @@
                   <p>Fee Management</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="assessments.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Assessments</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="certificates.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Certificates</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -197,13 +212,6 @@
           <div class="col-sm-6">
             <h1 class="m-0">Sectors</h1>
           </div>
-          <div class="col-sm-6">
-            <div class="float-sm-right">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSectorModal">
-                <i class="fas fa-plus"></i> Add New Sector
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -212,15 +220,25 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <!-- Sectors List -->
         <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Sectors List</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSectorModal">
+                <i class="fas fa-plus"></i> Add New Sector
+              </button>
+            </div>
+          </div>
           <div class="card-body">
             <table id="sectorsTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th>Sector ID</th>
                   <th>Name</th>
                   <th>Description</th>
-                  <th>Associated Schemes</th>
+                  <th>Total Courses</th>
+                  <th>Active Students</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -230,39 +248,36 @@
                   <td>SEC001</td>
                   <td>Information Technology</td>
                   <td>IT and Software Development</td>
-                  <td>
-                    <span class="badge badge-primary">PMKVY 4.0</span>
-                    <span class="badge badge-primary">DDU-GKY</span>
-                  </td>
+                  <td>5</td>
+                  <td>150</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewSectorModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSectorModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editSectorModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSectorModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSectorModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSectorModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
                 </tr>
                 <tr>
                   <td>SEC002</td>
-                  <td>Retail</td>
-                  <td>Retail Management and Sales</td>
-                  <td>
-                    <span class="badge badge-primary">PMKVY 4.0</span>
-                  </td>
+                  <td>Digital Marketing</td>
+                  <td>Online Marketing and SEO</td>
+                  <td>3</td>
+                  <td>75</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewSectorModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSectorModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editSectorModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSectorModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSectorModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSectorModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -278,71 +293,79 @@
   <!-- /.content-wrapper -->
 
   <!-- Add Sector Modal -->
-  <div class="modal fade" id="addSectorModal" tabindex="-1" role="dialog" aria-labelledby="addSectorModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+  <div class="modal fade" id="addSectorModal">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addSectorModalLabel">Add New Sector</h5>
+          <h4 class="modal-title">Add New Sector</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <form id="addSectorForm">
-            <div class="form-group">
-              <label for="sectorName">Sector Name</label>
-              <input type="text" class="form-control" id="sectorName" required>
-            </div>
-            <div class="form-group">
-              <label for="description">Description</label>
-              <textarea class="form-control" id="description" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-              <label>Associated Schemes</label>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="scheme1">
-                    <label class="custom-control-label" for="scheme1">PMKVY 4.0</label>
-                  </div>
+        <form>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="sectorName">Sector Name</label>
+                  <input type="text" class="form-control" id="sectorName" placeholder="Enter sector name" required>
                 </div>
-                <div class="col-md-4">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="scheme2">
-                    <label class="custom-control-label" for="scheme2">DDU-GKY</label>
-                  </div>
+                <div class="form-group">
+                  <label for="sectorCode">Sector Code</label>
+                  <input type="text" class="form-control" id="sectorCode" placeholder="Enter sector code" required>
                 </div>
-                <div class="col-md-4">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="scheme3">
-                    <label class="custom-control-label" for="scheme3">NSDC</label>
+                <div class="form-group">
+                  <label for="sectorType">Sector Type</label>
+                  <select class="form-control select2" id="sectorType" required>
+                    <option value="">Select Type</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Non-Technical">Non-Technical</option>
+                    <option value="Vocational">Vocational</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea class="form-control" id="description" rows="3" placeholder="Enter sector description" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="jobRoles">Job Roles</label>
+                  <textarea class="form-control" id="jobRoles" rows="3" placeholder="Enter potential job roles" required></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Documents</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="sectorDoc">
+                    <label class="custom-file-label" for="sectorDoc">Sector Document</label>
+                  </div>
+                  <div class="custom-file mt-2">
+                    <input type="file" class="custom-file-input" id="curriculumDoc">
+                    <label class="custom-file-label" for="curriculumDoc">Curriculum Document</label>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="form-group">
-              <label for="status">Status</label>
-              <select class="form-control" id="status" required>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Sector</button>
-        </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save Sector</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
   <!-- View Sector Modal -->
-  <div class="modal fade" id="viewSectorModal" tabindex="-1" role="dialog" aria-labelledby="viewSectorModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+  <div class="modal fade" id="viewSectorModal">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="viewSectorModalLabel">View Sector</h5>
+          <h4 class="modal-title">View Sector Details</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -350,150 +373,173 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Sector Name:</strong> <span id="viewSectorName"></span></p>
-              <p><strong>Description:</strong> <span id="viewDescription"></span></p>
-              <p><strong>Status:</strong> <span id="viewStatus"></span></p>
+              <div class="form-group">
+                <label>Sector ID</label>
+                <p>SEC001</p>
+              </div>
+              <div class="form-group">
+                <label>Sector Name</label>
+                <p>Information Technology</p>
+              </div>
+              <div class="form-group">
+                <label>Sector Type</label>
+                <p>Technical</p>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <p>IT and Software Development</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Job Roles</label>
+                <p>Software Developer, Web Developer, Database Administrator</p>
+              </div>
+              <div class="form-group">
+                <label>Total Courses</label>
+                <p>5</p>
+              </div>
+              <div class="form-group">
+                <label>Active Students</label>
+                <p>150</p>
+              </div>
+              <div class="form-group">
+                <label>Status</label>
+                <p><span class="badge badge-success">Active</span></p>
+              </div>
             </div>
           </div>
-          <div class="row mt-4">
+          <div class="row">
             <div class="col-md-12">
-              <h6>Associated Schemes</h6>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Scheme Name</th>
-                    <th>Type</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>PMKVY 4.0</td>
-                    <td>Government</td>
-                    <td><span class="badge badge-success">Active</span></td>
-                  </tr>
-                  <tr>
-                    <td>DDU-GKY</td>
-                    <td>Government</td>
-                    <td><span class="badge badge-success">Active</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="row mt-4">
-            <div class="col-md-12">
-              <h6>Associated Courses</h6>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Course Code</th>
-                    <th>Course Name</th>
-                    <th>Duration</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>WD001</td>
-                    <td>Web Development</td>
-                    <td>3 months</td>
-                    <td><span class="badge badge-success">Active</span></td>
-                  </tr>
-                  <tr>
-                    <td>DM001</td>
-                    <td>Digital Marketing</td>
-                    <td>2 months</td>
-                    <td><span class="badge badge-success">Active</span></td>
-                  </tr>
-                </tbody>
-              </table>
+              <h5>Associated Courses</h5>
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Course ID</th>
+                      <th>Name</th>
+                      <th>Duration</th>
+                      <th>Fee</th>
+                      <th>Students</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>C001</td>
+                      <td>Web Development</td>
+                      <td>3 months</td>
+                      <td>₹15,000</td>
+                      <td>50</td>
+                      <td><span class="badge badge-success">Active</span></td>
+                    </tr>
+                    <tr>
+                      <td>C002</td>
+                      <td>Mobile App Development</td>
+                      <td>4 months</td>
+                      <td>₹20,000</td>
+                      <td>35</td>
+                      <td><span class="badge badge-success">Active</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Edit Sector Modal -->
-  <div class="modal fade" id="editSectorModal" tabindex="-1" role="dialog" aria-labelledby="editSectorModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+  <div class="modal fade" id="editSectorModal">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editSectorModalLabel">Edit Sector</h5>
+          <h4 class="modal-title">Edit Sector</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <form id="editSectorForm">
-            <div class="form-group">
-              <label for="editSectorName">Sector Name</label>
-              <input type="text" class="form-control" id="editSectorName" required>
-            </div>
-            <div class="form-group">
-              <label for="editDescription">Description</label>
-              <textarea class="form-control" id="editDescription" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-              <label>Associated Schemes</label>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="editScheme1">
-                    <label class="custom-control-label" for="editScheme1">PMKVY 4.0</label>
-                  </div>
+        <form>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editSectorName">Sector Name</label>
+                  <input type="text" class="form-control" id="editSectorName" value="Information Technology" required>
                 </div>
-                <div class="col-md-4">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="editScheme2">
-                    <label class="custom-control-label" for="editScheme2">DDU-GKY</label>
-                  </div>
+                <div class="form-group">
+                  <label for="editSectorCode">Sector Code</label>
+                  <input type="text" class="form-control" id="editSectorCode" value="SEC001" required>
                 </div>
-                <div class="col-md-4">
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="editScheme3">
-                    <label class="custom-control-label" for="editScheme3">NSDC</label>
+                <div class="form-group">
+                  <label for="editSectorType">Sector Type</label>
+                  <select class="form-control select2" id="editSectorType" required>
+                    <option value="Technical" selected>Technical</option>
+                    <option value="Non-Technical">Non-Technical</option>
+                    <option value="Vocational">Vocational</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editDescription">Description</label>
+                  <textarea class="form-control" id="editDescription" rows="3" required>IT and Software Development</textarea>
+                </div>
+                <div class="form-group">
+                  <label for="editJobRoles">Job Roles</label>
+                  <textarea class="form-control" id="editJobRoles" rows="3" required>Software Developer, Web Developer, Database Administrator</textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Documents</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="editSectorDoc">
+                    <label class="custom-file-label" for="editSectorDoc">Sector Document</label>
+                  </div>
+                  <div class="custom-file mt-2">
+                    <input type="file" class="custom-file-input" id="editCurriculumDoc">
+                    <label class="custom-file-label" for="editCurriculumDoc">Curriculum Document</label>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="form-group">
-              <label for="editStatus">Status</label>
-              <select class="form-control" id="editStatus" required>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Changes</button>
-        </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Update Sector</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
   <!-- Delete Sector Modal -->
-  <div class="modal fade" id="deleteSectorModal" tabindex="-1" role="dialog" aria-labelledby="deleteSectorModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade" id="deleteSectorModal">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteSectorModalLabel">Delete Sector</h5>
+          <h4 class="modal-title">Delete Sector</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <p>Are you sure you want to delete this sector? This action cannot be undone.</p>
+          <p><strong>Sector:</strong> Information Technology</p>
+          <p><strong>Associated Courses:</strong> 5</p>
+          <p><strong>Active Students:</strong> 150</p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete</button>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger">Delete Sector</button>
         </div>
       </div>
     </div>
@@ -515,9 +561,14 @@
 <!-- DataTables -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+<!-- Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
 <script>
   $(function () {
+    // Initialize DataTable
     $('#sectorsTable').DataTable({
       "paging": true,
       "lengthChange": true,
@@ -525,8 +576,16 @@
       "ordering": true,
       "info": true,
       "autoWidth": false,
-      "responsive": true,
+      "responsive": true
     });
+
+    // Initialize Select2
+    $('.select2').select2({
+      theme: 'bootstrap4'
+    });
+
+    // Initialize custom file input
+    bsCustomFileInput.init();
   });
 </script>
 </body>
