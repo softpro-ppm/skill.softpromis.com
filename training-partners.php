@@ -8,18 +8,18 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Check if user is logged in
-// if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
-//     // Redirect to login page
-//     header('Location: index.php');
-//     exit;
-// }
+if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
+    // Redirect to login page
+    header('Location: index.php');
+    exit;
+}
 
 // Check if user has admin privileges
-// if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'Administrator') {
-//     // Redirect to login page with unauthorized message
-//     header('Location: index.php?error=unauthorized');
-//     exit;
-// }
+if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'Administrator') {
+    // Redirect to login page with unauthorized message
+    header('Location: index.php?error=unauthorized');
+    exit;
+}
 
 $pageTitle = 'Training Partners';
 $currentPage = 'training-partners';
