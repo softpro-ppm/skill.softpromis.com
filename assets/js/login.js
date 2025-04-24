@@ -3,20 +3,20 @@ function handleLogin(event) {
     event.preventDefault();
 
     // Get form data
-    const email = document.getElementById('email').value;
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const rememberMe = document.getElementById('remember').checked;
 
     // Validate form data
     if (!email || !password) {
-        toastr.error('Please fill in all required fields');
+        showError('Please fill in all required fields');
         return;
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        toastr.error('Please enter a valid email address');
+        showError('Please enter a valid email address');
         return;
     }
 
@@ -26,95 +26,117 @@ function handleLogin(event) {
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
     submitBtn.disabled = true;
 
-    // Simulate server request
-    setTimeout(() => {
-        // This would be replaced with actual API call
-        const mockUsers = [
-            {
-                email: 'admin@example.com',
-                password: 'Admin@123',
-                role: 'Administrator',
-                name: 'Admin User'
-            },
-            {
-                email: 'manager@example.com',
-                password: 'Manager@123',
-                role: 'Center Manager',
-                name: 'Manager User'
-            },
-            {
-                email: 'trainer@example.com',
-                password: 'Trainer@123',
-                role: 'Trainer',
-                name: 'Trainer User'
+    // Make AJAX request to login endpoint
+    $.ajax({
+        url: 'login_ajax.php',
+        type: 'POST',
+        data: {
+            email: email,
+            password: password,
+            remember: rememberMe
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                // Store user data
+                storeUserData(response.user, rememberMe);
+                
+                // Show success message
+                showSuccess('Login successful! Redirecting...');
+
+                // Redirect based on role
+                setTimeout(() => {
+                    redirectBasedOnRole(response.user.role);
+                }, 1000);
+            } else {
+                showError(response.message || 'Invalid email or password');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
-        ];
-
-        const user = mockUsers.find(u => u.email === email && u.password === password);
-
-        if (user) {
-            // Store user data in session storage
-            sessionStorage.setItem('user', JSON.stringify({
-                email: user.email,
-                role: user.role,
-                name: user.name
-            }));
-
-            // If remember me is checked, store in localStorage
-            if (rememberMe) {
-                localStorage.setItem('user', JSON.stringify({
-                    email: user.email,
-                    role: user.role,
-                    name: user.name
-                }));
-            }
-
-            // Show success message
-            toastr.success('Login successful! Redirecting...');
-
-            // Redirect based on role
-            setTimeout(() => {
-                switch (user.role) {
-                    case 'Administrator':
-                        window.location.href = 'dashboard.php';
-                        break;
-                    case 'Center Manager':
-                        window.location.href = 'training-centers.php';
-                        break;
-                    case 'Trainer':
-                        window.location.href = 'courses.php';
-                        break;
-                    default:
-                        window.location.href = 'dashboard.php';
-                }
-            }, 1000);
-        } else {
-            toastr.error('Invalid email or password');
+        },
+        error: function(xhr, status, error) {
+            showError('An error occurred. Please try again later.');
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
+            console.error('Login error:', error);
         }
-    }, 1500);
+    });
+}
+
+// Store user data in storage
+function storeUserData(user, rememberMe) {
+    const userData = {
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        token: user.token // If using JWT or other token-based auth
+    };
+
+    // Store in session storage
+    sessionStorage.setItem('user', JSON.stringify(userData));
+
+    // If remember me is checked, store in localStorage
+    if (rememberMe) {
+        localStorage.setItem('user', JSON.stringify(userData));
+    }
+}
+
+// Redirect based on user role
+function redirectBasedOnRole(role) {
+    switch (role) {
+        case 'Administrator':
+            window.location.href = 'dashboard.php';
+            break;
+        case 'Center Manager':
+            window.location.href = 'training-centers.php';
+            break;
+        case 'Trainer':
+            window.location.href = 'courses.php';
+            break;
+        default:
+            window.location.href = 'dashboard.php';
+    }
 }
 
 // Check if user is already logged in
 function checkAuth() {
     const user = JSON.parse(sessionStorage.getItem('user') || localStorage.getItem('user'));
     if (user) {
-        // Redirect based on role
-        switch (user.role) {
-            case 'Administrator':
-                window.location.href = 'dashboard.php';
-                break;
-            case 'Center Manager':
-                window.location.href = 'training-centers.php';
-                break;
-            case 'Trainer':
-                window.location.href = 'courses.php';
-                break;
-            default:
-                window.location.href = 'dashboard.php';
-        }
+        // Verify token if using token-based auth
+        verifyToken(user.token).then(isValid => {
+            if (isValid) {
+                redirectBasedOnRole(user.role);
+            } else {
+                clearUserData();
+            }
+        }).catch(() => {
+            clearUserData();
+        });
     }
+}
+
+// Verify token (if using token-based auth)
+function verifyToken(token) {
+    return new Promise((resolve) => {
+        $.ajax({
+            url: 'verify_token.php',
+            type: 'POST',
+            data: { token: token },
+            dataType: 'json',
+            success: function(response) {
+                resolve(response.valid);
+            },
+            error: function() {
+                resolve(false);
+            }
+        });
+    });
+}
+
+// Clear user data from storage
+function clearUserData() {
+    sessionStorage.removeItem('user');
+    localStorage.removeItem('user');
 }
 
 // Toggle password visibility
@@ -131,6 +153,16 @@ function togglePassword() {
         toggleIcon.classList.remove('fa-eye-slash');
         toggleIcon.classList.add('fa-eye');
     }
+}
+
+// Show error message
+function showError(message) {
+    toastr.error(message);
+}
+
+// Show success message
+function showSuccess(message) {
+    toastr.success(message);
 }
 
 // Initialize login page
@@ -155,6 +187,15 @@ document.addEventListener('DOMContentLoaded', function() {
         closeButton: true,
         progressBar: true,
         positionClass: "toast-top-right",
-        timeOut: 3000
+        timeOut: 3000,
+        preventDuplicates: true
     };
+
+    // Add enter key support for form submission
+    document.getElementById('password').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleLogin(e);
+        }
+    });
 }); 
