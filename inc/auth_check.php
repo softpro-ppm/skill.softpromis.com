@@ -14,13 +14,13 @@ function hasRole($requiredRole) {
     return isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === $requiredRole;
 }
 
-// Check if user is logged in, if not redirect to logout
+// Check if user is logged in, if not redirect to login
 if (!isLoggedIn()) {
     // Store the current page URL in session for redirect after login
     $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
     
-    // Redirect to logout
-    header('Location: /logout.php');
+    // Redirect to login
+    header('Location: /login.php');
     exit;
 }
 ?> 

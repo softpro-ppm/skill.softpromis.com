@@ -23,26 +23,24 @@ if (session_status() === PHP_SESSION_NONE) {
 // Set timezone
 date_default_timezone_set(DEFAULT_TIMEZONE);
 
-// Database connection function - only define if it doesn't exist
-if (!function_exists('getDBConnection')) {
-    function getDBConnection() {
-        try {
-            static $conn = null;
-            if ($conn !== null) {
-                return $conn;
-            }
-            
-            $conn = new PDO(
-                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
-                DB_USER,
-                DB_PASS,
-                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'")
-            );
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// Database connection function
+function getDBConnection() {
+    try {
+        static $conn = null;
+        if ($conn !== null) {
             return $conn;
-        } catch(PDOException $e) {
-            die("Connection failed: " . $e->getMessage());
         }
+        
+        $conn = new PDO(
+            "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
+            DB_USER,
+            DB_PASS,
+            array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'")
+        );
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $conn;
+    } catch(PDOException $e) {
+        die("Connection failed: " . $e->getMessage());
     }
 }
 
