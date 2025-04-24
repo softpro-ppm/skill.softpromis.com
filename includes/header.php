@@ -5,7 +5,7 @@
 // }
 
 // Define BASEPATH constant
-define('BASEPATH', true);
+//define('BASEPATH', true);
 
 require_once 'config.php';
 
