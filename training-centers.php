@@ -308,7 +308,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form>
+        <form id="addCenterForm">
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
@@ -643,5 +643,6 @@
     bsCustomFileInput.init();
   });
 </script>
+<script src=\"assets/js/training-centers.js\"></script>
 </body>
 </html> 

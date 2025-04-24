@@ -176,6 +176,14 @@ try {
             exit;
             break;
 
+        case 'list_all':
+            // Fetch only active partners for dropdowns
+            $stmt = $pdo->prepare("SELECT id, name FROM training_partners WHERE status = 'active' ORDER BY name ASC");
+            $stmt->execute();
+            $partners = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Partners list retrieved successfully', ['partners' => $partners]);
+            break;
+
         default:
             echo json_encode(['success' => false, 'message' => 'Invalid action']);
             exit;
