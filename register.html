@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Softpro Skill Solutions - Registration</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.0.0/dist/select2-bootstrap4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .login-page {
+      background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+    }
+    .login-box {
+      margin-top: 0;
+      padding-top: 50px;
+      max-width: 600px;
+    }
+    .login-logo {
+      font-size: 2.1rem;
+      font-weight: 300;
+      margin-bottom: 0.9rem;
+      text-align: center;
+      color: #fff;
+    }
+    .login-logo img {
+      max-width: 150px;
+      margin-bottom: 1rem;
+    }
+    .login-card-body {
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    .input-group-text {
+      background-color: transparent;
+      border-right: none;
+    }
+    .form-control {
+      border-left: none;
+    }
+    .form-control:focus {
+      box-shadow: none;
+      border-color: #ced4da;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+      border: none;
+      padding: 10px 20px;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #0056b3 0%, #520dc2 100%);
+    }
+    .password-strength {
+      height: 5px;
+      margin-top: 5px;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .password-strength.weak {
+      background-color: #dc3545;
+      width: 25%;
+    }
+    .password-strength.medium {
+      background-color: #ffc107;
+      width: 50%;
+    }
+    .password-strength.strong {
+      background-color: #28a745;
+      width: 75%;
+    }
+    .password-strength.very-strong {
+      background-color: #20c997;
+      width: 100%;
+    }
+    .password-requirements {
+      font-size: 0.8rem;
+      color: #6c757d;
+      margin-top: 5px;
+    }
+    .password-requirements ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+    .password-requirements li {
+      margin-bottom: 2px;
+    }
+    .password-requirements li.valid {
+      color: #28a745;
+    }
+    .password-requirements li.valid::before {
+      content: '✓';
+      margin-right: 5px;
+    }
+    .password-requirements li.invalid {
+      color: #dc3545;
+    }
+    .password-requirements li.invalid::before {
+      content: '×';
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <img src="https://via.placeholder.com/150" alt="Logo">
+    <br>
+    <b>Softpro</b> Skill Solutions
+  </div>
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Register a new membership</p>
+
+      <form id="registrationForm">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-user"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" placeholder="First Name" name="firstName" required>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-user"></i>
+                  </span>
+                </div>
+                <input type="text" class="form-control" placeholder="Last Name" name="lastName" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-envelope"></i>
+              </span>
+            </div>
+            <input type="email" class="form-control" placeholder="Email" name="email" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-phone"></i>
+              </span>
+            </div>
+            <input type="tel" class="form-control" placeholder="Phone Number" name="phone" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-building"></i>
+              </span>
+            </div>
+            <select class="form-control select2" name="trainingCenter" required>
+              <option value="">Select Training Center</option>
+              <option value="1">Center 1</option>
+              <option value="2">Center 2</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-user-tag"></i>
+              </span>
+            </div>
+            <select class="form-control select2" name="role" required>
+              <option value="">Select Role</option>
+              <option value="admin">Administrator</option>
+              <option value="manager">Center Manager</option>
+              <option value="trainer">Trainer</option>
+              <option value="receptionist">Receptionist</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-lock"></i>
+              </span>
+            </div>
+            <input type="password" class="form-control" placeholder="Password" name="password" required>
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fas fa-eye toggle-password"></i>
+              </span>
+            </div>
+          </div>
+          <div class="password-strength"></div>
+          <div class="password-requirements">
+            <ul>
+              <li class="invalid" data-requirement="length">At least 8 characters long</li>
+              <li class="invalid" data-requirement="uppercase">Contains uppercase letter</li>
+              <li class="invalid" data-requirement="lowercase">Contains lowercase letter</li>
+              <li class="invalid" data-requirement="number">Contains number</li>
+              <li class="invalid" data-requirement="special">Contains special character</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fas fa-lock"></i>
+              </span>
+            </div>
+            <input type="password" class="form-control" placeholder="Confirm Password" name="confirmPassword" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+          </div>
+        </div>
+      </form>
+
+      <p class="mt-3 mb-1">
+        <a href="index.html">I already have a membership</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Required Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  // Configure Toastr
+  toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-top-right",
+    timeOut: 3000
+  };
+
+  // Initialize Select2
+  $('.select2').select2({
+    theme: 'bootstrap4'
+  });
+
+  // Toggle password visibility
+  $('.toggle-password').click(function() {
+    const passwordInput = $('input[name="password"]');
+    const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+    passwordInput.attr('type', type);
+    $(this).toggleClass('fa-eye fa-eye-slash');
+  });
+
+  // Password strength checker
+  $('input[name="password"]').on('input', function() {
+    const password = $(this).val();
+    const strengthBar = $('.password-strength');
+    const requirements = $('.password-requirements li');
+
+    // Reset requirements
+    requirements.removeClass('valid invalid');
+
+    // Check password requirements
+    const checks = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /[0-9]/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    };
+
+    // Update requirement indicators
+    Object.keys(checks).forEach(requirement => {
+      const element = $(`[data-requirement="${requirement}"]`);
+      if (checks[requirement]) {
+        element.addClass('valid').removeClass('invalid');
+      } else {
+        element.addClass('invalid').removeClass('valid');
+      }
+    });
+
+    // Calculate strength
+    const strength = Object.values(checks).filter(Boolean).length;
+    strengthBar.removeClass('weak medium strong very-strong');
+    
+    if (strength <= 2) {
+      strengthBar.addClass('weak');
+    } else if (strength <= 3) {
+      strengthBar.addClass('medium');
+    } else if (strength <= 4) {
+      strengthBar.addClass('strong');
+    } else {
+      strengthBar.addClass('very-strong');
+    }
+  });
+
+  // Form submission
+  $('#registrationForm').on('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form data
+    const formData = {
+      firstName: $('input[name="firstName"]').val(),
+      lastName: $('input[name="lastName"]').val(),
+      email: $('input[name="email"]').val(),
+      phone: $('input[name="phone"]').val(),
+      trainingCenter: $('select[name="trainingCenter"]').val(),
+      role: $('select[name="role"]').val(),
+      password: $('input[name="password"]').val(),
+      confirmPassword: $('input[name="confirmPassword"]').val()
+    };
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toastr.error('Please enter a valid email address');
+      return;
+    }
+
+    // Validate phone format
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(formData.phone)) {
+      toastr.error('Please enter a valid 10-digit phone number');
+      return;
+    }
+
+    // Validate password match
+    if (formData.password !== formData.confirmPassword) {
+      toastr.error('Passwords do not match');
+      return;
+    }
+
+    // Validate password strength
+    const checks = {
+      length: formData.password.length >= 8,
+      uppercase: /[A-Z]/.test(formData.password),
+      lowercase: /[a-z]/.test(formData.password),
+      number: /[0-9]/.test(formData.password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
+    };
+
+    if (Object.values(checks).some(check => !check)) {
+      toastr.error('Please meet all password requirements');
+      return;
+    }
+
+    // Show loading state
+    const submitBtn = $(this).find('button[type="submit"]');
+    const originalText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Registering...').prop('disabled', true);
+
+    // Simulate server request
+    setTimeout(() => {
+      // Show success message
+      Swal.fire({
+        icon: 'success',
+        title: 'Registration Successful!',
+        text: 'Please check your email for verification instructions.',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        window.location.href = 'index.html';
+      });
+    }, 1500);
+  });
+});
+</script>
+</body>
+</html> 
