@@ -54,17 +54,6 @@ function redirect($url) {
     exit();
 }
 
-// Authentication helpers
-function isLoggedIn() {
-    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
-}
-
-function checkPermission($required_role) {
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== $required_role) {
-        redirect('login.php');
-    }
-}
-
 function generateRandomString($length = 10) {
     return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 
         ceil($length/strlen($x)))), 1, $length);

@@ -6,12 +6,12 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Function to check if user is logged in
 function isLoggedIn() {
-    return isset($_SESSION['user']) && !empty($_SESSION['user']);
+    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
 
 // Function to check user role
 function hasRole($requiredRole) {
-    return isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === $requiredRole;
+    return isset($_SESSION['role']) && $_SESSION['role'] === $requiredRole;
 }
 
 // Check if user is logged in, if not redirect to login
