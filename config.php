@@ -7,7 +7,7 @@ define('DB_NAME', 'u820431346_skill');
 
 // Application configuration
 define('SITE_NAME', 'Softpro Skill Solutions');
-define('SITE_URL', 'https://skill.softpromis.com/');
+define('SITE_URL', 'https://skill.softpromis.com');
 define('UPLOAD_PATH', __DIR__ . '/uploads');
 define('DEFAULT_TIMEZONE', 'Asia/Kolkata');
 
