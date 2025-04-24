@@ -21,21 +21,8 @@ session_start();
 // Set timezone
 date_default_timezone_set(DEFAULT_TIMEZONE);
 
-// Database connection
-function getDBConnection() {
-    try {
-        $conn = new PDO(
-            "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
-            DB_USER,
-            DB_PASS,
-            array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'")
-        );
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $conn;
-    } catch(PDOException $e) {
-        die("Connection failed: " . $e->getMessage());
-    }
-}
+// Include functions file
+require_once __DIR__ . '/inc/functions.php';
 
 // Helper functions
 function clean($string) {
@@ -47,13 +34,19 @@ function redirect($url) {
     exit();
 }
 
-function isLoggedIn() {
-    return isset($_SESSION['user_id']);
+// Only define if it doesn't exist
+if (!function_exists('isLoggedIn')) {
+    function isLoggedIn() {
+        return isset($_SESSION['user_id']);
+    }
 }
 
-function checkPermission($required_role) {
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== $required_role) {
-        redirect('login.php');
+// Only define if it doesn't exist
+if (!function_exists('checkPermission')) {
+    function checkPermission($required_role) {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== $required_role) {
+            redirect('login.php');
+        }
     }
 }
 

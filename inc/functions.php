@@ -29,19 +29,41 @@ function checkPermission($requiredRole) {
 }
 
 // Database functions
-function getDBConnection() {
-    try {
-        $pdo = new PDO(
-            "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
-            DB_USER,
-            DB_PASS,
-            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-        );
-        return $pdo;
-    } catch (PDOException $e) {
-        error_log("Database connection error: " . $e->getMessage());
-        echo json_encode(['success' => false, 'message' => 'Database connection error']);
-        exit;
+if (!function_exists('getDBConnection')) {
+    function getDBConnection() {
+        static $pdo = null;
+        
+        if ($pdo !== null) {
+            return $pdo; // Return existing connection if available
+        }
+        
+        try {
+            $pdo = new PDO(
+                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8",
+                DB_USER,
+                DB_PASS,
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false
+                ]
+            );
+            return $pdo;
+        } catch (PDOException $e) {
+            // Log the error
+            error_log("Database connection error: " . $e->getMessage());
+            
+            // If this is an AJAX request
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+                strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+                echo json_encode(['success' => false, 'message' => 'Database connection error']);
+                exit;
+            }
+            
+            // Regular page request
+            echo "Database connection error. Please try again later or contact support.";
+            exit;
+        }
     }
 }
 
