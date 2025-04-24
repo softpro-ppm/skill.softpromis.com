@@ -80,7 +80,7 @@ $user = $_SESSION['user'];
                         <i class="fas fa-user mr-2"></i> Profile
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <a class="dropdown-item" href="logout.php" data-toggle="modal" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt mr-2"></i> Logout
                     </a>
                 </div>

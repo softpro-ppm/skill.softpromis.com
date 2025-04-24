@@ -435,6 +435,290 @@ try {
             ]);
             break;
 
+        case 'bulk_upload_assessments':
+            if (!isset($_FILES['files'])) {
+                sendJSONResponse(false, 'No files uploaded');
+                break;
+            }
+
+            $files = $_FILES['files'];
+            $format = sanitizeInput($_POST['format'] ?? 'csv');
+
+            $total_success = 0;
+            $total_failed = 0;
+            $file_results = [];
+
+            foreach ($files['tmp_name'] as $key => $tmp_name) {
+                if ($files['error'][$key] !== UPLOAD_ERR_OK) {
+                    $file_results[] = [
+                        'filename' => $files['name'][$key],
+                        'success' => false,
+                        'message' => 'File upload failed'
+                    ];
+                    continue;
+                }
+
+                $file = [
+                    'name' => $files['name'][$key],
+                    'type' => $files['type'][$key],
+                    'tmp_name' => $tmp_name,
+                    'error' => $files['error'][$key],
+                    'size' => $files['size'][$key]
+                ];
+
+                try {
+                    $data = importData($file, $format);
+                    if (!$data) {
+                        throw new Exception('Failed to import data');
+                    }
+
+                    $required_headers = ['batch_id', 'title', 'assessment_date', 'duration', 'total_marks', 'passing_marks'];
+                    $headers = array_keys($data[0]);
+                    $missing_headers = array_diff($required_headers, $headers);
+
+                    if (!empty($missing_headers)) {
+                        throw new Exception('Missing required headers: ' . implode(', ', $missing_headers));
+                    }
+
+                    $success = 0;
+                    $failed = 0;
+                    $errors = [];
+
+                    $pdo->beginTransaction();
+
+                    try {
+                        $stmt = $pdo->prepare("
+                            INSERT INTO assessments (batch_id, title, assessment_date, duration, total_marks, passing_marks, status, created_at)
+                            VALUES (?, ?, ?, ?, ?, ?, 'scheduled', NOW())
+                        ");
+
+                        foreach ($data as $row) {
+                            try {
+                                // Validate assessment date
+                                $assessment_date = strtotime($row['assessment_date']);
+                                if (!$assessment_date) {
+                                    throw new Exception('Invalid assessment date');
+                                }
+
+                                // Validate duration
+                                if (!is_numeric($row['duration']) || $row['duration'] <= 0) {
+                                    throw new Exception('Invalid duration');
+                                }
+
+                                // Validate marks
+                                if (!is_numeric($row['total_marks']) || $row['total_marks'] <= 0) {
+                                    throw new Exception('Invalid total marks');
+                                }
+                                if (!is_numeric($row['passing_marks']) || $row['passing_marks'] <= 0) {
+                                    throw new Exception('Invalid passing marks');
+                                }
+                                if ($row['passing_marks'] > $row['total_marks']) {
+                                    throw new Exception('Passing marks cannot be greater than total marks');
+                                }
+
+                                // Validate batch exists
+                                $check = $pdo->prepare("SELECT id FROM batches WHERE id = ?");
+                                $check->execute([$row['batch_id']]);
+                                if (!$check->fetch()) {
+                                    throw new Exception('Invalid batch ID');
+                                }
+
+                                $stmt->execute([
+                                    $row['batch_id'],
+                                    $row['title'],
+                                    date('Y-m-d', $assessment_date),
+                                    $row['duration'],
+                                    $row['total_marks'],
+                                    $row['passing_marks']
+                                ]);
+
+                                $success++;
+                            } catch (Exception $e) {
+                                $failed++;
+                                $errors[] = "Row {$row['title']}: " . $e->getMessage();
+                            }
+                        }
+
+                        $pdo->commit();
+
+                        $total_success += $success;
+                        $total_failed += $failed;
+
+                        $file_results[] = [
+                            'filename' => $files['name'][$key],
+                            'success' => true,
+                            'success_count' => $success,
+                            'failed_count' => $failed,
+                            'errors' => $errors
+                        ];
+                    } catch (Exception $e) {
+                        $pdo->rollBack();
+                        throw $e;
+                    }
+                } catch (Exception $e) {
+                    $file_results[] = [
+                        'filename' => $files['name'][$key],
+                        'success' => false,
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            logAudit($_SESSION['user']['id'], 'bulk_upload_assessments', [
+                'format' => $format,
+                'total_success' => $total_success,
+                'total_failed' => $total_failed,
+                'file_results' => $file_results
+            ]);
+
+            sendJSONResponse(true, "Bulk upload completed. Total Success: $total_success, Total Failed: $total_failed", [
+                'total_success' => $total_success,
+                'total_failed' => $total_failed,
+                'file_results' => $file_results
+            ]);
+            break;
+
+        case 'bulk_upload_certificates':
+            if (!isset($_FILES['files'])) {
+                sendJSONResponse(false, 'No files uploaded');
+                break;
+            }
+
+            $files = $_FILES['files'];
+            $format = sanitizeInput($_POST['format'] ?? 'csv');
+
+            $total_success = 0;
+            $total_failed = 0;
+            $file_results = [];
+
+            foreach ($files['tmp_name'] as $key => $tmp_name) {
+                if ($files['error'][$key] !== UPLOAD_ERR_OK) {
+                    $file_results[] = [
+                        'filename' => $files['name'][$key],
+                        'success' => false,
+                        'message' => 'File upload failed'
+                    ];
+                    continue;
+                }
+
+                $file = [
+                    'name' => $files['name'][$key],
+                    'type' => $files['type'][$key],
+                    'tmp_name' => $tmp_name,
+                    'error' => $files['error'][$key],
+                    'size' => $files['size'][$key]
+                ];
+
+                try {
+                    $data = importData($file, $format);
+                    if (!$data) {
+                        throw new Exception('Failed to import data');
+                    }
+
+                    $required_headers = ['student_id', 'batch_id', 'certificate_number', 'issue_date', 'valid_until'];
+                    $headers = array_keys($data[0]);
+                    $missing_headers = array_diff($required_headers, $headers);
+
+                    if (!empty($missing_headers)) {
+                        throw new Exception('Missing required headers: ' . implode(', ', $missing_headers));
+                    }
+
+                    $success = 0;
+                    $failed = 0;
+                    $errors = [];
+
+                    $pdo->beginTransaction();
+
+                    try {
+                        $stmt = $pdo->prepare("
+                            INSERT INTO certificates (student_id, batch_id, certificate_number, issue_date, valid_until, status, created_at)
+                            VALUES (?, ?, ?, ?, ?, 'active', NOW())
+                        ");
+
+                        foreach ($data as $row) {
+                            try {
+                                // Validate dates
+                                $issue_date = strtotime($row['issue_date']);
+                                $valid_until = strtotime($row['valid_until']);
+                                if (!$issue_date || !$valid_until || $valid_until <= $issue_date) {
+                                    throw new Exception('Invalid dates');
+                                }
+
+                                // Validate student exists
+                                $check = $pdo->prepare("SELECT id FROM students WHERE id = ?");
+                                $check->execute([$row['student_id']]);
+                                if (!$check->fetch()) {
+                                    throw new Exception('Invalid student ID');
+                                }
+
+                                // Validate batch exists
+                                $check = $pdo->prepare("SELECT id FROM batches WHERE id = ?");
+                                $check->execute([$row['batch_id']]);
+                                if (!$check->fetch()) {
+                                    throw new Exception('Invalid batch ID');
+                                }
+
+                                // Check certificate number uniqueness
+                                $check = $pdo->prepare("SELECT id FROM certificates WHERE certificate_number = ?");
+                                $check->execute([$row['certificate_number']]);
+                                if ($check->fetch()) {
+                                    throw new Exception('Certificate number already exists');
+                                }
+
+                                $stmt->execute([
+                                    $row['student_id'],
+                                    $row['batch_id'],
+                                    $row['certificate_number'],
+                                    date('Y-m-d', $issue_date),
+                                    date('Y-m-d', $valid_until)
+                                ]);
+
+                                $success++;
+                            } catch (Exception $e) {
+                                $failed++;
+                                $errors[] = "Row {$row['certificate_number']}: " . $e->getMessage();
+                            }
+                        }
+
+                        $pdo->commit();
+
+                        $total_success += $success;
+                        $total_failed += $failed;
+
+                        $file_results[] = [
+                            'filename' => $files['name'][$key],
+                            'success' => true,
+                            'success_count' => $success,
+                            'failed_count' => $failed,
+                            'errors' => $errors
+                        ];
+                    } catch (Exception $e) {
+                        $pdo->rollBack();
+                        throw $e;
+                    }
+                } catch (Exception $e) {
+                    $file_results[] = [
+                        'filename' => $files['name'][$key],
+                        'success' => false,
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            logAudit($_SESSION['user']['id'], 'bulk_upload_certificates', [
+                'format' => $format,
+                'total_success' => $total_success,
+                'total_failed' => $total_failed,
+                'file_results' => $file_results
+            ]);
+
+            sendJSONResponse(true, "Bulk upload completed. Total Success: $total_success, Total Failed: $total_failed", [
+                'total_success' => $total_success,
+                'total_failed' => $total_failed,
+                'file_results' => $file_results
+            ]);
+            break;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }
