@@ -4,6 +4,7 @@ require_once 'config.php';
 
 // Display errors for debugging
 ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 echo "<h1>Database Connection Test</h1>";
@@ -26,71 +27,117 @@ echo "<li>DB_PASS: " . (defined('DB_PASS') ? "Defined (not showing value)" : "No
 echo "</ul>";
 
 try {
-    // Get database connection
-    $conn = getDBConnection();
-    echo "<p style='color:green'>Database connection successful!</p>";
+    // Connect to database
+    $pdo = new PDO(
+        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
+        DB_USER,
+        DB_PASS,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
     
-    // Test query
-    $query = "SHOW TABLES";
-    $stmt = $conn->query($query);
-    $tables = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    echo "<p style='color:green'>✓ Database connection successful!</p>";
+    echo "<p>Connected to: " . DB_HOST . " / " . DB_NAME . "</p>";
     
-    echo "<h2>Database Tables:</h2>";
-    echo "<ul>";
-    foreach ($tables as $table) {
-        echo "<li>$table</li>";
-    }
-    echo "</ul>";
-    
-    // Test training_partners table
-    if (in_array('training_partners', $tables)) {
-        echo "<h2>Testing training_partners table:</h2>";
-        $stmt = $conn->query("SELECT COUNT(*) as count FROM training_partners");
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        echo "<p>Found {$result['count']} partners in the database.</p>";
+    // Check if users table exists
+    $stmt = $pdo->query("SHOW TABLES LIKE 'users'");
+    if ($stmt->rowCount() > 0) {
+        echo "<p style='color:green'>✓ Users table exists</p>";
         
-        if ($result['count'] > 0) {
-            echo "<h3>First 5 Partners:</h3>";
-            $stmt = $conn->query("SELECT id, name, email, status FROM training_partners LIMIT 5");
-            $partners = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Count users
+        $countStmt = $pdo->query("SELECT COUNT(*) FROM users");
+        $userCount = $countStmt->fetchColumn();
+        echo "<p>Total users in database: $userCount</p>";
+        
+        // List users
+        $usersStmt = $pdo->query("SELECT user_id, username, email, full_name, status FROM users LIMIT 10");
+        if ($usersStmt->rowCount() > 0) {
+            echo "<h2>Users in Database:</h2>";
+            echo "<table border='1' cellpadding='5' cellspacing='0'>";
+            echo "<tr><th>ID</th><th>Username</th><th>Email</th><th>Full Name</th><th>Status</th></tr>";
             
-            echo "<table border='1' cellpadding='5'>";
-            echo "<tr><th>ID</th><th>Name</th><th>Email</th><th>Status</th></tr>";
-            foreach ($partners as $partner) {
+            while ($user = $usersStmt->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>";
-                echo "<td>{$partner['id']}</td>";
-                echo "<td>{$partner['name']}</td>";
-                echo "<td>{$partner['email']}</td>";
-                echo "<td>{$partner['status']}</td>";
+                echo "<td>" . htmlspecialchars($user['user_id'] ?? 'N/A') . "</td>";
+                echo "<td>" . htmlspecialchars($user['username'] ?? 'N/A') . "</td>";
+                echo "<td>" . htmlspecialchars($user['email'] ?? 'N/A') . "</td>";
+                echo "<td>" . htmlspecialchars($user['full_name'] ?? 'N/A') . "</td>";
+                echo "<td>" . htmlspecialchars($user['status'] ?? 'N/A') . "</td>";
                 echo "</tr>";
             }
+            
+            echo "</table>";
+        } else {
+            echo "<p style='color:red'>✗ No users found in the database!</p>";
+        }
+        
+        // Check for admin user
+        $adminStmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $adminStmt->execute(['admin@softpro.com']);
+        
+        if ($admin = $adminStmt->fetch(PDO::FETCH_ASSOC)) {
+            echo "<p style='color:green'>✓ Admin user found with email admin@softpro.com</p>";
+            echo "<p>Admin user details:</p>";
+            echo "<ul>";
+            foreach ($admin as $key => $value) {
+                if ($key !== 'password' && $key !== 'token') {
+                    echo "<li><strong>$key</strong>: " . htmlspecialchars($value) . "</li>";
+                } else {
+                    echo "<li><strong>$key</strong>: [REDACTED]</li>";
+                }
+            }
+            echo "</ul>";
+        } else {
+            echo "<p style='color:red'>✗ Admin user with email admin@softpro.com not found!</p>";
+        }
+    } else {
+        echo "<p style='color:red'>✗ Users table does not exist!</p>";
+    }
+    
+    // Check roles table
+    $stmt = $pdo->query("SHOW TABLES LIKE 'roles'");
+    if ($stmt->rowCount() > 0) {
+        echo "<p style='color:green'>✓ Roles table exists</p>";
+        
+        // List roles
+        $rolesStmt = $pdo->query("SELECT * FROM roles");
+        if ($rolesStmt->rowCount() > 0) {
+            echo "<h2>Roles in Database:</h2>";
+            echo "<table border='1' cellpadding='5' cellspacing='0'>";
+            echo "<tr><th>ID</th><th>Role Name</th><th>Description</th></tr>";
+            
+            while ($role = $rolesStmt->fetch(PDO::FETCH_ASSOC)) {
+                echo "<tr>";
+                echo "<td>" . htmlspecialchars($role['role_id']) . "</td>";
+                echo "<td>" . htmlspecialchars($role['role_name']) . "</td>";
+                echo "<td>" . htmlspecialchars($role['description'] ?? 'N/A') . "</td>";
+                echo "</tr>";
+            }
+            
             echo "</table>";
         }
     } else {
-        echo "<p style='color:red'>Warning: training_partners table does not exist!</p>";
-        
-        echo "<h3>Creating training_partners table:</h3>";
-        $createTable = "
-        CREATE TABLE IF NOT EXISTS training_partners (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL UNIQUE,
-            phone VARCHAR(20),
-            address TEXT,
-            status ENUM('active', 'inactive') DEFAULT 'active',
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP
-        )";
-        
-        try {
-            $conn->exec($createTable);
-            echo "<p style='color:green'>Training partners table created successfully!</p>";
-        } catch (PDOException $e) {
-            echo "<p style='color:red'>Error creating table: " . $e->getMessage() . "</p>";
-        }
+        echo "<p style='color:red'>✗ Roles table does not exist!</p>";
     }
     
-} catch (Exception $e) {
-    echo "<p style='color:red'>Error: " . $e->getMessage() . "</p>";
+} catch (PDOException $e) {
+    echo "<p style='color:red'>✗ Database connection failed: " . $e->getMessage() . "</p>";
+    
+    // Check if it's a connection issue or database doesn't exist
+    if ($e->getCode() == 1049) {
+        echo "<p>The database '" . DB_NAME . "' doesn't exist. Please create it first.</p>";
+        
+        // Try to connect without database name to check if server is accessible
+        try {
+            $pdo = new PDO(
+                "mysql:host=" . DB_HOST,
+                DB_USER,
+                DB_PASS,
+                [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+            );
+            echo "<p style='color:green'>✓ MySQL server connection is working. Just need to create the database.</p>";
+        } catch (PDOException $e2) {
+            echo "<p style='color:red'>✗ Cannot connect to MySQL server: " . $e2->getMessage() . "</p>";
+        }
+    }
 }
 ?> 

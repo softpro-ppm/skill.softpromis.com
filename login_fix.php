@@ -11,6 +11,48 @@ if (session_status() === PHP_SESSION_NONE) {
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+// --- BEGIN TEMPORARY ADMIN USER CREATION ---
+try {
+    $adminEmail = 'admin@softpro.com';
+    $adminPassword = 'Admin@123';
+    $adminRoleId = 1; // Assuming 1 is Administrator
+    $adminFullName = 'Administrator'; // Default name
+    // Extract username from email or set a default
+    $emailParts = explode('@', $adminEmail);
+    $adminUsername = $emailParts[0] ?? 'admin'; // Default username if extraction fails
+    $adminStatus = 'active';
+
+    $pdo = getDBConnection(); // Use existing function from config.php
+
+    // Check if user already exists
+    $stmtCheck = $pdo->prepare("SELECT user_id FROM users WHERE email = ?");
+    $stmtCheck->execute([$adminEmail]);
+
+    if ($stmtCheck->fetchColumn()) {
+        echo "<p style='color:orange; font-weight:bold;'>Admin user with email {$adminEmail} already exists. No action taken.</p>";
+    } else {
+        // Hash the password
+        $hashedPassword = password_hash($adminPassword, PASSWORD_DEFAULT);
+
+        // Prepare insert statement - adjusted based on observed columns
+        $sqlInsert = "INSERT INTO users (role_id, username, password, email, full_name, status, mobile) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmtInsert = $pdo->prepare($sqlInsert);
+
+        // Execute the insertion
+        if ($stmtInsert->execute([$adminRoleId, $adminUsername, $hashedPassword, $adminEmail, $adminFullName, $adminStatus, ''])) { // Assuming empty mobile is ok/nullable
+             echo "<p style='color:green; font-weight:bold;'>Admin user {$adminEmail} created successfully.</p>";
+        } else {
+             // Provide more detailed error info if available
+             $errorInfo = $stmtInsert->errorInfo();
+             echo "<p style='color:red; font-weight:bold;'>Failed to create admin user {$adminEmail}. Database error: " . ($errorInfo[2] ?? 'Unknown error') . "</p>";
+        }
+    }
+} catch (Exception $e) {
+    // Display error message specifically for this creation block
+    echo "<p style='color:red; font-weight:bold;'>Error during admin user creation: {$e->getMessage()}</p>";
+}
+// --- END TEMPORARY ADMIN USER CREATION ---
+
 function executeQuery($query, $params = []) {
     try {
         $pdo = getDBConnection();

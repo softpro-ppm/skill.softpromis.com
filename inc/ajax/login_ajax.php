@@ -61,14 +61,14 @@ try {
         $token = bin2hex(random_bytes(32));
         
         // Update user's token
-        $updateStmt = $pdo->prepare("UPDATE users SET token = ?, last_login = NOW() WHERE id = ?");
-        $updateStmt->execute([$token, $user['id']]);
+        $updateStmt = $pdo->prepare("UPDATE users SET token = ?, last_login = NOW() WHERE user_id = ?");
+        $updateStmt->execute([$token, $user['user_id']]);
 
         // Prepare user data for response
         $userData = [
-            'id' => $user['id'],
+            'user_id' => $user['user_id'],
             'email' => $user['email'],
-            'name' => $user['name'],
+            'name' => $user['full_name'],
             'role' => $user['role_name'],
             'token' => $token
         ];
