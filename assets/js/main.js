@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initFormAutoSave();
     initTableRowActions();
     initInputMasks();
+    initSidebarMenu();
     
     // Add floating label functionality
     const floatingLabels = document.querySelectorAll('.form-group.floating-label');
@@ -725,61 +726,55 @@ function updateBreadcrumbs() {
 
 // Sidebar Menu Navigation
 function initSidebarMenu() {
-    console.log('Initializing Sidebar Menu'); // Debugging log
-
-    // Handle all menu item clicks including those in the main menu and submenu
-    document.querySelector('.sidebar-menu').addEventListener('click', (e) => {
-        const link = e.target.closest('a');
-        if (!link) return;
-
-        // If it's a submenu toggle, handle the toggle
-        if (link.classList.contains('submenu-toggle')) {
+    // Handle submenu toggles
+    const submenuToggles = document.querySelectorAll('.submenu-toggle');
+    submenuToggles.forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
             e.preventDefault();
-            const menuItem = link.closest('.has-submenu');
-            console.log('Toggling submenu:', menuItem); // Debugging log
-
+            const menuItem = this.closest('.menu-item');
+            menuItem.classList.toggle('open');
+            
             // Close other open submenus
-            document.querySelectorAll('.has-submenu.open').forEach(item => {
-                if (item !== menuItem) {
-                    item.classList.remove('open');
-                    const submenu = item.querySelector('.submenu');
-                    if (submenu) {
-                        submenu.style.display = 'none';
-                    }
+            const otherOpenMenus = document.querySelectorAll('.menu-item.open');
+            otherOpenMenus.forEach(menu => {
+                if (menu !== menuItem) {
+                    menu.classList.remove('open');
                 }
             });
-
-            // Toggle current submenu
-            menuItem.classList.toggle('open');
-            const submenu = menuItem.querySelector('.submenu');
-            if (submenu) {
-                submenu.style.display = menuItem.classList.contains('open') ? 'block' : 'none';
-            }
-        }
+        });
     });
 
-    // Set active menu item based on current URL
-    const currentPath = window.location.pathname;
-    const menuItems = document.querySelectorAll('.sidebar-menu a');
-
+    // Handle menu item clicks
+    const menuItems = document.querySelectorAll('.menu-item > a:not(.submenu-toggle)');
     menuItems.forEach(item => {
-        const href = item.getAttribute('href');
-        if (href && href !== '#' && (currentPath === href || currentPath.startsWith(href + '/'))) {
-            console.log('Setting active menu item:', item); // Debugging log
-            // Add active class to the menu item
-            item.closest('.menu-item')?.classList.add('active');
-
-            // If it's in a submenu, open the parent menu
-            const parentSubmenu = item.closest('.submenu');
-            if (parentSubmenu) {
-                const parentMenuItem = parentSubmenu.closest('.has-submenu');
-                if (parentMenuItem) {
-                    parentMenuItem.classList.add('open');
-                    parentSubmenu.style.display = 'block';
-                }
-            }
-        }
+        item.addEventListener('click', function() {
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-item').forEach(menu => {
+                menu.classList.remove('active');
+            });
+            
+            // Add active class to clicked menu item
+            this.closest('.menu-item').classList.add('active');
+        });
     });
+
+    // Handle quick search
+    const searchInput = document.querySelector('.sidebar-search .search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            menuItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    }
 }
 
 // Initialize all features

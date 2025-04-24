@@ -128,3 +128,6 @@ function isDashboard() {
         </div>
     </div>
 </div>
+
+<!-- Include sidebar.js -->
+<script src="<?php echo $base_url; ?>assets/js/sidebar.js"></script>
