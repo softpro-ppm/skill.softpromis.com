@@ -11,8 +11,7 @@ require_once 'inc/functions.php';
 error_log("Session data: " . print_r($_SESSION, true));
 
 // Check if user has admin privileges
-if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'Administrator') {
-    error_log("Access denied: User role is " . ($_SESSION['user']['role'] ?? 'not set'));
+if (!hasRole('Administrator')) {
     header('Location: dashboard.php?error=' . urlencode('You do not have permission to access this page.'));
     exit;
 }

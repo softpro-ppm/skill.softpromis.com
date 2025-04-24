@@ -6,12 +6,12 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Function to check if user is logged in
 function isLoggedIn() {
-    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+    return isset($_SESSION['user']) && !empty($_SESSION['user']);
 }
 
 // Function to check user role
 function hasRole($requiredRole) {
-    return isset($_SESSION['role']) && $_SESSION['role'] === $requiredRole;
+    return isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === $requiredRole;
 }
 
 // Check if user is logged in, if not redirect to login
@@ -20,7 +20,7 @@ if (!isLoggedIn()) {
     $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
     
     // Redirect to login
-    header('Location: /login.php');
+    header('Location: ' . SITE_URL . '/login_fix.php');
     exit;
 }
 ?> 
