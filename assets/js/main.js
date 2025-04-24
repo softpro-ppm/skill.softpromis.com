@@ -725,6 +725,8 @@ function updateBreadcrumbs() {
 
 // Sidebar Menu Navigation
 function initSidebarMenu() {
+    console.log('Initializing Sidebar Menu'); // Debugging log
+
     // Handle all menu item clicks including those in the main menu and submenu
     document.querySelector('.sidebar-menu').addEventListener('click', (e) => {
         const link = e.target.closest('a');
@@ -734,7 +736,8 @@ function initSidebarMenu() {
         if (link.classList.contains('submenu-toggle')) {
             e.preventDefault();
             const menuItem = link.closest('.has-submenu');
-            
+            console.log('Toggling submenu:', menuItem); // Debugging log
+
             // Close other open submenus
             document.querySelectorAll('.has-submenu.open').forEach(item => {
                 if (item !== menuItem) {
@@ -745,7 +748,7 @@ function initSidebarMenu() {
                     }
                 }
             });
-            
+
             // Toggle current submenu
             menuItem.classList.toggle('open');
             const submenu = menuItem.querySelector('.submenu');
@@ -758,13 +761,14 @@ function initSidebarMenu() {
     // Set active menu item based on current URL
     const currentPath = window.location.pathname;
     const menuItems = document.querySelectorAll('.sidebar-menu a');
-    
+
     menuItems.forEach(item => {
         const href = item.getAttribute('href');
         if (href && href !== '#' && (currentPath === href || currentPath.startsWith(href + '/'))) {
+            console.log('Setting active menu item:', item); // Debugging log
             // Add active class to the menu item
             item.closest('.menu-item')?.classList.add('active');
-            
+
             // If it's in a submenu, open the parent menu
             const parentSubmenu = item.closest('.submenu');
             if (parentSubmenu) {
@@ -788,4 +792,4 @@ document.addEventListener('DOMContentLoaded', () => {
     initUserProfile();
     updateBreadcrumbs();
     updateNotificationBadge();
-}); 
+});
