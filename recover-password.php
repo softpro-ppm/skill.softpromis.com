@@ -17,12 +17,12 @@
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="index.html" class="h1">Softpro Skill Solutions</a>
+      <a href="index.php" class="h1">Softpro Skill Solutions</a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">You are only one step a way from your new password, recover your password now.</p>
 
-      <form action="index.html" method="post">
+      <form action="index.php" method="post">
         <div class="input-group mb-3">
           <input type="password" class="form-control" placeholder="New Password" required>
           <div class="input-group-append">
@@ -48,7 +48,7 @@
       </form>
 
       <p class="mt-3 mb-1">
-        <a href="index.html">Login</a>
+        <a href="index.php">Login</a>
       </p>
     </div>
     <!-- /.login-card-body -->

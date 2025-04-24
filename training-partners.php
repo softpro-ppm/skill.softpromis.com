@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Batches</title>
+  <title>Softpro Skill Solutions - Training Partners</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,8 +16,6 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.0.0/dist/select2-bootstrap4.min.css">
-  <!-- Tempus Dominus -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.39.0/build/css/tempusdominus-bootstrap-4.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -38,7 +36,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html" role="button">
+        <a class="nav-link" href="index.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -49,7 +47,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="dashboard.html" class="brand-link">
+    <a href="dashboard.php" class="brand-link">
       <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
     </a>
 
@@ -66,13 +64,13 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.html" class="nav-link">
+            <a href="dashboard.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-building"></i>
               <p>
                 Training Partners
@@ -81,13 +79,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-partners.html" class="nav-link">
+                <a href="training-partners.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Partners</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link">
+                <a href="training-centers.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Training Centers</p>
                 </a>
@@ -95,7 +93,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-graduation-cap"></i>
               <p>
                 Training Programs
@@ -104,25 +102,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="schemes.html" class="nav-link">
+                <a href="schemes.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Schemes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="sectors.html" class="nav-link">
+                <a href="sectors.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sectors</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="courses.html" class="nav-link">
+                <a href="courses.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Courses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="batches.html" class="nav-link active">
+                <a href="batches.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Batches</p>
                 </a>
@@ -139,25 +137,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="students.html" class="nav-link">
+                <a href="students.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Students</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="fees.html" class="nav-link">
+                <a href="fees.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fee Management</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="assessments.html" class="nav-link">
+                <a href="assessments.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Assessments</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="certificates.html" class="nav-link">
+                <a href="certificates.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Certificates</p>
                 </a>
@@ -174,7 +172,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="reports.html" class="nav-link">
+                <a href="reports.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Reports</p>
                 </a>
@@ -191,7 +189,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="roles.html" class="nav-link">
+                <a href="roles.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles & Permissions</p>
                 </a>
@@ -212,7 +210,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Batches</h1>
+            <h1 class="m-0">Training Partners</h1>
           </div>
         </div>
       </div>
@@ -222,70 +220,67 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Batches List -->
+        <!-- Training Partners List -->
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Batches List</h3>
+            <h3 class="card-title">Training Partners List</h3>
             <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBatchModal">
-                <i class="fas fa-plus"></i> Add New Batch
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPartnerModal">
+                <i class="fas fa-plus"></i> Add New Partner
               </button>
             </div>
           </div>
           <div class="card-body">
-            <table id="batchesTable" class="table table-bordered table-striped">
+            <table id="partnersTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Batch ID</th>
-                  <th>Course</th>
-                  <th>Training Center</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Students</th>
-                  <th>Trainer</th>
+                  <th>Partner ID</th>
+                  <th>Name</th>
+                  <th>Contact Person</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Training Centers</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>B001</td>
-                  <td>Web Development</td>
-                  <td>ABC Training Center - Mumbai</td>
-                  <td>01/01/2024</td>
-                  <td>31/03/2024</td>
-                  <td>25/30</td>
+                  <td>TP001</td>
+                  <td>ABC Training Solutions</td>
                   <td>John Doe</td>
+                  <td>+91 9876543210</td>
+                  <td>john@abctraining.com</td>
+                  <td>3</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewBatchModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewPartnerModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editBatchModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editPartnerModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteBatchModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletePartnerModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>B002</td>
-                  <td>Digital Marketing</td>
-                  <td>ABC Training Center - Pune</td>
-                  <td>15/01/2024</td>
-                  <td>15/04/2024</td>
-                  <td>20/25</td>
+                  <td>TP002</td>
+                  <td>XYZ Education Services</td>
                   <td>Jane Smith</td>
+                  <td>+91 9876543211</td>
+                  <td>jane@xyzeducation.com</td>
+                  <td>2</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewBatchModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewPartnerModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editBatchModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editPartnerModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteBatchModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletePartnerModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -300,12 +295,12 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Batch Modal -->
-  <div class="modal fade" id="addBatchModal">
+  <!-- Add Partner Modal -->
+  <div class="modal fade" id="addPartnerModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Add New Batch</h4>
+          <h4 class="modal-title">Add New Training Partner</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -315,79 +310,80 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="course">Course</label>
-                  <select class="form-control select2" id="course" required>
-                    <option value="">Select Course</option>
-                    <option value="C001">Web Development</option>
-                    <option value="C002">Digital Marketing</option>
-                  </select>
+                  <label for="partnerName">Partner Name</label>
+                  <input type="text" class="form-control" id="partnerName" placeholder="Enter partner name" required>
                 </div>
                 <div class="form-group">
-                  <label for="trainingCenter">Training Center</label>
-                  <select class="form-control select2" id="trainingCenter" required>
-                    <option value="">Select Center</option>
-                    <option value="TC001">ABC Training Center - Mumbai</option>
-                    <option value="TC002">ABC Training Center - Pune</option>
-                  </select>
+                  <label for="contactPerson">Contact Person</label>
+                  <input type="text" class="form-control" id="contactPerson" placeholder="Enter contact person name" required>
                 </div>
                 <div class="form-group">
-                  <label for="trainer">Trainer</label>
-                  <select class="form-control select2" id="trainer" required>
-                    <option value="">Select Trainer</option>
-                    <option value="T001">John Doe</option>
-                    <option value="T002">Jane Smith</option>
-                  </select>
+                  <label for="phone">Phone</label>
+                  <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
                 </div>
                 <div class="form-group">
-                  <label for="capacity">Batch Capacity</label>
-                  <input type="number" class="form-control" id="capacity" placeholder="Enter batch capacity" required>
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" id="email" placeholder="Enter email address" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="startDate">Start Date</label>
-                  <div class="input-group date" id="startDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#startDate" required>
-                    <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
+                  <label for="address">Address</label>
+                  <textarea class="form-control" id="address" rows="3" placeholder="Enter full address" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <input type="text" class="form-control" id="city" placeholder="Enter city" required>
+                </div>
+                <div class="form-group">
+                  <label for="state">State</label>
+                  <input type="text" class="form-control" id="state" placeholder="Enter state" required>
+                </div>
+                <div class="form-group">
+                  <label for="pincode">Pincode</label>
+                  <input type="text" class="form-control" id="pincode" placeholder="Enter pincode" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea class="form-control" id="description" rows="3" placeholder="Enter partner description"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Documents</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="registrationDoc">
+                    <label class="custom-file-label" for="registrationDoc">Registration Certificate</label>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="endDate">End Date</label>
-                  <div class="input-group date" id="endDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#endDate" required>
-                    <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
+                  <div class="custom-file mt-2">
+                    <input type="file" class="custom-file-input" id="gstDoc">
+                    <label class="custom-file-label" for="gstDoc">GST Certificate</label>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="schedule">Schedule</label>
-                  <textarea class="form-control" id="schedule" rows="3" placeholder="Enter batch schedule" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="remarks">Remarks</label>
-                  <textarea class="form-control" id="remarks" rows="3" placeholder="Enter any remarks"></textarea>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Batch</button>
+            <button type="submit" class="btn btn-primary">Save Partner</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- View Batch Modal -->
-  <div class="modal fade" id="viewBatchModal">
+  <!-- View Partner Modal -->
+  <div class="modal fade" id="viewPartnerModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">View Batch Details</h4>
+          <h4 class="modal-title">View Training Partner Details</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -396,36 +392,44 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Batch ID</label>
-                <p>B001</p>
+                <label>Partner ID</label>
+                <p>TP001</p>
               </div>
-            <div class="form-group">
-                <label>Course</label>
-                <p>Web Development</p>
-            </div>
-            <div class="form-group">
-                <label>Training Center</label>
-                <p>ABC Training Center - Mumbai</p>
-            </div>
-            <div class="form-group">
-                <label>Trainer</label>
+              <div class="form-group">
+                <label>Partner Name</label>
+                <p>ABC Training Solutions</p>
+              </div>
+              <div class="form-group">
+                <label>Contact Person</label>
                 <p>John Doe</p>
+              </div>
+              <div class="form-group">
+                <label>Phone</label>
+                <p>+91 9876543210</p>
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <p>john@abctraining.com</p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Start Date</label>
-                <p>01/01/2024</p>
+                <label>Address</label>
+                <p>123, Main Street, City Center</p>
               </div>
               <div class="form-group">
-                <label>End Date</label>
-                <p>31/03/2024</p>
+                <label>City</label>
+                <p>Mumbai</p>
               </div>
               <div class="form-group">
-                <label>Schedule</label>
-                <p>Monday to Friday, 10:00 AM - 1:00 PM</p>
-            </div>
-            <div class="form-group">
+                <label>State</label>
+                <p>Maharashtra</p>
+              </div>
+              <div class="form-group">
+                <label>Pincode</label>
+                <p>400001</p>
+              </div>
+              <div class="form-group">
                 <label>Status</label>
                 <p><span class="badge badge-success">Active</span></p>
               </div>
@@ -433,34 +437,28 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <h5>Enrolled Students</h5>
+              <h5>Training Centers</h5>
               <div class="table-responsive">
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th>Student ID</th>
+                      <th>Center ID</th>
                       <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Fee Status</th>
+                      <th>Address</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>S001</td>
-                      <td>Rajesh Kumar</td>
-                      <td>rajesh@example.com</td>
-                      <td>+91 9876543210</td>
-                      <td><span class="badge badge-success">Paid</span></td>
+                      <td>TC001</td>
+                      <td>ABC Training Center - Mumbai</td>
+                      <td>123, Main Street, Mumbai</td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                     <tr>
-                      <td>S002</td>
-                      <td>Priya Sharma</td>
-                      <td>priya@example.com</td>
-                      <td>+91 9876543211</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
+                      <td>TC002</td>
+                      <td>ABC Training Center - Pune</td>
+                      <td>456, Park Road, Pune</td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                   </tbody>
@@ -476,12 +474,12 @@
     </div>
   </div>
 
-  <!-- Edit Batch Modal -->
-  <div class="modal fade" id="editBatchModal">
+  <!-- Edit Partner Modal -->
+  <div class="modal fade" id="editPartnerModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit Batch</h4>
+          <h4 class="modal-title">Edit Training Partner</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -491,89 +489,92 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editCourse">Course</label>
-                  <select class="form-control select2" id="editCourse" required>
-                    <option value="C001" selected>Web Development</option>
-                    <option value="C002">Digital Marketing</option>
-                  </select>
+                  <label for="editPartnerName">Partner Name</label>
+                  <input type="text" class="form-control" id="editPartnerName" value="ABC Training Solutions" required>
                 </div>
                 <div class="form-group">
-                  <label for="editTrainingCenter">Training Center</label>
-                  <select class="form-control select2" id="editTrainingCenter" required>
-                    <option value="TC001" selected>ABC Training Center - Mumbai</option>
-                    <option value="TC002">ABC Training Center - Pune</option>
-                  </select>
+                  <label for="editContactPerson">Contact Person</label>
+                  <input type="text" class="form-control" id="editContactPerson" value="John Doe" required>
                 </div>
                 <div class="form-group">
-                  <label for="editTrainer">Trainer</label>
-                  <select class="form-control select2" id="editTrainer" required>
-                    <option value="T001" selected>John Doe</option>
-                    <option value="T002">Jane Smith</option>
-                  </select>
+                  <label for="editPhone">Phone</label>
+                  <input type="tel" class="form-control" id="editPhone" value="+91 9876543210" required>
                 </div>
                 <div class="form-group">
-                  <label for="editCapacity">Batch Capacity</label>
-                  <input type="number" class="form-control" id="editCapacity" value="30" required>
+                  <label for="editEmail">Email</label>
+                  <input type="email" class="form-control" id="editEmail" value="john@abctraining.com" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editStartDate">Start Date</label>
-                  <div class="input-group date" id="editStartDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#editStartDate" value="01/01/2024" required>
-                    <div class="input-group-append" data-target="#editStartDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
+                  <label for="editAddress">Address</label>
+                  <textarea class="form-control" id="editAddress" rows="3" required>123, Main Street, City Center</textarea>
+                </div>
+                <div class="form-group">
+                  <label for="editCity">City</label>
+                  <input type="text" class="form-control" id="editCity" value="Mumbai" required>
+                </div>
+                <div class="form-group">
+                  <label for="editState">State</label>
+                  <input type="text" class="form-control" id="editState" value="Maharashtra" required>
+                </div>
+                <div class="form-group">
+                  <label for="editPincode">Pincode</label>
+                  <input type="text" class="form-control" id="editPincode" value="400001" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="editDescription">Description</label>
+                  <textarea class="form-control" id="editDescription" rows="3">Leading training provider in Mumbai</textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Documents</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="editRegistrationDoc">
+                    <label class="custom-file-label" for="editRegistrationDoc">Registration Certificate</label>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="editEndDate">End Date</label>
-                  <div class="input-group date" id="editEndDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#editEndDate" value="31/03/2024" required>
-                    <div class="input-group-append" data-target="#editEndDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
+                  <div class="custom-file mt-2">
+                    <input type="file" class="custom-file-input" id="editGstDoc">
+                    <label class="custom-file-label" for="editGstDoc">GST Certificate</label>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="editSchedule">Schedule</label>
-                  <textarea class="form-control" id="editSchedule" rows="3" required>Monday to Friday, 10:00 AM - 1:00 PM</textarea>
-                </div>
-                <div class="form-group">
-                  <label for="editRemarks">Remarks</label>
-                  <textarea class="form-control" id="editRemarks" rows="3">Regular batch with focus on practical training</textarea>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Update Batch</button>
+            <button type="submit" class="btn btn-primary">Update Partner</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- Delete Batch Modal -->
-  <div class="modal fade" id="deleteBatchModal">
+  <!-- Delete Partner Modal -->
+  <div class="modal fade" id="deletePartnerModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Delete Batch</h4>
+          <h4 class="modal-title">Delete Training Partner</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete this batch? This action cannot be undone.</p>
-          <p><strong>Batch:</strong> B001 - Web Development</p>
-          <p><strong>Enrolled Students:</strong> 25</p>
-          <p><strong>Training Center:</strong> ABC Training Center - Mumbai</p>
+          <p>Are you sure you want to delete this training partner? This action cannot be undone.</p>
+          <p><strong>Partner:</strong> ABC Training Solutions</p>
+          <p><strong>Training Centers:</strong> 3</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Batch</button>
+          <button type="button" class="btn btn-danger">Delete Partner</button>
         </div>
       </div>
     </div>
@@ -597,13 +598,13 @@
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 <!-- Select2 -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<!-- Tempus Dominus -->
-<script src="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.39.0/build/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- bs-custom-file-input -->
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 
 <script>
   $(function () {
     // Initialize DataTable
-    $('#batchesTable').DataTable({
+    $('#partnersTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -618,27 +619,8 @@
       theme: 'bootstrap4'
     });
 
-    // Initialize date pickers
-    $('#startDate, #endDate, #editStartDate, #editEndDate').datetimepicker({
-      format: 'DD/MM/YYYY',
-      useCurrent: false
-    });
-
-    // Set end date minimum to start date
-    $('#startDate').on('change.datetimepicker', function (e) {
-      $('#endDate').datetimepicker('minDate', e.date);
-    });
-    $('#endDate').on('change.datetimepicker', function (e) {
-      $('#startDate').datetimepicker('maxDate', e.date);
-    });
-
-    // Set edit end date minimum to edit start date
-    $('#editStartDate').on('change.datetimepicker', function (e) {
-      $('#editEndDate').datetimepicker('minDate', e.date);
-    });
-    $('#editEndDate').on('change.datetimepicker', function (e) {
-      $('#editStartDate').datetimepicker('maxDate', e.date);
-    });
+    // Initialize custom file input
+    bsCustomFileInput.init();
   });
 </script>
 </body>

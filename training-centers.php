@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Courses</title>
+  <title>Softpro Skill Solutions - Training Centers</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -36,7 +36,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html" role="button">
+        <a class="nav-link" href="index.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -47,7 +47,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="dashboard.html" class="brand-link">
+    <a href="dashboard.php" class="brand-link">
       <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
     </a>
 
@@ -64,13 +64,13 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.html" class="nav-link">
+            <a href="dashboard.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-building"></i>
               <p>
                 Training Partners
@@ -79,13 +79,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-partners.html" class="nav-link">
+                <a href="training-partners.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Partners</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link">
+                <a href="training-centers.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Training Centers</p>
                 </a>
@@ -93,7 +93,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-graduation-cap"></i>
               <p>
                 Training Programs
@@ -102,25 +102,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="schemes.html" class="nav-link">
+                <a href="schemes.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Schemes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="sectors.html" class="nav-link">
+                <a href="sectors.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sectors</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="courses.html" class="nav-link active">
+                <a href="courses.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Courses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="batches.html" class="nav-link">
+                <a href="batches.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Batches</p>
                 </a>
@@ -137,25 +137,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="students.html" class="nav-link">
+                <a href="students.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Students</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="fees.html" class="nav-link">
+                <a href="fees.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fee Management</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="assessments.html" class="nav-link">
+                <a href="assessments.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Assessments</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="certificates.html" class="nav-link">
+                <a href="certificates.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Certificates</p>
                 </a>
@@ -172,7 +172,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="reports.html" class="nav-link">
+                <a href="reports.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Reports</p>
                 </a>
@@ -189,7 +189,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="roles.html" class="nav-link">
+                <a href="roles.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles & Permissions</p>
                 </a>
@@ -210,7 +210,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Courses</h1>
+            <h1 class="m-0">Training Centers</h1>
           </div>
         </div>
       </div>
@@ -220,67 +220,70 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Courses List -->
+        <!-- Training Centers List -->
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Courses List</h3>
+            <h3 class="card-title">Training Centers List</h3>
             <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCourseModal">
-                <i class="fas fa-plus"></i> Add New Course
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCenterModal">
+                <i class="fas fa-plus"></i> Add New Center
               </button>
             </div>
           </div>
           <div class="card-body">
-            <table id="coursesTable" class="table table-bordered table-striped">
+            <table id="centersTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Course ID</th>
+                  <th>Center ID</th>
                   <th>Name</th>
-                  <th>Sector</th>
-                  <th>Duration</th>
-                  <th>Fee</th>
-                  <th>Active Batches</th>
+                  <th>Partner</th>
+                  <th>Location</th>
+                  <th>Contact Person</th>
+                  <th>Phone</th>
+                  <th>Capacity</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>C001</td>
-                  <td>Web Development</td>
-                  <td>Information Technology</td>
-                  <td>3 months</td>
-                  <td>₹15,000</td>
-                  <td>2</td>
+                  <td>TC001</td>
+                  <td>ABC Training Center - Mumbai</td>
+                  <td>ABC Training Solutions</td>
+                  <td>Mumbai</td>
+                  <td>Rajesh Kumar</td>
+                  <td>+91 9876543212</td>
+                  <td>50</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCourseModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCenterModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCourseModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCenterModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCourseModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCenterModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>C002</td>
-                  <td>Digital Marketing</td>
-                  <td>Digital Marketing</td>
-                  <td>2 months</td>
-                  <td>₹12,000</td>
-                  <td>1</td>
+                  <td>TC002</td>
+                  <td>ABC Training Center - Pune</td>
+                  <td>ABC Training Solutions</td>
+                  <td>Pune</td>
+                  <td>Priya Sharma</td>
+                  <td>+91 9876543213</td>
+                  <td>30</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCourseModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCenterModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCourseModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCenterModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCourseModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCenterModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -295,12 +298,12 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Course Modal -->
-  <div class="modal fade" id="addCourseModal">
+  <!-- Add Center Modal -->
+  <div class="modal fade" id="addCenterModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Add New Course</h4>
+          <h4 class="modal-title">Add New Training Center</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -310,52 +313,66 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="courseName">Course Name</label>
-                  <input type="text" class="form-control" id="courseName" placeholder="Enter course name" required>
-                </div>
-                <div class="form-group">
-                  <label for="sector">Sector</label>
-                  <select class="form-control select2" id="sector" required>
-                    <option value="">Select Sector</option>
-                    <option value="SEC001">Information Technology</option>
-                    <option value="SEC002">Digital Marketing</option>
+                  <label for="partner">Training Partner</label>
+                  <select class="form-control select2" id="partner" required>
+                    <option value="">Select Partner</option>
+                    <option value="TP001">ABC Training Solutions</option>
+                    <option value="TP002">XYZ Education Services</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="duration">Duration (months)</label>
-                  <input type="number" class="form-control" id="duration" placeholder="Enter duration" required>
+                  <label for="centerName">Center Name</label>
+                  <input type="text" class="form-control" id="centerName" placeholder="Enter center name" required>
                 </div>
                 <div class="form-group">
-                  <label for="fee">Course Fee (₹)</label>
-                  <input type="number" class="form-control" id="fee" placeholder="Enter fee" required>
+                  <label for="contactPerson">Contact Person</label>
+                  <input type="text" class="form-control" id="contactPerson" placeholder="Enter contact person name" required>
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="description">Description</label>
-                  <textarea class="form-control" id="description" rows="3" placeholder="Enter course description" required></textarea>
+                  <label for="address">Address</label>
+                  <textarea class="form-control" id="address" rows="3" placeholder="Enter full address" required></textarea>
                 </div>
                 <div class="form-group">
-                  <label for="prerequisites">Prerequisites</label>
-                  <textarea class="form-control" id="prerequisites" rows="3" placeholder="Enter prerequisites"></textarea>
+                  <label for="city">City</label>
+                  <input type="text" class="form-control" id="city" placeholder="Enter city" required>
                 </div>
                 <div class="form-group">
-                  <label for="learningOutcomes">Learning Outcomes</label>
-                  <textarea class="form-control" id="learningOutcomes" rows="3" placeholder="Enter learning outcomes" required></textarea>
+                  <label for="state">State</label>
+                  <input type="text" class="form-control" id="state" placeholder="Enter state" required>
+                </div>
+                <div class="form-group">
+                  <label for="pincode">Pincode</label>
+                  <input type="text" class="form-control" id="pincode" placeholder="Enter pincode" required>
                 </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="capacity">Student Capacity</label>
+                  <input type="number" class="form-control" id="capacity" placeholder="Enter student capacity" required>
+                </div>
+                <div class="form-group">
+                  <label for="infrastructure">Infrastructure Details</label>
+                  <textarea class="form-control" id="infrastructure" rows="3" placeholder="Enter infrastructure details"></textarea>
+                </div>
+              </div>
+              <div class="col-md-6">
                 <div class="form-group">
                   <label>Documents</label>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="courseDoc">
-                    <label class="custom-file-label" for="courseDoc">Course Document</label>
+                    <input type="file" class="custom-file-input" id="centerPhoto">
+                    <label class="custom-file-label" for="centerPhoto">Center Photo</label>
                   </div>
                   <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="curriculumDoc">
-                    <label class="custom-file-label" for="curriculumDoc">Curriculum Document</label>
+                    <input type="file" class="custom-file-input" id="centerDoc">
+                    <label class="custom-file-label" for="centerDoc">Center Documents</label>
                   </div>
                 </div>
               </div>
@@ -363,19 +380,19 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Course</button>
+            <button type="submit" class="btn btn-primary">Save Center</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- View Course Modal -->
-  <div class="modal fade" id="viewCourseModal">
+  <!-- View Center Modal -->
+  <div class="modal fade" id="viewCenterModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">View Course Details</h4>
+          <h4 class="modal-title">View Training Center Details</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -384,40 +401,44 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Course ID</label>
-                <p>C001</p>
+                <label>Center ID</label>
+                <p>TC001</p>
               </div>
               <div class="form-group">
-                <label>Course Name</label>
-                <p>Web Development</p>
+                <label>Center Name</label>
+                <p>ABC Training Center - Mumbai</p>
               </div>
-              <div class="form-group">
-                <label>Sector</label>
-                <p>Information Technology</p>
-              </div>
-              <div class="form-group">
-                <label>Duration</label>
-                <p>3 months</p>
-              </div>
-              <div class="form-group">
-                <label>Fee</label>
-                <p>₹15,000</p>
+            <div class="form-group">
+                <label>Training Partner</label>
+                <p>ABC Training Solutions</p>
+            </div>
+            <div class="form-group">
+                <label>Contact Person</label>
+                <p>Rajesh Kumar</p>
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <p>+91 9876543212</p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Description</label>
-                <p>Comprehensive web development course covering HTML, CSS, JavaScript, and modern frameworks</p>
+                <label>Address</label>
+                <p>123, Main Street, Mumbai</p>
               </div>
               <div class="form-group">
-                <label>Prerequisites</label>
-                <p>Basic computer knowledge</p>
+                <label>City</label>
+                <p>Mumbai</p>
               </div>
               <div class="form-group">
-                <label>Learning Outcomes</label>
-                <p>Build responsive websites, work with databases, deploy applications</p>
+                <label>State</label>
+                <p>Maharashtra</p>
               </div>
               <div class="form-group">
+                <label>Pincode</label>
+                <p>400001</p>
+            </div>
+            <div class="form-group">
                 <label>Status</label>
                 <p><span class="badge badge-success">Active</span></p>
               </div>
@@ -431,28 +452,28 @@
                   <thead>
                     <tr>
                       <th>Batch ID</th>
+                      <th>Course</th>
                       <th>Start Date</th>
                       <th>End Date</th>
                       <th>Students</th>
-                      <th>Trainer</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td>B001</td>
+                      <td>Web Development</td>
                       <td>01/01/2024</td>
                       <td>31/03/2024</td>
                       <td>25/30</td>
-                      <td>John Doe</td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                     <tr>
                       <td>B002</td>
+                      <td>Digital Marketing</td>
                       <td>15/01/2024</td>
                       <td>15/04/2024</td>
                       <td>20/25</td>
-                      <td>Jane Smith</td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                   </tbody>
@@ -468,12 +489,12 @@
     </div>
   </div>
 
-  <!-- Edit Course Modal -->
-  <div class="modal fade" id="editCourseModal">
+  <!-- Edit Center Modal -->
+  <div class="modal fade" id="editCenterModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit Course</h4>
+          <h4 class="modal-title">Edit Training Center</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -483,51 +504,65 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editCourseName">Course Name</label>
-                  <input type="text" class="form-control" id="editCourseName" value="Web Development" required>
-                </div>
-                <div class="form-group">
-                  <label for="editSector">Sector</label>
-                  <select class="form-control select2" id="editSector" required>
-                    <option value="SEC001" selected>Information Technology</option>
-                    <option value="SEC002">Digital Marketing</option>
+                  <label for="editPartner">Training Partner</label>
+                  <select class="form-control select2" id="editPartner" required>
+                    <option value="TP001" selected>ABC Training Solutions</option>
+                    <option value="TP002">XYZ Education Services</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="editDuration">Duration (months)</label>
-                  <input type="number" class="form-control" id="editDuration" value="3" required>
+                  <label for="editCenterName">Center Name</label>
+                  <input type="text" class="form-control" id="editCenterName" value="ABC Training Center - Mumbai" required>
                 </div>
                 <div class="form-group">
-                  <label for="editFee">Course Fee (₹)</label>
-                  <input type="number" class="form-control" id="editFee" value="15000" required>
+                  <label for="editContactPerson">Contact Person</label>
+                  <input type="text" class="form-control" id="editContactPerson" value="Rajesh Kumar" required>
+                </div>
+                <div class="form-group">
+                  <label for="editPhone">Phone</label>
+                  <input type="tel" class="form-control" id="editPhone" value="+91 9876543212" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editDescription">Description</label>
-                  <textarea class="form-control" id="editDescription" rows="3" required>Comprehensive web development course covering HTML, CSS, JavaScript, and modern frameworks</textarea>
+                  <label for="editAddress">Address</label>
+                  <textarea class="form-control" id="editAddress" rows="3" required>123, Main Street, Mumbai</textarea>
                 </div>
                 <div class="form-group">
-                  <label for="editPrerequisites">Prerequisites</label>
-                  <textarea class="form-control" id="editPrerequisites" rows="3">Basic computer knowledge</textarea>
+                  <label for="editCity">City</label>
+                  <input type="text" class="form-control" id="editCity" value="Mumbai" required>
                 </div>
                 <div class="form-group">
-                  <label for="editLearningOutcomes">Learning Outcomes</label>
-                  <textarea class="form-control" id="editLearningOutcomes" rows="3" required>Build responsive websites, work with databases, deploy applications</textarea>
+                  <label for="editState">State</label>
+                  <input type="text" class="form-control" id="editState" value="Maharashtra" required>
+                </div>
+                <div class="form-group">
+                  <label for="editPincode">Pincode</label>
+                  <input type="text" class="form-control" id="editPincode" value="400001" required>
                 </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editCapacity">Student Capacity</label>
+                  <input type="number" class="form-control" id="editCapacity" value="50" required>
+                </div>
+                <div class="form-group">
+                  <label for="editInfrastructure">Infrastructure Details</label>
+                  <textarea class="form-control" id="editInfrastructure" rows="3">Modern classroom with projectors and computers</textarea>
+                </div>
+              </div>
+              <div class="col-md-6">
                 <div class="form-group">
                   <label>Documents</label>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="editCourseDoc">
-                    <label class="custom-file-label" for="editCourseDoc">Course Document</label>
+                    <input type="file" class="custom-file-input" id="editCenterPhoto">
+                    <label class="custom-file-label" for="editCenterPhoto">Center Photo</label>
                   </div>
                   <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="editCurriculumDoc">
-                    <label class="custom-file-label" for="editCurriculumDoc">Curriculum Document</label>
+                    <input type="file" class="custom-file-input" id="editCenterDoc">
+                    <label class="custom-file-label" for="editCenterDoc">Center Documents</label>
                   </div>
                 </div>
               </div>
@@ -535,32 +570,31 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Update Course</button>
+            <button type="submit" class="btn btn-primary">Update Center</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- Delete Course Modal -->
-  <div class="modal fade" id="deleteCourseModal">
+  <!-- Delete Center Modal -->
+  <div class="modal fade" id="deleteCenterModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Delete Course</h4>
+          <h4 class="modal-title">Delete Training Center</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete this course? This action cannot be undone.</p>
-          <p><strong>Course:</strong> Web Development</p>
+          <p>Are you sure you want to delete this training center? This action cannot be undone.</p>
+          <p><strong>Center:</strong> ABC Training Center - Mumbai</p>
           <p><strong>Active Batches:</strong> 2</p>
-          <p><strong>Total Students:</strong> 45</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Course</button>
+          <button type="button" class="btn btn-danger">Delete Center</button>
         </div>
       </div>
     </div>
@@ -590,7 +624,7 @@
 <script>
   $(function () {
     // Initialize DataTable
-    $('#coursesTable').DataTable({
+    $('#centersTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,

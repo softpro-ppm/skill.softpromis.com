@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Assessment Management</title>
+  <title>Softpro Skill Solutions - Certificate Management</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -38,7 +38,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html" role="button">
+        <a class="nav-link" href="index.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -49,7 +49,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="dashboard.html" class="brand-link">
+    <a href="dashboard.php" class="brand-link">
       <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
     </a>
 
@@ -66,7 +66,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.html" class="nav-link">
+            <a href="dashboard.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
@@ -81,13 +81,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-partners.html" class="nav-link">
+                <a href="training-partners.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Partners</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link">
+                <a href="training-centers.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Training Centers</p>
                 </a>
@@ -104,25 +104,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="schemes.html" class="nav-link">
+                <a href="schemes.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Schemes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="sectors.html" class="nav-link">
+                <a href="sectors.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sectors</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="courses.html" class="nav-link">
+                <a href="courses.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Courses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="batches.html" class="nav-link">
+                <a href="batches.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Batches</p>
                 </a>
@@ -139,21 +139,27 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="students.html" class="nav-link">
+                <a href="students.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Students</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="fees.html" class="nav-link">
+                <a href="fees.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fee Management</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="assessments.html" class="nav-link active">
+                <a href="assessments.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Assessments</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="certificates.php" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Certificates</p>
                 </a>
               </li>
             </ul>
@@ -168,7 +174,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="reports.html" class="nav-link">
+                <a href="reports.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Reports</p>
                 </a>
@@ -185,7 +191,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="roles.html" class="nav-link">
+                <a href="roles.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles & Permissions</p>
                 </a>
@@ -206,12 +212,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Assessment Management</h1>
+            <h1 class="m-0">Certificate Management</h1>
           </div>
           <div class="col-sm-6">
             <div class="float-sm-right">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAssessmentModal">
-                <i class="fas fa-plus"></i> Add New Assessment
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertificateModal">
+                <i class="fas fa-plus"></i> Add New Certificate
               </button>
             </div>
           </div>
@@ -228,19 +234,19 @@
           <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>85%</h3>
-                <p>Average Score</p>
+                <h3>150</h3>
+                <p>Total Certificates</p>
               </div>
               <div class="icon">
-                <i class="fas fa-chart-line"></i>
+                <i class="fas fa-certificate"></i>
               </div>
             </div>
           </div>
           <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>75%</h3>
-                <p>Pass Rate</p>
+                <h3>120</h3>
+                <p>Issued Certificates</p>
               </div>
               <div class="icon">
                 <i class="fas fa-check-circle"></i>
@@ -250,8 +256,8 @@
           <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>15</h3>
-                <p>Pending Assessments</p>
+                <h3>20</h3>
+                <p>Pending Certificates</p>
               </div>
               <div class="icon">
                 <i class="fas fa-clock"></i>
@@ -261,8 +267,8 @@
           <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>5</h3>
-                <p>Failed Assessments</p>
+                <h3>10</h3>
+                <p>Expired Certificates</p>
               </div>
               <div class="icon">
                 <i class="fas fa-times-circle"></i>
@@ -271,62 +277,59 @@
           </div>
         </div>
 
-        <!-- Assessment List -->
+        <!-- Certificate List -->
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Assessment History</h3>
+            <h3 class="card-title">Certificate History</h3>
           </div>
           <div class="card-body">
-            <table id="assessmentsTable" class="table table-bordered table-striped">
+            <table id="certificatesTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Assessment ID</th>
+                  <th>Certificate No</th>
                   <th>Student</th>
                   <th>Course</th>
-                  <th>Type</th>
-                  <th>Date</th>
-                  <th>Score</th>
+                  <th>Issue Date</th>
+                  <th>Expiry Date</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>ASS001</td>
+                  <td>CERT001</td>
                   <td>Rahul Sharma</td>
                   <td>Web Development</td>
-                  <td>Practical</td>
                   <td>01/01/2024</td>
-                  <td>85%</td>
-                  <td><span class="badge badge-success">Passed</span></td>
+                  <td>01/01/2027</td>
+                  <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewAssessmentModal">
+                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCertificateModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editAssessmentModal">
+                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCertificateModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteAssessmentModal">
+                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCertificateModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>ASS002</td>
+                  <td>CERT002</td>
                   <td>Priya Patel</td>
                   <td>Digital Marketing</td>
-                  <td>Theory</td>
                   <td>15/01/2024</td>
-                  <td>65%</td>
-                  <td><span class="badge badge-warning">Pending Review</span></td>
+                  <td>15/01/2027</td>
+                  <td><span class="badge badge-warning">Pending</span></td>
                   <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewAssessmentModal">
+                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCertificateModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editAssessmentModal">
+                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCertificateModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteAssessmentModal">
+                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCertificateModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -341,23 +344,23 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Assessment Modal -->
-  <div class="modal fade" id="addAssessmentModal" tabindex="-1" role="dialog" aria-labelledby="addAssessmentModalLabel" aria-hidden="true">
+  <!-- Add Certificate Modal -->
+  <div class="modal fade" id="addCertificateModal" tabindex="-1" role="dialog" aria-labelledby="addCertificateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addAssessmentModalLabel">Add New Assessment</h5>
+          <h5 class="modal-title" id="addCertificateModalLabel">Add New Certificate</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form id="addAssessmentForm">
+          <form id="addCertificateForm">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="assessmentId">Assessment ID</label>
-                  <input type="text" class="form-control" id="assessmentId" readonly>
+                  <label for="certificateNo">Certificate Number</label>
+                  <input type="text" class="form-control" id="certificateNo" readonly>
                   <small class="form-text text-muted">Auto-generated</small>
                 </div>
                 <div class="form-group">
@@ -379,26 +382,31 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="assessmentType">Assessment Type</label>
-                  <select class="form-control" id="assessmentType" required>
-                    <option value="">Select Type</option>
-                    <option value="theory">Theory</option>
-                    <option value="practical">Practical</option>
-                    <option value="project">Project</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="assessmentDate">Assessment Date</label>
-                  <div class="input-group date" id="assessmentDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#assessmentDate" required>
-                    <div class="input-group-append" data-target="#assessmentDate" data-toggle="datetimepicker">
+                  <label for="issueDate">Issue Date</label>
+                  <div class="input-group date" id="issueDate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#issueDate" required>
+                    <div class="input-group-append" data-target="#issueDate" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="score">Score (%)</label>
-                  <input type="number" class="form-control" id="score" min="0" max="100" required>
+                  <label for="expiryDate">Expiry Date</label>
+                  <div class="input-group date" id="expiryDate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#expiryDate" required>
+                    <div class="input-group-append" data-target="#expiryDate" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="certificateType">Certificate Type</label>
+                  <select class="form-control" id="certificateType" required>
+                    <option value="">Select Type</option>
+                    <option value="completion">Course Completion</option>
+                    <option value="achievement">Achievement</option>
+                    <option value="specialization">Specialization</option>
+                  </select>
                 </div>
                 <div class="form-group">
                   <label for="remarks">Remarks</label>
@@ -410,18 +418,18 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Assessment</button>
+          <button type="button" class="btn btn-primary">Save Certificate</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- View Assessment Modal -->
-  <div class="modal fade" id="viewAssessmentModal" tabindex="-1" role="dialog" aria-labelledby="viewAssessmentModalLabel" aria-hidden="true">
+  <!-- View Certificate Modal -->
+  <div class="modal fade" id="viewCertificateModal" tabindex="-1" role="dialog" aria-labelledby="viewCertificateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="viewAssessmentModalLabel">View Assessment</h5>
+          <h5 class="modal-title" id="viewCertificateModalLabel">View Certificate</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -429,38 +437,38 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Assessment ID:</strong> <span id="viewAssessmentId"></span></p>
+              <p><strong>Certificate No:</strong> <span id="viewCertificateNo"></span></p>
               <p><strong>Student:</strong> <span id="viewStudent"></span></p>
               <p><strong>Course:</strong> <span id="viewCourse"></span></p>
               <p><strong>Batch:</strong> <span id="viewBatch"></span></p>
             </div>
             <div class="col-md-6">
-              <p><strong>Assessment Type:</strong> <span id="viewAssessmentType"></span></p>
-              <p><strong>Assessment Date:</strong> <span id="viewAssessmentDate"></span></p>
-              <p><strong>Score:</strong> <span id="viewScore"></span></p>
+              <p><strong>Issue Date:</strong> <span id="viewIssueDate"></span></p>
+              <p><strong>Expiry Date:</strong> <span id="viewExpiryDate"></span></p>
+              <p><strong>Certificate Type:</strong> <span id="viewCertificateType"></span></p>
               <p><strong>Status:</strong> <span id="viewStatus"></span></p>
             </div>
           </div>
           <div class="row mt-4">
             <div class="col-md-12">
-              <h6>Assessment History</h6>
+              <h6>Certificate History</h6>
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Assessment ID</th>
-                    <th>Date</th>
+                    <th>Certificate No</th>
+                    <th>Issue Date</th>
+                    <th>Expiry Date</th>
                     <th>Type</th>
-                    <th>Score</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>ASS001</td>
+                    <td>CERT001</td>
                     <td>01/01/2024</td>
-                    <td>Practical</td>
-                    <td>85%</td>
-                    <td><span class="badge badge-success">Passed</span></td>
+                    <td>01/01/2027</td>
+                    <td>Course Completion</td>
+                    <td><span class="badge badge-success">Active</span></td>
                   </tr>
                 </tbody>
               </table>
@@ -469,25 +477,25 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="window.print()">Print Assessment</button>
+          <button type="button" class="btn btn-primary" onclick="window.print()">Print Certificate</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Edit Assessment Modal -->
-  <div class="modal fade" id="editAssessmentModal" tabindex="-1" role="dialog" aria-labelledby="editAssessmentModalLabel" aria-hidden="true">
+  <!-- Edit Certificate Modal -->
+  <div class="modal fade" id="editCertificateModal" tabindex="-1" role="dialog" aria-labelledby="editCertificateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editAssessmentModalLabel">Edit Assessment</h5>
+          <h5 class="modal-title" id="editCertificateModalLabel">Edit Certificate</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form id="editAssessmentForm">
-            <!-- Same form fields as Add Assessment Modal -->
+          <form id="editCertificateForm">
+            <!-- Same form fields as Add Certificate Modal -->
             <!-- Pre-populated with existing data -->
           </form>
         </div>
@@ -499,18 +507,18 @@
     </div>
   </div>
 
-  <!-- Delete Assessment Modal -->
-  <div class="modal fade" id="deleteAssessmentModal" tabindex="-1" role="dialog" aria-labelledby="deleteAssessmentModalLabel" aria-hidden="true">
+  <!-- Delete Certificate Modal -->
+  <div class="modal fade" id="deleteCertificateModal" tabindex="-1" role="dialog" aria-labelledby="deleteCertificateModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteAssessmentModalLabel">Delete Assessment</h5>
+          <h5 class="modal-title" id="deleteCertificateModalLabel">Delete Certificate</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete this assessment? This action cannot be undone.</p>
+          <p>Are you sure you want to delete this certificate? This action cannot be undone.</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -544,7 +552,7 @@
 
 <script>
   $(function () {
-    $('#assessmentsTable').DataTable({
+    $('#certificatesTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -559,8 +567,8 @@
       theme: 'bootstrap4'
     });
 
-    // Initialize date picker
-    $('#assessmentDate').datetimepicker({
+    // Initialize date pickers
+    $('#issueDate, #expiryDate').datetimepicker({
       format: 'L'
     });
 

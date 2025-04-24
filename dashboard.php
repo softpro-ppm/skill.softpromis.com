@@ -62,7 +62,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html" role="button">
+        <a class="nav-link" href="index.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -73,7 +73,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="dashboard.html" class="brand-link">
+    <a href="dashboard.php" class="brand-link">
       <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
     </a>
 
@@ -91,7 +91,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.html" class="nav-link active">
+            <a href="dashboard.php" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
@@ -106,13 +106,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-partners.html" class="nav-link">
+                <a href="training-partners.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Partners</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link">
+                <a href="training-centers.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Training Centers</p>
                 </a>
@@ -129,25 +129,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="schemes.html" class="nav-link">
+                <a href="schemes.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Schemes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="sectors.html" class="nav-link">
+                <a href="sectors.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sectors</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="courses.html" class="nav-link">
+                <a href="courses.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Courses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="batches.html" class="nav-link">
+                <a href="batches.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Batches</p>
                 </a>
@@ -164,25 +164,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="students.html" class="nav-link">
+                <a href="students.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Students</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="fees.html" class="nav-link">
+                <a href="fees.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fee Management</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="assessments.html" class="nav-link">
+                <a href="assessments.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Assessments</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="certificates.html" class="nav-link">
+                <a href="certificates.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Certificates</p>
                 </a>
@@ -199,7 +199,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="reports.html" class="nav-link">
+                <a href="reports.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Reports</p>
                 </a>
@@ -216,7 +216,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="roles.html" class="nav-link">
+                <a href="roles.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles & Permissions</p>
                 </a>

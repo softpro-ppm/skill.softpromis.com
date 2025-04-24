@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Training Centers</title>
+  <title>Softpro Skill Solutions - Batches</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,6 +16,8 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.0.0/dist/select2-bootstrap4.min.css">
+  <!-- Tempus Dominus -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.39.0/build/css/tempusdominus-bootstrap-4.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -36,7 +38,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html" role="button">
+        <a class="nav-link" href="index.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -47,7 +49,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="dashboard.html" class="brand-link">
+    <a href="dashboard.php" class="brand-link">
       <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
     </a>
 
@@ -64,13 +66,13 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.html" class="nav-link">
+            <a href="dashboard.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
               <p>
                 Training Partners
@@ -79,13 +81,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-partners.html" class="nav-link">
+                <a href="training-partners.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Partners</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link active">
+                <a href="training-centers.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Training Centers</p>
                 </a>
@@ -93,7 +95,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-graduation-cap"></i>
               <p>
                 Training Programs
@@ -102,25 +104,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="schemes.html" class="nav-link">
+                <a href="schemes.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Schemes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="sectors.html" class="nav-link">
+                <a href="sectors.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sectors</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="courses.html" class="nav-link">
+                <a href="courses.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Courses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="batches.html" class="nav-link">
+                <a href="batches.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Batches</p>
                 </a>
@@ -137,25 +139,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="students.html" class="nav-link">
+                <a href="students.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Students</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="fees.html" class="nav-link">
+                <a href="fees.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fee Management</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="assessments.html" class="nav-link">
+                <a href="assessments.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Assessments</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="certificates.html" class="nav-link">
+                <a href="certificates.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Certificates</p>
                 </a>
@@ -172,7 +174,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="reports.html" class="nav-link">
+                <a href="reports.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Reports</p>
                 </a>
@@ -189,7 +191,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="roles.html" class="nav-link">
+                <a href="roles.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles & Permissions</p>
                 </a>
@@ -210,7 +212,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Training Centers</h1>
+            <h1 class="m-0">Batches</h1>
           </div>
         </div>
       </div>
@@ -220,70 +222,70 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Training Centers List -->
+        <!-- Batches List -->
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Training Centers List</h3>
+            <h3 class="card-title">Batches List</h3>
             <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCenterModal">
-                <i class="fas fa-plus"></i> Add New Center
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBatchModal">
+                <i class="fas fa-plus"></i> Add New Batch
               </button>
             </div>
           </div>
           <div class="card-body">
-            <table id="centersTable" class="table table-bordered table-striped">
+            <table id="batchesTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Center ID</th>
-                  <th>Name</th>
-                  <th>Partner</th>
-                  <th>Location</th>
-                  <th>Contact Person</th>
-                  <th>Phone</th>
-                  <th>Capacity</th>
+                  <th>Batch ID</th>
+                  <th>Course</th>
+                  <th>Training Center</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Students</th>
+                  <th>Trainer</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>TC001</td>
+                  <td>B001</td>
+                  <td>Web Development</td>
                   <td>ABC Training Center - Mumbai</td>
-                  <td>ABC Training Solutions</td>
-                  <td>Mumbai</td>
-                  <td>Rajesh Kumar</td>
-                  <td>+91 9876543212</td>
-                  <td>50</td>
+                  <td>01/01/2024</td>
+                  <td>31/03/2024</td>
+                  <td>25/30</td>
+                  <td>John Doe</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCenterModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewBatchModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCenterModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editBatchModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCenterModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteBatchModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>TC002</td>
+                  <td>B002</td>
+                  <td>Digital Marketing</td>
                   <td>ABC Training Center - Pune</td>
-                  <td>ABC Training Solutions</td>
-                  <td>Pune</td>
-                  <td>Priya Sharma</td>
-                  <td>+91 9876543213</td>
-                  <td>30</td>
+                  <td>15/01/2024</td>
+                  <td>15/04/2024</td>
+                  <td>20/25</td>
+                  <td>Jane Smith</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCenterModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewBatchModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCenterModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editBatchModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCenterModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteBatchModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -298,12 +300,12 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Center Modal -->
-  <div class="modal fade" id="addCenterModal">
+  <!-- Add Batch Modal -->
+  <div class="modal fade" id="addBatchModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Add New Training Center</h4>
+          <h4 class="modal-title">Add New Batch</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -313,86 +315,79 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="partner">Training Partner</label>
-                  <select class="form-control select2" id="partner" required>
-                    <option value="">Select Partner</option>
-                    <option value="TP001">ABC Training Solutions</option>
-                    <option value="TP002">XYZ Education Services</option>
+                  <label for="course">Course</label>
+                  <select class="form-control select2" id="course" required>
+                    <option value="">Select Course</option>
+                    <option value="C001">Web Development</option>
+                    <option value="C002">Digital Marketing</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="centerName">Center Name</label>
-                  <input type="text" class="form-control" id="centerName" placeholder="Enter center name" required>
+                  <label for="trainingCenter">Training Center</label>
+                  <select class="form-control select2" id="trainingCenter" required>
+                    <option value="">Select Center</option>
+                    <option value="TC001">ABC Training Center - Mumbai</option>
+                    <option value="TC002">ABC Training Center - Pune</option>
+                  </select>
                 </div>
                 <div class="form-group">
-                  <label for="contactPerson">Contact Person</label>
-                  <input type="text" class="form-control" id="contactPerson" placeholder="Enter contact person name" required>
+                  <label for="trainer">Trainer</label>
+                  <select class="form-control select2" id="trainer" required>
+                    <option value="">Select Trainer</option>
+                    <option value="T001">John Doe</option>
+                    <option value="T002">Jane Smith</option>
+                  </select>
                 </div>
                 <div class="form-group">
-                  <label for="phone">Phone</label>
-                  <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="address">Address</label>
-                  <textarea class="form-control" id="address" rows="3" placeholder="Enter full address" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="city">City</label>
-                  <input type="text" class="form-control" id="city" placeholder="Enter city" required>
-                </div>
-                <div class="form-group">
-                  <label for="state">State</label>
-                  <input type="text" class="form-control" id="state" placeholder="Enter state" required>
-                </div>
-                <div class="form-group">
-                  <label for="pincode">Pincode</label>
-                  <input type="text" class="form-control" id="pincode" placeholder="Enter pincode" required>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="capacity">Student Capacity</label>
-                  <input type="number" class="form-control" id="capacity" placeholder="Enter student capacity" required>
-                </div>
-                <div class="form-group">
-                  <label for="infrastructure">Infrastructure Details</label>
-                  <textarea class="form-control" id="infrastructure" rows="3" placeholder="Enter infrastructure details"></textarea>
+                  <label for="capacity">Batch Capacity</label>
+                  <input type="number" class="form-control" id="capacity" placeholder="Enter batch capacity" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Documents</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="centerPhoto">
-                    <label class="custom-file-label" for="centerPhoto">Center Photo</label>
+                  <label for="startDate">Start Date</label>
+                  <div class="input-group date" id="startDate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#startDate" required>
+                    <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
                   </div>
-                  <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="centerDoc">
-                    <label class="custom-file-label" for="centerDoc">Center Documents</label>
+                </div>
+                <div class="form-group">
+                  <label for="endDate">End Date</label>
+                  <div class="input-group date" id="endDate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#endDate" required>
+                    <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
                   </div>
+                </div>
+                <div class="form-group">
+                  <label for="schedule">Schedule</label>
+                  <textarea class="form-control" id="schedule" rows="3" placeholder="Enter batch schedule" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="remarks">Remarks</label>
+                  <textarea class="form-control" id="remarks" rows="3" placeholder="Enter any remarks"></textarea>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Center</button>
+            <button type="submit" class="btn btn-primary">Save Batch</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- View Center Modal -->
-  <div class="modal fade" id="viewCenterModal">
+  <!-- View Batch Modal -->
+  <div class="modal fade" id="viewBatchModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">View Training Center Details</h4>
+          <h4 class="modal-title">View Batch Details</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -401,42 +396,34 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Center ID</label>
-                <p>TC001</p>
+                <label>Batch ID</label>
+                <p>B001</p>
               </div>
-              <div class="form-group">
-                <label>Center Name</label>
+            <div class="form-group">
+                <label>Course</label>
+                <p>Web Development</p>
+            </div>
+            <div class="form-group">
+                <label>Training Center</label>
                 <p>ABC Training Center - Mumbai</p>
-              </div>
-            <div class="form-group">
-                <label>Training Partner</label>
-                <p>ABC Training Solutions</p>
             </div>
             <div class="form-group">
-                <label>Contact Person</label>
-                <p>Rajesh Kumar</p>
-            </div>
-            <div class="form-group">
-                <label>Phone</label>
-                <p>+91 9876543212</p>
+                <label>Trainer</label>
+                <p>John Doe</p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Address</label>
-                <p>123, Main Street, Mumbai</p>
+                <label>Start Date</label>
+                <p>01/01/2024</p>
               </div>
               <div class="form-group">
-                <label>City</label>
-                <p>Mumbai</p>
+                <label>End Date</label>
+                <p>31/03/2024</p>
               </div>
               <div class="form-group">
-                <label>State</label>
-                <p>Maharashtra</p>
-              </div>
-              <div class="form-group">
-                <label>Pincode</label>
-                <p>400001</p>
+                <label>Schedule</label>
+                <p>Monday to Friday, 10:00 AM - 1:00 PM</p>
             </div>
             <div class="form-group">
                 <label>Status</label>
@@ -446,34 +433,34 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <h5>Active Batches</h5>
+              <h5>Enrolled Students</h5>
               <div class="table-responsive">
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th>Batch ID</th>
-                      <th>Course</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>Students</th>
+                      <th>Student ID</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Fee Status</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>B001</td>
-                      <td>Web Development</td>
-                      <td>01/01/2024</td>
-                      <td>31/03/2024</td>
-                      <td>25/30</td>
+                      <td>S001</td>
+                      <td>Rajesh Kumar</td>
+                      <td>rajesh@example.com</td>
+                      <td>+91 9876543210</td>
+                      <td><span class="badge badge-success">Paid</span></td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                     <tr>
-                      <td>B002</td>
-                      <td>Digital Marketing</td>
-                      <td>15/01/2024</td>
-                      <td>15/04/2024</td>
-                      <td>20/25</td>
+                      <td>S002</td>
+                      <td>Priya Sharma</td>
+                      <td>priya@example.com</td>
+                      <td>+91 9876543211</td>
+                      <td><span class="badge badge-warning">Pending</span></td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                   </tbody>
@@ -489,12 +476,12 @@
     </div>
   </div>
 
-  <!-- Edit Center Modal -->
-  <div class="modal fade" id="editCenterModal">
+  <!-- Edit Batch Modal -->
+  <div class="modal fade" id="editBatchModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit Training Center</h4>
+          <h4 class="modal-title">Edit Batch</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -504,97 +491,89 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editPartner">Training Partner</label>
-                  <select class="form-control select2" id="editPartner" required>
-                    <option value="TP001" selected>ABC Training Solutions</option>
-                    <option value="TP002">XYZ Education Services</option>
+                  <label for="editCourse">Course</label>
+                  <select class="form-control select2" id="editCourse" required>
+                    <option value="C001" selected>Web Development</option>
+                    <option value="C002">Digital Marketing</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="editCenterName">Center Name</label>
-                  <input type="text" class="form-control" id="editCenterName" value="ABC Training Center - Mumbai" required>
+                  <label for="editTrainingCenter">Training Center</label>
+                  <select class="form-control select2" id="editTrainingCenter" required>
+                    <option value="TC001" selected>ABC Training Center - Mumbai</option>
+                    <option value="TC002">ABC Training Center - Pune</option>
+                  </select>
                 </div>
                 <div class="form-group">
-                  <label for="editContactPerson">Contact Person</label>
-                  <input type="text" class="form-control" id="editContactPerson" value="Rajesh Kumar" required>
+                  <label for="editTrainer">Trainer</label>
+                  <select class="form-control select2" id="editTrainer" required>
+                    <option value="T001" selected>John Doe</option>
+                    <option value="T002">Jane Smith</option>
+                  </select>
                 </div>
                 <div class="form-group">
-                  <label for="editPhone">Phone</label>
-                  <input type="tel" class="form-control" id="editPhone" value="+91 9876543212" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editAddress">Address</label>
-                  <textarea class="form-control" id="editAddress" rows="3" required>123, Main Street, Mumbai</textarea>
-                </div>
-                <div class="form-group">
-                  <label for="editCity">City</label>
-                  <input type="text" class="form-control" id="editCity" value="Mumbai" required>
-                </div>
-                <div class="form-group">
-                  <label for="editState">State</label>
-                  <input type="text" class="form-control" id="editState" value="Maharashtra" required>
-                </div>
-                <div class="form-group">
-                  <label for="editPincode">Pincode</label>
-                  <input type="text" class="form-control" id="editPincode" value="400001" required>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editCapacity">Student Capacity</label>
-                  <input type="number" class="form-control" id="editCapacity" value="50" required>
-                </div>
-                <div class="form-group">
-                  <label for="editInfrastructure">Infrastructure Details</label>
-                  <textarea class="form-control" id="editInfrastructure" rows="3">Modern classroom with projectors and computers</textarea>
+                  <label for="editCapacity">Batch Capacity</label>
+                  <input type="number" class="form-control" id="editCapacity" value="30" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Documents</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="editCenterPhoto">
-                    <label class="custom-file-label" for="editCenterPhoto">Center Photo</label>
+                  <label for="editStartDate">Start Date</label>
+                  <div class="input-group date" id="editStartDate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#editStartDate" value="01/01/2024" required>
+                    <div class="input-group-append" data-target="#editStartDate" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
                   </div>
-                  <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="editCenterDoc">
-                    <label class="custom-file-label" for="editCenterDoc">Center Documents</label>
+                </div>
+                <div class="form-group">
+                  <label for="editEndDate">End Date</label>
+                  <div class="input-group date" id="editEndDate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#editEndDate" value="31/03/2024" required>
+                    <div class="input-group-append" data-target="#editEndDate" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
                   </div>
+                </div>
+                <div class="form-group">
+                  <label for="editSchedule">Schedule</label>
+                  <textarea class="form-control" id="editSchedule" rows="3" required>Monday to Friday, 10:00 AM - 1:00 PM</textarea>
+                </div>
+                <div class="form-group">
+                  <label for="editRemarks">Remarks</label>
+                  <textarea class="form-control" id="editRemarks" rows="3">Regular batch with focus on practical training</textarea>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Update Center</button>
+            <button type="submit" class="btn btn-primary">Update Batch</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- Delete Center Modal -->
-  <div class="modal fade" id="deleteCenterModal">
+  <!-- Delete Batch Modal -->
+  <div class="modal fade" id="deleteBatchModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Delete Training Center</h4>
+          <h4 class="modal-title">Delete Batch</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete this training center? This action cannot be undone.</p>
-          <p><strong>Center:</strong> ABC Training Center - Mumbai</p>
-          <p><strong>Active Batches:</strong> 2</p>
+          <p>Are you sure you want to delete this batch? This action cannot be undone.</p>
+          <p><strong>Batch:</strong> B001 - Web Development</p>
+          <p><strong>Enrolled Students:</strong> 25</p>
+          <p><strong>Training Center:</strong> ABC Training Center - Mumbai</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Center</button>
+          <button type="button" class="btn btn-danger">Delete Batch</button>
         </div>
       </div>
     </div>
@@ -618,13 +597,13 @@
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 <!-- Select2 -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<!-- bs-custom-file-input -->
-<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+<!-- Tempus Dominus -->
+<script src="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.39.0/build/js/tempusdominus-bootstrap-4.min.js"></script>
 
 <script>
   $(function () {
     // Initialize DataTable
-    $('#centersTable').DataTable({
+    $('#batchesTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -639,8 +618,27 @@
       theme: 'bootstrap4'
     });
 
-    // Initialize custom file input
-    bsCustomFileInput.init();
+    // Initialize date pickers
+    $('#startDate, #endDate, #editStartDate, #editEndDate').datetimepicker({
+      format: 'DD/MM/YYYY',
+      useCurrent: false
+    });
+
+    // Set end date minimum to start date
+    $('#startDate').on('change.datetimepicker', function (e) {
+      $('#endDate').datetimepicker('minDate', e.date);
+    });
+    $('#endDate').on('change.datetimepicker', function (e) {
+      $('#startDate').datetimepicker('maxDate', e.date);
+    });
+
+    // Set edit end date minimum to edit start date
+    $('#editStartDate').on('change.datetimepicker', function (e) {
+      $('#editEndDate').datetimepicker('minDate', e.date);
+    });
+    $('#editEndDate').on('change.datetimepicker', function (e) {
+      $('#editStartDate').datetimepicker('maxDate', e.date);
+    });
   });
 </script>
 </body>

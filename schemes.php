@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Sectors</title>
+  <title>Softpro Skill Solutions - Schemes</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -36,7 +36,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html" role="button">
+        <a class="nav-link" href="index.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -47,7 +47,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="dashboard.html" class="brand-link">
+    <a href="dashboard.php" class="brand-link">
       <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
     </a>
 
@@ -64,7 +64,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.html" class="nav-link">
+            <a href="dashboard.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
@@ -79,13 +79,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-partners.html" class="nav-link">
+                <a href="training-partners.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Partners</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link">
+                <a href="training-centers.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Training Centers</p>
                 </a>
@@ -102,25 +102,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="schemes.html" class="nav-link">
+                <a href="schemes.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Schemes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="sectors.html" class="nav-link active">
+                <a href="sectors.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sectors</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="courses.html" class="nav-link">
+                <a href="courses.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Courses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="batches.html" class="nav-link">
+                <a href="batches.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Batches</p>
                 </a>
@@ -137,25 +137,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="students.html" class="nav-link">
+                <a href="students.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Students</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="fees.html" class="nav-link">
+                <a href="fees.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fee Management</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="assessments.html" class="nav-link">
+                <a href="assessments.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Assessments</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="certificates.html" class="nav-link">
+                <a href="certificates.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Certificates</p>
                 </a>
@@ -172,7 +172,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="reports.html" class="nav-link">
+                <a href="reports.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Reports</p>
                 </a>
@@ -189,7 +189,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="roles.html" class="nav-link">
+                <a href="roles.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles & Permissions</p>
                 </a>
@@ -210,7 +210,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Sectors</h1>
+            <h1 class="m-0">Schemes</h1>
           </div>
         </div>
       </div>
@@ -220,64 +220,67 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Sectors List -->
+        <!-- Schemes List -->
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Sectors List</h3>
+            <h3 class="card-title">Schemes List</h3>
             <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSectorModal">
-                <i class="fas fa-plus"></i> Add New Sector
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSchemeModal">
+                <i class="fas fa-plus"></i> Add New Scheme
               </button>
             </div>
           </div>
           <div class="card-body">
-            <table id="sectorsTable" class="table table-bordered table-striped">
+            <table id="schemesTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Sector ID</th>
+                  <th>Scheme ID</th>
                   <th>Name</th>
-                  <th>Description</th>
-                  <th>Total Courses</th>
-                  <th>Active Students</th>
+                  <th>Type</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Target Beneficiaries</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>SEC001</td>
-                  <td>Information Technology</td>
-                  <td>IT and Software Development</td>
-                  <td>5</td>
-                  <td>150</td>
+                  <td>S001</td>
+                  <td>PMKVY 4.0</td>
+                  <td>Government</td>
+                  <td>01/01/2024</td>
+                  <td>31/12/2024</td>
+                  <td>1000</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSectorModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSchemeModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSectorModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSchemeModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSectorModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSchemeModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>SEC002</td>
-                  <td>Digital Marketing</td>
-                  <td>Online Marketing and SEO</td>
-                  <td>3</td>
-                  <td>75</td>
+                  <td>S002</td>
+                  <td>DDU-GKY</td>
+                  <td>Government</td>
+                  <td>01/01/2024</td>
+                  <td>31/12/2025</td>
+                  <td>500</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSectorModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSchemeModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSectorModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSchemeModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSectorModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSchemeModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -292,12 +295,12 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Sector Modal -->
-  <div class="modal fade" id="addSectorModal">
+  <!-- Add Scheme Modal -->
+  <div class="modal fade" id="addSchemeModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Add New Sector</h4>
+          <h4 class="modal-title">Add New Scheme</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -307,31 +310,47 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="sectorName">Sector Name</label>
-                  <input type="text" class="form-control" id="sectorName" placeholder="Enter sector name" required>
+                  <label for="schemeName">Scheme Name</label>
+                  <input type="text" class="form-control" id="schemeName" placeholder="Enter scheme name" required>
                 </div>
                 <div class="form-group">
-                  <label for="sectorCode">Sector Code</label>
-                  <input type="text" class="form-control" id="sectorCode" placeholder="Enter sector code" required>
-                </div>
-                <div class="form-group">
-                  <label for="sectorType">Sector Type</label>
-                  <select class="form-control select2" id="sectorType" required>
+                  <label for="schemeType">Scheme Type</label>
+                  <select class="form-control select2" id="schemeType" required>
                     <option value="">Select Type</option>
-                    <option value="Technical">Technical</option>
-                    <option value="Non-Technical">Non-Technical</option>
-                    <option value="Vocational">Vocational</option>
+                    <option value="Government">Government</option>
+                    <option value="Private">Private</option>
+                    <option value="Corporate">Corporate</option>
                   </select>
+                </div>
+                <div class="form-group">
+                  <label for="startDate">Start Date</label>
+                  <input type="date" class="form-control" id="startDate" required>
+                </div>
+                <div class="form-group">
+                  <label for="endDate">End Date</label>
+                  <input type="date" class="form-control" id="endDate" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="description">Description</label>
-                  <textarea class="form-control" id="description" rows="3" placeholder="Enter sector description" required></textarea>
+                  <label for="targetBeneficiaries">Target Beneficiaries</label>
+                  <input type="number" class="form-control" id="targetBeneficiaries" placeholder="Enter target number" required>
                 </div>
                 <div class="form-group">
-                  <label for="jobRoles">Job Roles</label>
-                  <textarea class="form-control" id="jobRoles" rows="3" placeholder="Enter potential job roles" required></textarea>
+                  <label for="eligibility">Eligibility Criteria</label>
+                  <textarea class="form-control" id="eligibility" rows="3" placeholder="Enter eligibility criteria" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="benefits">Benefits</label>
+                  <textarea class="form-control" id="benefits" rows="3" placeholder="Enter scheme benefits" required></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea class="form-control" id="description" rows="3" placeholder="Enter scheme description"></textarea>
                 </div>
               </div>
             </div>
@@ -340,12 +359,12 @@
                 <div class="form-group">
                   <label>Documents</label>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="sectorDoc">
-                    <label class="custom-file-label" for="sectorDoc">Sector Document</label>
+                    <input type="file" class="custom-file-input" id="schemeDoc">
+                    <label class="custom-file-label" for="schemeDoc">Scheme Document</label>
                   </div>
                   <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="curriculumDoc">
-                    <label class="custom-file-label" for="curriculumDoc">Curriculum Document</label>
+                    <input type="file" class="custom-file-input" id="guidelinesDoc">
+                    <label class="custom-file-label" for="guidelinesDoc">Guidelines Document</label>
                   </div>
                 </div>
               </div>
@@ -353,19 +372,19 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Sector</button>
+            <button type="submit" class="btn btn-primary">Save Scheme</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- View Sector Modal -->
-  <div class="modal fade" id="viewSectorModal">
+  <!-- View Scheme Modal -->
+  <div class="modal fade" id="viewSchemeModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">View Sector Details</h4>
+          <h4 class="modal-title">View Scheme Details</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -374,34 +393,38 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Sector ID</label>
-                <p>SEC001</p>
+                <label>Scheme ID</label>
+                <p>S001</p>
               </div>
               <div class="form-group">
-                <label>Sector Name</label>
-                <p>Information Technology</p>
+                <label>Scheme Name</label>
+                <p>PMKVY 4.0</p>
               </div>
               <div class="form-group">
-                <label>Sector Type</label>
-                <p>Technical</p>
+                <label>Scheme Type</label>
+                <p>Government</p>
               </div>
               <div class="form-group">
-                <label>Description</label>
-                <p>IT and Software Development</p>
+                <label>Start Date</label>
+                <p>01/01/2024</p>
+              </div>
+              <div class="form-group">
+                <label>End Date</label>
+                <p>31/12/2024</p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Job Roles</label>
-                <p>Software Developer, Web Developer, Database Administrator</p>
+                <label>Target Beneficiaries</label>
+                <p>1000</p>
               </div>
               <div class="form-group">
-                <label>Total Courses</label>
-                <p>5</p>
+                <label>Eligibility Criteria</label>
+                <p>Age: 18-35 years, Education: 10th pass</p>
               </div>
               <div class="form-group">
-                <label>Active Students</label>
-                <p>150</p>
+                <label>Benefits</label>
+                <p>Free training, Certification, Placement assistance</p>
               </div>
               <div class="form-group">
                 <label>Status</label>
@@ -420,7 +443,6 @@
                       <th>Name</th>
                       <th>Duration</th>
                       <th>Fee</th>
-                      <th>Students</th>
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -430,15 +452,13 @@
                       <td>Web Development</td>
                       <td>3 months</td>
                       <td>₹15,000</td>
-                      <td>50</td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                     <tr>
                       <td>C002</td>
-                      <td>Mobile App Development</td>
-                      <td>4 months</td>
-                      <td>₹20,000</td>
-                      <td>35</td>
+                      <td>Digital Marketing</td>
+                      <td>2 months</td>
+                      <td>₹12,000</td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                   </tbody>
@@ -454,12 +474,12 @@
     </div>
   </div>
 
-  <!-- Edit Sector Modal -->
-  <div class="modal fade" id="editSectorModal">
+  <!-- Edit Scheme Modal -->
+  <div class="modal fade" id="editSchemeModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit Sector</h4>
+          <h4 class="modal-title">Edit Scheme</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -469,30 +489,46 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editSectorName">Sector Name</label>
-                  <input type="text" class="form-control" id="editSectorName" value="Information Technology" required>
+                  <label for="editSchemeName">Scheme Name</label>
+                  <input type="text" class="form-control" id="editSchemeName" value="PMKVY 4.0" required>
                 </div>
                 <div class="form-group">
-                  <label for="editSectorCode">Sector Code</label>
-                  <input type="text" class="form-control" id="editSectorCode" value="SEC001" required>
-                </div>
-                <div class="form-group">
-                  <label for="editSectorType">Sector Type</label>
-                  <select class="form-control select2" id="editSectorType" required>
-                    <option value="Technical" selected>Technical</option>
-                    <option value="Non-Technical">Non-Technical</option>
-                    <option value="Vocational">Vocational</option>
+                  <label for="editSchemeType">Scheme Type</label>
+                  <select class="form-control select2" id="editSchemeType" required>
+                    <option value="Government" selected>Government</option>
+                    <option value="Private">Private</option>
+                    <option value="Corporate">Corporate</option>
                   </select>
+                </div>
+                <div class="form-group">
+                  <label for="editStartDate">Start Date</label>
+                  <input type="date" class="form-control" id="editStartDate" value="2024-01-01" required>
+                </div>
+                <div class="form-group">
+                  <label for="editEndDate">End Date</label>
+                  <input type="date" class="form-control" id="editEndDate" value="2024-12-31" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editDescription">Description</label>
-                  <textarea class="form-control" id="editDescription" rows="3" required>IT and Software Development</textarea>
+                  <label for="editTargetBeneficiaries">Target Beneficiaries</label>
+                  <input type="number" class="form-control" id="editTargetBeneficiaries" value="1000" required>
                 </div>
                 <div class="form-group">
-                  <label for="editJobRoles">Job Roles</label>
-                  <textarea class="form-control" id="editJobRoles" rows="3" required>Software Developer, Web Developer, Database Administrator</textarea>
+                  <label for="editEligibility">Eligibility Criteria</label>
+                  <textarea class="form-control" id="editEligibility" rows="3" required>Age: 18-35 years, Education: 10th pass</textarea>
+                </div>
+                <div class="form-group">
+                  <label for="editBenefits">Benefits</label>
+                  <textarea class="form-control" id="editBenefits" rows="3" required>Free training, Certification, Placement assistance</textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="editDescription">Description</label>
+                  <textarea class="form-control" id="editDescription" rows="3">Pradhan Mantri Kaushal Vikas Yojana 4.0</textarea>
                 </div>
               </div>
             </div>
@@ -501,12 +537,12 @@
                 <div class="form-group">
                   <label>Documents</label>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="editSectorDoc">
-                    <label class="custom-file-label" for="editSectorDoc">Sector Document</label>
+                    <input type="file" class="custom-file-input" id="editSchemeDoc">
+                    <label class="custom-file-label" for="editSchemeDoc">Scheme Document</label>
                   </div>
                   <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="editCurriculumDoc">
-                    <label class="custom-file-label" for="editCurriculumDoc">Curriculum Document</label>
+                    <input type="file" class="custom-file-input" id="editGuidelinesDoc">
+                    <label class="custom-file-label" for="editGuidelinesDoc">Guidelines Document</label>
                   </div>
                 </div>
               </div>
@@ -514,32 +550,31 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Update Sector</button>
+            <button type="submit" class="btn btn-primary">Update Scheme</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- Delete Sector Modal -->
-  <div class="modal fade" id="deleteSectorModal">
+  <!-- Delete Scheme Modal -->
+  <div class="modal fade" id="deleteSchemeModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Delete Sector</h4>
+          <h4 class="modal-title">Delete Scheme</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete this sector? This action cannot be undone.</p>
-          <p><strong>Sector:</strong> Information Technology</p>
-          <p><strong>Associated Courses:</strong> 5</p>
-          <p><strong>Active Students:</strong> 150</p>
+          <p>Are you sure you want to delete this scheme? This action cannot be undone.</p>
+          <p><strong>Scheme:</strong> PMKVY 4.0</p>
+          <p><strong>Associated Courses:</strong> 2</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Sector</button>
+          <button type="button" class="btn btn-danger">Delete Scheme</button>
         </div>
       </div>
     </div>
@@ -569,7 +604,7 @@
 <script>
   $(function () {
     // Initialize DataTable
-    $('#sectorsTable').DataTable({
+    $('#schemesTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,

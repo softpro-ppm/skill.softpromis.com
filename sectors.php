@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Training Partners</title>
+  <title>Softpro Skill Solutions - Sectors</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -36,7 +36,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html" role="button">
+        <a class="nav-link" href="index.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -47,7 +47,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="dashboard.html" class="brand-link">
+    <a href="dashboard.php" class="brand-link">
       <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
     </a>
 
@@ -64,13 +64,13 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.html" class="nav-link">
+            <a href="dashboard.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link active">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
               <p>
                 Training Partners
@@ -79,13 +79,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-partners.html" class="nav-link active">
+                <a href="training-partners.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Partners</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link">
+                <a href="training-centers.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Training Centers</p>
                 </a>
@@ -93,7 +93,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-graduation-cap"></i>
               <p>
                 Training Programs
@@ -102,25 +102,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="schemes.html" class="nav-link">
+                <a href="schemes.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Schemes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="sectors.html" class="nav-link">
+                <a href="sectors.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sectors</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="courses.html" class="nav-link">
+                <a href="courses.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Courses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="batches.html" class="nav-link">
+                <a href="batches.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Batches</p>
                 </a>
@@ -137,25 +137,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="students.html" class="nav-link">
+                <a href="students.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Students</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="fees.html" class="nav-link">
+                <a href="fees.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fee Management</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="assessments.html" class="nav-link">
+                <a href="assessments.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Assessments</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="certificates.html" class="nav-link">
+                <a href="certificates.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Certificates</p>
                 </a>
@@ -172,7 +172,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="reports.html" class="nav-link">
+                <a href="reports.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Reports</p>
                 </a>
@@ -189,7 +189,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="roles.html" class="nav-link">
+                <a href="roles.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles & Permissions</p>
                 </a>
@@ -210,7 +210,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Training Partners</h1>
+            <h1 class="m-0">Sectors</h1>
           </div>
         </div>
       </div>
@@ -220,67 +220,64 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Training Partners List -->
+        <!-- Sectors List -->
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Training Partners List</h3>
+            <h3 class="card-title">Sectors List</h3>
             <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPartnerModal">
-                <i class="fas fa-plus"></i> Add New Partner
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSectorModal">
+                <i class="fas fa-plus"></i> Add New Sector
               </button>
             </div>
           </div>
           <div class="card-body">
-            <table id="partnersTable" class="table table-bordered table-striped">
+            <table id="sectorsTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Partner ID</th>
+                  <th>Sector ID</th>
                   <th>Name</th>
-                  <th>Contact Person</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Training Centers</th>
+                  <th>Description</th>
+                  <th>Total Courses</th>
+                  <th>Active Students</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>TP001</td>
-                  <td>ABC Training Solutions</td>
-                  <td>John Doe</td>
-                  <td>+91 9876543210</td>
-                  <td>john@abctraining.com</td>
-                  <td>3</td>
+                  <td>SEC001</td>
+                  <td>Information Technology</td>
+                  <td>IT and Software Development</td>
+                  <td>5</td>
+                  <td>150</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewPartnerModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSectorModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editPartnerModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSectorModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletePartnerModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSectorModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>TP002</td>
-                  <td>XYZ Education Services</td>
-                  <td>Jane Smith</td>
-                  <td>+91 9876543211</td>
-                  <td>jane@xyzeducation.com</td>
-                  <td>2</td>
+                  <td>SEC002</td>
+                  <td>Digital Marketing</td>
+                  <td>Online Marketing and SEO</td>
+                  <td>3</td>
+                  <td>75</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewPartnerModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSectorModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editPartnerModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSectorModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletePartnerModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSectorModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -295,12 +292,12 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Partner Modal -->
-  <div class="modal fade" id="addPartnerModal">
+  <!-- Add Sector Modal -->
+  <div class="modal fade" id="addSectorModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Add New Training Partner</h4>
+          <h4 class="modal-title">Add New Sector</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -310,46 +307,31 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="partnerName">Partner Name</label>
-                  <input type="text" class="form-control" id="partnerName" placeholder="Enter partner name" required>
+                  <label for="sectorName">Sector Name</label>
+                  <input type="text" class="form-control" id="sectorName" placeholder="Enter sector name" required>
                 </div>
                 <div class="form-group">
-                  <label for="contactPerson">Contact Person</label>
-                  <input type="text" class="form-control" id="contactPerson" placeholder="Enter contact person name" required>
+                  <label for="sectorCode">Sector Code</label>
+                  <input type="text" class="form-control" id="sectorCode" placeholder="Enter sector code" required>
                 </div>
                 <div class="form-group">
-                  <label for="phone">Phone</label>
-                  <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
-                </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" placeholder="Enter email address" required>
+                  <label for="sectorType">Sector Type</label>
+                  <select class="form-control select2" id="sectorType" required>
+                    <option value="">Select Type</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Non-Technical">Non-Technical</option>
+                    <option value="Vocational">Vocational</option>
+                  </select>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="address">Address</label>
-                  <textarea class="form-control" id="address" rows="3" placeholder="Enter full address" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="city">City</label>
-                  <input type="text" class="form-control" id="city" placeholder="Enter city" required>
-                </div>
-                <div class="form-group">
-                  <label for="state">State</label>
-                  <input type="text" class="form-control" id="state" placeholder="Enter state" required>
-                </div>
-                <div class="form-group">
-                  <label for="pincode">Pincode</label>
-                  <input type="text" class="form-control" id="pincode" placeholder="Enter pincode" required>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
                   <label for="description">Description</label>
-                  <textarea class="form-control" id="description" rows="3" placeholder="Enter partner description"></textarea>
+                  <textarea class="form-control" id="description" rows="3" placeholder="Enter sector description" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="jobRoles">Job Roles</label>
+                  <textarea class="form-control" id="jobRoles" rows="3" placeholder="Enter potential job roles" required></textarea>
                 </div>
               </div>
             </div>
@@ -358,12 +340,12 @@
                 <div class="form-group">
                   <label>Documents</label>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="registrationDoc">
-                    <label class="custom-file-label" for="registrationDoc">Registration Certificate</label>
+                    <input type="file" class="custom-file-input" id="sectorDoc">
+                    <label class="custom-file-label" for="sectorDoc">Sector Document</label>
                   </div>
                   <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="gstDoc">
-                    <label class="custom-file-label" for="gstDoc">GST Certificate</label>
+                    <input type="file" class="custom-file-input" id="curriculumDoc">
+                    <label class="custom-file-label" for="curriculumDoc">Curriculum Document</label>
                   </div>
                 </div>
               </div>
@@ -371,19 +353,19 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Partner</button>
+            <button type="submit" class="btn btn-primary">Save Sector</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- View Partner Modal -->
-  <div class="modal fade" id="viewPartnerModal">
+  <!-- View Sector Modal -->
+  <div class="modal fade" id="viewSectorModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">View Training Partner Details</h4>
+          <h4 class="modal-title">View Sector Details</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -392,42 +374,34 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Partner ID</label>
-                <p>TP001</p>
+                <label>Sector ID</label>
+                <p>SEC001</p>
               </div>
               <div class="form-group">
-                <label>Partner Name</label>
-                <p>ABC Training Solutions</p>
+                <label>Sector Name</label>
+                <p>Information Technology</p>
               </div>
               <div class="form-group">
-                <label>Contact Person</label>
-                <p>John Doe</p>
+                <label>Sector Type</label>
+                <p>Technical</p>
               </div>
               <div class="form-group">
-                <label>Phone</label>
-                <p>+91 9876543210</p>
-              </div>
-              <div class="form-group">
-                <label>Email</label>
-                <p>john@abctraining.com</p>
+                <label>Description</label>
+                <p>IT and Software Development</p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Address</label>
-                <p>123, Main Street, City Center</p>
+                <label>Job Roles</label>
+                <p>Software Developer, Web Developer, Database Administrator</p>
               </div>
               <div class="form-group">
-                <label>City</label>
-                <p>Mumbai</p>
+                <label>Total Courses</label>
+                <p>5</p>
               </div>
               <div class="form-group">
-                <label>State</label>
-                <p>Maharashtra</p>
-              </div>
-              <div class="form-group">
-                <label>Pincode</label>
-                <p>400001</p>
+                <label>Active Students</label>
+                <p>150</p>
               </div>
               <div class="form-group">
                 <label>Status</label>
@@ -437,28 +411,34 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <h5>Training Centers</h5>
+              <h5>Associated Courses</h5>
               <div class="table-responsive">
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th>Center ID</th>
+                      <th>Course ID</th>
                       <th>Name</th>
-                      <th>Address</th>
+                      <th>Duration</th>
+                      <th>Fee</th>
+                      <th>Students</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>TC001</td>
-                      <td>ABC Training Center - Mumbai</td>
-                      <td>123, Main Street, Mumbai</td>
+                      <td>C001</td>
+                      <td>Web Development</td>
+                      <td>3 months</td>
+                      <td>₹15,000</td>
+                      <td>50</td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                     <tr>
-                      <td>TC002</td>
-                      <td>ABC Training Center - Pune</td>
-                      <td>456, Park Road, Pune</td>
+                      <td>C002</td>
+                      <td>Mobile App Development</td>
+                      <td>4 months</td>
+                      <td>₹20,000</td>
+                      <td>35</td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                   </tbody>
@@ -474,12 +454,12 @@
     </div>
   </div>
 
-  <!-- Edit Partner Modal -->
-  <div class="modal fade" id="editPartnerModal">
+  <!-- Edit Sector Modal -->
+  <div class="modal fade" id="editSectorModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit Training Partner</h4>
+          <h4 class="modal-title">Edit Sector</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -489,46 +469,30 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editPartnerName">Partner Name</label>
-                  <input type="text" class="form-control" id="editPartnerName" value="ABC Training Solutions" required>
+                  <label for="editSectorName">Sector Name</label>
+                  <input type="text" class="form-control" id="editSectorName" value="Information Technology" required>
                 </div>
                 <div class="form-group">
-                  <label for="editContactPerson">Contact Person</label>
-                  <input type="text" class="form-control" id="editContactPerson" value="John Doe" required>
+                  <label for="editSectorCode">Sector Code</label>
+                  <input type="text" class="form-control" id="editSectorCode" value="SEC001" required>
                 </div>
                 <div class="form-group">
-                  <label for="editPhone">Phone</label>
-                  <input type="tel" class="form-control" id="editPhone" value="+91 9876543210" required>
-                </div>
-                <div class="form-group">
-                  <label for="editEmail">Email</label>
-                  <input type="email" class="form-control" id="editEmail" value="john@abctraining.com" required>
+                  <label for="editSectorType">Sector Type</label>
+                  <select class="form-control select2" id="editSectorType" required>
+                    <option value="Technical" selected>Technical</option>
+                    <option value="Non-Technical">Non-Technical</option>
+                    <option value="Vocational">Vocational</option>
+                  </select>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editAddress">Address</label>
-                  <textarea class="form-control" id="editAddress" rows="3" required>123, Main Street, City Center</textarea>
-                </div>
-                <div class="form-group">
-                  <label for="editCity">City</label>
-                  <input type="text" class="form-control" id="editCity" value="Mumbai" required>
-                </div>
-                <div class="form-group">
-                  <label for="editState">State</label>
-                  <input type="text" class="form-control" id="editState" value="Maharashtra" required>
-                </div>
-                <div class="form-group">
-                  <label for="editPincode">Pincode</label>
-                  <input type="text" class="form-control" id="editPincode" value="400001" required>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
                   <label for="editDescription">Description</label>
-                  <textarea class="form-control" id="editDescription" rows="3">Leading training provider in Mumbai</textarea>
+                  <textarea class="form-control" id="editDescription" rows="3" required>IT and Software Development</textarea>
+                </div>
+                <div class="form-group">
+                  <label for="editJobRoles">Job Roles</label>
+                  <textarea class="form-control" id="editJobRoles" rows="3" required>Software Developer, Web Developer, Database Administrator</textarea>
                 </div>
               </div>
             </div>
@@ -537,12 +501,12 @@
                 <div class="form-group">
                   <label>Documents</label>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="editRegistrationDoc">
-                    <label class="custom-file-label" for="editRegistrationDoc">Registration Certificate</label>
+                    <input type="file" class="custom-file-input" id="editSectorDoc">
+                    <label class="custom-file-label" for="editSectorDoc">Sector Document</label>
                   </div>
                   <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="editGstDoc">
-                    <label class="custom-file-label" for="editGstDoc">GST Certificate</label>
+                    <input type="file" class="custom-file-input" id="editCurriculumDoc">
+                    <label class="custom-file-label" for="editCurriculumDoc">Curriculum Document</label>
                   </div>
                 </div>
               </div>
@@ -550,31 +514,32 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Update Partner</button>
+            <button type="submit" class="btn btn-primary">Update Sector</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- Delete Partner Modal -->
-  <div class="modal fade" id="deletePartnerModal">
+  <!-- Delete Sector Modal -->
+  <div class="modal fade" id="deleteSectorModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Delete Training Partner</h4>
+          <h4 class="modal-title">Delete Sector</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete this training partner? This action cannot be undone.</p>
-          <p><strong>Partner:</strong> ABC Training Solutions</p>
-          <p><strong>Training Centers:</strong> 3</p>
+          <p>Are you sure you want to delete this sector? This action cannot be undone.</p>
+          <p><strong>Sector:</strong> Information Technology</p>
+          <p><strong>Associated Courses:</strong> 5</p>
+          <p><strong>Active Students:</strong> 150</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Partner</button>
+          <button type="button" class="btn btn-danger">Delete Sector</button>
         </div>
       </div>
     </div>
@@ -604,7 +569,7 @@
 <script>
   $(function () {
     // Initialize DataTable
-    $('#partnersTable').DataTable({
+    $('#sectorsTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,

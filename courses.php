@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Schemes</title>
+  <title>Softpro Skill Solutions - Courses</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -36,7 +36,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html" role="button">
+        <a class="nav-link" href="index.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -47,7 +47,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="dashboard.html" class="brand-link">
+    <a href="dashboard.php" class="brand-link">
       <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
     </a>
 
@@ -64,7 +64,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.html" class="nav-link">
+            <a href="dashboard.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
@@ -79,13 +79,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-partners.html" class="nav-link">
+                <a href="training-partners.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Partners</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link">
+                <a href="training-centers.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Training Centers</p>
                 </a>
@@ -102,25 +102,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="schemes.html" class="nav-link active">
+                <a href="schemes.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Schemes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="sectors.html" class="nav-link">
+                <a href="sectors.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sectors</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="courses.html" class="nav-link">
+                <a href="courses.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Courses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="batches.html" class="nav-link">
+                <a href="batches.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Batches</p>
                 </a>
@@ -137,25 +137,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="students.html" class="nav-link">
+                <a href="students.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Students</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="fees.html" class="nav-link">
+                <a href="fees.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fee Management</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="assessments.html" class="nav-link">
+                <a href="assessments.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Assessments</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="certificates.html" class="nav-link">
+                <a href="certificates.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Certificates</p>
                 </a>
@@ -172,7 +172,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="reports.html" class="nav-link">
+                <a href="reports.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Reports</p>
                 </a>
@@ -189,7 +189,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="roles.html" class="nav-link">
+                <a href="roles.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles & Permissions</p>
                 </a>
@@ -210,7 +210,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Schemes</h1>
+            <h1 class="m-0">Courses</h1>
           </div>
         </div>
       </div>
@@ -220,67 +220,67 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Schemes List -->
+        <!-- Courses List -->
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Schemes List</h3>
+            <h3 class="card-title">Courses List</h3>
             <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSchemeModal">
-                <i class="fas fa-plus"></i> Add New Scheme
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCourseModal">
+                <i class="fas fa-plus"></i> Add New Course
               </button>
             </div>
           </div>
           <div class="card-body">
-            <table id="schemesTable" class="table table-bordered table-striped">
+            <table id="coursesTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Scheme ID</th>
+                  <th>Course ID</th>
                   <th>Name</th>
-                  <th>Type</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Target Beneficiaries</th>
+                  <th>Sector</th>
+                  <th>Duration</th>
+                  <th>Fee</th>
+                  <th>Active Batches</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>S001</td>
-                  <td>PMKVY 4.0</td>
-                  <td>Government</td>
-                  <td>01/01/2024</td>
-                  <td>31/12/2024</td>
-                  <td>1000</td>
+                  <td>C001</td>
+                  <td>Web Development</td>
+                  <td>Information Technology</td>
+                  <td>3 months</td>
+                  <td>₹15,000</td>
+                  <td>2</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSchemeModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCourseModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSchemeModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCourseModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSchemeModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCourseModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>S002</td>
-                  <td>DDU-GKY</td>
-                  <td>Government</td>
-                  <td>01/01/2024</td>
-                  <td>31/12/2025</td>
-                  <td>500</td>
+                  <td>C002</td>
+                  <td>Digital Marketing</td>
+                  <td>Digital Marketing</td>
+                  <td>2 months</td>
+                  <td>₹12,000</td>
+                  <td>1</td>
                   <td><span class="badge badge-success">Active</span></td>
                   <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSchemeModal">
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCourseModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSchemeModal">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCourseModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSchemeModal">
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCourseModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -295,12 +295,12 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Scheme Modal -->
-  <div class="modal fade" id="addSchemeModal">
+  <!-- Add Course Modal -->
+  <div class="modal fade" id="addCourseModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Add New Scheme</h4>
+          <h4 class="modal-title">Add New Course</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -310,47 +310,38 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="schemeName">Scheme Name</label>
-                  <input type="text" class="form-control" id="schemeName" placeholder="Enter scheme name" required>
+                  <label for="courseName">Course Name</label>
+                  <input type="text" class="form-control" id="courseName" placeholder="Enter course name" required>
                 </div>
                 <div class="form-group">
-                  <label for="schemeType">Scheme Type</label>
-                  <select class="form-control select2" id="schemeType" required>
-                    <option value="">Select Type</option>
-                    <option value="Government">Government</option>
-                    <option value="Private">Private</option>
-                    <option value="Corporate">Corporate</option>
+                  <label for="sector">Sector</label>
+                  <select class="form-control select2" id="sector" required>
+                    <option value="">Select Sector</option>
+                    <option value="SEC001">Information Technology</option>
+                    <option value="SEC002">Digital Marketing</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="startDate">Start Date</label>
-                  <input type="date" class="form-control" id="startDate" required>
+                  <label for="duration">Duration (months)</label>
+                  <input type="number" class="form-control" id="duration" placeholder="Enter duration" required>
                 </div>
                 <div class="form-group">
-                  <label for="endDate">End Date</label>
-                  <input type="date" class="form-control" id="endDate" required>
+                  <label for="fee">Course Fee (₹)</label>
+                  <input type="number" class="form-control" id="fee" placeholder="Enter fee" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="targetBeneficiaries">Target Beneficiaries</label>
-                  <input type="number" class="form-control" id="targetBeneficiaries" placeholder="Enter target number" required>
-                </div>
-                <div class="form-group">
-                  <label for="eligibility">Eligibility Criteria</label>
-                  <textarea class="form-control" id="eligibility" rows="3" placeholder="Enter eligibility criteria" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="benefits">Benefits</label>
-                  <textarea class="form-control" id="benefits" rows="3" placeholder="Enter scheme benefits" required></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
                   <label for="description">Description</label>
-                  <textarea class="form-control" id="description" rows="3" placeholder="Enter scheme description"></textarea>
+                  <textarea class="form-control" id="description" rows="3" placeholder="Enter course description" required></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="prerequisites">Prerequisites</label>
+                  <textarea class="form-control" id="prerequisites" rows="3" placeholder="Enter prerequisites"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="learningOutcomes">Learning Outcomes</label>
+                  <textarea class="form-control" id="learningOutcomes" rows="3" placeholder="Enter learning outcomes" required></textarea>
                 </div>
               </div>
             </div>
@@ -359,12 +350,12 @@
                 <div class="form-group">
                   <label>Documents</label>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="schemeDoc">
-                    <label class="custom-file-label" for="schemeDoc">Scheme Document</label>
+                    <input type="file" class="custom-file-input" id="courseDoc">
+                    <label class="custom-file-label" for="courseDoc">Course Document</label>
                   </div>
                   <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="guidelinesDoc">
-                    <label class="custom-file-label" for="guidelinesDoc">Guidelines Document</label>
+                    <input type="file" class="custom-file-input" id="curriculumDoc">
+                    <label class="custom-file-label" for="curriculumDoc">Curriculum Document</label>
                   </div>
                 </div>
               </div>
@@ -372,19 +363,19 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Scheme</button>
+            <button type="submit" class="btn btn-primary">Save Course</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- View Scheme Modal -->
-  <div class="modal fade" id="viewSchemeModal">
+  <!-- View Course Modal -->
+  <div class="modal fade" id="viewCourseModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">View Scheme Details</h4>
+          <h4 class="modal-title">View Course Details</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -393,38 +384,38 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Scheme ID</label>
-                <p>S001</p>
+                <label>Course ID</label>
+                <p>C001</p>
               </div>
               <div class="form-group">
-                <label>Scheme Name</label>
-                <p>PMKVY 4.0</p>
+                <label>Course Name</label>
+                <p>Web Development</p>
               </div>
               <div class="form-group">
-                <label>Scheme Type</label>
-                <p>Government</p>
+                <label>Sector</label>
+                <p>Information Technology</p>
               </div>
               <div class="form-group">
-                <label>Start Date</label>
-                <p>01/01/2024</p>
+                <label>Duration</label>
+                <p>3 months</p>
               </div>
               <div class="form-group">
-                <label>End Date</label>
-                <p>31/12/2024</p>
+                <label>Fee</label>
+                <p>₹15,000</p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Target Beneficiaries</label>
-                <p>1000</p>
+                <label>Description</label>
+                <p>Comprehensive web development course covering HTML, CSS, JavaScript, and modern frameworks</p>
               </div>
               <div class="form-group">
-                <label>Eligibility Criteria</label>
-                <p>Age: 18-35 years, Education: 10th pass</p>
+                <label>Prerequisites</label>
+                <p>Basic computer knowledge</p>
               </div>
               <div class="form-group">
-                <label>Benefits</label>
-                <p>Free training, Certification, Placement assistance</p>
+                <label>Learning Outcomes</label>
+                <p>Build responsive websites, work with databases, deploy applications</p>
               </div>
               <div class="form-group">
                 <label>Status</label>
@@ -434,31 +425,34 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <h5>Associated Courses</h5>
+              <h5>Active Batches</h5>
               <div class="table-responsive">
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th>Course ID</th>
-                      <th>Name</th>
-                      <th>Duration</th>
-                      <th>Fee</th>
+                      <th>Batch ID</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Students</th>
+                      <th>Trainer</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>C001</td>
-                      <td>Web Development</td>
-                      <td>3 months</td>
-                      <td>₹15,000</td>
+                      <td>B001</td>
+                      <td>01/01/2024</td>
+                      <td>31/03/2024</td>
+                      <td>25/30</td>
+                      <td>John Doe</td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                     <tr>
-                      <td>C002</td>
-                      <td>Digital Marketing</td>
-                      <td>2 months</td>
-                      <td>₹12,000</td>
+                      <td>B002</td>
+                      <td>15/01/2024</td>
+                      <td>15/04/2024</td>
+                      <td>20/25</td>
+                      <td>Jane Smith</td>
                       <td><span class="badge badge-success">Active</span></td>
                     </tr>
                   </tbody>
@@ -474,12 +468,12 @@
     </div>
   </div>
 
-  <!-- Edit Scheme Modal -->
-  <div class="modal fade" id="editSchemeModal">
+  <!-- Edit Course Modal -->
+  <div class="modal fade" id="editCourseModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit Scheme</h4>
+          <h4 class="modal-title">Edit Course</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -489,46 +483,37 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editSchemeName">Scheme Name</label>
-                  <input type="text" class="form-control" id="editSchemeName" value="PMKVY 4.0" required>
+                  <label for="editCourseName">Course Name</label>
+                  <input type="text" class="form-control" id="editCourseName" value="Web Development" required>
                 </div>
                 <div class="form-group">
-                  <label for="editSchemeType">Scheme Type</label>
-                  <select class="form-control select2" id="editSchemeType" required>
-                    <option value="Government" selected>Government</option>
-                    <option value="Private">Private</option>
-                    <option value="Corporate">Corporate</option>
+                  <label for="editSector">Sector</label>
+                  <select class="form-control select2" id="editSector" required>
+                    <option value="SEC001" selected>Information Technology</option>
+                    <option value="SEC002">Digital Marketing</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="editStartDate">Start Date</label>
-                  <input type="date" class="form-control" id="editStartDate" value="2024-01-01" required>
+                  <label for="editDuration">Duration (months)</label>
+                  <input type="number" class="form-control" id="editDuration" value="3" required>
                 </div>
                 <div class="form-group">
-                  <label for="editEndDate">End Date</label>
-                  <input type="date" class="form-control" id="editEndDate" value="2024-12-31" required>
+                  <label for="editFee">Course Fee (₹)</label>
+                  <input type="number" class="form-control" id="editFee" value="15000" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editTargetBeneficiaries">Target Beneficiaries</label>
-                  <input type="number" class="form-control" id="editTargetBeneficiaries" value="1000" required>
-                </div>
-                <div class="form-group">
-                  <label for="editEligibility">Eligibility Criteria</label>
-                  <textarea class="form-control" id="editEligibility" rows="3" required>Age: 18-35 years, Education: 10th pass</textarea>
-                </div>
-                <div class="form-group">
-                  <label for="editBenefits">Benefits</label>
-                  <textarea class="form-control" id="editBenefits" rows="3" required>Free training, Certification, Placement assistance</textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
                   <label for="editDescription">Description</label>
-                  <textarea class="form-control" id="editDescription" rows="3">Pradhan Mantri Kaushal Vikas Yojana 4.0</textarea>
+                  <textarea class="form-control" id="editDescription" rows="3" required>Comprehensive web development course covering HTML, CSS, JavaScript, and modern frameworks</textarea>
+                </div>
+                <div class="form-group">
+                  <label for="editPrerequisites">Prerequisites</label>
+                  <textarea class="form-control" id="editPrerequisites" rows="3">Basic computer knowledge</textarea>
+                </div>
+                <div class="form-group">
+                  <label for="editLearningOutcomes">Learning Outcomes</label>
+                  <textarea class="form-control" id="editLearningOutcomes" rows="3" required>Build responsive websites, work with databases, deploy applications</textarea>
                 </div>
               </div>
             </div>
@@ -537,12 +522,12 @@
                 <div class="form-group">
                   <label>Documents</label>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="editSchemeDoc">
-                    <label class="custom-file-label" for="editSchemeDoc">Scheme Document</label>
+                    <input type="file" class="custom-file-input" id="editCourseDoc">
+                    <label class="custom-file-label" for="editCourseDoc">Course Document</label>
                   </div>
                   <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="editGuidelinesDoc">
-                    <label class="custom-file-label" for="editGuidelinesDoc">Guidelines Document</label>
+                    <input type="file" class="custom-file-input" id="editCurriculumDoc">
+                    <label class="custom-file-label" for="editCurriculumDoc">Curriculum Document</label>
                   </div>
                 </div>
               </div>
@@ -550,31 +535,32 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Update Scheme</button>
+            <button type="submit" class="btn btn-primary">Update Course</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- Delete Scheme Modal -->
-  <div class="modal fade" id="deleteSchemeModal">
+  <!-- Delete Course Modal -->
+  <div class="modal fade" id="deleteCourseModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Delete Scheme</h4>
+          <h4 class="modal-title">Delete Course</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete this scheme? This action cannot be undone.</p>
-          <p><strong>Scheme:</strong> PMKVY 4.0</p>
-          <p><strong>Associated Courses:</strong> 2</p>
+          <p>Are you sure you want to delete this course? This action cannot be undone.</p>
+          <p><strong>Course:</strong> Web Development</p>
+          <p><strong>Active Batches:</strong> 2</p>
+          <p><strong>Total Students:</strong> 45</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Scheme</button>
+          <button type="button" class="btn btn-danger">Delete Course</button>
         </div>
       </div>
     </div>
@@ -604,7 +590,7 @@
 <script>
   $(function () {
     // Initialize DataTable
-    $('#schemesTable').DataTable({
+    $('#coursesTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,

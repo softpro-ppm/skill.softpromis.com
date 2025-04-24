@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Login</title>
+  <title>Softpro Skill Solutions - Forgot Password</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -57,17 +57,6 @@
     .btn-primary:hover {
       background: linear-gradient(135deg, #0056b3 0%, #520dc2 100%);
     }
-    .social-auth-links {
-      margin: 10px 0;
-    }
-    .social-auth-links a {
-      margin: 0 5px;
-      color: #6c757d;
-      font-size: 1.2rem;
-    }
-    .social-auth-links a:hover {
-      color: #007bff;
-    }
   </style>
 </head>
 <body class="hold-transition login-page">
@@ -79,9 +68,9 @@
   </div>
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
 
-      <form id="loginForm">
+      <form id="forgotPasswordForm">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text">
@@ -90,46 +79,15 @@
           </div>
           <input type="email" class="form-control" placeholder="Email" name="email" required>
         </div>
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text">
-              <i class="fas fa-lock"></i>
-            </span>
-          </div>
-          <input type="password" class="form-control" placeholder="Password" name="password" required>
-          <div class="input-group-append">
-            <span class="input-group-text">
-              <i class="fas fa-eye toggle-password"></i>
-            </span>
-          </div>
-        </div>
         <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember" name="remember">
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
-          </div>
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary btn-block">Request new password</button>
           </div>
         </div>
       </form>
 
-      <div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-outline-primary">
-          <i class="fab fa-google mr-2"></i> Sign in using Google
-        </a>
-      </div>
-
-      <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
-      </p>
-      <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
+      <p class="mt-3 mb-1">
+        <a href="index.php">Back to Login</a>
       </p>
     </div>
   </div>
@@ -151,73 +109,44 @@ $(document).ready(function() {
     timeOut: 3000
   };
 
-  // Toggle password visibility
-  $('.toggle-password').click(function() {
-    const passwordInput = $('input[name="password"]');
-    const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
-    passwordInput.attr('type', type);
-    $(this).toggleClass('fa-eye fa-eye-slash');
-  });
-
   // Form submission
-  $('#loginForm').on('submit', function(e) {
+  $('#forgotPasswordForm').on('submit', function(e) {
     e.preventDefault();
     
-    // Get form data
-    const formData = {
-      email: $('input[name="email"]').val(),
-      password: $('input[name="password"]').val(),
-      remember: $('input[name="remember"]').is(':checked')
-    };
+    // Get email
+    const email = $('input[name="email"]').val();
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
+    if (!emailRegex.test(email)) {
       toastr.error('Please enter a valid email address');
-      return;
-    }
-
-    // Validate password length
-    if (formData.password.length < 6) {
-      toastr.error('Password must be at least 6 characters long');
       return;
     }
 
     // Show loading state
     const submitBtn = $(this).find('button[type="submit"]');
     const originalText = submitBtn.html();
-    submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Signing in...').prop('disabled', true);
+    submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Sending...').prop('disabled', true);
 
     // Simulate server request
     setTimeout(() => {
-      // Check credentials (this would be replaced with actual server validation)
-      if (formData.email === 'admin@example.com' && formData.password === 'password123') {
-        // Store user data in session storage
-        sessionStorage.setItem('user', JSON.stringify({
-          email: formData.email,
-          role: 'admin',
-          name: 'Admin User'
-        }));
-
+      // Check if email exists (this would be replaced with actual server validation)
+      if (email === 'admin@example.com') {
         // Show success message
-        toastr.success('Login successful! Redirecting...');
-
-        // Redirect to dashboard
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1000);
+        Swal.fire({
+          icon: 'success',
+          title: 'Reset Link Sent!',
+          text: 'Please check your email for password reset instructions.',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          window.location.href = 'index.html';
+        });
       } else {
-        toastr.error('Invalid email or password');
+        toastr.error('No account found with this email address');
         submitBtn.html(originalText).prop('disabled', false);
       }
     }, 1500);
   });
-
-  // Check for existing session
-  const user = sessionStorage.getItem('user');
-  if (user) {
-    window.location.href = 'dashboard.html';
-  }
 });
 </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Students</title>
+  <title>Softpro Skill Solutions - Fee Management</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,6 +16,8 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+  <!-- Tempus Dominus -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -36,7 +38,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html" role="button">
+        <a class="nav-link" href="index.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
@@ -47,7 +49,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="dashboard.html" class="brand-link">
+    <a href="dashboard.php" class="brand-link">
       <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
     </a>
 
@@ -64,7 +66,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="dashboard.html" class="nav-link">
+            <a href="dashboard.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
@@ -79,13 +81,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="training-partners.html" class="nav-link">
+                <a href="training-partners.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Partners</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="training-centers.html" class="nav-link">
+                <a href="training-centers.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Training Centers</p>
                 </a>
@@ -102,25 +104,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="schemes.html" class="nav-link">
+                <a href="schemes.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Schemes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="sectors.html" class="nav-link">
+                <a href="sectors.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sectors</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="courses.html" class="nav-link">
+                <a href="courses.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Courses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="batches.html" class="nav-link">
+                <a href="batches.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Batches</p>
                 </a>
@@ -137,13 +139,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="students.html" class="nav-link active">
+                <a href="students.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Manage Students</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="fees.html" class="nav-link">
+                <a href="fees.php" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fee Management</p>
                 </a>
@@ -160,7 +162,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="reports.html" class="nav-link">
+                <a href="reports.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Reports</p>
                 </a>
@@ -177,7 +179,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="roles.html" class="nav-link">
+                <a href="roles.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles & Permissions</p>
                 </a>
@@ -198,12 +200,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Students</h1>
+            <h1 class="m-0">Fee Management</h1>
           </div>
           <div class="col-sm-6">
             <div class="float-sm-right">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
-                <i class="fas fa-plus"></i> Add New Student
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPaymentModal">
+                <i class="fas fa-plus"></i> Add New Payment
               </button>
             </div>
           </div>
@@ -215,61 +217,110 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <!-- Summary Cards -->
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>₹150,000</h3>
+                <p>Total Fees Collected</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-money-bill-wave"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>₹50,000</h3>
+                <p>Pending Payments</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-clock"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>25</h3>
+                <p>Students with Pending Fees</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-users"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>5</h3>
+                <p>Overdue Payments</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment List -->
         <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Payment History</h3>
+          </div>
           <div class="card-body">
-            <table id="studentsTable" class="table table-bordered table-striped">
+            <table id="paymentsTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Enrollment No</th>
-                  <th>Name</th>
-                  <th>Gender</th>
-                  <th>Phone</th>
-                  <th>Email</th>
+                  <th>Receipt No</th>
+                  <th>Student</th>
                   <th>Course</th>
-                  <th>Batch</th>
+                  <th>Amount</th>
+                  <th>Payment Date</th>
+                  <th>Payment Mode</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>ENR001</td>
+                  <td>RCPT001</td>
                   <td>Rahul Sharma</td>
-                  <td>Male</td>
-                  <td>9876543210</td>
-                  <td>rahul@example.com</td>
                   <td>Web Development</td>
-                  <td>B001</td>
-                  <td><span class="badge badge-success">Active</span></td>
+                  <td>₹5,000</td>
+                  <td>01/01/2024</td>
+                  <td>Online</td>
+                  <td><span class="badge badge-success">Paid</span></td>
                   <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewStudentModal">
+                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewPaymentModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editStudentModal">
+                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editPaymentModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteStudentModal">
+                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deletePaymentModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
                 </tr>
                 <tr>
-                  <td>ENR002</td>
+                  <td>RCPT002</td>
                   <td>Priya Patel</td>
-                  <td>Female</td>
-                  <td>9876543211</td>
-                  <td>priya@example.com</td>
                   <td>Digital Marketing</td>
-                  <td>B002</td>
-                  <td><span class="badge badge-success">Active</span></td>
+                  <td>₹3,000</td>
+                  <td>15/01/2024</td>
+                  <td>Cash</td>
+                  <td><span class="badge badge-warning">Pending</span></td>
                   <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewStudentModal">
+                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewPaymentModal">
                       <i class="fas fa-eye"></i>
                     </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editStudentModal">
+                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editPaymentModal">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteStudentModal">
+                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deletePaymentModal">
                       <i class="fas fa-trash"></i>
                     </button>
                   </td>
@@ -284,131 +335,68 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Student Modal -->
-  <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+  <!-- Add Payment Modal -->
+  <div class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="addPaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addStudentModalLabel">Add New Student</h5>
+          <h5 class="modal-title" id="addPaymentModalLabel">Add New Payment</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form id="addStudentForm">
+          <form id="addPaymentForm">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="enrollmentNo">Enrollment Number</label>
-                  <input type="text" class="form-control" id="enrollmentNo" readonly>
+                  <label for="receiptNo">Receipt Number</label>
+                  <input type="text" class="form-control" id="receiptNo" readonly>
                   <small class="form-text text-muted">Auto-generated</small>
                 </div>
                 <div class="form-group">
-                  <label for="name">Full Name</label>
-                  <input type="text" class="form-control" id="name" required>
-                </div>
-                <div class="form-group">
-                  <label for="gender">Gender</label>
-                  <select class="form-control" id="gender" required>
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="phone">Phone Number</label>
-                  <input type="tel" class="form-control" id="phone" required>
-                </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" required>
-                </div>
-                <div class="form-group">
-                  <label for="aadhaar">Aadhaar Number</label>
-                  <input type="text" class="form-control" id="aadhaar" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="address">Full Address</label>
-                  <textarea class="form-control" id="address" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="trainingPartner">Training Partner</label>
-                  <select class="form-control select2" id="trainingPartner" required>
-                    <option value="">Select Training Partner</option>
-                    <option value="1">Softpro Skill Solutions</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="trainingCenter">Training Center</label>
-                  <select class="form-control select2" id="trainingCenter" required>
-                    <option value="">Select Training Center</option>
-                    <option value="1">Delhi Center</option>
-                    <option value="2">Mumbai Center</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="scheme">Scheme</label>
-                  <select class="form-control select2" id="scheme" required>
-                    <option value="">Select Scheme</option>
-                    <option value="1">PMKVY 4.0</option>
-                    <option value="2">DDU-GKY</option>
+                  <label for="student">Student</label>
+                  <select class="form-control select2" id="student" required>
+                    <option value="">Select Student</option>
+                    <option value="1">Rahul Sharma (ENR001)</option>
+                    <option value="2">Priya Patel (ENR002)</option>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="course">Course</label>
-                  <select class="form-control select2" id="course" required>
-                    <option value="">Select Course</option>
-                    <option value="1">Web Development</option>
-                    <option value="2">Digital Marketing</option>
+                  <input type="text" class="form-control" id="course" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="totalFee">Total Course Fee</label>
+                  <input type="text" class="form-control" id="totalFee" readonly>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="amount">Payment Amount</label>
+                  <input type="number" class="form-control" id="amount" required>
+                </div>
+                <div class="form-group">
+                  <label for="paymentDate">Payment Date</label>
+                  <div class="input-group date" id="paymentDate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#paymentDate" required>
+                    <div class="input-group-append" data-target="#paymentDate" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="paymentMode">Payment Mode</label>
+                  <select class="form-control" id="paymentMode" required>
+                    <option value="">Select Payment Mode</option>
+                    <option value="cash">Cash</option>
+                    <option value="online">Online</option>
+                    <option value="cheque">Cheque</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="batch">Batch</label>
-                  <select class="form-control select2" id="batch" required>
-                    <option value="">Select Batch</option>
-                    <option value="1">B001 - Web Development</option>
-                    <option value="2">B002 - Digital Marketing</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-md-12">
-                <h6>Documents</h6>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="photo">Photograph</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="photo" accept="image/jpeg,image/jpg,application/pdf" required>
-                        <label class="custom-file-label" for="photo">Choose file</label>
-                      </div>
-                      <small class="form-text text-muted">Max size: 1MB, Format: JPG, JPEG, PDF</small>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="aadhaarDoc">Aadhaar Card</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="aadhaarDoc" accept="image/jpeg,image/jpg,application/pdf" required>
-                        <label class="custom-file-label" for="aadhaarDoc">Choose file</label>
-                      </div>
-                      <small class="form-text text-muted">Max size: 1MB, Format: JPG, JPEG, PDF</small>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="educationDoc">Educational Documents</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="educationDoc" accept="image/jpeg,image/jpg,application/pdf" required>
-                        <label class="custom-file-label" for="educationDoc">Choose file</label>
-                      </div>
-                      <small class="form-text text-muted">Max size: 1MB, Format: JPG, JPEG, PDF</small>
-                    </div>
-                  </div>
+                  <label for="remarks">Remarks</label>
+                  <textarea class="form-control" id="remarks" rows="2"></textarea>
                 </div>
               </div>
             </div>
@@ -416,18 +404,18 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Student</button>
+          <button type="button" class="btn btn-primary">Save Payment</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- View Student Modal -->
-  <div class="modal fade" id="viewStudentModal" tabindex="-1" role="dialog" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+  <!-- View Payment Modal -->
+  <div class="modal fade" id="viewPaymentModal" tabindex="-1" role="dialog" aria-labelledby="viewPaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="viewStudentModalLabel">View Student</h5>
+          <h5 class="modal-title" id="viewPaymentModalLabel">View Payment</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -435,57 +423,16 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Enrollment No:</strong> <span id="viewEnrollmentNo"></span></p>
-              <p><strong>Name:</strong> <span id="viewName"></span></p>
-              <p><strong>Gender:</strong> <span id="viewGender"></span></p>
-              <p><strong>Phone:</strong> <span id="viewPhone"></span></p>
-              <p><strong>Email:</strong> <span id="viewEmail"></span></p>
-              <p><strong>Aadhaar:</strong> <span id="viewAadhaar"></span></p>
+              <p><strong>Receipt No:</strong> <span id="viewReceiptNo"></span></p>
+              <p><strong>Student:</strong> <span id="viewStudent"></span></p>
+              <p><strong>Course:</strong> <span id="viewCourse"></span></p>
+              <p><strong>Total Fee:</strong> <span id="viewTotalFee"></span></p>
             </div>
             <div class="col-md-6">
-              <p><strong>Address:</strong> <span id="viewAddress"></span></p>
-              <p><strong>Training Partner:</strong> <span id="viewTrainingPartner"></span></p>
-              <p><strong>Training Center:</strong> <span id="viewTrainingCenter"></span></p>
-              <p><strong>Scheme:</strong> <span id="viewScheme"></span></p>
-              <p><strong>Course:</strong> <span id="viewCourse"></span></p>
-              <p><strong>Batch:</strong> <span id="viewBatch"></span></p>
-            </div>
-          </div>
-          <div class="row mt-4">
-            <div class="col-md-12">
-              <h6>Documents</h6>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h6 class="card-title">Photograph</h6>
-                    </div>
-                    <div class="card-body">
-                      <img src="#" id="viewPhoto" class="img-fluid" alt="Student Photo">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h6 class="card-title">Aadhaar Card</h6>
-                    </div>
-                    <div class="card-body">
-                      <a href="#" id="viewAadhaarDoc" class="btn btn-primary btn-sm" target="_blank">View Document</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h6 class="card-title">Educational Documents</h6>
-                    </div>
-                    <div class="card-body">
-                      <a href="#" id="viewEducationDoc" class="btn btn-primary btn-sm" target="_blank">View Document</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <p><strong>Amount Paid:</strong> <span id="viewAmount"></span></p>
+              <p><strong>Payment Date:</strong> <span id="viewPaymentDate"></span></p>
+              <p><strong>Payment Mode:</strong> <span id="viewPaymentMode"></span></p>
+              <p><strong>Status:</strong> <span id="viewStatus"></span></p>
             </div>
           </div>
           <div class="row mt-4">
@@ -516,25 +463,25 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="window.print()">Print Application</button>
+          <button type="button" class="btn btn-primary" onclick="window.print()">Print Receipt</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Edit Student Modal -->
-  <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+  <!-- Edit Payment Modal -->
+  <div class="modal fade" id="editPaymentModal" tabindex="-1" role="dialog" aria-labelledby="editPaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
+          <h5 class="modal-title" id="editPaymentModalLabel">Edit Payment</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form id="editStudentForm">
-            <!-- Same form fields as Add Student Modal -->
+          <form id="editPaymentForm">
+            <!-- Same form fields as Add Payment Modal -->
             <!-- Pre-populated with existing data -->
           </form>
         </div>
@@ -546,18 +493,18 @@
     </div>
   </div>
 
-  <!-- Delete Student Modal -->
-  <div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+  <!-- Delete Payment Modal -->
+  <div class="modal fade" id="deletePaymentModal" tabindex="-1" role="dialog" aria-labelledby="deletePaymentModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteStudentModalLabel">Delete Student</h5>
+          <h5 class="modal-title" id="deletePaymentModalLabel">Delete Payment</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete this student? This action cannot be undone.</p>
+          <p>Are you sure you want to delete this payment? This action cannot be undone.</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -585,12 +532,13 @@
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 <!-- Select2 -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<!-- bs-custom-file-input -->
-<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+<!-- Tempus Dominus -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js"></script>
 
 <script>
   $(function () {
-    $('#studentsTable').DataTable({
+    $('#paymentsTable').DataTable({
       "paging": true,
       "lengthChange": true,
       "searching": true,
@@ -605,40 +553,22 @@
       theme: 'bootstrap4'
     });
 
-    // Initialize custom file input
-    bsCustomFileInput.init();
+    // Initialize date picker
+    $('#paymentDate').datetimepicker({
+      format: 'L'
+    });
 
-    // File size validation
-    $('input[type="file"]').on('change', function() {
-      const file = this.files[0];
-      const maxSize = 1024 * 1024; // 1MB
-      
-      if (file && file.size > maxSize) {
-        alert('File size exceeds 1MB limit');
-        this.value = '';
-        $(this).next('.custom-file-label').text('Choose file');
+    // Load course and fee details when student is selected
+    $('#student').on('change', function() {
+      const studentId = $(this).val();
+      if (studentId) {
+        // Load course and fee details
+        $('#course').val('Web Development');
+        $('#totalFee').val('₹25,000');
+      } else {
+        $('#course').val('');
+        $('#totalFee').val('');
       }
-    });
-
-    // Cascading dropdowns
-    $('#trainingPartner').on('change', function() {
-      const partnerId = $(this).val();
-      // Load training centers based on selected partner
-    });
-
-    $('#trainingCenter').on('change', function() {
-      const centerId = $(this).val();
-      // Load schemes based on selected center
-    });
-
-    $('#scheme').on('change', function() {
-      const schemeId = $(this).val();
-      // Load courses based on selected scheme
-    });
-
-    $('#course').on('change', function() {
-      const courseId = $(this).val();
-      // Load batches based on selected course
     });
   });
 </script>
