@@ -152,5 +152,17 @@ $user = $_SESSION['user'];
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
+<!-- Menu Script -->
+<script src="assets/js/menu.js"></script>
+
+<!-- Add this to menu.js -->
+<script>
+window.addEventListener('error', function(e) {
+    if (e.target.tagName === 'A' && e.target.parentNode.classList.contains('nav-item')) {
+        e.preventDefault();
+        console.warn('Menu link error:', e.target.href);
+    }
+});
+</script>
 </body>
 </html> 
