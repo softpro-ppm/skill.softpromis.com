@@ -1,3 +1,19 @@
+<?php
+session_start();
+
+// Check if user is already logged in
+if (isset($_SESSION['user'])) {
+    header('Location: dashboard.php');
+    exit;
+}
+
+// Get logout message if exists
+$logoutMessage = $_SESSION['logout_message'] ?? null;
+unset($_SESSION['logout_message']);
+
+// Get status parameter
+$status = $_GET['status'] ?? null;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +42,15 @@
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
+
+      <?php if ($logoutMessage): ?>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?php echo htmlspecialchars($logoutMessage); ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <?php endif; ?>
 
       <form id="loginForm">
         <div class="input-group mb-3">
@@ -94,5 +119,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- Custom JS -->
 <script src="assets/js/login.js"></script>
+
+<script>
+// Configure Toastr
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-top-right",
+    timeOut: 3000,
+    preventDuplicates: true
+};
+
+// Show logout message if exists
+<?php if ($logoutMessage): ?>
+toastr.success('<?php echo addslashes($logoutMessage); ?>');
+<?php endif; ?>
+</script>
 </body>
 </html> 
