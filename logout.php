@@ -3,10 +3,10 @@ session_start();
 require_once 'config.php';
 
 // Check if it's a POST request with logout parameter
-// if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['logout'])) {
-//     header('Location: index.php');
-//     exit;
-// }
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['logout'])) {
+    header('Location: index.php');
+    exit;
+}
 
 // Get user token from session
 $token = $_SESSION['user']['token'] ?? null;
