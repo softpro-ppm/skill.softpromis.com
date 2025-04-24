@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
+  <!-- Chart.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -68,15 +70,21 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
               <p>
-                Training Centers
+                Training Partners
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="training-partners.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Manage Partners</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="training-centers.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Manage Centers</p>
+                  <p>Training Centers</p>
                 </a>
               </li>
             </ul>
@@ -137,6 +145,18 @@
                   <p>Fee Management</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="assessments.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Assessments</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="certificates.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Certificates</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -152,6 +172,23 @@
                 <a href="reports.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>View Reports</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user-shield"></i>
+              <p>
+                User Management
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="roles.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Roles & Permissions</p>
                 </a>
               </li>
             </ul>
@@ -180,12 +217,6 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Role-based Welcome Message -->
-        <div class="alert alert-info">
-          <h5><i class="icon fas fa-info"></i> Welcome, Admin User!</h5>
-          <p>You have full access to all system features and functionalities.</p>
-        </div>
-
         <!-- Info boxes -->
         <div class="row">
           <div class="col-12 col-sm-6 col-md-3">
@@ -226,85 +257,86 @@
           </div>
         </div>
 
-        <!-- Role-based Quick Actions -->
+        <!-- Charts -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-chart-pie mr-1"></i>
+                  Student Enrollment by Course
+                </h3>
+              </div>
+              <div class="card-body">
+                <canvas id="enrollmentChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fas fa-chart-bar mr-1"></i>
+                  Revenue Overview
+                </h3>
+              </div>
+              <div class="card-body">
+                <canvas id="revenueChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activities -->
         <div class="row">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  <i class="fas fa-bolt mr-1"></i>
-                  Quick Actions
+                  <i class="fas fa-history mr-1"></i>
+                  Recent Activities
                 </h3>
               </div>
               <div class="card-body">
-                <div class="row">
-                  <div class="col-md-3">
-                    <a href="students.html" class="btn btn-primary btn-block">
-                      <i class="fas fa-user-plus"></i> New Student Registration
-                    </a>
+                <div class="timeline">
+                  <div class="time-label">
+                    <span class="bg-success">Today</span>
                   </div>
-                  <div class="col-md-3">
-                    <a href="fees.html" class="btn btn-success btn-block">
-                      <i class="fas fa-money-bill-wave"></i> Fee Collection
-                    </a>
+                  <div>
+                    <i class="fas fa-user bg-info"></i>
+                    <div class="timeline-item">
+                      <span class="time"><i class="fas fa-clock"></i> 5 mins ago</span>
+                      <h3 class="timeline-header">New student enrolled</h3>
+                      <div class="timeline-body">
+                        Rahul Sharma enrolled in Web Development course
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-md-3">
-                    <a href="batches.html" class="btn btn-info btn-block">
-                      <i class="fas fa-users-cog"></i> Manage Batches
-                    </a>
+                  <div>
+                    <i class="fas fa-money-bill bg-success"></i>
+                    <div class="timeline-item">
+                      <span class="time"><i class="fas fa-clock"></i> 2 hours ago</span>
+                      <h3 class="timeline-header">Payment received</h3>
+                      <div class="timeline-body">
+                        Payment of ₹25,000 received from Priya Patel
+                      </div>
+                    </div>
                   </div>
-                  <div class="col-md-3">
-                    <a href="reports.html" class="btn btn-warning btn-block">
-                      <i class="fas fa-chart-bar"></i> View Reports
-                    </a>
+                  <div>
+                    <i class="fas fa-certificate bg-warning"></i>
+                    <div class="timeline-item">
+                      <span class="time"><i class="fas fa-clock"></i> 5 hours ago</span>
+                      <h3 class="timeline-header">Certificate issued</h3>
+                      <div class="timeline-body">
+                        Certificate issued to 10 students in Digital Marketing course
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Main row -->
-        <div class="row">
-          <!-- Left col -->
-          <section class="col-lg-7 connectedSortable">
-            <!-- Custom tabs (Charts with tabs)-->
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="fas fa-chart-pie mr-1"></i>
-                  Student Enrollment
-                </h3>
-              </div>
-              <div class="card-body">
-                <div class="tab-content p-0">
-                  <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
-                    <canvas id="enrollment-chart" height="300" style="height: 300px;"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-          <!-- /.Left col -->
-
-          <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-5 connectedSortable">
-            <!-- Calendar -->
-            <div class="card bg-gradient-success">
-              <div class="card-header border-0">
-                <h3 class="card-title">
-                  <i class="far fa-calendar-alt"></i>
-                  Calendar
-                </h3>
-              </div>
-              <div class="card-body pt-0">
-                <div id="calendar" style="width: 100%"></div>
-              </div>
-            </div>
-          </section>
-          <!-- right col -->
-        </div>
-        <!-- /.row (main row) -->
       </div>
     </section>
     <!-- /.content -->
@@ -325,18 +357,35 @@
 <!-- AdminLTE App -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
 <!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
 
 <script>
   // Enrollment Chart
-  var ctx = document.getElementById('enrollment-chart').getContext('2d');
-  var enrollmentChart = new Chart(ctx, {
+  var enrollmentCtx = document.getElementById('enrollmentChart').getContext('2d');
+  var enrollmentChart = new Chart(enrollmentCtx, {
+    type: 'pie',
+    data: {
+      labels: ['Web Development', 'Digital Marketing', 'Data Science', 'Mobile Development'],
+      datasets: [{
+        data: [40, 30, 20, 10],
+        backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+
+  // Revenue Chart
+  var revenueCtx = document.getElementById('revenueChart').getContext('2d');
+  var revenueChart = new Chart(revenueCtx, {
     type: 'line',
     data: {
       labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
       datasets: [{
-        label: 'New Enrollments',
-        data: [12, 19, 15, 25, 22, 30],
+        label: 'Revenue',
+        data: [100000, 120000, 150000, 130000, 140000, 160000],
         borderColor: 'rgb(75, 192, 192)',
         tension: 0.1
       }]
