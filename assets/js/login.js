@@ -165,6 +165,41 @@ function showSuccess(message) {
     toastr.success(message);
 }
 
+// Handle logout
+function handleLogout() {
+    // Show loading state
+    const logoutBtn = document.querySelector('.logout-btn');
+    if (logoutBtn) {
+        const originalText = logoutBtn.innerHTML;
+        logoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging out...';
+        logoutBtn.disabled = true;
+    }
+
+    // Clear local storage and session storage
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
+
+    // Make AJAX request to logout endpoint
+    $.ajax({
+        url: 'logout.php',
+        type: 'POST',
+        success: function() {
+            // Show success message
+            showSuccess('Logged out successfully');
+            
+            // Redirect to login page
+            setTimeout(() => {
+                window.location.href = 'index.php';
+            }, 1000);
+        },
+        error: function(xhr, status, error) {
+            console.error('Logout error:', error);
+            // Still redirect to login page even if there's an error
+            window.location.href = 'index.php';
+        }
+    });
+}
+
 // Initialize login page
 document.addEventListener('DOMContentLoaded', function() {
     // Check if user is already logged in
@@ -198,4 +233,13 @@ document.addEventListener('DOMContentLoaded', function() {
             handleLogin(e);
         }
     });
+
+    // Add event listener to logout button
+    const logoutBtn = document.querySelector('.logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleLogout();
+        });
+    }
 }); 
