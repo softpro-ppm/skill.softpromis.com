@@ -90,6 +90,18 @@ try {
     error_log("Login error: " . $e->getMessage());
     echo json_encode([
         'success' => false,
-        'message' => 'An error occurred. Please try again later.'
+        'message' => 'Database error: ' . $e->getMessage(),
+        'debug_info' => [
+            'error_code' => $e->getCode(),
+            'error_message' => $e->getMessage(),
+            'db_host' => DB_HOST,
+            'db_name' => DB_NAME
+        ]
+    ]);
+} catch (Exception $e) {
+    error_log("Login error: " . $e->getMessage());
+    echo json_encode([
+        'success' => false,
+        'message' => 'An unexpected error occurred: ' . $e->getMessage()
     ]);
 } 

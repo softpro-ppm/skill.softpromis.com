@@ -65,7 +65,17 @@ function handleLogin(event) {
                 statusCode: xhr.status,
                 readyState: xhr.readyState
             });
-            showError('An error occurred. Please try again later.');
+            
+            try {
+                const response = JSON.parse(xhr.responseText);
+                if (response.debug_info) {
+                    console.error('Debug info:', response.debug_info);
+                }
+                showError(response.message || 'An error occurred. Please try again later.');
+            } catch (e) {
+                showError('An error occurred. Please try again later.');
+            }
+            
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
         }
