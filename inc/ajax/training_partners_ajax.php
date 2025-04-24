@@ -155,10 +155,14 @@ try {
 
         case 'list_all':
             // Fetch only active partners for dropdowns
-            $stmt = $pdo->prepare("SELECT id, name FROM training_partners WHERE status = 'active' ORDER BY name ASC");
+            $stmt = $pdo->prepare("SELECT partner_id, partner_name FROM training_partners WHERE status = 'active' ORDER BY partner_name ASC");
             $stmt->execute();
             $partners = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            sendJSONResponse(true, 'Partners list retrieved successfully', ['partners' => $partners]);
+            echo json_encode([
+                'success' => true,
+                'message' => 'Partners list retrieved successfully',
+                'data' => ['partners' => $partners]
+            ]);
             break;
 
         default:

@@ -13,7 +13,7 @@ if (!hasRole('Administrator')) {
 
 $pageTitle = 'Training Partners';
 $currentPage = 'training-partners';
-require_once 'includes/header.php';
+require_once './includes/header.php';
 ?>
 
 <!-- Main content -->
@@ -55,18 +55,18 @@ require_once 'includes/header.php';
 </section>
 
 <!-- Partner Modal -->
-<div class="modal fade" id="partnerModal" tabindex="-1" role="dialog" aria-labelledby="partnerModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="partnerModal">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="partnerModalLabel">Add New Training Partner</h5>
+                <h4 class="modal-title">Add New Training Partner</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form id="partnerForm">
                 <div class="modal-body">
-                    <input type="hidden" name="partner_id" id="partner_id">
+                    <input type="hidden" id="partner_id" name="partner_id">
                     <div class="form-group">
                         <label for="partner_name">Partner Name</label>
                         <input type="text" class="form-control" id="partner_name" name="partner_name" required>
@@ -105,17 +105,17 @@ require_once 'includes/header.php';
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <h4 class="modal-title">Confirm Delete</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this training partner?
+                <p>Are you sure you want to delete this training partner?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -125,9 +125,13 @@ require_once 'includes/header.php';
     </div>
 </div>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once './includes/footer.php'; ?>
 
-<!-- Page specific scripts -->
+<!-- DataTables & Plugins -->
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page specific script -->
 <script>
 $(document).ready(function() {
     // Initialize DataTable
@@ -139,7 +143,7 @@ $(document).ready(function() {
         ajax: {
             url: 'inc/ajax/training_partners_ajax.php',
             type: 'POST',
-            data: { action: 'read' }
+            data: { action: 'list' }
         },
         columns: [
             { data: 'partner_name' },
@@ -154,7 +158,7 @@ $(document).ready(function() {
                 }
             },
             {
-                data: 'id',
+                data: 'partner_id',
                 render: function(data) {
                     return `
                         <button class="btn btn-sm btn-info edit-partner" data-id="${data}">
@@ -174,14 +178,12 @@ $(document).ready(function() {
         e.preventDefault();
         
         const formData = new FormData(this);
-        formData.append('action', $('#partner_id').val() ? 'update' : 'create');
+        formData.append('action', $('#partner_id').val() ? 'update' : 'add');
 
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
             type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
+            data: Object.fromEntries(formData),
             success: function(response) {
                 if (response.success) {
                     $('#partnerModal').modal('hide');
@@ -204,18 +206,21 @@ $(document).ready(function() {
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
             type: 'POST',
-            data: { action: 'get', id: id },
+            data: { 
+                action: 'get',
+                partner_id: id
+            },
             success: function(response) {
                 if (response.success) {
                     const partner = response.data;
-                    $('#partner_id').val(partner.id);
+                    $('#partner_id').val(partner.partner_id);
                     $('#partner_name').val(partner.partner_name);
                     $('#contact_person').val(partner.contact_person);
                     $('#email').val(partner.email);
                     $('#phone').val(partner.phone);
                     $('#address').val(partner.address);
                     $('#status').val(partner.status);
-                    $('#partnerModalLabel').text('Edit Partner');
+                    $('.modal-title').text('Edit Training Partner');
                     $('#partnerModal').modal('show');
                 } else {
                     toastr.error(response.message);
@@ -237,7 +242,10 @@ $(document).ready(function() {
             $.ajax({
                 url: 'inc/ajax/training_partners_ajax.php',
                 type: 'POST',
-                data: { action: 'delete', id: deleteId },
+                data: { 
+                    action: 'delete',
+                    partner_id: deleteId
+                },
                 success: function(response) {
                     if (response.success) {
                         $('#deleteModal').modal('hide');
@@ -255,7 +263,7 @@ $(document).ready(function() {
     $('#partnerModal').on('hidden.bs.modal', function() {
         $('#partnerForm')[0].reset();
         $('#partner_id').val('');
-        $('#partnerModalLabel').text('Add New Training Partner');
+        $('.modal-title').text('Add New Training Partner');
     });
 });
 </script> 
