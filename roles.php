@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Roles & Permissions</title>
+  <title>Softpro Skill Solutions - Role Management</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -13,14 +13,35 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.0.0/dist/select2-bootstrap4.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .permission-group {
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    .permission-group h5 {
+      margin-bottom: 15px;
+      color: #495057;
+    }
+    .permission-item {
+      margin-bottom: 10px;
+    }
+    .permission-item label {
+      margin-bottom: 0;
+      font-weight: normal;
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light fixed-top">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -30,6 +51,30 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="far fa-bell"></i>
+          <span class="badge badge-warning navbar-badge">3</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <span class="dropdown-item dropdown-header">3 Notifications</span>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-envelope mr-2"></i> 4 new messages
+            <span class="float-right text-muted text-sm">3 mins</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> 8 new students
+            <span class="float-right text-muted text-sm">12 hours</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-file mr-2"></i> 3 new reports
+            <span class="float-right text-muted text-sm">2 days</span>
+          </a>
+        </div>
+      </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -42,7 +87,6 @@
       </li>
     </ul>
   </nav>
-  <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -55,8 +99,12 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="https://via.placeholder.com/150" class="img-circle elevation-2" alt="User Image">
+        </div>
         <div class="info">
           <a href="#" class="d-block">Admin User</a>
+          <small class="text-muted">Administrator</small>
         </div>
       </div>
 
@@ -180,13 +228,11 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-user-shield"></i>
-              <p>
-                User Management
-                <i class="right fas fa-angle-left"></i>
-              </p>
+            <a href="roles.html" class="nav-link active">
+              <i class="nav-icon fas fa-user-tag"></i>
+              <p>Role Management</p>
             </a>
+<<<<<<< Updated upstream:roles.php
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="roles.php" class="nav-link active">
@@ -195,12 +241,12 @@
                 </a>
               </li>
             </ul>
+=======
+>>>>>>> Stashed changes:roles.html
           </li>
         </ul>
       </nav>
-      <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
@@ -210,255 +256,85 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Roles & Permissions</h1>
+            <h1 class="m-0">Role Management</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Role Management</li>
+            </ol>
           </div>
         </div>
       </div>
     </div>
-    <!-- /.content-header -->
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Roles List -->
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Roles List</h3>
-            <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRoleModal">
-                <i class="fas fa-plus"></i> Add New Role
-              </button>
-            </div>
-          </div>
-          <div class="card-body">
-            <table id="rolesTable" class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>Role ID</th>
-                  <th>Role Name</th>
-                  <th>Description</th>
-                  <th>Users</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>R001</td>
-                  <td>Super Admin</td>
-                  <td>Full system access with all permissions</td>
-                  <td>1</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewRoleModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editRoleModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteRoleModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>R002</td>
-                  <td>Training Partner</td>
-                  <td>Access to manage training centers and courses</td>
-                  <td>5</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewRoleModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editRoleModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteRoleModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
-  <!-- Add Role Modal -->
-  <div class="modal fade" id="addRoleModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Add New Role</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="roleName">Role Name</label>
-              <input type="text" class="form-control" id="roleName" placeholder="Enter role name" required>
-            </div>
-            <div class="form-group">
-              <label for="roleDescription">Description</label>
-              <textarea class="form-control" id="roleDescription" rows="3" placeholder="Enter role description"></textarea>
-            </div>
-            <div class="form-group">
-              <label>Permissions</label>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Training Partners</h3>
-                    </div>
-                    <div class="card-body">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="viewPartners">
-                        <label class="custom-control-label" for="viewPartners">View Partners</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="addPartners">
-                        <label class="custom-control-label" for="addPartners">Add Partners</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editPartners">
-                        <label class="custom-control-label" for="editPartners">Edit Partners</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="deletePartners">
-                        <label class="custom-control-label" for="deletePartners">Delete Partners</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Students</h3>
-                    </div>
-                    <div class="card-body">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="viewStudents">
-                        <label class="custom-control-label" for="viewStudents">View Students</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="addStudents">
-                        <label class="custom-control-label" for="addStudents">Add Students</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editStudents">
-                        <label class="custom-control-label" for="editStudents">Edit Students</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="deleteStudents">
-                        <label class="custom-control-label" for="deleteStudents">Delete Students</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Reports</h3>
-                    </div>
-                    <div class="card-body">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="viewReports">
-                        <label class="custom-control-label" for="viewReports">View Reports</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="generateReports">
-                        <label class="custom-control-label" for="generateReports">Generate Reports</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="exportReports">
-                        <label class="custom-control-label" for="exportReports">Export Reports</label>
-                      </div>
-                    </div>
-                  </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Roles</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roleModal">
+                    <i class="fas fa-plus"></i> Add New Role
+                  </button>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Role</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- View Role Modal -->
-  <div class="modal fade" id="viewRoleModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">View Role Details</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Role ID</label>
-                <p>R001</p>
-              </div>
-              <div class="form-group">
-                <label>Role Name</label>
-                <p>Super Admin</p>
-              </div>
-              <div class="form-group">
-                <label>Description</label>
-                <p>Full system access with all permissions</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Status</label>
-                <p><span class="badge badge-success">Active</span></p>
-              </div>
-              <div class="form-group">
-                <label>Total Users</label>
-                <p>1</p>
-              </div>
-              <div class="form-group">
-                <label>Created On</label>
-                <p>01/01/2024</p>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <h5>Assigned Permissions</h5>
-              <div class="table-responsive">
-                <table class="table table-bordered">
+              <div class="card-body">
+                <table id="rolesTable" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                      <th>Module</th>
-                      <th>Permissions</th>
+                      <th>Role Name</th>
+                      <th>Description</th>
+                      <th>Users</th>
+                      <th>Created Date</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Training Partners</td>
-                      <td>View, Add, Edit, Delete</td>
+                      <td>Administrator</td>
+                      <td>Full system access and control</td>
+                      <td>5</td>
+                      <td>2024-01-01</td>
+                      <td>
+                        <button class="btn btn-sm btn-info edit-role" data-id="1">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-role" data-id="1">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
                     </tr>
                     <tr>
-                      <td>Students</td>
-                      <td>View, Add, Edit, Delete</td>
+                      <td>Center Manager</td>
+                      <td>Manage training center operations</td>
+                      <td>8</td>
+                      <td>2024-01-01</td>
+                      <td>
+                        <button class="btn btn-sm btn-info edit-role" data-id="2">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-role" data-id="2">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
                     </tr>
                     <tr>
-                      <td>Reports</td>
-                      <td>View, Generate, Export</td>
+                      <td>Trainer</td>
+                      <td>Manage training sessions and students</td>
+                      <td>12</td>
+                      <td>2024-01-01</td>
+                      <td>
+                        <button class="btn btn-sm btn-info edit-role" data-id="3">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-role" data-id="3">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -466,179 +342,287 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
       </div>
-    </div>
+    </section>
   </div>
+</div>
 
-  <!-- Edit Role Modal -->
-  <div class="modal fade" id="editRoleModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Role</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="editRoleName">Role Name</label>
-              <input type="text" class="form-control" id="editRoleName" value="Super Admin" required>
-            </div>
-            <div class="form-group">
-              <label for="editRoleDescription">Description</label>
-              <textarea class="form-control" id="editRoleDescription" rows="3">Full system access with all permissions</textarea>
-            </div>
-            <div class="form-group">
-              <label>Permissions</label>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Training Partners</h3>
-                    </div>
-                    <div class="card-body">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editViewPartners" checked>
-                        <label class="custom-control-label" for="editViewPartners">View Partners</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editAddPartners" checked>
-                        <label class="custom-control-label" for="editAddPartners">Add Partners</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editEditPartners" checked>
-                        <label class="custom-control-label" for="editEditPartners">Edit Partners</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editDeletePartners" checked>
-                        <label class="custom-control-label" for="editDeletePartners">Delete Partners</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Students</h3>
-                    </div>
-                    <div class="card-body">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editViewStudents" checked>
-                        <label class="custom-control-label" for="editViewStudents">View Students</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editAddStudents" checked>
-                        <label class="custom-control-label" for="editAddStudents">Add Students</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editEditStudents" checked>
-                        <label class="custom-control-label" for="editEditStudents">Edit Students</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editDeleteStudents" checked>
-                        <label class="custom-control-label" for="editDeleteStudents">Delete Students</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Reports</h3>
-                    </div>
-                    <div class="card-body">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editViewReports" checked>
-                        <label class="custom-control-label" for="editViewReports">View Reports</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editGenerateReports" checked>
-                        <label class="custom-control-label" for="editGenerateReports">Generate Reports</label>
-                      </div>
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="editExportReports" checked>
-                        <label class="custom-control-label" for="editExportReports">Export Reports</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+<!-- Role Modal -->
+<div class="modal fade" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="roleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="roleModalLabel">Add New Role</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="roleForm">
+          <input type="hidden" name="roleId" id="roleId">
+          <div class="form-group">
+            <label for="roleName">Role Name</label>
+            <input type="text" class="form-control" id="roleName" name="roleName" required>
+          </div>
+          <div class="form-group">
+            <label for="roleDescription">Description</label>
+            <textarea class="form-control" id="roleDescription" name="roleDescription" rows="3" required></textarea>
+          </div>
+          
+          <h5 class="mt-4">Permissions</h5>
+          
+          <!-- Dashboard Permissions -->
+          <div class="permission-group">
+            <h5>Dashboard</h5>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="viewDashboard" name="permissions[]" value="view_dashboard">
+                <label class="custom-control-label" for="viewDashboard">View Dashboard</label>
               </div>
             </div>
           </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Update Role</button>
+
+          <!-- User Management Permissions -->
+          <div class="permission-group">
+            <h5>User Management</h5>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="viewUsers" name="permissions[]" value="view_users">
+                <label class="custom-control-label" for="viewUsers">View Users</label>
+              </div>
+            </div>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="createUsers" name="permissions[]" value="create_users">
+                <label class="custom-control-label" for="createUsers">Create Users</label>
+              </div>
+            </div>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="editUsers" name="permissions[]" value="edit_users">
+                <label class="custom-control-label" for="editUsers">Edit Users</label>
+              </div>
+            </div>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="deleteUsers" name="permissions[]" value="delete_users">
+                <label class="custom-control-label" for="deleteUsers">Delete Users</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Training Management Permissions -->
+          <div class="permission-group">
+            <h5>Training Management</h5>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="viewTraining" name="permissions[]" value="view_training">
+                <label class="custom-control-label" for="viewTraining">View Training</label>
+              </div>
+            </div>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="createTraining" name="permissions[]" value="create_training">
+                <label class="custom-control-label" for="createTraining">Create Training</label>
+              </div>
+            </div>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="editTraining" name="permissions[]" value="edit_training">
+                <label class="custom-control-label" for="editTraining">Edit Training</label>
+              </div>
+            </div>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="deleteTraining" name="permissions[]" value="delete_training">
+                <label class="custom-control-label" for="deleteTraining">Delete Training</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reports Permissions -->
+          <div class="permission-group">
+            <h5>Reports</h5>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="viewReports" name="permissions[]" value="view_reports">
+                <label class="custom-control-label" for="viewReports">View Reports</label>
+              </div>
+            </div>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="generateReports" name="permissions[]" value="generate_reports">
+                <label class="custom-control-label" for="generateReports">Generate Reports</label>
+              </div>
+            </div>
+            <div class="permission-item">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="exportReports" name="permissions[]" value="export_reports">
+                <label class="custom-control-label" for="exportReports">Export Reports</label>
+              </div>
+            </div>
           </div>
         </form>
       </div>
-    </div>
-  </div>
-
-  <!-- Delete Role Modal -->
-  <div class="modal fade" id="deleteRoleModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Delete Role</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete this role? This action cannot be undone.</p>
-          <p><strong>Role:</strong> Super Admin</p>
-          <p><strong>Users with this role:</strong> 1</p>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Role</button>
-        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveRole">Save Role</button>
       </div>
     </div>
   </div>
-
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2024 <a href="#">Softpro Skill Solutions</a>.</strong>
-    All rights reserved.
-  </footer>
 </div>
-<!-- ./wrapper -->
 
-<!-- jQuery -->
+<!-- Required Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Bootstrap 4 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
-<!-- DataTables -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<!-- Select2 -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script>
-  $(function () {
-    // Initialize DataTable
-    $('#rolesTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true
-    });
+$(document).ready(function() {
+  // Configure Toastr
+  toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-top-right",
+    timeOut: 3000
+  };
 
-    // Initialize Select2
-    $('.select2').select2({
-      theme: 'bootstrap4'
+  // Initialize DataTable
+  $('#rolesTable').DataTable({
+    responsive: true,
+    autoWidth: false
+  });
+
+  // Edit Role
+  $('.edit-role').click(function() {
+    const roleId = $(this).data('id');
+    const row = $(this).closest('tr');
+    const roleName = row.find('td:first').text();
+    const description = row.find('td:eq(1)').text();
+
+    $('#roleModalLabel').text('Edit Role');
+    $('#roleId').val(roleId);
+    $('#roleName').val(roleName);
+    $('#roleDescription').val(description);
+
+    // Simulate loading permissions
+    setTimeout(() => {
+      // Check all permissions for Administrator role
+      if (roleName === 'Administrator') {
+        $('input[name="permissions[]"]').prop('checked', true);
+      } else if (roleName === 'Center Manager') {
+        // Set specific permissions for Center Manager
+        $('#viewDashboard, #viewUsers, #viewTraining, #viewReports, #generateReports').prop('checked', true);
+      } else if (roleName === 'Trainer') {
+        // Set specific permissions for Trainer
+        $('#viewDashboard, #viewTraining').prop('checked', true);
+      }
+    }, 500);
+
+    $('#roleModal').modal('show');
+  });
+
+  // Delete Role
+  $('.delete-role').click(function() {
+    const roleId = $(this).data('id');
+    const roleName = $(this).closest('tr').find('td:first').text();
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: `Do you want to delete the role "${roleName}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Simulate server request
+        setTimeout(() => {
+          $(this).closest('tr').fadeOut(400, function() {
+            $(this).remove();
+            toastr.success('Role deleted successfully');
+          });
+        }, 500);
+      }
     });
   });
+
+  // Save Role
+  $('#saveRole').click(function() {
+    const form = $('#roleForm');
+    const roleId = $('#roleId').val();
+    const roleName = $('#roleName').val();
+    const description = $('#roleDescription').val();
+    const permissions = $('input[name="permissions[]"]:checked').map(function() {
+      return $(this).val();
+    }).get();
+
+    if (!roleName || !description) {
+      toastr.error('Please fill in all required fields');
+      return;
+    }
+
+    if (permissions.length === 0) {
+      toastr.error('Please select at least one permission');
+      return;
+    }
+
+    // Show loading state
+    const submitBtn = $(this);
+    const originalText = submitBtn.html();
+    submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Saving...').prop('disabled', true);
+
+    // Simulate server request
+    setTimeout(() => {
+      if (roleId) {
+        // Update existing role
+        const row = $(`button[data-id="${roleId}"]`).closest('tr');
+        row.find('td:first').text(roleName);
+        row.find('td:eq(1)').text(description);
+        toastr.success('Role updated successfully');
+      } else {
+        // Add new role
+        const newRow = `
+          <tr>
+            <td>${roleName}</td>
+            <td>${description}</td>
+            <td>0</td>
+            <td>${new Date().toISOString().split('T')[0]}</td>
+            <td>
+              <button class="btn btn-sm btn-info edit-role" data-id="${Date.now()}">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-danger delete-role" data-id="${Date.now()}">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+        $('#rolesTable tbody').prepend(newRow);
+        toastr.success('Role created successfully');
+      }
+
+      // Reset form and close modal
+      form[0].reset();
+      $('#roleId').val('');
+      $('#roleModal').modal('hide');
+      submitBtn.html(originalText).prop('disabled', false);
+    }, 1000);
+  });
+
+  // Reset form when modal is closed
+  $('#roleModal').on('hidden.bs.modal', function() {
+    $('#roleForm')[0].reset();
+    $('#roleId').val('');
+    $('#roleModalLabel').text('Add New Role');
+  });
+});
 </script>
 </body>
 </html> 
