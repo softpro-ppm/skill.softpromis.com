@@ -312,14 +312,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="partner">Training Partner</label>
-                  <select class="form-control select2" id="partner" required>
-                    <option value="">Select Partner</option>
-                    <option value="TP001">ABC Training Solutions</option>
-                    <option value="TP002">XYZ Education Services</option>
-                  </select>
-                </div>
+                <input type="hidden" id="partner" name="partner" value="1">
                 <div class="form-group">
                   <label for="centerName">Center Name</label>
                   <input type="text" class="form-control" id="centerName" placeholder="Enter center name" required>

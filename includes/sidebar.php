@@ -36,8 +36,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
                 <!-- Training Management -->
                 <?php if (in_array($user['role'], ['admin', 'trainer'])): ?>
-                <li class="nav-item <?php echo in_array($currentPage, ['training-partners', 'training-centers']) ? 'menu-open' : ''; ?>">
-                    <a href="#" class="nav-link <?php echo in_array($currentPage, ['training-partners', 'training-centers']) ? 'active' : ''; ?>">
+                <li class="nav-item <?php echo $currentPage === 'training-centers' ? 'menu-open' : ''; ?>">
+                    <a href="#" class="nav-link <?php echo $currentPage === 'training-centers' ? 'active' : ''; ?>">
                         <i class="nav-icon fas fa-chalkboard-teacher"></i>
                         <p>
                             Training Management
@@ -45,14 +45,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <?php if ($user['role'] === 'admin'): ?>
-                        <li class="nav-item">
-                            <a href="training-partners.php" class="nav-link <?php echo $currentPage === 'training-partners' ? 'active' : ''; ?>">
-                                <i class="nav-icon fas fa-handshake"></i>
-                                <p>Training Partners</p>
-                            </a>
-                        </li>
-                        <?php endif; ?>
                         <li class="nav-item">
                             <a href="training-centers.php" class="nav-link <?php echo $currentPage === 'training-centers' ? 'active' : ''; ?>">
                                 <i class="nav-icon fas fa-building"></i>
