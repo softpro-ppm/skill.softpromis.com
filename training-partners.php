@@ -1,9 +1,21 @@
+<?php
+require_once 'config.php';
+require_once 'crud_functions.php';
+
+// Check if user is logged in
+if (!isLoggedIn()) {
+    redirect('index.php');
+}
+
+// Check if user has admin privileges
+checkPermission('admin');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Training Partners</title>
+  <title>Training Partners - <?php echo SITE_NAME; ?></title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,6 +28,8 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.0.0/dist/select2-bootstrap4.min.css">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -212,6 +226,11 @@
           <div class="col-sm-6">
             <h1 class="m-0">Training Partners</h1>
           </div>
+          <div class="col-sm-6">
+            <button type="button" class="btn btn-primary float-right" onclick="openAddModal()">
+              <i class="fas fa-plus"></i> Add New Partner
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -222,69 +241,21 @@
       <div class="container-fluid">
         <!-- Training Partners List -->
         <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Training Partners List</h3>
-            <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPartnerModal">
-                <i class="fas fa-plus"></i> Add New Partner
-              </button>
-            </div>
-          </div>
           <div class="card-body">
             <table id="partnersTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Partner ID</th>
-                  <th>Name</th>
+                  <th>ID</th>
+                  <th>Partner Name</th>
                   <th>Contact Person</th>
-                  <th>Phone</th>
                   <th>Email</th>
-                  <th>Training Centers</th>
+                  <th>Phone</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>TP001</td>
-                  <td>ABC Training Solutions</td>
-                  <td>John Doe</td>
-                  <td>+91 9876543210</td>
-                  <td>john@abctraining.com</td>
-                  <td>3</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewPartnerModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editPartnerModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletePartnerModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>TP002</td>
-                  <td>XYZ Education Services</td>
-                  <td>Jane Smith</td>
-                  <td>+91 9876543211</td>
-                  <td>jane@xyzeducation.com</td>
-                  <td>2</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewPartnerModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editPartnerModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletePartnerModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                <!-- Data will be loaded via AJAX -->
               </tbody>
             </table>
           </div>
@@ -295,293 +266,58 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Partner Modal -->
-  <div class="modal fade" id="addPartnerModal">
-    <div class="modal-dialog modal-lg">
+  <!-- Add/Edit Modal -->
+  <div class="modal fade" id="partnerModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Add New Training Partner</h4>
+          <h5 class="modal-title" id="modalTitle">Add Training Partner</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form>
+        <form id="partnerForm">
           <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="partnerName">Partner Name</label>
-                  <input type="text" class="form-control" id="partnerName" placeholder="Enter partner name" required>
-                </div>
-                <div class="form-group">
-                  <label for="contactPerson">Contact Person</label>
-                  <input type="text" class="form-control" id="contactPerson" placeholder="Enter contact person name" required>
-                </div>
-                <div class="form-group">
-                  <label for="phone">Phone</label>
-                  <input type="tel" class="form-control" id="phone" placeholder="Enter phone number" required>
-                </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" placeholder="Enter email address" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="address">Address</label>
-                  <textarea class="form-control" id="address" rows="3" placeholder="Enter full address" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="city">City</label>
-                  <input type="text" class="form-control" id="city" placeholder="Enter city" required>
-                </div>
-                <div class="form-group">
-                  <label for="state">State</label>
-                  <input type="text" class="form-control" id="state" placeholder="Enter state" required>
-                </div>
-                <div class="form-group">
-                  <label for="pincode">Pincode</label>
-                  <input type="text" class="form-control" id="pincode" placeholder="Enter pincode" required>
-                </div>
-              </div>
+            <input type="hidden" id="partner_id" name="partner_id">
+            <div class="form-group">
+              <label for="partner_name">Partner Name</label>
+              <input type="text" class="form-control" id="partner_name" name="partner_name" required>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="description">Description</label>
-                  <textarea class="form-control" id="description" rows="3" placeholder="Enter partner description"></textarea>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="contact_person">Contact Person</label>
+              <input type="text" class="form-control" id="contact_person" name="contact_person" required>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Documents</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="registrationDoc">
-                    <label class="custom-file-label" for="registrationDoc">Registration Certificate</label>
-                  </div>
-                  <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="gstDoc">
-                    <label class="custom-file-label" for="gstDoc">GST Certificate</label>
-                  </div>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="text" class="form-control" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+              <label for="address">Address</label>
+              <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="status">Status</label>
+              <select class="form-control" id="status" name="status">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
             </div>
           </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Partner</button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
           </div>
         </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- View Partner Modal -->
-  <div class="modal fade" id="viewPartnerModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">View Training Partner Details</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Partner ID</label>
-                <p>TP001</p>
-              </div>
-              <div class="form-group">
-                <label>Partner Name</label>
-                <p>ABC Training Solutions</p>
-              </div>
-              <div class="form-group">
-                <label>Contact Person</label>
-                <p>John Doe</p>
-              </div>
-              <div class="form-group">
-                <label>Phone</label>
-                <p>+91 9876543210</p>
-              </div>
-              <div class="form-group">
-                <label>Email</label>
-                <p>john@abctraining.com</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Address</label>
-                <p>123, Main Street, City Center</p>
-              </div>
-              <div class="form-group">
-                <label>City</label>
-                <p>Mumbai</p>
-              </div>
-              <div class="form-group">
-                <label>State</label>
-                <p>Maharashtra</p>
-              </div>
-              <div class="form-group">
-                <label>Pincode</label>
-                <p>400001</p>
-              </div>
-              <div class="form-group">
-                <label>Status</label>
-                <p><span class="badge badge-success">Active</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <h5>Training Centers</h5>
-              <div class="table-responsive">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Center ID</th>
-                      <th>Name</th>
-                      <th>Address</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>TC001</td>
-                      <td>ABC Training Center - Mumbai</td>
-                      <td>123, Main Street, Mumbai</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td>TC002</td>
-                      <td>ABC Training Center - Pune</td>
-                      <td>456, Park Road, Pune</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Edit Partner Modal -->
-  <div class="modal fade" id="editPartnerModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Training Partner</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editPartnerName">Partner Name</label>
-                  <input type="text" class="form-control" id="editPartnerName" value="ABC Training Solutions" required>
-                </div>
-                <div class="form-group">
-                  <label for="editContactPerson">Contact Person</label>
-                  <input type="text" class="form-control" id="editContactPerson" value="John Doe" required>
-                </div>
-                <div class="form-group">
-                  <label for="editPhone">Phone</label>
-                  <input type="tel" class="form-control" id="editPhone" value="+91 9876543210" required>
-                </div>
-                <div class="form-group">
-                  <label for="editEmail">Email</label>
-                  <input type="email" class="form-control" id="editEmail" value="john@abctraining.com" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editAddress">Address</label>
-                  <textarea class="form-control" id="editAddress" rows="3" required>123, Main Street, City Center</textarea>
-                </div>
-                <div class="form-group">
-                  <label for="editCity">City</label>
-                  <input type="text" class="form-control" id="editCity" value="Mumbai" required>
-                </div>
-                <div class="form-group">
-                  <label for="editState">State</label>
-                  <input type="text" class="form-control" id="editState" value="Maharashtra" required>
-                </div>
-                <div class="form-group">
-                  <label for="editPincode">Pincode</label>
-                  <input type="text" class="form-control" id="editPincode" value="400001" required>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="editDescription">Description</label>
-                  <textarea class="form-control" id="editDescription" rows="3">Leading training provider in Mumbai</textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Documents</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="editRegistrationDoc">
-                    <label class="custom-file-label" for="editRegistrationDoc">Registration Certificate</label>
-                  </div>
-                  <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="editGstDoc">
-                    <label class="custom-file-label" for="editGstDoc">GST Certificate</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Update Partner</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Delete Partner Modal -->
-  <div class="modal fade" id="deletePartnerModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Delete Training Partner</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete this training partner? This action cannot be undone.</p>
-          <p><strong>Partner:</strong> ABC Training Solutions</p>
-          <p><strong>Training Centers:</strong> 3</p>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Partner</button>
-        </div>
       </div>
     </div>
   </div>
 
   <footer class="main-footer">
-    <strong>Copyright &copy; 2024 <a href="#">Softpro Skill Solutions</a>.</strong>
+    <strong>Copyright &copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?>.</strong>
     All rights reserved.
   </footer>
 </div>
@@ -600,28 +336,203 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <!-- bs-custom-file-input -->
 <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
 <script>
-  $(function () {
+  let table;
+  
+  $(document).ready(function() {
     // Initialize DataTable
-    $('#partnersTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true
+    table = $('#partnersTable').DataTable({
+      ajax: {
+        url: 'training-partners-ajax.php',
+        type: 'POST',
+        data: {action: 'list'}
+      },
+      columns: [
+        {data: 'partner_id'},
+        {data: 'partner_name'},
+        {data: 'contact_person'},
+        {data: 'email'},
+        {data: 'phone'},
+        {
+          data: 'status',
+          render: function(data) {
+            return `<span class="badge badge-${data === 'active' ? 'success' : 'danger'}">${data}</span>`;
+          }
+        },
+        {
+          data: null,
+          render: function(data) {
+            return `
+              <button class="btn btn-sm btn-info" onclick="viewPartner(${data.partner_id})">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-primary" onclick="editPartner(${data.partner_id})">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="deletePartner(${data.partner_id})">
+                <i class="fas fa-trash"></i>
+              </button>`;
+          }
+        }
+      ]
     });
 
-    // Initialize Select2
-    $('.select2').select2({
-      theme: 'bootstrap4'
-    });
+    // Form Submit Handler
+    $('#partnerForm').on('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const partnerId = $('#partner_id').val();
+      formData.append('action', partnerId ? 'update' : 'create');
 
-    // Initialize custom file input
-    bsCustomFileInput.init();
+      $.ajax({
+        url: 'training-partners-ajax.php',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+          if (response.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: response.message
+            });
+            $('#partnerModal').modal('hide');
+            table.ajax.reload();
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: response.message
+            });
+          }
+        },
+        error: function() {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while processing your request.'
+          });
+        }
+      });
+    });
   });
+
+  function openAddModal() {
+    $('#partnerForm')[0].reset();
+    $('#partner_id').val('');
+    $('#modalTitle').text('Add Training Partner');
+    $('#partnerModal').modal('show');
+  }
+
+  function editPartner(id) {
+    $.ajax({
+      url: 'training-partners-ajax.php',
+      type: 'POST',
+      data: {
+        action: 'get',
+        partner_id: id
+      },
+      success: function(response) {
+        if (response.success) {
+          const partner = response.data;
+          $('#partner_id').val(partner.partner_id);
+          $('#partner_name').val(partner.partner_name);
+          $('#contact_person').val(partner.contact_person);
+          $('#email').val(partner.email);
+          $('#phone').val(partner.phone);
+          $('#address').val(partner.address);
+          $('#status').val(partner.status);
+          
+          $('#modalTitle').text('Edit Training Partner');
+          $('#partnerModal').modal('show');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.message
+          });
+        }
+      }
+    });
+  }
+
+  function viewPartner(id) {
+    $.ajax({
+      url: 'training-partners-ajax.php',
+      type: 'POST',
+      data: {
+        action: 'get',
+        partner_id: id
+      },
+      success: function(response) {
+        if (response.success) {
+          const partner = response.data;
+          Swal.fire({
+            title: partner.partner_name,
+            html: `
+              <div class="text-left">
+                <p><strong>Contact Person:</strong> ${partner.contact_person}</p>
+                <p><strong>Email:</strong> ${partner.email}</p>
+                <p><strong>Phone:</strong> ${partner.phone}</p>
+                <p><strong>Address:</strong> ${partner.address}</p>
+                <p><strong>Status:</strong> ${partner.status}</p>
+              </div>
+            `,
+            width: '600px'
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.message
+          });
+        }
+      }
+    });
+  }
+
+  function deletePartner(id) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: 'training-partners-ajax.php',
+          type: 'POST',
+          data: {
+            action: 'delete',
+            partner_id: id
+          },
+          success: function(response) {
+            if (response.success) {
+              Swal.fire(
+                'Deleted!',
+                response.message,
+                'success'
+              );
+              table.ajax.reload();
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response.message
+              });
+            }
+          }
+        });
+      }
+    });
+  }
 </script>
 </body>
 </html> 
