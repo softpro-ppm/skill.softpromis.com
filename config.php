@@ -15,14 +15,36 @@ define('DEFAULT_TIMEZONE', 'Asia/Kolkata');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Start session
-session_start();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Set timezone
 date_default_timezone_set(DEFAULT_TIMEZONE);
 
-// Include functions file
-require_once __DIR__ . '/inc/functions.php';
+// Database connection function - only define if it doesn't exist
+if (!function_exists('getDBConnection')) {
+    function getDBConnection() {
+        try {
+            static $conn = null;
+            if ($conn !== null) {
+                return $conn;
+            }
+            
+            $conn = new PDO(
+                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
+                DB_USER,
+                DB_PASS,
+                array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'")
+            );
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $conn;
+        } catch(PDOException $e) {
+            die("Connection failed: " . $e->getMessage());
+        }
+    }
+}
 
 // Helper functions
 function clean($string) {
@@ -34,19 +56,14 @@ function redirect($url) {
     exit();
 }
 
-// Only define if it doesn't exist
-if (!function_exists('isLoggedIn')) {
-    function isLoggedIn() {
-        return isset($_SESSION['user_id']);
-    }
+// Authentication helpers
+function isLoggedIn() {
+    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
 
-// Only define if it doesn't exist
-if (!function_exists('checkPermission')) {
-    function checkPermission($required_role) {
-        if (!isset($_SESSION['role']) || $_SESSION['role'] !== $required_role) {
-            redirect('login.php');
-        }
+function checkPermission($required_role) {
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== $required_role) {
+        redirect('login.php');
     }
 }
 

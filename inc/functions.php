@@ -28,7 +28,7 @@ function checkPermission($requiredRole) {
     }
 }
 
-// Database functions
+// Database functions - Make sure we're not trying to use constants from config.php
 if (!function_exists('getDBConnection')) {
     function getDBConnection() {
         static $pdo = null;
@@ -37,11 +37,17 @@ if (!function_exists('getDBConnection')) {
             return $pdo; // Return existing connection if available
         }
         
+        // Get DB parameters from config constants
+        $host = defined('DB_HOST') ? DB_HOST : 'localhost';
+        $dbname = defined('DB_NAME') ? DB_NAME : 'u820431346_skill';
+        $user = defined('DB_USER') ? DB_USER : 'u820431346_skill';
+        $pass = defined('DB_PASS') ? DB_PASS : 'w:A85&!J5p';
+        
         try {
             $pdo = new PDO(
-                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8",
-                DB_USER,
-                DB_PASS,
+                "mysql:host=$host;dbname=$dbname;charset=utf8",
+                $user,
+                $pass,
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

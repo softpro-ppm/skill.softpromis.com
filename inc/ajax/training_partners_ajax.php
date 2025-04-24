@@ -2,7 +2,7 @@
 require_once '../../config.php';
 require_once '../functions.php';
 
-// Ensure session is started
+// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -17,7 +17,7 @@ if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
 }
 
 // Check if user has admin privileges
-if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'admin') {
+if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'Administrator') {
     echo json_encode(['success' => false, 'message' => 'Insufficient permissions']);
     exit;
 }

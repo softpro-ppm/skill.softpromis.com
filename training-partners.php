@@ -2,7 +2,7 @@
 // Include config file which already includes functions.php
 require_once 'config.php';
 
-// Start secure session if not already started
+// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -15,8 +15,8 @@ if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
 }
 
 // Check if user has admin privileges
-if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'admin') {
-    // Redirect to dashboard with error
+if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'Administrator') {
+    // Redirect to login page with unauthorized message
     header('Location: index.php?error=unauthorized');
     exit;
 }
