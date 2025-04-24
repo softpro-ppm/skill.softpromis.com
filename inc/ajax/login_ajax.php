@@ -49,7 +49,7 @@ try {
     $stmt = $pdo->prepare("
         SELECT u.*, r.role_name 
         FROM users u 
-        JOIN roles r ON u.role_id = r.role_id 
+        JOIN roles r ON u.role_id = r.id 
         WHERE u.email = ? AND u.status = 'active'
     ");
     $stmt->execute([$email]);
@@ -61,14 +61,14 @@ try {
         $token = bin2hex(random_bytes(32));
         
         // Update user's token
-        $updateStmt = $pdo->prepare("UPDATE users SET token = ?, last_login = NOW() WHERE user_id = ?");
-        $updateStmt->execute([$token, $user['user_id']]);
+        $updateStmt = $pdo->prepare("UPDATE users SET token = ?, last_login = NOW() WHERE id = ?");
+        $updateStmt->execute([$token, $user['id']]);
 
         // Prepare user data for response
         $userData = [
-            'user_id' => $user['user_id'],
+            'user_id' => $user['id'],
             'email' => $user['email'],
-            'name' => $user['full_name'],
+            'name' => $user['name'],
             'role' => $user['role_name'],
             'token' => $token
         ];

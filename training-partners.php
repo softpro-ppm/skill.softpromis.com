@@ -33,7 +33,7 @@ require_once 'includes/header.php';
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Training Partners</h3>
+                        <h3 class="card-title">Manage Training Partners</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#partnerModal">
                                 <i class="fas fa-plus"></i> Add New Partner
@@ -44,12 +44,12 @@ require_once 'includes/header.php';
                         <table id="partnersTable" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
+                                    <th>Partner Name</th>
+                                    <th>Contact Person</th>
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Address</th>
                                     <th>Status</th>
-                                    <th>Created At</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -69,21 +69,25 @@ require_once 'includes/header.php';
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="partnerModalLabel">Add New Partner</h5>
+                <h5 class="modal-title" id="partnerModalLabel">Add New Training Partner</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form id="partnerForm">
                 <div class="modal-body">
-                    <input type="hidden" name="id" id="partnerId">
+                    <input type="hidden" name="partner_id" id="partner_id">
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <label for="partner_name">Partner Name</label>
+                        <input type="text" class="form-control" id="partner_name" name="partner_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_person">Contact Person</label>
+                        <input type="text" class="form-control" id="contact_person" name="contact_person">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control" id="email" name="email">
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
@@ -148,7 +152,8 @@ $(document).ready(function() {
             data: { action: 'read' }
         },
         columns: [
-            { data: 'name' },
+            { data: 'partner_name' },
+            { data: 'contact_person' },
             { data: 'email' },
             { data: 'phone' },
             { data: 'address' },
@@ -156,12 +161,6 @@ $(document).ready(function() {
                 data: 'status',
                 render: function(data) {
                     return `<span class="badge badge-${data === 'active' ? 'success' : 'danger'}">${data}</span>`;
-                }
-            },
-            { 
-                data: 'created_at',
-                render: function(data) {
-                    return new Date(data).toLocaleDateString();
                 }
             },
             {
@@ -185,7 +184,7 @@ $(document).ready(function() {
         e.preventDefault();
         
         const formData = new FormData(this);
-        formData.append('action', $('#partnerId').val() ? 'update' : 'create');
+        formData.append('action', $('#partner_id').val() ? 'update' : 'create');
 
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
@@ -219,8 +218,9 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     const partner = response.data;
-                    $('#partnerId').val(partner.id);
-                    $('#name').val(partner.name);
+                    $('#partner_id').val(partner.id);
+                    $('#partner_name').val(partner.partner_name);
+                    $('#contact_person').val(partner.contact_person);
                     $('#email').val(partner.email);
                     $('#phone').val(partner.phone);
                     $('#address').val(partner.address);
@@ -264,8 +264,8 @@ $(document).ready(function() {
     // Reset form when modal is closed
     $('#partnerModal').on('hidden.bs.modal', function() {
         $('#partnerForm')[0].reset();
-        $('#partnerId').val('');
-        $('#partnerModalLabel').text('Add New Partner');
+        $('#partner_id').val('');
+        $('#partnerModalLabel').text('Add New Training Partner');
     });
 });
 </script> 
