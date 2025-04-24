@@ -7,16 +7,31 @@ require_once '../functions.php';
 header('Content-Type: application/json');
 
 // Check if user has admin privileges
-if (!hasRole('Administrator')) {
+if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'Administrator') {
+    error_log("Access denied: User role is " . ($_SESSION['user']['role'] ?? 'not set'));
     echo json_encode(['success' => false, 'message' => 'Insufficient permissions']);
     exit;
 }
 
 // Get the action
 $action = $_POST['action'] ?? '';
+error_log("Training partners action: " . $action);
 
 try {
     $pdo = getDBConnection();
+
+    // First, ensure the table exists
+    $pdo->exec("CREATE TABLE IF NOT EXISTS training_partners (
+        partner_id INT AUTO_INCREMENT PRIMARY KEY,
+        partner_name VARCHAR(100) NOT NULL,
+        contact_person VARCHAR(100),
+        email VARCHAR(100),
+        phone VARCHAR(15),
+        address TEXT,
+        status ENUM('active', 'inactive') DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    )");
 
     switch ($action) {
         case 'list':
@@ -28,6 +43,7 @@ try {
             $stmt->execute();
             $partners = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
+            error_log("Found " . count($partners) . " partners");
             echo json_encode([
                 'success' => true,
                 'data' => $partners
