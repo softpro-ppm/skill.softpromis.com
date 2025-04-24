@@ -430,10 +430,10 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
                   <h3 class="card-title">Report Details</h3>
                 </div>
                 <div class="card-body">
@@ -456,31 +456,31 @@
                       <div class="card">
                         <div class="card-header">
                           <h3 class="card-title">Report Data</h3>
-                        </div>
-                        <div class="card-body">
-                          <table class="table table-bordered">
-                            <thead>
-                              <tr>
+              </div>
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
                                 <th>Column 1</th>
                                 <th>Column 2</th>
                                 <th>Column 3</th>
                                 <th>Column 4</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
                                 <td>Data 1</td>
                                 <td>Data 2</td>
                                 <td>Data 3</td>
                                 <td>Data 4</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
               </div>
             </div>
           </div>
@@ -571,15 +571,15 @@
 
     // Initialize charts
     const studentProgressChart = new Chart(document.getElementById('studentProgressChart'), {
-      type: 'line',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [{
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
           label: 'Student Progress',
           data: [65, 70, 75, 80, 85, 90],
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }]
       }
     });
 
