@@ -643,6 +643,6 @@
     bsCustomFileInput.init();
   });
 </script>
-<script src=\"assets/js/training-centers.js\"></script>
+<script src="assets/js/training-centers.js"></script>
 </body>
 </html> 
