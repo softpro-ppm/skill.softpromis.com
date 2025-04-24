@@ -80,7 +80,7 @@ $user = $_SESSION['user'];
                         <i class="fas fa-user mr-2"></i> Profile
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item logout-btn" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt mr-2"></i> Logout
                     </a>
                 </div>
@@ -103,7 +103,10 @@ $user = $_SESSION['user'];
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <a href="logout.php" class="btn btn-primary">Logout</a>
+                    <form action="logout.php" method="POST" id="logoutForm">
+                        <input type="hidden" name="logout" value="1">
+                        <button type="submit" class="btn btn-primary">Logout</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -28,7 +28,7 @@ function handleLogin(event) {
 
     // Make AJAX request to login endpoint
     $.ajax({
-        url: 'login_ajax.php',
+        url: 'inc/ajax/login_ajax.php',
         type: 'POST',
         data: {
             email: email,
@@ -119,7 +119,7 @@ function checkAuth() {
 function verifyToken(token) {
     return new Promise((resolve) => {
         $.ajax({
-            url: 'verify_token.php',
+            url: 'inc/ajax/verify_token.php',
             type: 'POST',
             data: { token: token },
             dataType: 'json',
