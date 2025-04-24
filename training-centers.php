@@ -13,9 +13,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.0.0/dist/select2-bootstrap4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -36,172 +35,15 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.php" role="button">
+        <a class="nav-link" href="logout.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>
       </li>
     </ul>
   </nav>
-  <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="dashboard.php" class="brand-link">
-      <span class="brand-text font-weight-light">Softpro Skill Solutions</span>
-    </a>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="info">
-          <a href="#" class="d-block">Admin User</a>
-        </div>
-      </div>
-
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
-            <a href="dashboard.php" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-building"></i>
-              <p>
-                Training Partners
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="training-partners.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Manage Partners</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="training-centers.php" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Training Centers</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-graduation-cap"></i>
-              <p>
-                Training Programs
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="schemes.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Schemes</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="sectors.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sectors</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="courses.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Courses</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="batches.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Batches</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Students
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="students.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Manage Students</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="fees.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Fee Management</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="assessments.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Assessments</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="certificates.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Certificates</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-bar"></i>
-              <p>
-                Reports
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="reports.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>View Reports</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user-shield"></i>
-              <p>
-                User Management
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="roles.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Roles & Permissions</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-  </aside>
+  <?php require_once 'includes/sidebar.php'; ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -212,15 +54,19 @@
           <div class="col-sm-6">
             <h1 class="m-0">Training Centers</h1>
           </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+              <li class="breadcrumb-item active">Training Centers</li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>
-    <!-- /.content-header -->
 
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Training Centers List -->
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Training Centers List</h3>
@@ -236,7 +82,6 @@
                 <tr>
                   <th>Center ID</th>
                   <th>Name</th>
-                  <th>Partner</th>
                   <th>Location</th>
                   <th>Contact Person</th>
                   <th>Phone</th>
@@ -246,57 +91,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>TC001</td>
-                  <td>ABC Training Center - Mumbai</td>
-                  <td>ABC Training Solutions</td>
-                  <td>Mumbai</td>
-                  <td>Rajesh Kumar</td>
-                  <td>+91 9876543212</td>
-                  <td>50</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCenterModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCenterModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCenterModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>TC002</td>
-                  <td>ABC Training Center - Pune</td>
-                  <td>ABC Training Solutions</td>
-                  <td>Pune</td>
-                  <td>Priya Sharma</td>
-                  <td>+91 9876543213</td>
-                  <td>30</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCenterModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCenterModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCenterModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
 
   <!-- Add Center Modal -->
   <div class="modal fade" id="addCenterModal">
@@ -312,7 +113,6 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
-                <input type="hidden" id="partner" name="partner" value="1">
                 <div class="form-group">
                   <label for="centerName">Center Name</label>
                   <input type="text" class="form-control" id="centerName" placeholder="Enter center name" required>
@@ -343,35 +143,14 @@
                   <label for="pincode">Pincode</label>
                   <input type="text" class="form-control" id="pincode" placeholder="Enter pincode" required>
                 </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
                 <div class="form-group">
-                  <label for="capacity">Student Capacity</label>
+                  <label for="capacity">Capacity</label>
                   <input type="number" class="form-control" id="capacity" placeholder="Enter student capacity" required>
-                </div>
-                <div class="form-group">
-                  <label for="infrastructure">Infrastructure Details</label>
-                  <textarea class="form-control" id="infrastructure" rows="3" placeholder="Enter infrastructure details"></textarea>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Documents</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="centerPhoto">
-                    <label class="custom-file-label" for="centerPhoto">Center Photo</label>
-                  </div>
-                  <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="centerDoc">
-                    <label class="custom-file-label" for="centerDoc">Center Documents</label>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="modal-footer justify-content-between">
+          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Save Center</button>
           </div>
@@ -391,89 +170,6 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Center ID</label>
-                <p>TC001</p>
-              </div>
-              <div class="form-group">
-                <label>Center Name</label>
-                <p>ABC Training Center - Mumbai</p>
-              </div>
-            <div class="form-group">
-                <label>Training Partner</label>
-                <p>ABC Training Solutions</p>
-            </div>
-            <div class="form-group">
-                <label>Contact Person</label>
-                <p>Rajesh Kumar</p>
-            </div>
-            <div class="form-group">
-                <label>Phone</label>
-                <p>+91 9876543212</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Address</label>
-                <p>123, Main Street, Mumbai</p>
-              </div>
-              <div class="form-group">
-                <label>City</label>
-                <p>Mumbai</p>
-              </div>
-              <div class="form-group">
-                <label>State</label>
-                <p>Maharashtra</p>
-              </div>
-              <div class="form-group">
-                <label>Pincode</label>
-                <p>400001</p>
-            </div>
-            <div class="form-group">
-                <label>Status</label>
-                <p><span class="badge badge-success">Active</span></p>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <h5>Active Batches</h5>
-              <div class="table-responsive">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Batch ID</th>
-                      <th>Course</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>Students</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>B001</td>
-                      <td>Web Development</td>
-                      <td>01/01/2024</td>
-                      <td>31/03/2024</td>
-                      <td>25/30</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td>B002</td>
-                      <td>Digital Marketing</td>
-                      <td>15/01/2024</td>
-                      <td>15/04/2024</td>
-                      <td>20/25</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -481,124 +177,7 @@
       </div>
     </div>
   </div>
-
-  <!-- Edit Center Modal -->
-  <div class="modal fade" id="editCenterModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Training Center</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editPartner">Training Partner</label>
-                  <select class="form-control select2" id="editPartner" required>
-                    <option value="TP001" selected>ABC Training Solutions</option>
-                    <option value="TP002">XYZ Education Services</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="editCenterName">Center Name</label>
-                  <input type="text" class="form-control" id="editCenterName" value="ABC Training Center - Mumbai" required>
-                </div>
-                <div class="form-group">
-                  <label for="editContactPerson">Contact Person</label>
-                  <input type="text" class="form-control" id="editContactPerson" value="Rajesh Kumar" required>
-                </div>
-                <div class="form-group">
-                  <label for="editPhone">Phone</label>
-                  <input type="tel" class="form-control" id="editPhone" value="+91 9876543212" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editAddress">Address</label>
-                  <textarea class="form-control" id="editAddress" rows="3" required>123, Main Street, Mumbai</textarea>
-                </div>
-                <div class="form-group">
-                  <label for="editCity">City</label>
-                  <input type="text" class="form-control" id="editCity" value="Mumbai" required>
-                </div>
-                <div class="form-group">
-                  <label for="editState">State</label>
-                  <input type="text" class="form-control" id="editState" value="Maharashtra" required>
-                </div>
-                <div class="form-group">
-                  <label for="editPincode">Pincode</label>
-                  <input type="text" class="form-control" id="editPincode" value="400001" required>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editCapacity">Student Capacity</label>
-                  <input type="number" class="form-control" id="editCapacity" value="50" required>
-                </div>
-                <div class="form-group">
-                  <label for="editInfrastructure">Infrastructure Details</label>
-                  <textarea class="form-control" id="editInfrastructure" rows="3">Modern classroom with projectors and computers</textarea>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Documents</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="editCenterPhoto">
-                    <label class="custom-file-label" for="editCenterPhoto">Center Photo</label>
-                  </div>
-                  <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="editCenterDoc">
-                    <label class="custom-file-label" for="editCenterDoc">Center Documents</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Update Center</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Delete Center Modal -->
-  <div class="modal fade" id="deleteCenterModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Delete Training Center</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete this training center? This action cannot be undone.</p>
-          <p><strong>Center:</strong> ABC Training Center - Mumbai</p>
-          <p><strong>Active Batches:</strong> 2</p>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Center</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2024 <a href="#">Softpro Skill Solutions</a>.</strong>
-    All rights reserved.
-  </footer>
 </div>
-<!-- ./wrapper -->
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -609,24 +188,9 @@
 <!-- DataTables -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<!-- Select2 -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<!-- bs-custom-file-input -->
-<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 <!-- Toastr -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<script>
-  $(function () {
-    // Initialize Select2
-    $('.select2').select2({
-      theme: 'bootstrap4'
-    });
-
-    // Initialize custom file input
-    bsCustomFileInput.init();
-  });
-</script>
+<!-- Custom JS -->
 <script src="assets/js/training-centers.js"></script>
 </body>
 </html> 

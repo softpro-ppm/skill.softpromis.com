@@ -15,26 +15,23 @@ $(document).ready(function() {
 
     // --- DataTable Initialization ---
     const centersTable = $('#centersTable').DataTable({
-        "processing": true, // Show processing indicator
-        "serverSide": false, // For now, use client-side processing. Change to true for large datasets.
+        "processing": true,
+        "serverSide": false,
         "ajax": {
             "url": ajaxUrl,
             "type": "POST",
-            "data": function(d) { // Send 'action' parameter
+            "data": function(d) {
                 d.action = 'read';
-                // Add other filters here if needed (e.g., search, partner_id)
-                // For server-side processing, DataTables sends parameters like draw, start, length, search[value]
             },
-            "dataSrc": function(json) { // Process the response
+            "dataSrc": function(json) {
                 if (!json || !json.success || !json.data || !json.data.data) {
-                     console.error("Invalid data received:", json);
-                     toastr.error(json.message || 'Failed to load data. Check console for details.');
-                     return []; // Return empty array on error
+                    console.error("Invalid data received:", json);
+                    toastr.error(json.message || 'Failed to load data. Check console for details.');
+                    return [];
                 }
-                // For client-side processing, return the actual data array
                 return json.data.data;
             },
-            "error": function(xhr, error, thrown) { // Handle AJAX errors
+            "error": function(xhr, error, thrown) {
                 console.error("DataTables AJAX Error:", { xhr, error, thrown });
                 toastr.error('An error occurred while fetching data.');
             }
@@ -42,173 +39,111 @@ $(document).ready(function() {
         "columns": [
             { "data": "id", "title": "Center ID" },
             { "data": "name", "title": "Name" },
-            { "data": "partner_name", "title": "Partner" }, // Assuming partner_name is returned by the 'read' action
             { "data": null, "title": "Location", "render": function(data, type, row) {
                     return `${row.city || ''}, ${row.state || ''}`;
                 }
             },
+            { "data": "contact_person", "title": "Contact Person" },
             { "data": "phone", "title": "Phone" },
-             { "data": "capacity", "title": "Capacity" },
-            {
-                "data": "status",
-                "title": "Status",
-                "render": function(data, type, row) {
-                    const badgeClass = data === 'active' ? 'badge-success' : 'badge-danger';
-                    return `<span class="badge ${badgeClass}">${data}</span>`;
-                }
-            },
-            {
-                "data": null,
+            { "data": "capacity", "title": "Capacity" },
+            { "data": "status", "title": "Status" },
+            { 
+                "data": null, 
                 "title": "Actions",
-                "orderable": false,
-                "searchable": false,
                 "render": function(data, type, row) {
-                    // Added data-id attribute to each button
                     return `
-                        <button type="button" class="btn btn-info btn-sm view-center" data-id="${row.id}" title="View Details">
-                          <i class="fas fa-eye"></i>
+                        <button class="btn btn-info btn-sm view-center" data-id="${row.id}">
+                            <i class="fas fa-eye"></i>
                         </button>
-                        <button type="button" class="btn btn-primary btn-sm edit-center" data-id="${row.id}" title="Edit Center">
-                          <i class="fas fa-edit"></i>
+                        <button class="btn btn-primary btn-sm edit-center" data-id="${row.id}">
+                            <i class="fas fa-edit"></i>
                         </button>
-                        <button type="button" class="btn btn-danger btn-sm delete-center" data-id="${row.id}" title="Delete Center">
-                          <i class="fas fa-trash"></i>
+                        <button class="btn btn-danger btn-sm delete-center" data-id="${row.id}">
+                            <i class="fas fa-trash"></i>
                         </button>
                     `;
                 }
             }
         ],
-        "paging": true,
-        "lengthChange": true,
-        "searching": true, // Enable DataTables native search box
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-        // Optional: Add language options if needed
-        // "language": {
-        //     "processing": "Loading..."
-        // }
+        "order": [[0, "desc"]],
+        "pageLength": 10,
+        "responsive": true
     });
 
-    // --- Helper Functions ---
-    function reloadTable() {
-        centersTable.ajax.reload(null, false); // Reload DataTable without resetting pagination
-    }
-
-    // --- Function to load partners into dropdown ---
-    function loadPartnersDropdown(selectElementId) {
-        const selectElement = $(`#${selectElementId}`);
-        if (!selectElement.length) return; // Exit if element doesn't exist
-
-        selectElement.empty().append('<option value="">Loading Partners...</option>');
-
-        $.ajax({
-            url: 'inc/ajax/training_partners_ajax.php', // URL for partners
-            type: 'POST',
-            data: { action: 'list_all' },
-            dataType: 'json',
-            success: function(response) {
-                selectElement.empty().append('<option value="">Select Partner</option>'); // Add default option
-                if (response.success && response.data && response.data.partners) {
-                    response.data.partners.forEach(function(partner) {
-                        selectElement.append($('<option></option>').attr('value', partner.id).text(partner.name));
-                    });
-                } else {
-                    console.error('Failed to load partners:', response.message);
-                    toastr.error(response.message || 'Could not load partners.');
-                    selectElement.append('<option value="">Error loading partners</option>');
-                }
-                // Refresh Select2 if it's initialized on this element
-                if (selectElement.hasClass('select2-hidden-accessible')) {
-                    selectElement.trigger('change');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('AJAX error loading partners:', error);
-                toastr.error('An error occurred while loading partners.');
-                selectElement.empty().append('<option value="">Error loading partners</option>');
-            }
-        });
-    }
-
-    // --- Initialize other components ---
-    // Note: These might already be initialized in training-centers.php,
-    // review and remove duplication if necessary.
-    $('.select2').select2({
-      theme: 'bootstrap4'
-    });
-    bsCustomFileInput.init();
-
-    // --- Load initial data ---
-    loadPartnersDropdown('partner'); // Load partners for Add modal
-    // We will call loadPartnersDropdown('editPartner') when the edit modal is opened.
-
-    // --- Event Handlers ---
-
-    // Add Center Form Submission
-    $('#addCenterForm').on('submit', function(event) {
-        event.preventDefault();
-        const form = this;
-        const submitButton = $(form).find('button[type="submit"]');
-        const originalButtonText = submitButton.html();
-
-        // Basic client-side validation (optional, enhance as needed)
-        if (!form.checkValidity()) {
-            event.stopPropagation();
-            form.classList.add('was-validated');
-            toastr.warning('Please fill all required fields.');
-            return;
-        }
-        form.classList.remove('was-validated'); // Remove validation classes if valid
-
-        submitButton.html('<i class="fas fa-spinner fa-spin"></i> Saving...').prop('disabled', true);
-
-        const formData = new FormData(form);
-        formData.append('action', 'create');
-
-        // Log formData contents (for debugging)
-        // for (var pair of formData.entries()) {
-        //     console.log(pair[0]+ ': ' + pair[1]);
-        // }
+    // --- Form Submission Handlers ---
+    $('#addCenterForm').on('submit', function(e) {
+        e.preventDefault();
+        const formData = {
+            action: 'create',
+            name: $('#centerName').val(),
+            contact_person: $('#contactPerson').val(),
+            phone: $('#phone').val(),
+            address: $('#address').val(),
+            city: $('#city').val(),
+            state: $('#state').val(),
+            pincode: $('#pincode').val(),
+            capacity: $('#capacity').val(),
+            status: 'active'
+        };
 
         $.ajax({
             url: ajaxUrl,
             type: 'POST',
             data: formData,
-            processData: false, // Important for FormData
-            contentType: false, // Important for FormData
-            dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    toastr.success(response.message || 'Center created successfully!');
+                    toastr.success(response.message);
                     $('#addCenterModal').modal('hide');
-                    form.reset(); // Clear the form
-                    reloadTable(); // Refresh the DataTable
+                    centersTable.ajax.reload();
+                    $('#addCenterForm')[0].reset();
                 } else {
-                    toastr.error(response.message || 'Failed to create center.');
+                    toastr.error(response.message);
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('Add Center AJAX Error:', error);
-                toastr.error('An error occurred while saving the center.');
-            },
-            complete: function() {
-                submitButton.html(originalButtonText).prop('disabled', false);
+            error: function() {
+                toastr.error('An error occurred while creating the center');
             }
         });
     });
 
-    // Reset form validation state when modal is closed
-    $('#addCenterModal').on('hidden.bs.modal', function () {
-        $(this).find('form')[0].reset();
-        $(this).find('form').removeClass('was-validated');
-        // Reset select2 if needed
-         $('#partner').val(null).trigger('change');
-         // Reset custom file input labels
-        $(this).find('.custom-file-label').text('Choose file');
+    // --- Event Handlers ---
+    $(document).on('click', '.view-center', function() {
+        const centerId = $(this).data('id');
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            data: { action: 'get', id: centerId },
+            success: function(response) {
+                if (response.success) {
+                    const center = response.data;
+                    $('#viewCenterModal .modal-body').html(`
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Center ID:</strong> ${center.id}</p>
+                                <p><strong>Name:</strong> ${center.name}</p>
+                                <p><strong>Contact Person:</strong> ${center.contact_person}</p>
+                                <p><strong>Phone:</strong> ${center.phone}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Address:</strong> ${center.address}</p>
+                                <p><strong>City:</strong> ${center.city}</p>
+                                <p><strong>State:</strong> ${center.state}</p>
+                                <p><strong>Pincode:</strong> ${center.pincode}</p>
+                                <p><strong>Capacity:</strong> ${center.capacity}</p>
+                                <p><strong>Status:</strong> ${center.status}</p>
+                            </div>
+                        </div>
+                    `);
+                    $('#viewCenterModal').modal('show');
+                } else {
+                    toastr.error(response.message);
+                }
+            }
+        });
     });
 
-    // TODO: Implement handlers for View, Edit, Delete buttons
-
+    // --- Utility Functions ---
+    function reloadTable() {
+        centersTable.ajax.reload();
+    }
 }); 
