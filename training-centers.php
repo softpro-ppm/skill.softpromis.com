@@ -625,17 +625,6 @@
 
 <script>
   $(function () {
-    // Initialize DataTable
-    $('#centersTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true
-    });
-
     // Initialize Select2
     $('.select2').select2({
       theme: 'bootstrap4'
