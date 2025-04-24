@@ -7,11 +7,13 @@ require_once 'inc/auth_check.php';
 require_once 'config.php';
 require_once 'inc/functions.php';
 
-// Debug session
+// Debug session data
 error_log("Session data: " . print_r($_SESSION, true));
+error_log("User role: " . ($_SESSION['user']['role'] ?? 'not set'));
 
 // Check if user has admin privileges
 if (!hasRole('Administrator')) {
+    error_log("Access denied - User role: " . ($_SESSION['user']['role'] ?? 'not set'));
     header('Location: dashboard.php?error=' . urlencode('You do not have permission to access this page.'));
     exit;
 }
