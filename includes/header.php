@@ -1,11 +1,11 @@
 <?php
 // Start session if not already started
-// if (session_status() === PHP_SESSION_NONE) {
-//     session_start();
-// }
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Define BASEPATH constant
-//define('BASEPATH', true);
+define('BASEPATH', true);
 
 require_once 'config.php';
 
@@ -36,6 +36,7 @@ $user = $_SESSION['user'];
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/sidebar.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
