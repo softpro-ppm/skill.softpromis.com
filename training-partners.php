@@ -14,7 +14,41 @@
 $pageTitle = 'Training Partners';
 $currentPage = 'training-partners';
 require_once './includes/header.php';
-?>
+
+<!-- Additional CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+<style>
+.card {
+    border-radius: 0.5rem;
+}
+.card-header {
+    border-radius: calc(0.5rem - 1px) calc(0.5rem - 1px) 0 0 !important;
+}
+.modal-content {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+.badge {
+    padding: 0.5em 0.75em;
+    font-weight: 500;
+}
+.btn-group-sm > .btn {
+    padding: 0.25rem 0.5rem;
+}
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+.modal-header .close {
+    padding: 1rem;
+    margin: -1rem -1rem -1rem auto;
+}
+</style>
 
 <!-- Main content -->
 <section class="content">
@@ -166,16 +200,24 @@ require_once './includes/header.php';
     </div>
 </div>
 
-<?php require_once './includes/footer.php'; ?>
-
-<!-- DataTables & Plugins -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+<!-- Required JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <!-- Page specific script -->
 <script>
 $(document).ready(function() {
+    // Configure toastr options
+    toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "3000"
+    };
+
     // Initialize DataTable with improved styling
     const table = $('#partnersTable').DataTable({
         responsive: true,
@@ -340,34 +382,4 @@ $(document).ready(function() {
 });
 </script>
 
-<style>
-.card {
-    border-radius: 0.5rem;
-}
-.card-header {
-    border-radius: calc(0.5rem - 1px) calc(0.5rem - 1px) 0 0 !important;
-}
-.modal-content {
-    border-radius: 0.5rem;
-    overflow: hidden;
-}
-.table thead th {
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #dee2e6;
-}
-.badge {
-    padding: 0.5em 0.75em;
-    font-weight: 500;
-}
-.btn-group-sm > .btn {
-    padding: 0.25rem 0.5rem;
-}
-.form-control:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-}
-.modal-header .close {
-    padding: 1rem;
-    margin: -1rem -1rem -1rem auto;
-}
-</style> 
+<?php require_once './includes/footer.php'; ?> 
