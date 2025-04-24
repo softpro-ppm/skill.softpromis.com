@@ -10,11 +10,8 @@ function startSecureSession() {
 }
 
 // Authentication functions
-function isLoggedIn() {
-    return isset($_SESSION['user']) && !empty($_SESSION['user']);
-}
-
 function checkLogin() {
+    require_once __DIR__ . '/auth_check.php';
     if (!isLoggedIn()) {
         echo json_encode(['success' => false, 'message' => 'Unauthorized access']);
         exit;
@@ -22,7 +19,8 @@ function checkLogin() {
 }
 
 function checkPermission($requiredRole) {
-    if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== $requiredRole) {
+    require_once __DIR__ . '/auth_check.php';
+    if (!hasRole($requiredRole)) {
         echo json_encode(['success' => false, 'message' => 'Insufficient permissions']);
         exit;
     }
