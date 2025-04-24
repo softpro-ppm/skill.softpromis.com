@@ -1,14 +1,20 @@
 <?php
 require_once 'config.php';
-require_once 'crud_functions.php';
+require_once 'inc/functions.php';
+
+startSecureSession();
 
 // Check if user is logged in
-if (!isLoggedIn()) {
-    redirect('index.php');
+if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
+    header('Location: index.php');
+    exit;
 }
 
 // Check if user has admin privileges
-checkPermission('admin');
+if (!hasPermission('admin')) {
+    header('Location: index.php?error=unauthorized');
+    exit;
+}
 
 $pageTitle = 'Training Partners';
 $currentPage = 'training-partners';
