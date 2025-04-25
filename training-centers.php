@@ -41,7 +41,7 @@
       </li>
     </ul>
   </nav>
-
+  
   <!-- Main Sidebar Container -->
   <?php require_once 'includes/sidebar.php'; ?>
 

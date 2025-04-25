@@ -11,7 +11,19 @@ function isLoggedIn() {
 
 // Function to check user role
 function hasRole($requiredRole) {
-    return isset($_SESSION['user']['role']) && strtolower($_SESSION['user']['role']) === strtolower($requiredRole);
+    if (!isset($_SESSION['user']['role'])) {
+        return false;
+    }
+    
+    $userRole = strtolower($_SESSION['user']['role']);
+    $requiredRole = strtolower($requiredRole);
+    
+    // Check for admin roles
+    if ($requiredRole === 'admin') {
+        return in_array($userRole, ['admin', 'administrator']);
+    }
+    
+    return $userRole === $requiredRole;
 }
 
 // Check if user is logged in, if not redirect to login
