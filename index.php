@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once 'config.php';
+// Session is already started in config.php
 
 // If user is already logged in, redirect to dashboard
 if (isset($_SESSION['user'])) {
@@ -17,6 +18,7 @@ if (isset($_SESSION['user'])) {
 // Get messages
 $message = $_GET['message'] ?? null;
 $error = $_GET['error'] ?? null;
+$logoutMessage = $_GET['logout_message'] ?? null;
 
 // Page title
 $pageTitle = "Login";
@@ -38,21 +40,6 @@ $pageTitle = "Login";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/login.css">
-</head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Login</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
-  <!-- Toastr -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="assets/css/login.css">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">

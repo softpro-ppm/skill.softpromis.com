@@ -1,0 +1,64 @@
+[25-Apr-2025 06:14:12 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:15 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:24 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:49 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:50 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:50 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:51 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:51 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:51 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:51 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:51 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:14:52 Asia/Kolkata] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\skill.softpromis.com\index.php on line 3
+[25-Apr-2025 06:15:40 Asia/Kolkata] Login error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[25-Apr-2025 06:16:22 Asia/Kolkata] Login error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[25-Apr-2025 06:18:22 Asia/Kolkata] Login error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[25-Apr-2025 06:18:24 Asia/Kolkata] Login error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[25-Apr-2025 06:18:28 Asia/Kolkata] Login error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[25-Apr-2025 06:19:36 Asia/Kolkata] Login error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[25-Apr-2025 06:19:47 Asia/Kolkata] Login error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[25-Apr-2025 06:20:12 Asia/Kolkata] Login error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[25-Apr-2025 06:21:39 Asia/Kolkata] PHP Warning:  Undefined array key "name" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\login_ajax.php on line 66
+[25-Apr-2025 06:23:36 Asia/Kolkata] Login error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[25-Apr-2025 06:23:45 Asia/Kolkata] Login error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u.name' in 'field list'
+[25-Apr-2025 06:25:20 Asia/Kolkata] User data: Array
+(
+    [user_id] => 7
+    [username] => admin
+    [full_name] => Administrator
+    [email] => admin@softpro.com
+    [password] => $2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C
+    [status] => active
+    [role_id] => 1
+)
+
+[25-Apr-2025 06:25:25 Asia/Kolkata] Session data: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 83435ddd44961460c5840ec51351fea369e557cac8c0120821d2dcfe43eadbd7
+        )
+
+)
+
+[25-Apr-2025 06:25:25 Asia/Kolkata] User role: Administrator
+[25-Apr-2025 06:25:25 Asia/Kolkata] Access denied - User role: Administrator
+[25-Apr-2025 06:25:28 Asia/Kolkata] Session data: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 83435ddd44961460c5840ec51351fea369e557cac8c0120821d2dcfe43eadbd7
+        )
+
+)
+
+[25-Apr-2025 06:25:28 Asia/Kolkata] User role: Administrator
+[25-Apr-2025 06:25:28 Asia/Kolkata] Access denied - User role: Administrator

@@ -37,46 +37,43 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 try {
-    // Connect to database
-    $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
-        DB_USER,
-        DB_PASS,
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
-        ]
-    );
+    // Get database connection using the improved function
+    $pdo = getDBConnection();
 
-    // Test connection
-    $pdo->query("SELECT 1");
-
-    // Prepare and execute query
+    // Prepare and execute query with explicit column selection
     $stmt = $pdo->prepare("
-        SELECT u.*, r.role_name 
+        SELECT 
+            u.user_id,
+            u.username,
+            u.full_name,
+            u.email,
+            u.password,
+            u.status,
+            u.role_id
         FROM users u 
-        JOIN roles r ON u.role_id = r.role_id 
         WHERE u.email = ? AND u.status = 'active'
     ");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Debug log
+    error_log("User data: " . print_r($user, true));
 
     // Verify password
     if ($user && password_verify($password, $user['password'])) {
         // Generate token
         $token = bin2hex(random_bytes(32));
         
-        // Update user's token
-        $updateStmt = $pdo->prepare("UPDATE users SET token = ?, last_login = NOW() WHERE id = ?");
-        $updateStmt->execute([$token, $user['id']]);
+        // Update user's token and last_login
+        $updateStmt = $pdo->prepare("UPDATE users SET token = ?, last_login = NOW() WHERE user_id = ?");
+        $updateStmt->execute([$token, $user['user_id']]);
 
         // Prepare user data for response
         $userData = [
-            'user_id' => $user['id'],
+            'user_id' => $user['user_id'],
             'email' => $user['email'],
-            'name' => $user['name'],
-            'role' => $user['role_name'],
+            'name' => $user['full_name'] ?? $user['username'] ?? 'Administrator', // Fallback chain
+            'role' => 'Administrator', // Since role is in users table
             'token' => $token
         ];
 
@@ -93,18 +90,12 @@ try {
             'message' => 'Invalid email or password'
         ]);
     }
-} catch (PDOException $e) {
-    error_log("Login error: " . $e->getMessage());
-    echo json_encode([
-        'success' => false,
-        'message' => 'Unable to connect to the database. Please try again later.'
-    ]);
-    exit;
 } catch (Exception $e) {
     error_log("Login error: " . $e->getMessage());
     echo json_encode([
         'success' => false,
-        'message' => 'An unexpected error occurred. Please try again later.'
+        'message' => 'Unable to connect to the database. Please try again later.',
+        'debug_info' => $e->getMessage()
     ]);
     exit;
 } 
