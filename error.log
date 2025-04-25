@@ -643,3 +643,20 @@
 [25-Apr-2025 06:52:07 Asia/Kolkata] Found 2 partners
 [25-Apr-2025 06:52:10 Asia/Kolkata] 2025-04-25 06:52:10 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
 [25-Apr-2025 06:52:21 Asia/Kolkata] 2025-04-25 06:52:21 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 06:55:05 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 48cc7f6e2a322b1ee6bdd92490993c072442c6749eed17bf5ddfdf5ef03f297a
+        )
+
+)
+
+[25-Apr-2025 06:55:05 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:55:05 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:55:05 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 06:55:05 Asia/Kolkata] Found 2 partners
