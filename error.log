@@ -1647,3 +1647,15 @@ Stack trace:
 [25-Apr-2025 11:10:55 Asia/Kolkata] Found 2 partners
 [25-Apr-2025 11:12:15 Asia/Kolkata] Training partners action: list
 [25-Apr-2025 11:12:15 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 11:14:03 Asia/Kolkata] 2025-04-25 11:14:03 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:14:53 Asia/Kolkata] 2025-04-25 11:14:53 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:15:56 Asia/Kolkata] 2025-04-25 11:15:56 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:16:04 Asia/Kolkata] 2025-04-25 11:16:04 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:20:28 Asia/Kolkata] 2025-04-25 11:20:28 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:33:23 Asia/Kolkata] 2025-04-25 11:33:23 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:35:22 Asia/Kolkata] 2025-04-25 11:35:22 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:35:24 Asia/Kolkata] 2025-04-25 11:35:24 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:36:26 Asia/Kolkata] 2025-04-25 11:36:26 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:45:29 Asia/Kolkata] 2025-04-25 11:45:29 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:53:32 Asia/Kolkata] 2025-04-25 11:53:32 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 11:59:54 Asia/Kolkata] 2025-04-25 11:59:54 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'

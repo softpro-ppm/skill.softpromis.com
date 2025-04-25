@@ -19,9 +19,6 @@ $pageTitle = 'Training Partners';
 // Include header
 require_once 'includes/header.php';
 
-// Include topbar
-//require_once 'includes/layouts/topbar.php';
-
 // Include sidebar
 require_once 'includes/sidebar.php';
 ?>
@@ -63,23 +60,18 @@ require_once 'includes/sidebar.php';
                             <table id="partnersTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Partner ID</th>
+                                        <th>Name</th>
                                         <th>Contact Person</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>Address</th>
+                                        <th>Centers</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th>Contact Person</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
+                                    <!-- Table data will be loaded dynamically -->
                                 </tbody>
                             </table>
                         </div>
@@ -88,7 +80,8 @@ require_once 'includes/sidebar.php';
             </div>
         </div>
     </section>
-</div>
+</div><!-- /.content-wrapper -->
+</div><!-- ./wrapper -->
 
 <!-- Partner Modal -->
 <div class="modal fade" id="partnerModal">
@@ -105,6 +98,10 @@ require_once 'includes/sidebar.php';
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="partner_name">Partner Name</label>
+                                <input type="text" class="form-control" id="partner_name" name="partner_name" required>
+                            </div>
                             <div class="form-group">
                                 <label for="contact_person">Contact Person</label>
                                 <input type="text" class="form-control" id="contact_person" name="contact_person" required>
@@ -124,11 +121,31 @@ require_once 'includes/sidebar.php';
                                 <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
                             </div>
                             <div class="form-group">
+                                <label for="website">Website</label>
+                                <input type="url" class="form-control" id="website" name="website">
+                            </div>
+                            <div class="form-group">
                                 <label for="status">Status</label>
-                                <select class="form-control" id="status" name="status">
+                                <select class="form-control select2" id="status" name="status">
                                     <option value="active">Active</option>
                                     <option value="inactive">Inactive</option>
+                                    <option value="pending">Pending Approval</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Documents</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="registration_doc" name="registration_doc">
+                                    <label class="custom-file-label" for="registration_doc">Registration Document</label>
+                                </div>
+                                <div class="custom-file mt-2">
+                                    <input type="file" class="custom-file-input" id="agreement_doc" name="agreement_doc">
+                                    <label class="custom-file-label" for="agreement_doc">Agreement Document</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -154,6 +171,8 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to delete this training partner?</p>
+                <p><strong>Partner:</strong> <span id="delete_partner_name"></span></p>
+                <p><strong>Associated Centers:</strong> <span id="delete_partner_centers"></span></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -164,3 +183,26 @@ require_once 'includes/sidebar.php';
 </div>
 
 <?php include 'includes/js.php'; ?>
+
+<script>
+$(function () {
+    // Initialize DataTable with standard configuration
+    $('#partnersTable').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true
+    });
+
+    // Initialize Select2
+    $('.select2').select2({
+        theme: 'bootstrap4'
+    });
+
+    // Initialize custom file input
+    bsCustomFileInput.init();
+});
+</script>

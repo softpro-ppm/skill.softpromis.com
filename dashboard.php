@@ -1,6 +1,27 @@
-<?php include 'includes/header.php'; ?>
-<?php include 'includes/sidebar.php'; ?>
+<?php
+// Define BASEPATH constant
+define('BASEPATH', true);
 
+// Start session and include required files
+session_start();
+require_once 'config.php';
+require_once 'crud_functions.php';
+
+// Check if user is logged in
+if (!isset($_SESSION['user'])) {
+    header('Location: index.php');
+    exit;
+}
+
+// Set page title
+$pageTitle = 'Dashboard';
+
+// Include header
+require_once 'includes/header.php';
+
+// Include sidebar
+require_once 'includes/sidebar.php';
+?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -245,8 +266,8 @@
         </div>
       </div>
     </section>
-  </div>
-</div>
+  </div><!-- /.content-wrapper -->
+</div><!-- ./wrapper -->
 
 <?php include 'includes/js.php'; ?>
 
