@@ -17,13 +17,13 @@ if (!isset($_SESSION['user'])) {
 $pageTitle = 'Training Partners';
 
 // Include header
-require_once 'includes/layouts/header.php';
+require_once 'includes/header.php';
 
 // Include topbar
-require_once 'includes/layouts/topbar.php';
+//require_once 'includes/layouts/topbar.php';
 
 // Include sidebar
-require_once 'includes/layouts/sidebar.php';
+require_once 'includes/sidebar.php';
 ?>
 
 <!-- Content Wrapper -->
@@ -72,6 +72,14 @@ require_once 'includes/layouts/sidebar.php';
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <th>Contact Person</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -155,150 +163,4 @@ require_once 'includes/layouts/sidebar.php';
     </div>
 </div>
 
-<?php
-// Define page-specific scripts
-$pageScripts = <<<EOT
-<script>
-$(document).ready(function() {
-    // Initialize DataTable
-    const table = $('#partnersTable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: 'inc/ajax/training_partners_ajax.php',
-            type: 'POST',
-            data: function(d) {
-                d.action = 'list';
-                return d;
-            }
-        },
-        columns: [
-            { data: 'contact_person' },
-            { data: 'email' },
-            { data: 'phone' },
-            { data: 'address' },
-            { 
-                data: 'status',
-                render: function(data) {
-                    return '<span class="badge badge-' + (data === 'active' ? 'success' : 'danger') + '">' + data + '</span>';
-                }
-            },
-            {
-                data: 'partner_id',
-                render: function(data) {
-                    return '<button class="btn btn-sm btn-info edit-partner" data-id="' + data + '"><i class="fas fa-edit"></i></button> ' +
-                           '<button class="btn btn-sm btn-danger delete-partner" data-id="' + data + '"><i class="fas fa-trash"></i></button>';
-                }
-            }
-        ],
-        responsive: true,
-        autoWidth: false
-    });
-
-    // Handle form submission
-    $('#partnerForm').on('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = {};
-        $(this).serializeArray().forEach(function(item) {
-            formData[item.name] = item.value;
-        });
-        formData.action = formData.partner_id ? 'update' : 'add';
-
-        $.ajax({
-            url: 'inc/ajax/training_partners_ajax.php',
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                if (response.success) {
-                    $('#partnerModal').modal('hide');
-                    table.ajax.reload();
-                    toastr.success(response.message);
-                } else {
-                    toastr.error(response.message || 'An error occurred');
-                }
-            },
-            error: function() {
-                toastr.error('An error occurred. Please try again later.');
-            }
-        });
-    });
-
-    // Handle edit button click
-    $('#partnersTable').on('click', '.edit-partner', function() {
-        const id = $(this).data('id');
-        
-        $.ajax({
-            url: 'inc/ajax/training_partners_ajax.php',
-            type: 'POST',
-            data: { 
-                action: 'get',
-                partner_id: id
-            },
-            success: function(response) {
-                if (response.success) {
-                    const partner = response.data;
-                    $('#partner_id').val(partner.partner_id);
-                    $('#contact_person').val(partner.contact_person);
-                    $('#email').val(partner.email);
-                    $('#phone').val(partner.phone);
-                    $('#address').val(partner.address);
-                    $('#status').val(partner.status);
-                    $('.modal-title').text('Edit Training Partner');
-                    $('#partnerModal').modal('show');
-                } else {
-                    toastr.error(response.message || 'Failed to load partner data');
-                }
-            },
-            error: function() {
-                toastr.error('An error occurred while fetching partner data');
-            }
-        });
-    });
-
-    // Handle delete button click
-    let deleteId = null;
-    $('#partnersTable').on('click', '.delete-partner', function() {
-        deleteId = $(this).data('id');
-        $('#deleteModal').modal('show');
-    });
-
-    // Handle delete confirmation
-    $('#confirmDelete').click(function() {
-        if (deleteId) {
-            $.ajax({
-                url: 'inc/ajax/training_partners_ajax.php',
-                type: 'POST',
-                data: { 
-                    action: 'delete',
-                    partner_id: deleteId
-                },
-                success: function(response) {
-                    if (response.success) {
-                        $('#deleteModal').modal('hide');
-                        table.ajax.reload();
-                        toastr.success(response.message);
-                    } else {
-                        toastr.error(response.message || 'Failed to delete partner');
-                    }
-                },
-                error: function() {
-                    toastr.error('An error occurred while deleting the partner');
-                }
-            });
-        }
-    });
-
-    // Reset form when modal is closed
-    $('#partnerModal').on('hidden.bs.modal', function() {
-        $('#partnerForm')[0].reset();
-        $('#partner_id').val('');
-        $('.modal-title').text('Add New Training Partner');
-    });
-});
-</script>
-EOT;
-
-// Include footer
-require_once 'includes/layouts/footer.php';
-?>
+<?php include 'includes/js.php'; ?>
