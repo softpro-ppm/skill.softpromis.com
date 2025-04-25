@@ -12,7 +12,7 @@ if ($is_local) {
 } else {
     define('DB_HOST', 'localhost');
     define('DB_USER', 'u820431346_skill');
-    define('DB_PASS', 'w:A85&!J5p');
+    define('DB_PASS', 'c^79r]SE');
     define('DB_NAME', 'u820431346_skill');
     define('SITE_URL', 'https://skill.softpromis.com');
 }
