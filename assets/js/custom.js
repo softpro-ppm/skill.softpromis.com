@@ -1,31 +1,13 @@
 /**
- * Custom JavaScript for Skill SoftPromis
- * Basic enhancements for DataTables
+ * Custom JavaScript
+ * This file intentionally kept minimal to preserve default DataTables functionality
  */
 
-$(document).ready(function() {
-  // Simple initialization for any additional DataTables features
-  // This is intentionally minimal to preserve standard DataTables functionality
-  $('.table').each(function() {
-    if ($.fn.DataTable.isDataTable(this)) {
-      // Do nothing if already initialized
-    } else {
-      // Initialize with standard options
-      $(this).DataTable({
-        "responsive": true
-      });
-    }
-  });
+// Document ready function
+$(function() {
+  // Initialize select2 where needed
+  $('.select2').select2();
   
-  // Initialize custom file input for file uploads
-  if (typeof bsCustomFileInput !== 'undefined') {
-    bsCustomFileInput.init();
-  }
-  
-  // Initialize Select2 for enhanced dropdowns
-  if (typeof $.fn.select2 !== 'undefined') {
-    $('.select2').select2({
-      theme: 'bootstrap4'
-    });
-  }
+  // Initialize custom file input for consistent file upload experience
+  bsCustomFileInput.init();
 }); 

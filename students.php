@@ -403,28 +403,8 @@ require_once 'includes/sidebar.php';
 
 <script>
   $(function () {
-    // Initialize DataTable
-    $('#studentsTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-      "language": {
-        "search": "_INPUT_",
-        "searchPlaceholder": "Enter search term...",
-        "lengthMenu": "Show _MENU_ entries",
-        "zeroRecords": "No matching records found",
-        "info": "Showing _START_ to _END_ of _TOTAL_ entries",
-        "infoEmpty": "Showing 0 to 0 of 0 entries",
-        "infoFiltered": "(filtered from _MAX_ total entries)"
-      },
-      "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-             "<'row'<'col-sm-12'tr>>" +
-             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
-    });
+    // Initialize DataTable with default configuration
+    $('#studentsTable').DataTable();
 
     // Initialize Select2
     $('.select2').select2({

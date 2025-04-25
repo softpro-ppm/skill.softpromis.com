@@ -186,16 +186,8 @@ require_once 'includes/sidebar.php';
 
 <script>
 $(function () {
-    // Initialize DataTable with standard configuration
-    $('#partnersTable').DataTable({
-        "paging": true,
-        "lengthChange": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true
-    });
+    // Initialize DataTable with completely default configuration
+    $('#partnersTable').DataTable();
 
     // Initialize Select2
     $('.select2').select2({

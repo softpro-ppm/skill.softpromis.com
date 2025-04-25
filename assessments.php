@@ -348,23 +348,8 @@ require_once 'includes/sidebar.php';
 
 <script>
   $(function () {
-    // Initialize DataTable
-    $('#assessmentsTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-      "language": {
-        "search": "_INPUT_",
-        "searchPlaceholder": "Enter search term..."
-      },
-      "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-             "<'row'<'col-sm-12'tr>>" +
-             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>"
-    });
+    // Initialize DataTable with default configuration
+    $('#assessmentsTable').DataTable();
 
     // Initialize Select2
     $('.select2').select2({

@@ -1659,3 +1659,15 @@ Stack trace:
 [25-Apr-2025 11:45:29 Asia/Kolkata] 2025-04-25 11:45:29 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
 [25-Apr-2025 11:53:32 Asia/Kolkata] 2025-04-25 11:53:32 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
 [25-Apr-2025 11:59:54 Asia/Kolkata] 2025-04-25 11:59:54 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 12:02:35 Asia/Kolkata] Token verification error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.id' in 'on clause'
+[25-Apr-2025 12:02:36 Asia/Kolkata] User data: Array
+(
+    [user_id] => 7
+    [username] => admin
+    [full_name] => Administrator
+    [email] => admin@softpro.com
+    [password] => $2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C
+    [status] => active
+    [role_id] => 1
+)
+
