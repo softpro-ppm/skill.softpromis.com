@@ -42,8 +42,15 @@ try {
         "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
         DB_USER,
         DB_PASS,
-        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
+        ]
     );
+
+    // Test connection
+    $pdo->query("SELECT 1");
 
     // Prepare and execute query
     $stmt = $pdo->prepare("
@@ -90,18 +97,14 @@ try {
     error_log("Login error: " . $e->getMessage());
     echo json_encode([
         'success' => false,
-        'message' => 'Database error: ' . $e->getMessage(),
-        'debug_info' => [
-            'error_code' => $e->getCode(),
-            'error_message' => $e->getMessage(),
-            'db_host' => DB_HOST,
-            'db_name' => DB_NAME
-        ]
+        'message' => 'Unable to connect to the database. Please try again later.'
     ]);
+    exit;
 } catch (Exception $e) {
     error_log("Login error: " . $e->getMessage());
     echo json_encode([
         'success' => false,
-        'message' => 'An unexpected error occurred: ' . $e->getMessage()
+        'message' => 'An unexpected error occurred. Please try again later.'
     ]);
+    exit;
 } 
