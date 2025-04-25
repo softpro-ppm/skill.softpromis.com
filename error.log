@@ -660,3 +660,954 @@
 [25-Apr-2025 06:55:05 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
 [25-Apr-2025 06:55:05 Asia/Kolkata] Training partners action: list
 [25-Apr-2025 06:55:05 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 06:55:35 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 48cc7f6e2a322b1ee6bdd92490993c072442c6749eed17bf5ddfdf5ef03f297a
+        )
+
+)
+
+[25-Apr-2025 06:55:35 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:55:35 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:55:35 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 48cc7f6e2a322b1ee6bdd92490993c072442c6749eed17bf5ddfdf5ef03f297a
+        )
+
+)
+
+[25-Apr-2025 06:55:35 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:55:35 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:55:35 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 06:55:35 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 06:55:41 Asia/Kolkata] Training partners action: add
+[25-Apr-2025 06:55:49 Asia/Kolkata] Training partners action: add
+[25-Apr-2025 06:55:54 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 48cc7f6e2a322b1ee6bdd92490993c072442c6749eed17bf5ddfdf5ef03f297a
+        )
+
+)
+
+[25-Apr-2025 06:55:54 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:55:54 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:55:54 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 06:55:54 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 06:56:50 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 48cc7f6e2a322b1ee6bdd92490993c072442c6749eed17bf5ddfdf5ef03f297a
+        )
+
+)
+
+[25-Apr-2025 06:56:50 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:56:50 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:56:51 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 06:56:51 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 06:57:15 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 48cc7f6e2a322b1ee6bdd92490993c072442c6749eed17bf5ddfdf5ef03f297a
+        )
+
+)
+
+[25-Apr-2025 06:57:15 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:57:15 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:57:16 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 06:57:16 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 06:57:24 Asia/Kolkata] Token verification error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.id' in 'on clause'
+[25-Apr-2025 06:57:25 Asia/Kolkata] User data: Array
+(
+    [user_id] => 7
+    [username] => admin
+    [full_name] => Administrator
+    [email] => admin@softpro.com
+    [password] => $2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C
+    [status] => active
+    [role_id] => 1
+)
+
+[25-Apr-2025 06:57:37 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 06:57:37 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:57:37 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:57:37 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 06:57:37 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 06:57:49 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 06:57:49 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:57:49 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:57:49 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 06:57:49 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 06:58:49 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 06:58:49 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:58:49 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:58:49 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 06:58:49 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:58:49 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:58:50 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 06:58:50 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 06:59:02 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 06:59:02 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 06:59:02 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 06:59:02 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 06:59:02 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:01:00 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:01:00 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:01:00 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:01:00 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:01:00 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:01:02 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:01:02 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:01:02 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:01:02 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:01:02 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:01:08 Asia/Kolkata] 2025-04-25 07:01:08 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 07:01:10 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:01:10 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:01:10 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:01:10 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:01:11 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:01:28 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:01:28 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:01:28 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:01:28 Asia/Kolkata] PHP Warning:  require_once(includes/layouts/sidebar.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 39
+[25-Apr-2025 07:01:28 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Failed opening required 'includes/layouts/sidebar.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:39
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 39
+[25-Apr-2025 07:01:30 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:01:30 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:01:30 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:01:30 Asia/Kolkata] PHP Warning:  require_once(includes/layouts/sidebar.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 39
+[25-Apr-2025 07:01:30 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Failed opening required 'includes/layouts/sidebar.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:39
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 39
+[25-Apr-2025 07:01:44 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:01:44 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:01:44 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:01:44 Asia/Kolkata] PHP Warning:  require_once(includes/layouts/sidebar.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 39
+[25-Apr-2025 07:01:44 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Failed opening required 'includes/layouts/sidebar.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:39
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 39
+[25-Apr-2025 07:01:44 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:01:44 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:01:44 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:01:44 Asia/Kolkata] PHP Warning:  require_once(includes/layouts/sidebar.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 39
+[25-Apr-2025 07:01:44 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Failed opening required 'includes/layouts/sidebar.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:39
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 39
+[25-Apr-2025 07:06:57 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:06:57 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:06:57 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:06:57 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:06:57 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:06:57 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:06:58 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:06:58 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:07:08 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:07:08 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:07:08 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:07:09 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:07:09 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:07:09 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:07:09 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:07:09 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:08:00 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:08:00 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:08:00 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:08:07 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:08:07 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:08:07 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:08:11 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:08:11 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:08:11 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:08:19 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:08:19 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:08:19 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:08:22 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:08:22 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:08:22 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:08:25 Asia/Kolkata] 2025-04-25 07:08:25 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 07:08:28 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:08:28 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:08:28 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:09:52 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:09:52 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:09:52 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:09:54 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:09:54 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:09:54 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:09:54 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:09:54 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:09:54 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:09:54 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:09:54 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:09:54 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:09:54 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:09:54 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:09:54 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:10:01 Asia/Kolkata] 2025-04-25 07:10:01 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 07:10:26 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:10:26 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:10:26 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:10:26 Asia/Kolkata] PHP Warning:  Undefined variable $user in C:\xampp\htdocs\skill.softpromis.com\includes\layouts\topbar.php on line 23
+[25-Apr-2025 07:10:26 Asia/Kolkata] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\skill.softpromis.com\includes\layouts\topbar.php on line 23
+[25-Apr-2025 07:10:40 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:10:40 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:10:40 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:10:40 Asia/Kolkata] PHP Warning:  require_once(includes/topbar.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 36
+[25-Apr-2025 07:10:40 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Failed opening required 'includes/topbar.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:36
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 36
+[25-Apr-2025 07:11:46 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:11:46 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:11:46 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:12:20 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:12:20 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:12:20 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:12:25 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:12:25 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:12:25 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:12:40 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:12:40 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:12:40 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:13:02 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:13:02 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:13:02 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:13:03 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:13:03 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:13:03 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:13:03 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:13:03 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:13:03 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:13:06 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:13:06 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:13:06 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:13:07 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:13:07 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:13:07 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:13:07 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:13:07 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:13:07 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:13:07 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:13:07 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:13:07 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:13:50 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:13:50 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:13:50 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:13:50 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:13:50 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:14:05 Asia/Kolkata] Training partners action: get
+[25-Apr-2025 07:14:08 Asia/Kolkata] Training partners action: add
+[25-Apr-2025 07:14:15 Asia/Kolkata] 2025-04-25 07:14:15 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 07:14:17 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:14:17 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:14:17 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:14:17 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:14:17 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:14:20 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:14:20 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:14:20 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:14:20 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:14:20 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:15:26 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:15:26 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:17:43 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:17:43 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:18:18 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:18:18 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:19:43 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:19:43 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:19:51 Asia/Kolkata] 2025-04-25 07:19:51 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 07:19:55 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:19:55 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:20:29 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:20:29 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:22:11 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Undefined constant "data" in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:175
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 175
+[25-Apr-2025 07:24:03 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:24:03 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:24:03 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:24:03 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:24:03 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:24:06 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:24:06 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:24:06 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:24:06 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:24:06 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:24:24 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:24:24 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:24:24 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:24:47 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:24:47 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:24:47 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:24:47 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:24:47 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:24:58 Asia/Kolkata] Session data: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:24:58 Asia/Kolkata] User role: Administrator
+[25-Apr-2025 07:24:58 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:24:58 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:25:16 Asia/Kolkata] Session data in training-partners.php: Array
+(
+    [user] => Array
+        (
+            [user_id] => 7
+            [email] => admin@softpro.com
+            [name] => Administrator
+            [role] => Administrator
+            [token] => 9cd54592f43a2264043a9e97d36519ad19ca1acd9df720d2ce05a2d7a10063fe
+        )
+
+)
+
+[25-Apr-2025 07:25:16 Asia/Kolkata] User role in training-partners.php: Administrator
+[25-Apr-2025 07:25:16 Asia/Kolkata] Access granted to training-partners.php - User role: Administrator
+[25-Apr-2025 07:25:16 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:25:16 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:28:54 Asia/Kolkata] 2025-04-25 07:28:54 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 07:29:23 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:23 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:27 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:27 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:29 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:29 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:30 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:30 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:30 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:30 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:30 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:30 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:31 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:31 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:31 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:31 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:36 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:36 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:37 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:37 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:37 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:37 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:38 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:38 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:40 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:40 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:29:42 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:29:42 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:31:27 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:31:27 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:31:34 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:31:34 Asia/Kolkata] Found 2 partners
+[25-Apr-2025 07:31:37 Asia/Kolkata] 2025-04-25 07:31:37 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[25-Apr-2025 07:32:51 Asia/Kolkata] Training partners action: list
+[25-Apr-2025 07:32:51 Asia/Kolkata] Found 2 partners

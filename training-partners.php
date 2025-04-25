@@ -1,233 +1,176 @@
 <?php
-// Enable error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Define BASEPATH constant
+define('BASEPATH', true);
 
-// Define BASEPATH constant if not already defined
-if (!defined('BASEPATH')) {
-    define('BASEPATH', true);
-}
-
-require_once 'inc/auth_check.php';
+// Start session and include required files
+session_start();
 require_once 'config.php';
-require_once 'inc/functions.php';
+require_once 'crud_functions.php';
 
-// Debug session data
-error_log("Session data in training-partners.php: " . print_r($_SESSION, true));
-error_log("User role in training-partners.php: " . ($_SESSION['user']['role'] ?? 'not set'));
-
-// Check if user has admin privileges
-if (!hasRole('admin')) {
-    error_log("Access denied to training-partners.php - User role: " . ($_SESSION['user']['role'] ?? 'not set'));
-    setFlashMessage('error', 'You do not have permission to access this page.');
-    header('Location: dashboard.php');
+// Check if user is logged in
+if (!isset($_SESSION['user'])) {
+    header('Location: index.php');
     exit;
 }
 
-error_log("Access granted to training-partners.php - User role: " . ($_SESSION['user']['role'] ?? 'not set'));
-
+// Set page title
 $pageTitle = 'Training Partners';
-$currentPage = 'training-partners';
-require_once 'includes/header.php';
-require_once 'includes/sidebar.php';
+
+// Include header
+require_once 'includes/layouts/header.php';
+
+// Include topbar
+require_once 'includes/layouts/topbar.php';
+
+// Include sidebar
+require_once 'includes/layouts/sidebar.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Softpro Skill Solutions - Training Partners</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/css/adminlte.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
-  <!-- Toastr -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-</head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-    </ul>
-
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="logout.php" role="button">
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-  <!-- Main Sidebar Container -->
-  <?php require_once 'includes/sidebar.php'; ?>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Training Partners</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-              <li class="breadcrumb-item active">Training Partners</li>
-            </ol>
-          </div>
+<!-- Content Wrapper -->
+<div class="content-wrapper">
+    <!-- Content Header -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Training Partners</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+                        <li class="breadcrumb-item active">Training Partners</li>
+                    </ol>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
+    </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Training Partners List</h3>
-            <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#partnerModal">
-                <i class="fas fa-plus"></i> Add New Partner
-              </button>
-            </div>
-          </div>
-          <div class="card-body">
-            <table id="partnersTable" class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>Contact Person</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Address</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- Partner Modal -->
-  <div class="modal fade" id="partnerModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Add New Training Partner</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form id="partnerForm">
-          <div class="modal-body">
+        <div class="container-fluid">
             <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="contact_person">Contact Person</label>
-                  <input type="text" class="form-control" id="contact_person" name="contact_person" placeholder="Enter contact person name" required>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Training Partners List</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#partnerModal">
+                                    <i class="fas fa-plus"></i> Add New Partner
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table id="partnersTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Contact Person</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address" required>
-                </div>
-                <div class="form-group">
-                  <label for="phone">Phone</label>
-                  <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="address">Address</label>
-                  <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter full address" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="status">Status</label>
-                  <select class="form-control" id="status" name="status">
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
-              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Partner</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Delete Confirmation Modal -->
-  <div class="modal fade" id="deleteModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Confirm Delete</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
         </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete this training partner?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
+    </section>
 </div>
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.2.0/js/adminlte.min.js"></script>
-<!-- DataTables -->
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
-<!-- Toastr -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<!-- Partner Modal -->
+<div class="modal fade" id="partnerModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add New Training Partner</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="partnerForm">
+                <input type="hidden" id="partner_id" name="partner_id" value="">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="contact_person">Contact Person</label>
+                                <input type="text" class="form-control" id="contact_person" name="contact_person" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="form-control" id="status" name="status">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Partner</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Delete</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this training partner?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+// Define page-specific scripts
+$pageScripts = <<<EOT
 <script>
 $(document).ready(function() {
     // Initialize DataTable
     const table = $('#partnersTable').DataTable({
-        responsive: true,
-        autoWidth: false,
         processing: true,
-        serverSide: false,
+        serverSide: true,
         ajax: {
             url: 'inc/ajax/training_partners_ajax.php',
             type: 'POST',
-            data: { action: 'list' }
+            data: function(d) {
+                d.action = 'list';
+                return d;
+            }
         },
         columns: [
             { data: 'contact_person' },
@@ -237,43 +180,42 @@ $(document).ready(function() {
             { 
                 data: 'status',
                 render: function(data) {
-                    return `<span class="badge badge-${data === 'active' ? 'success' : 'danger'}">${data}</span>`;
+                    return '<span class="badge badge-' + (data === 'active' ? 'success' : 'danger') + '">' + data + '</span>';
                 }
             },
             {
                 data: 'partner_id',
                 render: function(data) {
-                    return `
-                        <button class="btn btn-sm btn-info edit-partner" data-id="${data}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-partner" data-id="${data}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    `;
+                    return '<button class="btn btn-sm btn-info edit-partner" data-id="' + data + '"><i class="fas fa-edit"></i></button> ' +
+                           '<button class="btn btn-sm btn-danger delete-partner" data-id="' + data + '"><i class="fas fa-trash"></i></button>';
                 }
             }
-        ]
+        ],
+        responsive: true,
+        autoWidth: false
     });
 
     // Handle form submission
     $('#partnerForm').on('submit', function(e) {
         e.preventDefault();
         
-        const formData = new FormData(this);
-        formData.append('action', $('#partner_id').val() ? 'update' : 'add');
+        const formData = {};
+        $(this).serializeArray().forEach(function(item) {
+            formData[item.name] = item.value;
+        });
+        formData.action = formData.partner_id ? 'update' : 'add';
 
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
             type: 'POST',
-            data: Object.fromEntries(formData),
+            data: formData,
             success: function(response) {
                 if (response.success) {
                     $('#partnerModal').modal('hide');
                     table.ajax.reload();
                     toastr.success(response.message);
                 } else {
-                    toastr.error(response.message);
+                    toastr.error(response.message || 'An error occurred');
                 }
             },
             error: function() {
@@ -305,8 +247,11 @@ $(document).ready(function() {
                     $('.modal-title').text('Edit Training Partner');
                     $('#partnerModal').modal('show');
                 } else {
-                    toastr.error(response.message);
+                    toastr.error(response.message || 'Failed to load partner data');
                 }
+            },
+            error: function() {
+                toastr.error('An error occurred while fetching partner data');
             }
         });
     });
@@ -334,8 +279,11 @@ $(document).ready(function() {
                         table.ajax.reload();
                         toastr.success(response.message);
                     } else {
-                        toastr.error(response.message);
+                        toastr.error(response.message || 'Failed to delete partner');
                     }
+                },
+                error: function() {
+                    toastr.error('An error occurred while deleting the partner');
                 }
             });
         }
@@ -349,5 +297,8 @@ $(document).ready(function() {
     });
 });
 </script>
-</body>
-</html> 
+EOT;
+
+// Include footer
+require_once 'includes/layouts/footer.php';
+?>
