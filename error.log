@@ -1683,3 +1683,111 @@ Stack trace:
 )
 
 [26-Apr-2025 06:52:27 Asia/Kolkata] Token verification error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.id' in 'on clause'
+[26-Apr-2025 06:53:03 Asia/Kolkata] User data: Array
+(
+    [user_id] => 7
+    [username] => admin
+    [full_name] => Administrator
+    [email] => admin@softpro.com
+    [password] => $2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C
+    [status] => active
+    [role_id] => 1
+)
+
+[26-Apr-2025 06:53:15 Asia/Kolkata] 2025-04-26 06:53:15 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
+[26-Apr-2025 06:59:46 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 193
+[26-Apr-2025 06:59:46 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:193
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 193
+[26-Apr-2025 06:59:49 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 193
+[26-Apr-2025 06:59:49 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:193
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 193
+[26-Apr-2025 07:03:48 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 124
+[26-Apr-2025 07:03:48 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:124
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 124
+[26-Apr-2025 07:04:03 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 124
+[26-Apr-2025 07:04:03 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:124
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 124
+[26-Apr-2025 07:04:06 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 124
+[26-Apr-2025 07:04:06 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:124
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 124
+[26-Apr-2025 07:06:47 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 81
+[26-Apr-2025 07:06:47 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:81
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 81
+[26-Apr-2025 07:09:29 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:09:29 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:28
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:09:36 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:09:36 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:28
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:09:40 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:09:40 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:28
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:09:43 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:09:43 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:28
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:09:59 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:09:59 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:28
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:10:03 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:10:03 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:28
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 28
+[26-Apr-2025 07:11:19 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:11:19 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:27
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:11:22 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:11:22 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:27
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:11:41 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:11:41 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:27
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:12:54 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:12:54 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:27
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:15:03 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:15:03 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:27
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:15:09 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:15:09 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:27
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:15:16 Asia/Kolkata] PHP Warning:  Undefined variable $conn in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:15:16 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in C:\xampp\htdocs\skill.softpromis.com\training-partners.php:27
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\training-partners.php on line 27
+[26-Apr-2025 07:25:11 Asia/Kolkata] 2025-04-26 07:25:11 - Training centers error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'tp.name' in 'field list'
