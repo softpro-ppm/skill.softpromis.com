@@ -1671,3 +1671,15 @@ Stack trace:
     [role_id] => 1
 )
 
+[26-Apr-2025 06:52:19 Asia/Kolkata] User data: Array
+(
+    [user_id] => 7
+    [username] => admin
+    [full_name] => Administrator
+    [email] => admin@softpro.com
+    [password] => $2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C
+    [status] => active
+    [role_id] => 1
+)
+
+[26-Apr-2025 06:52:27 Asia/Kolkata] Token verification error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.id' in 'on clause'
