@@ -37,102 +37,65 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 try {
-    // Connect to database
-    $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
-        DB_USER,
-        DB_PASS,
-        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-    );
+    // Get database connection using the improved function
+    $pdo = getDBConnection();
 
-    // Prepare and execute query
+    // Prepare and execute query with explicit column selection
     $stmt = $pdo->prepare("
-        SELECT u.*, r.role_name 
+        SELECT 
+            u.user_id,
+            u.username,
+            u.full_name,
+            u.email,
+            u.password,
+            u.status,
+            u.role_id
         FROM users u 
-        JOIN roles r ON u.role_id = r.role_id 
         WHERE u.email = ? AND u.status = 'active'
     ");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Debug log
+    error_log("User data: " . print_r($user, true));
 
     // Verify password
     if ($user && password_verify($password, $user['password'])) {
         // Generate token
         $token = bin2hex(random_bytes(32));
         
-        // Update user's token and last login
-        $updateStmt = $pdo->prepare("
-            UPDATE users 
-            SET token = ?, 
-                last_login = NOW(),
-                login_attempts = 0 
-            WHERE user_id = ?
-        ");
+        // Update user's token and last_login
+        $updateStmt = $pdo->prepare("UPDATE users SET token = ?, last_login = NOW() WHERE user_id = ?");
         $updateStmt->execute([$token, $user['user_id']]);
 
         // Prepare user data for response
         $userData = [
             'user_id' => $user['user_id'],
             'email' => $user['email'],
-            'name' => $user['full_name'],
-            'role' => $user['role_name'],
+            'name' => $user['full_name'] ?? $user['username'] ?? 'Administrator', // Fallback chain
+            'role' => 'Administrator', // Since role is in users table
             'token' => $token
         ];
 
         // Set session
         $_SESSION['user'] = $userData;
-        
-        // Handle remember me
-        if ($remember) {
-            $rememberToken = bin2hex(random_bytes(32));
-            $expiry = time() + (30 * 24 * 60 * 60); // 30 days
-            
-            // Store remember token in database
-            $stmt = $pdo->prepare("
-                INSERT INTO remember_tokens (user_id, token, expires_at)
-                VALUES (?, ?, FROM_UNIXTIME(?))
-            ");
-            $stmt->execute([$user['user_id'], $rememberToken, $expiry]);
-            
-            // Set secure cookie
-            setcookie(
-                'remember_token',
-                $rememberToken,
-                [
-                    'expires' => $expiry,
-                    'path' => '/',
-                    'secure' => true,
-                    'httponly' => true,
-                    'samesite' => 'Strict'
-                ]
-            );
-        }
 
         echo json_encode([
             'success' => true,
             'user' => $userData
         ]);
     } else {
-        // Increment login attempts
-        if ($user) {
-            $stmt = $pdo->prepare("
-                UPDATE users 
-                SET login_attempts = login_attempts + 1,
-                    last_attempt = NOW()
-                WHERE user_id = ?
-            ");
-            $stmt->execute([$user['user_id']]);
-        }
-        
         echo json_encode([
             'success' => false,
             'message' => 'Invalid email or password'
         ]);
     }
-} catch (PDOException $e) {
+} catch (Exception $e) {
     error_log("Login error: " . $e->getMessage());
     echo json_encode([
         'success' => false,
-        'message' => 'An error occurred. Please try again later.'
+        'message' => 'Unable to connect to the database. Please try again later.',
+        'debug_info' => $e->getMessage()
     ]);
+    exit;
 } 

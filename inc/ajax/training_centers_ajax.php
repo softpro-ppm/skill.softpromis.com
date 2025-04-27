@@ -24,7 +24,7 @@ try {
             $email = sanitizeInput($_POST['email'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'active');
-            $partner_id = (int)($_POST['partner_id'] ?? 0);
+            $partner_id = 1; // Fixed partner ID
 
             if (empty($name) || empty($address) || empty($city) || empty($state) || empty($pincode)) {
                 sendJSONResponse(false, 'Required fields are missing');
@@ -120,7 +120,7 @@ try {
             $email = sanitizeInput($_POST['email'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'active');
-            $partner_id = (int)($_POST['partner_id'] ?? 0);
+            $partner_id = 1; // Fixed partner ID
 
             if (empty($id) || empty($name) || empty($address) || empty($city) || empty($state) || empty($pincode)) {
                 sendJSONResponse(false, 'Required fields are missing');
