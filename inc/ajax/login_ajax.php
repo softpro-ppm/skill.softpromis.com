@@ -60,8 +60,14 @@ try {
         // Generate token
         $token = bin2hex(random_bytes(32));
         
-        // Update user's token
-        $updateStmt = $pdo->prepare("UPDATE users SET token = ?, last_login = NOW() WHERE user_id = ?");
+        // Update user's token and last login
+        $updateStmt = $pdo->prepare("
+            UPDATE users 
+            SET token = ?, 
+                last_login = NOW(),
+                login_attempts = 0 
+            WHERE user_id = ?
+        ");
         $updateStmt->execute([$token, $user['user_id']]);
 
         // Prepare user data for response
@@ -75,12 +81,49 @@ try {
 
         // Set session
         $_SESSION['user'] = $userData;
+        
+        // Handle remember me
+        if ($remember) {
+            $rememberToken = bin2hex(random_bytes(32));
+            $expiry = time() + (30 * 24 * 60 * 60); // 30 days
+            
+            // Store remember token in database
+            $stmt = $pdo->prepare("
+                INSERT INTO remember_tokens (user_id, token, expires_at)
+                VALUES (?, ?, FROM_UNIXTIME(?))
+            ");
+            $stmt->execute([$user['user_id'], $rememberToken, $expiry]);
+            
+            // Set secure cookie
+            setcookie(
+                'remember_token',
+                $rememberToken,
+                [
+                    'expires' => $expiry,
+                    'path' => '/',
+                    'secure' => true,
+                    'httponly' => true,
+                    'samesite' => 'Strict'
+                ]
+            );
+        }
 
         echo json_encode([
             'success' => true,
             'user' => $userData
         ]);
     } else {
+        // Increment login attempts
+        if ($user) {
+            $stmt = $pdo->prepare("
+                UPDATE users 
+                SET login_attempts = login_attempts + 1,
+                    last_attempt = NOW()
+                WHERE user_id = ?
+            ");
+            $stmt->execute([$user['user_id']]);
+        }
+        
         echo json_encode([
             'success' => false,
             'message' => 'Invalid email or password'
