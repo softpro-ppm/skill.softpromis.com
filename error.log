@@ -1815,3 +1815,6 @@ Stack trace:
 #1 C:\xampp\htdocs\skill.softpromis.com\roles.php(69): Role::getAll()
 #2 {main}
   thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 577
+[28-Apr-2025 06:31:56 Asia/Kolkata] 2025-04-28 06:31:56 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[28-Apr-2025 06:32:00 Asia/Kolkata] 2025-04-28 06:32:00 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[28-Apr-2025 06:33:13 Asia/Kolkata] 2025-04-28 06:33:13 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'

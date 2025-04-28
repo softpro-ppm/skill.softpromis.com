@@ -24,6 +24,7 @@ require_once 'includes/sidebar.php';
 
 // Fetch students from DB
 $students = [];
+$nextEnrollmentNo = '';
 try {
   $pdo = new PDO(
     'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
@@ -33,6 +34,13 @@ try {
   );
   $stmt = $pdo->query('SELECT * FROM students ORDER BY created_at DESC');
   $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  // Generate next enrollment number (e.g., ENR001, ENR002, ...)
+  $last = $pdo->query("SELECT enrollment_no FROM students ORDER BY student_id DESC LIMIT 1")->fetchColumn();
+  if (preg_match('/ENR(\\d+)/', $last, $m)) {
+    $nextEnrollmentNo = 'ENR' . str_pad(((int)$m[1]) + 1, 3, '0', STR_PAD_LEFT);
+  } else {
+    $nextEnrollmentNo = 'ENR001';
+  }
 } catch (Exception $e) {
   echo '<div class="alert alert-danger">Could not fetch students: ' . htmlspecialchars($e->getMessage()) . '</div>';
 }
@@ -64,24 +72,30 @@ try {
       <div class="container-fluid">
         <div class="row mb-3">
           <div class="col-12 text-right">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
-              <i class="fas fa-plus"></i> Add New Student
-            </button>
+            <!-- Duplicate Add New Student button removed -->
           </div>
         </div>
         <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Students List</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
+                <i class="fas fa-plus"></i> Add New Student
+              </button>
+            </div>
+          </div>
           <div class="card-body">
             <table id="studentsTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
                   <th>Enrollment No</th>
-                  <th>Name</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
                   <th>Gender</th>
-                  <th>Phone</th>
+                  <th>Mobile</th>
                   <th>Email</th>
-                  <th>Course</th>
-                  <th>Batch</th>
-                  <th>Status</th>
+                  <th>Date of Birth</th>
+                  <th>Address</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -97,15 +111,17 @@ try {
                     <td><?= htmlspecialchars($student['date_of_birth']) ?></td>
                     <td><?= htmlspecialchars($student['address']) ?></td>
                     <td>
-                      <button class="btn btn-sm btn-info view-student-btn" data-student-id="<?= $student['student_id'] ?>">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                      <button class="btn btn-sm btn-primary edit-student-btn" data-student-id="<?= $student['student_id'] ?>">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                      <button class="btn btn-sm btn-danger delete-student-btn" data-student-id="<?= $student['student_id'] ?>">
-                        <i class="fas fa-trash"></i>
-                      </button>
+                      <div class="btn-group" role="group">
+                        <button class="btn btn-sm btn-info view-student-btn" data-student-id="<?= $student['student_id'] ?>">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-primary edit-student-btn" data-student-id="<?= $student['student_id'] ?>">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-student-btn" data-student-id="<?= $student['student_id'] ?>">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 <?php endforeach; ?>
@@ -133,7 +149,7 @@ try {
           <div class="modal-body">
             <div class="form-group">
               <label for="addEnrollmentNo">Enrollment No</label>
-              <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" required>
+              <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly>
             </div>
             <div class="form-group">
               <label for="addFirstName">First Name</label>
@@ -229,10 +245,6 @@ try {
           <div class="modal-body">
             <input type="hidden" id="editStudentId" name="student_id">
             <div class="form-group">
-              <label for="editEnrollmentNo">Enrollment No</label>
-              <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" required>
-            </div>
-            <div class="form-group">
               <label for="editFirstName">First Name</label>
               <input type="text" class="form-control" id="editFirstName" name="first_name" required>
             </div>
@@ -302,7 +314,16 @@ try {
 <script>
   $(function () {
     // Initialize DataTable with default configuration
-    $('#studentsTable').DataTable();
+    $('#studentsTable').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        { extend: 'copy', className: 'btn btn-secondary btn-sm', text: 'Copy' },
+        { extend: 'csv', className: 'btn btn-secondary btn-sm', text: 'CSV' },
+        { extend: 'excel', className: 'btn btn-secondary btn-sm', text: 'Excel' },
+        { extend: 'pdf', className: 'btn btn-secondary btn-sm', text: 'PDF' },
+        { extend: 'print', className: 'btn btn-secondary btn-sm', text: 'Print' }
+      ]
+    });
 
     // Initialize Select2
     $('.select2').select2({
@@ -352,7 +373,6 @@ try {
         if (response.success && response.data) {
           var s = response.data;
           $('#editStudentId').val(s.student_id);
-          $('#editEnrollmentNo').val(s.enrollment_no);
           $('#editFirstName').val(s.first_name);
           $('#editLastName').val(s.last_name);
           $('#editGender').val(s.gender);

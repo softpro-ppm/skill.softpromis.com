@@ -109,7 +109,6 @@ try {
 
         case 'update':
             $student_id = (int)($_POST['student_id'] ?? 0);
-            $enrollment_no = sanitizeInput($_POST['enrollment_no'] ?? '');
             $first_name = sanitizeInput($_POST['first_name'] ?? '');
             $last_name = sanitizeInput($_POST['last_name'] ?? '');
             $email = sanitizeInput($_POST['email'] ?? '');
@@ -118,7 +117,7 @@ try {
             $gender = sanitizeInput($_POST['gender'] ?? '');
             $address = sanitizeInput($_POST['address'] ?? '');
 
-            if (empty($student_id) || empty($enrollment_no) || empty($first_name) || empty($last_name)) {
+            if (empty($student_id) || empty($first_name) || empty($last_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
             if (!empty($email) && !validateEmail($email)) {
@@ -129,10 +128,10 @@ try {
             }
 
             $stmt = $pdo->prepare("UPDATE students SET
-                enrollment_no = ?, first_name = ?, last_name = ?, email = ?, mobile = ?, date_of_birth = ?, gender = ?, address = ?, updated_at = NOW()
+                first_name = ?, last_name = ?, email = ?, mobile = ?, date_of_birth = ?, gender = ?, address = ?, updated_at = NOW()
                 WHERE student_id = ?");
             $stmt->execute([
-                $enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $student_id
+                $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $student_id
             ]);
 
             sendJSONResponse(true, 'Student updated successfully');

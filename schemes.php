@@ -21,6 +21,21 @@ require_once 'includes/header.php';
 
 // Include sidebar
 require_once 'includes/sidebar.php';
+
+// Fetch schemes from DB
+$schemes = [];
+try {
+  $pdo = new PDO(
+    'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
+    DB_USER,
+    DB_PASS,
+    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+  );
+  $stmt = $pdo->query('SELECT * FROM schemes ORDER BY created_at DESC');
+  $schemes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+  echo '<div class="alert alert-danger">Could not fetch schemes: ' . htmlspecialchars($e->getMessage()) . '</div>';
+}
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -55,56 +70,44 @@ require_once 'includes/sidebar.php';
               <thead>
                 <tr>
                   <th>Scheme ID</th>
-                  <th>Name</th>
-                  <th>Type</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Target Beneficiaries</th>
+                  <th>Scheme Name</th>
+                  <th>Description</th>
                   <th>Status</th>
+                  <th>Created At</th>
+                  <th>Updated At</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>S001</td>
-                  <td>PMKVY 4.0</td>
-                  <td>Government</td>
-                  <td>01/01/2024</td>
-                  <td>31/12/2024</td>
-                  <td>1000</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSchemeModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSchemeModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSchemeModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>S002</td>
-                  <td>DDU-GKY</td>
-                  <td>Government</td>
-                  <td>01/01/2024</td>
-                  <td>31/12/2025</td>
-                  <td>500</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSchemeModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSchemeModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSchemeModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                <?php foreach ($schemes as $scheme): ?>
+                  <tr>
+                    <td><?= htmlspecialchars($scheme['scheme_id']) ?></td>
+                    <td><?= htmlspecialchars($scheme['scheme_name']) ?></td>
+                    <td><?= htmlspecialchars($scheme['description']) ?></td>
+                    <td>
+                      <?php if ($scheme['status'] === 'active'): ?>
+                        <span class="badge badge-success">Active</span>
+                      <?php else: ?>
+                        <span class="badge badge-secondary">Inactive</span>
+                      <?php endif; ?>
+                    </td>
+                    <td><?= htmlspecialchars($scheme['created_at']) ?></td>
+                    <td><?= htmlspecialchars($scheme['updated_at']) ?></td>
+                    <td>
+                      <div class="btn-group" role="group">
+                        <button class="btn btn-sm btn-info view-scheme-btn" data-scheme-id="<?= $scheme['scheme_id'] ?>">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-primary edit-scheme-btn" data-scheme-id="<?= $scheme['scheme_id'] ?>">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-scheme-btn" data-scheme-id="<?= $scheme['scheme_id'] ?>">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
               </tbody>
             </table>
           </div>
@@ -406,13 +409,14 @@ require_once 'includes/sidebar.php';
   $(function () {
     // Initialize DataTable
     $('#schemesTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true
+      dom: 'Bfrtip',
+      buttons: [
+        { extend: 'copy', className: 'btn btn-secondary btn-sm', text: 'Copy' },
+        { extend: 'csv', className: 'btn btn-secondary btn-sm', text: 'CSV' },
+        { extend: 'excel', className: 'btn btn-secondary btn-sm', text: 'Excel' },
+        { extend: 'pdf', className: 'btn btn-secondary btn-sm', text: 'PDF' },
+        { extend: 'print', className: 'btn btn-secondary btn-sm', text: 'Print' }
+      ]
     });
 
     // Initialize Select2
@@ -422,6 +426,97 @@ require_once 'includes/sidebar.php';
 
     // Initialize custom file input
     bsCustomFileInput.init();
+
+    // --- AJAX Add Scheme ---
+    $('#addSchemeModal form').on('submit', function(e) {
+      e.preventDefault();
+      var data = {
+        action: 'create',
+        scheme_name: $('#schemeName').val(),
+        description: $('#description').val(),
+        status: 'active' // or get from a field if you add it
+      };
+      $.post('inc/ajax/schemes_ajax.php', data, function(response) {
+        if (response.success) {
+          location.reload();
+        } else {
+          alert(response.message);
+        }
+      }, 'json');
+    });
+
+    // --- AJAX View Scheme ---
+    $(document).on('click', '.view-scheme-btn', function() {
+      var scheme_id = $(this).data('scheme-id');
+      $.post('inc/ajax/schemes_ajax.php', { action: 'get', id: scheme_id }, function(response) {
+        if (response.success && response.data) {
+          var s = response.data;
+          $('#viewSchemeModal .modal-title').text('View Scheme: ' + s.scheme_name);
+          $('#viewSchemeModal [data-field="scheme_id"]').text(s.scheme_id);
+          $('#viewSchemeModal [data-field="scheme_name"]').text(s.scheme_name);
+          $('#viewSchemeModal [data-field="description"]').text(s.description);
+          $('#viewSchemeModal [data-field="status"]').text(s.status);
+          $('#viewSchemeModal [data-field="created_at"]').text(s.created_at);
+          $('#viewSchemeModal [data-field="updated_at"]').text(s.updated_at);
+          $('#viewSchemeModal').modal('show');
+        } else {
+          alert('Could not fetch scheme details.');
+        }
+      }, 'json');
+    });
+
+    // --- AJAX Edit Scheme: fill modal ---
+    $(document).on('click', '.edit-scheme-btn', function() {
+      var scheme_id = $(this).data('scheme-id');
+      $.post('inc/ajax/schemes_ajax.php', { action: 'get', id: scheme_id }, function(response) {
+        if (response.success && response.data) {
+          var s = response.data;
+          $('#editSchemeModal [name="scheme_id"]').val(s.scheme_id);
+          $('#editSchemeModal #editSchemeName').val(s.scheme_name);
+          $('#editSchemeModal #editDescription').val(s.description);
+          $('#editSchemeModal #editStatus').val(s.status);
+          $('#editSchemeModal').modal('show');
+        } else {
+          alert('Could not fetch scheme details.');
+        }
+      }, 'json');
+    });
+
+    // --- AJAX Edit Scheme: submit ---
+    $('#editSchemeModal form').on('submit', function(e) {
+      e.preventDefault();
+      var data = {
+        action: 'update',
+        scheme_id: $('#editSchemeModal [name="scheme_id"]').val(),
+        scheme_name: $('#editSchemeModal #editSchemeName').val(),
+        description: $('#editSchemeModal #editDescription').val(),
+        status: $('#editSchemeModal #editStatus').val()
+      };
+      $.post('inc/ajax/schemes_ajax.php', data, function(response) {
+        if (response.success) {
+          location.reload();
+        } else {
+          alert(response.message);
+        }
+      }, 'json');
+    });
+
+    // --- AJAX Delete Scheme ---
+    var deleteSchemeId = null;
+    $(document).on('click', '.delete-scheme-btn', function() {
+      deleteSchemeId = $(this).data('scheme-id');
+      $('#deleteSchemeModal').modal('show');
+    });
+    $('#deleteSchemeModal .btn-danger').on('click', function() {
+      if (!deleteSchemeId) return;
+      $.post('inc/ajax/schemes_ajax.php', { action: 'delete', id: deleteSchemeId }, function(response) {
+        if (response.success) {
+          location.reload();
+        } else {
+          alert(response.message);
+        }
+      }, 'json');
+    });
   });
 </script>
 </body>
