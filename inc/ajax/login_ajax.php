@@ -2,6 +2,7 @@
 session_start();
 require_once '../../config.php';
 
+echo "test"; die;
 // Set headers for JSON response
 header('Content-Type: application/json');
 
