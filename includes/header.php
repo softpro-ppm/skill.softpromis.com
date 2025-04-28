@@ -72,6 +72,13 @@
         </a>
       </li>
       <li class="nav-item">
+        <?php if (isset($_SESSION['user']['role'])): ?>
+          <span class="nav-link" style="font-weight:bold; color:#007bff;">
+            <i class="fas fa-user-tag"></i> <?php echo htmlspecialchars(ucfirst($_SESSION['user']['role'])); ?>
+          </span>
+        <?php endif; ?>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="logout.php" role="button">
           <i class="fas fa-sign-out-alt"></i> Logout
         </a>

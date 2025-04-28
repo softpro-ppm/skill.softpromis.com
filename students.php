@@ -21,6 +21,21 @@ require_once 'includes/header.php';
 
 // Include sidebar
 require_once 'includes/sidebar.php';
+
+// Fetch students from DB
+$students = [];
+try {
+  $pdo = new PDO(
+    'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
+    DB_USER,
+    DB_PASS,
+    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+  );
+  $stmt = $pdo->query('SELECT * FROM students ORDER BY created_at DESC');
+  $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+  echo '<div class="alert alert-danger">Could not fetch students: ' . htmlspecialchars($e->getMessage()) . '</div>';
+}
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -33,7 +48,7 @@ require_once 'includes/sidebar.php';
             <h1 class="m-0">Students</h1>
           </div>
           <div class="col-sm-6">
-            <div class="float-sm-right">
+            <div class="float-sm-right mb-3">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
                 <i class="fas fa-plus"></i> Add New Student
               </button>
@@ -47,6 +62,13 @@ require_once 'includes/sidebar.php';
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <div class="row mb-3">
+          <div class="col-12 text-right">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
+              <i class="fas fa-plus"></i> Add New Student
+            </button>
+          </div>
+        </div>
         <div class="card">
           <div class="card-body">
             <table id="studentsTable" class="table table-bordered table-striped">
@@ -64,48 +86,29 @@ require_once 'includes/sidebar.php';
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>ENR001</td>
-                  <td>Rahul Sharma</td>
-                  <td>Male</td>
-                  <td>9876543210</td>
-                  <td>rahul@example.com</td>
-                  <td>Web Development</td>
-                  <td>B001</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewStudentModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editStudentModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteStudentModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>ENR002</td>
-                  <td>Priya Patel</td>
-                  <td>Female</td>
-                  <td>9876543211</td>
-                  <td>priya@example.com</td>
-                  <td>Digital Marketing</td>
-                  <td>B002</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewStudentModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editStudentModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteStudentModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                <?php foreach ($students as $student): ?>
+                  <tr>
+                    <td><?= htmlspecialchars($student['enrollment_no']) ?></td>
+                    <td><?= htmlspecialchars($student['first_name']) ?></td>
+                    <td><?= htmlspecialchars($student['last_name']) ?></td>
+                    <td><?= htmlspecialchars(ucfirst($student['gender'])) ?></td>
+                    <td><?= htmlspecialchars($student['mobile']) ?></td>
+                    <td><?= htmlspecialchars($student['email']) ?></td>
+                    <td><?= htmlspecialchars($student['date_of_birth']) ?></td>
+                    <td><?= htmlspecialchars($student['address']) ?></td>
+                    <td>
+                      <button class="btn btn-sm btn-info view-student-btn" data-student-id="<?= $student['student_id'] ?>">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-sm btn-primary edit-student-btn" data-student-id="<?= $student['student_id'] ?>">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger delete-student-btn" data-student-id="<?= $student['student_id'] ?>">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
               </tbody>
             </table>
           </div>
@@ -118,7 +121,7 @@ require_once 'includes/sidebar.php';
 
   <!-- Add Student Modal -->
   <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addStudentModalLabel">Add New Student</h5>
@@ -126,137 +129,58 @@ require_once 'includes/sidebar.php';
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <form id="addStudentForm">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="enrollmentNo">Enrollment Number</label>
-                  <input type="text" class="form-control" id="enrollmentNo" readonly>
-                  <small class="form-text text-muted">Auto-generated</small>
-                </div>
-                <div class="form-group">
-                  <label for="name">Full Name</label>
-                  <input type="text" class="form-control" id="name" required>
-                </div>
-                <div class="form-group">
-                  <label for="gender">Gender</label>
-                  <select class="form-control" id="gender" required>
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="phone">Phone Number</label>
-                  <input type="tel" class="form-control" id="phone" required>
-                </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" required>
-                </div>
-                <div class="form-group">
-                  <label for="aadhaar">Aadhaar Number</label>
-                  <input type="text" class="form-control" id="aadhaar" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="address">Full Address</label>
-                  <textarea class="form-control" id="address" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="trainingPartner">Training Partner</label>
-                  <select class="form-control select2" id="trainingPartner" required>
-                    <option value="">Select Training Partner</option>
-                    <option value="1">Softpro Skill Solutions</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="trainingCenter">Training Center</label>
-                  <select class="form-control select2" id="trainingCenter" required>
-                    <option value="">Select Training Center</option>
-                    <option value="1">Delhi Center</option>
-                    <option value="2">Mumbai Center</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="scheme">Scheme</label>
-                  <select class="form-control select2" id="scheme" required>
-                    <option value="">Select Scheme</option>
-                    <option value="1">PMKVY 4.0</option>
-                    <option value="2">DDU-GKY</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="course">Course</label>
-                  <select class="form-control select2" id="course" required>
-                    <option value="">Select Course</option>
-                    <option value="1">Web Development</option>
-                    <option value="2">Digital Marketing</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="batch">Batch</label>
-                  <select class="form-control select2" id="batch" required>
-                    <option value="">Select Batch</option>
-                    <option value="1">B001 - Web Development</option>
-                    <option value="2">B002 - Digital Marketing</option>
-                  </select>
-                </div>
-              </div>
+        <form id="addStudentForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="addEnrollmentNo">Enrollment No</label>
+              <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" required>
             </div>
-            <div class="row mt-4">
-              <div class="col-md-12">
-                <h6>Documents</h6>
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="photo">Photograph</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="photo" accept="image/jpeg,image/jpg,application/pdf" required>
-                        <label class="custom-file-label" for="photo">Choose file</label>
-                      </div>
-                      <small class="form-text text-muted">Max size: 1MB, Format: JPG, JPEG, PDF</small>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="aadhaarDoc">Aadhaar Card</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="aadhaarDoc" accept="image/jpeg,image/jpg,application/pdf" required>
-                        <label class="custom-file-label" for="aadhaarDoc">Choose file</label>
-                      </div>
-                      <small class="form-text text-muted">Max size: 1MB, Format: JPG, JPEG, PDF</small>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="educationDoc">Educational Documents</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="educationDoc" accept="image/jpeg,image/jpg,application/pdf" required>
-                        <label class="custom-file-label" for="educationDoc">Choose file</label>
-                      </div>
-                      <small class="form-text text-muted">Max size: 1MB, Format: JPG, JPEG, PDF</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="addFirstName">First Name</label>
+              <input type="text" class="form-control" id="addFirstName" name="first_name" required>
             </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Student</button>
-        </div>
+            <div class="form-group">
+              <label for="addLastName">Last Name</label>
+              <input type="text" class="form-control" id="addLastName" name="last_name" required>
+            </div>
+            <div class="form-group">
+              <label for="addEmail">Email</label>
+              <input type="email" class="form-control" id="addEmail" name="email">
+            </div>
+            <div class="form-group">
+              <label for="addMobile">Mobile</label>
+              <input type="text" class="form-control" id="addMobile" name="mobile">
+            </div>
+            <div class="form-group">
+              <label for="addDOB">Date of Birth</label>
+              <input type="date" class="form-control" id="addDOB" name="date_of_birth">
+            </div>
+            <div class="form-group">
+              <label for="addGender">Gender</label>
+              <select class="form-control" id="addGender" name="gender">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="addAddress">Address</label>
+              <textarea class="form-control" id="addAddress" name="address"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save Student</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
   <!-- View Student Modal -->
   <div class="modal fade" id="viewStudentModal" tabindex="-1" role="dialog" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="viewStudentModalLabel">View Student</h5>
@@ -265,90 +189,27 @@ require_once 'includes/sidebar.php';
           </button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <p><strong>Enrollment No:</strong> <span id="viewEnrollmentNo"></span></p>
-              <p><strong>Name:</strong> <span id="viewName"></span></p>
-              <p><strong>Gender:</strong> <span id="viewGender"></span></p>
-              <p><strong>Phone:</strong> <span id="viewPhone"></span></p>
-              <p><strong>Email:</strong> <span id="viewEmail"></span></p>
-              <p><strong>Aadhaar:</strong> <span id="viewAadhaar"></span></p>
-            </div>
-            <div class="col-md-6">
-              <p><strong>Address:</strong> <span id="viewAddress"></span></p>
-              <p><strong>Training Partner:</strong> <span id="viewTrainingPartner"></span></p>
-              <p><strong>Training Center:</strong> <span id="viewTrainingCenter"></span></p>
-              <p><strong>Scheme:</strong> <span id="viewScheme"></span></p>
-              <p><strong>Course:</strong> <span id="viewCourse"></span></p>
-              <p><strong>Batch:</strong> <span id="viewBatch"></span></p>
-            </div>
-          </div>
-          <div class="row mt-4">
-            <div class="col-md-12">
-              <h6>Documents</h6>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h6 class="card-title">Photograph</h6>
-                    </div>
-                    <div class="card-body">
-                      <img src="#" id="viewPhoto" class="img-fluid" alt="Student Photo">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h6 class="card-title">Aadhaar Card</h6>
-                    </div>
-                    <div class="card-body">
-                      <a href="#" id="viewAadhaarDoc" class="btn btn-primary btn-sm" target="_blank">View Document</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h6 class="card-title">Educational Documents</h6>
-                    </div>
-                    <div class="card-body">
-                      <a href="#" id="viewEducationDoc" class="btn btn-primary btn-sm" target="_blank">View Document</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row mt-4">
-            <div class="col-md-12">
-              <h6>Payment History</h6>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Receipt No</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Mode</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>RCPT001</td>
-                    <td>01/01/2024</td>
-                    <td>₹5,000</td>
-                    <td>Online</td>
-                    <td><span class="badge badge-success">Paid</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <dl class="row">
+            <dt class="col-sm-4">Enrollment No</dt>
+            <dd class="col-sm-8" id="viewEnrollmentNo"></dd>
+            <dt class="col-sm-4">First Name</dt>
+            <dd class="col-sm-8" id="viewFirstName"></dd>
+            <dt class="col-sm-4">Last Name</dt>
+            <dd class="col-sm-8" id="viewLastName"></dd>
+            <dt class="col-sm-4">Gender</dt>
+            <dd class="col-sm-8" id="viewGender"></dd>
+            <dt class="col-sm-4">Mobile</dt>
+            <dd class="col-sm-8" id="viewMobile"></dd>
+            <dt class="col-sm-4">Email</dt>
+            <dd class="col-sm-8" id="viewEmail"></dd>
+            <dt class="col-sm-4">Date of Birth</dt>
+            <dd class="col-sm-8" id="viewDOB"></dd>
+            <dt class="col-sm-4">Address</dt>
+            <dd class="col-sm-8" id="viewAddress"></dd>
+          </dl>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="window.print()">Print Application</button>
         </div>
       </div>
     </div>
@@ -356,7 +217,7 @@ require_once 'includes/sidebar.php';
 
   <!-- Edit Student Modal -->
   <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
@@ -364,16 +225,52 @@ require_once 'includes/sidebar.php';
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <form id="editStudentForm">
-            <!-- Same form fields as Add Student Modal -->
-            <!-- Pre-populated with existing data -->
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Changes</button>
-        </div>
+        <form id="editStudentForm">
+          <div class="modal-body">
+            <input type="hidden" id="editStudentId" name="student_id">
+            <div class="form-group">
+              <label for="editEnrollmentNo">Enrollment No</label>
+              <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" required>
+            </div>
+            <div class="form-group">
+              <label for="editFirstName">First Name</label>
+              <input type="text" class="form-control" id="editFirstName" name="first_name" required>
+            </div>
+            <div class="form-group">
+              <label for="editLastName">Last Name</label>
+              <input type="text" class="form-control" id="editLastName" name="last_name" required>
+            </div>
+            <div class="form-group">
+              <label for="editEmail">Email</label>
+              <input type="email" class="form-control" id="editEmail" name="email">
+            </div>
+            <div class="form-group">
+              <label for="editMobile">Mobile</label>
+              <input type="text" class="form-control" id="editMobile" name="mobile">
+            </div>
+            <div class="form-group">
+              <label for="editDOB">Date of Birth</label>
+              <input type="date" class="form-control" id="editDOB" name="date_of_birth">
+            </div>
+            <div class="form-group">
+              <label for="editGender">Gender</label>
+              <select class="form-control" id="editGender" name="gender">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editAddress">Address</label>
+              <textarea class="form-control" id="editAddress" name="address"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -390,10 +287,11 @@ require_once 'includes/sidebar.php';
         </div>
         <div class="modal-body">
           <p>Are you sure you want to delete this student? This action cannot be undone.</p>
+          <input type="hidden" id="deleteStudentId">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteStudent">Delete</button>
         </div>
       </div>
     </div>
@@ -445,6 +343,93 @@ require_once 'includes/sidebar.php';
     $('#course').on('change', function() {
       const courseId = $(this).val();
       // Load batches based on selected course
+    });
+
+    // Open Edit Modal and populate fields
+    $(document).on('click', '.edit-student-btn', function() {
+      var student_id = $(this).data('student-id');
+      $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: student_id }, function(response) {
+        if (response.success && response.data) {
+          var s = response.data;
+          $('#editStudentId').val(s.student_id);
+          $('#editEnrollmentNo').val(s.enrollment_no);
+          $('#editFirstName').val(s.first_name);
+          $('#editLastName').val(s.last_name);
+          $('#editGender').val(s.gender);
+          $('#editMobile').val(s.mobile);
+          $('#editEmail').val(s.email);
+          $('#editDOB').val(s.date_of_birth);
+          $('#editAddress').val(s.address);
+          $('#editStudentModal').modal('show');
+        } else {
+          alert('Could not fetch student details.');
+        }
+      }, 'json');
+    });
+
+    // Add Student AJAX
+    $('#addStudentForm').on('submit', function(e) {
+      e.preventDefault();
+      var formData = $(this).serialize() + '&action=create';
+      $.post('inc/ajax/students_ajax.php', formData, function(response) {
+        if (response.success) {
+          location.reload();
+        } else {
+          alert(response.message);
+        }
+      }, 'json');
+    });
+
+    // Edit Student AJAX
+    $('#editStudentForm').on('submit', function(e) {
+      e.preventDefault();
+      var formData = $(this).serialize() + '&action=update';
+      $.post('inc/ajax/students_ajax.php', formData, function(response) {
+        if (response.success) {
+          location.reload();
+        } else {
+          alert(response.message);
+        }
+      }, 'json');
+    });
+
+    // Open Delete Modal
+    $(document).on('click', '.delete-student-btn', function() {
+      $('#deleteStudentId').val($(this).data('student-id'));
+      $('#deleteStudentModal').modal('show');
+    });
+
+    // Confirm Delete AJAX
+    $('#confirmDeleteStudent').on('click', function() {
+      var student_id = $('#deleteStudentId').val();
+      $.post('inc/ajax/students_ajax.php', { action: 'delete', student_id: student_id }, function(response) {
+        if (response.success) {
+          location.reload();
+        } else {
+          alert(response.message);
+        }
+      }, 'json');
+    });
+
+    // Open View Modal and populate fields
+    $(document).on('click', '.view-student-btn', function() {
+      var student_id = $(this).data('student-id');
+      $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: student_id }, function(response) {
+        if (response.success && response.data) {
+          var s = response.data;
+          $('#viewEnrollmentNo').text(s.enrollment_no);
+          $('#viewFirstName').text(s.first_name);
+          $('#viewLastName').text(s.last_name);
+          $('#viewGender').text(s.gender);
+          $('#viewMobile').text(s.mobile);
+          $('#viewEmail').text(s.email);
+          $('#viewDOB').text(s.date_of_birth);
+          $('#viewAddress').text(s.address);
+          $('#viewStudentModal').modal('show');
+        } else {
+          alert('Could not fetch student details.');
+        }
+      }, 'json');
     });
   });
 </script>

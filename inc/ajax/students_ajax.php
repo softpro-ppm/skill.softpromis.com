@@ -15,59 +15,35 @@ try {
 
     switch ($action) {
         case 'create':
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $enrollment_no = sanitizeInput($_POST['enrollment_no'] ?? '');
+            $first_name = sanitizeInput($_POST['first_name'] ?? '');
+            $last_name = sanitizeInput($_POST['last_name'] ?? '');
             $email = sanitizeInput($_POST['email'] ?? '');
-            $phone = sanitizeInput($_POST['phone'] ?? '');
-            $address = sanitizeInput($_POST['address'] ?? '');
-            $city = sanitizeInput($_POST['city'] ?? '');
-            $state = sanitizeInput($_POST['state'] ?? '');
-            $pincode = sanitizeInput($_POST['pincode'] ?? '');
-            $dob = sanitizeInput($_POST['dob'] ?? '');
+            $mobile = sanitizeInput($_POST['mobile'] ?? '');
+            $date_of_birth = sanitizeInput($_POST['date_of_birth'] ?? '');
             $gender = sanitizeInput($_POST['gender'] ?? '');
-            $education = sanitizeInput($_POST['education'] ?? '');
-            $status = sanitizeInput($_POST['status'] ?? 'active');
-            $center_id = (int)($_POST['center_id'] ?? 0);
+            $address = sanitizeInput($_POST['address'] ?? '');
 
-            if (empty($name) || empty($email) || empty($phone)) {
+            if (empty($enrollment_no) || empty($first_name) || empty($last_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
-            if (!validateEmail($email)) {
+            if (!empty($email) && !validateEmail($email)) {
                 sendJSONResponse(false, 'Invalid email format');
             }
-
-            if (!validatePhone($phone)) {
-                sendJSONResponse(false, 'Invalid phone format');
+            if (!empty($mobile) && !validatePhone($mobile)) {
+                sendJSONResponse(false, 'Invalid mobile format');
             }
 
-            // Validate center if provided
-            if ($center_id > 0) {
-                $stmt = $pdo->prepare("SELECT id FROM training_centers WHERE id = ?");
-                $stmt->execute([$center_id]);
-                if (!$stmt->fetch()) {
-                    sendJSONResponse(false, 'Invalid training center');
-                }
-            }
-
-            $stmt = $pdo->prepare("
-                INSERT INTO students (
-                    name, email, phone, address, city, state, pincode,
-                    dob, gender, education, status, center_id, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-            ");
+            $stmt = $pdo->prepare("INSERT INTO students (
+                enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
             $stmt->execute([
-                $name, $email, $phone, $address, $city, $state, $pincode,
-                $dob, $gender, $education, $status, $center_id
-            ]);
-
-            logAudit($_SESSION['user']['id'], 'create_student', [
-                'name' => $name,
-                'email' => $email,
-                'center_id' => $center_id
+                $enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address
             ]);
 
             sendJSONResponse(true, 'Student created successfully', [
-                'id' => $pdo->lastInsertId()
+                'student_id' => $pdo->lastInsertId()
             ]);
             break;
 
@@ -132,124 +108,54 @@ try {
             break;
 
         case 'update':
-            $id = (int)($_POST['id'] ?? 0);
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $student_id = (int)($_POST['student_id'] ?? 0);
+            $enrollment_no = sanitizeInput($_POST['enrollment_no'] ?? '');
+            $first_name = sanitizeInput($_POST['first_name'] ?? '');
+            $last_name = sanitizeInput($_POST['last_name'] ?? '');
             $email = sanitizeInput($_POST['email'] ?? '');
-            $phone = sanitizeInput($_POST['phone'] ?? '');
-            $address = sanitizeInput($_POST['address'] ?? '');
-            $city = sanitizeInput($_POST['city'] ?? '');
-            $state = sanitizeInput($_POST['state'] ?? '');
-            $pincode = sanitizeInput($_POST['pincode'] ?? '');
-            $dob = sanitizeInput($_POST['dob'] ?? '');
+            $mobile = sanitizeInput($_POST['mobile'] ?? '');
+            $date_of_birth = sanitizeInput($_POST['date_of_birth'] ?? '');
             $gender = sanitizeInput($_POST['gender'] ?? '');
-            $education = sanitizeInput($_POST['education'] ?? '');
-            $status = sanitizeInput($_POST['status'] ?? 'active');
-            $center_id = (int)($_POST['center_id'] ?? 0);
+            $address = sanitizeInput($_POST['address'] ?? '');
 
-            if (empty($id) || empty($name) || empty($email) || empty($phone)) {
+            if (empty($student_id) || empty($enrollment_no) || empty($first_name) || empty($last_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
-
-            if (!validateEmail($email)) {
+            if (!empty($email) && !validateEmail($email)) {
                 sendJSONResponse(false, 'Invalid email format');
             }
-
-            if (!validatePhone($phone)) {
-                sendJSONResponse(false, 'Invalid phone format');
+            if (!empty($mobile) && !validatePhone($mobile)) {
+                sendJSONResponse(false, 'Invalid mobile format');
             }
 
-            // Validate center if provided
-            if ($center_id > 0) {
-                $stmt = $pdo->prepare("SELECT id FROM training_centers WHERE id = ?");
-                $stmt->execute([$center_id]);
-                if (!$stmt->fetch()) {
-                    sendJSONResponse(false, 'Invalid training center');
-                }
-            }
-
-            $stmt = $pdo->prepare("
-                UPDATE students 
-                SET name = ?, email = ?, phone = ?, address = ?, city = ?,
-                    state = ?, pincode = ?, dob = ?, gender = ?, education = ?,
-                    status = ?, center_id = ?, updated_at = NOW()
-                WHERE id = ?
-            ");
+            $stmt = $pdo->prepare("UPDATE students SET
+                enrollment_no = ?, first_name = ?, last_name = ?, email = ?, mobile = ?, date_of_birth = ?, gender = ?, address = ?, updated_at = NOW()
+                WHERE student_id = ?");
             $stmt->execute([
-                $name, $email, $phone, $address, $city, $state, $pincode,
-                $dob, $gender, $education, $status, $center_id, $id
-            ]);
-
-            logAudit($_SESSION['user']['id'], 'update_student', [
-                'id' => $id,
-                'name' => $name,
-                'email' => $email,
-                'center_id' => $center_id
+                $enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $student_id
             ]);
 
             sendJSONResponse(true, 'Student updated successfully');
             break;
 
         case 'delete':
-            $id = (int)($_POST['id'] ?? 0);
-
-            if (empty($id)) {
-                sendJSONResponse(false, 'ID is required');
+            $student_id = (int)($_POST['student_id'] ?? 0);
+            if (empty($student_id)) {
+                sendJSONResponse(false, 'Student ID is required');
             }
-
-            // Check if student has active batch enrollments
-            $stmt = $pdo->prepare("
-                SELECT COUNT(*) FROM batch_students 
-                WHERE student_id = ? AND status = 'active'
-            ");
-            $stmt->execute([$id]);
-            if ($stmt->fetchColumn() > 0) {
-                sendJSONResponse(false, 'Cannot delete student with active batch enrollments');
-            }
-
-            // Get student info for audit log
-            $stmt = $pdo->prepare("
-                SELECT s.name, s.email, tc.name as center_name
-                FROM students s
-                LEFT JOIN training_centers tc ON s.center_id = tc.id
-                WHERE s.id = ?
-            ");
-            $stmt->execute([$id]);
-            $student = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$student) {
-                sendJSONResponse(false, 'Student not found');
-            }
-
-            $stmt = $pdo->prepare("DELETE FROM students WHERE id = ?");
-            $stmt->execute([$id]);
-
-            logAudit($_SESSION['user']['id'], 'delete_student', [
-                'id' => $id,
-                'name' => $student['name'],
-                'email' => $student['email'],
-                'center' => $student['center_name']
-            ]);
-
+            $stmt = $pdo->prepare("DELETE FROM students WHERE student_id = ?");
+            $stmt->execute([$student_id]);
             sendJSONResponse(true, 'Student deleted successfully');
             break;
 
         case 'get':
-            $id = (int)($_POST['id'] ?? 0);
-
-            if (empty($id)) {
-                sendJSONResponse(false, 'ID is required');
+            $student_id = (int)($_POST['student_id'] ?? 0);
+            if (empty($student_id)) {
+                sendJSONResponse(false, 'Student ID is required');
             }
-
-            $stmt = $pdo->prepare("
-                SELECT s.*, tc.name as center_name,
-                       (SELECT COUNT(*) FROM batch_students WHERE student_id = s.id) as batch_count
-                FROM students s
-                LEFT JOIN training_centers tc ON s.center_id = tc.id
-                WHERE s.id = ?
-            ");
-            $stmt->execute([$id]);
+            $stmt = $pdo->prepare("SELECT * FROM students WHERE student_id = ?");
+            $stmt->execute([$student_id]);
             $student = $stmt->fetch(PDO::FETCH_ASSOC);
-
             if ($student) {
                 sendJSONResponse(true, 'Student retrieved successfully', $student);
             } else {

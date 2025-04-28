@@ -276,7 +276,7 @@ $sessionData = isset($_SESSION['user']) ? $_SESSION['user'] : null;
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Role ID</th>
+                        <th>User Type</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -285,7 +285,7 @@ $sessionData = isset($_SESSION['user']) ? $_SESSION['user'] : null;
                         <td><?php echo $user['id']; ?></td>
                         <td><?php echo htmlspecialchars($user['name']); ?></td>
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
-                        <td><?php echo $user['role_id']; ?></td>
+                        <td><?php echo htmlspecialchars(ucfirst($user['role'] ?? '')); ?></td>
                         <td><?php echo $user['status']; ?></td>
                         <td>
                             <form method="post" action="">

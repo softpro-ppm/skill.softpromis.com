@@ -569,4 +569,40 @@ class Dashboard {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+
+// Roles CRUD
+class Role {
+    public static function getAll() {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("SELECT r.role_id, r.role_name, r.description, r.created_at, r.permissions, COUNT(u.user_id) as user_count FROM roles r LEFT JOIN users u ON r.role_id = u.role_id GROUP BY r.role_id ORDER BY r.role_id ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getById($roleId) {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("SELECT * FROM roles WHERE role_id = ?");
+        $stmt->execute([$roleId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function create($roleName, $description, $permissions = []) {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("INSERT INTO roles (role_name, description, permissions) VALUES (?, ?, ?)");
+        $stmt->execute([$roleName, $description, json_encode($permissions)]);
+        return $conn->lastInsertId();
+    }
+
+    public static function update($roleId, $roleName, $description, $permissions = []) {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("UPDATE roles SET role_name = ?, description = ?, permissions = ? WHERE role_id = ?");
+        return $stmt->execute([$roleName, $description, json_encode($permissions), $roleId]);
+    }
+
+    public static function delete($roleId) {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("DELETE FROM roles WHERE role_id = ?");
+        return $stmt->execute([$roleId]);
+    }
+}
 ?> 
