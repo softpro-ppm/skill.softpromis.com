@@ -1818,3 +1818,177 @@ Stack trace:
 [28-Apr-2025 06:31:56 Asia/Kolkata] 2025-04-28 06:31:56 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
 [28-Apr-2025 06:32:00 Asia/Kolkata] 2025-04-28 06:32:00 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
 [28-Apr-2025 06:33:13 Asia/Kolkata] 2025-04-28 06:33:13 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[28-Apr-2025 06:51:30 Asia/Kolkata] 2025-04-28 06:51:30 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[28-Apr-2025 06:52:52 Asia/Kolkata] 2025-04-28 06:52:52 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[28-Apr-2025 06:57:46 Asia/Kolkata] 2025-04-28 06:57:46 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[28-Apr-2025 07:00:05 Asia/Kolkata] 2025-04-28 07:00:05 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[28-Apr-2025 07:00:09 Asia/Kolkata] 2025-04-28 07:00:09 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
+[28-Apr-2025 07:04:08 Asia/Kolkata] 2025-04-28 07:04:08 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'start_date' in 'field list'
+[28-Apr-2025 07:04:34 Asia/Kolkata] 2025-04-28 07:04:34 - Schemes error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'start_date' in 'field list'
+[28-Apr-2025 07:06:25 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:06:25 Asia/Kolkata] 2025-04-28 07:06:25 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:06:29 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:06:29 Asia/Kolkata] 2025-04-28 07:06:29 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:06:43 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:06:43 Asia/Kolkata] 2025-04-28 07:06:43 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:06:46 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:06:46 Asia/Kolkata] 2025-04-28 07:06:46 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:06:51 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:06:51 Asia/Kolkata] 2025-04-28 07:06:51 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:08:44 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:08:44 Asia/Kolkata] 2025-04-28 07:08:44 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:10:57 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:10:57 Asia/Kolkata] 2025-04-28 07:10:57 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:10:58 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:10:58 Asia/Kolkata] 2025-04-28 07:10:58 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:10:58 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:10:58 Asia/Kolkata] 2025-04-28 07:10:58 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:11:05 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:11:05 Asia/Kolkata] 2025-04-28 07:11:05 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:13:28 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:13:28 Asia/Kolkata] 2025-04-28 07:13:28 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:13:38 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 137
+[28-Apr-2025 07:13:38 Asia/Kolkata] 2025-04-28 07:13:38 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:14:04 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 137
+[28-Apr-2025 07:14:04 Asia/Kolkata] 2025-04-28 07:14:04 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:16:18 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 137
+[28-Apr-2025 07:16:18 Asia/Kolkata] 2025-04-28 07:16:18 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:16:35 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 137
+[28-Apr-2025 07:16:35 Asia/Kolkata] 2025-04-28 07:16:35 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:17:59 Asia/Kolkata] 2025-04-28 07:17:59 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:18:05 Asia/Kolkata] 2025-04-28 07:18:05 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:18:09 Asia/Kolkata] 2025-04-28 07:18:09 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:20:41 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 110
+[28-Apr-2025 07:20:41 Asia/Kolkata] 2025-04-28 07:20:41 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:20:42 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 110
+[28-Apr-2025 07:20:42 Asia/Kolkata] 2025-04-28 07:20:42 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:20:55 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 110
+[28-Apr-2025 07:20:55 Asia/Kolkata] 2025-04-28 07:20:55 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:24:11 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:24:11 Asia/Kolkata] 2025-04-28 07:24:11 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 07:24:12 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 07:24:12 Asia/Kolkata] 2025-04-28 07:24:12 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:09:28 Asia/Kolkata] User data: Array
+(
+    [user_id] => 7
+    [username] => admin
+    [full_name] => Administrator
+    [email] => admin@softpro.com
+    [password] => $2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C
+    [status] => active
+    [role_id] => 1
+)
+
+[28-Apr-2025 11:09:40 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 110
+[28-Apr-2025 11:09:40 Asia/Kolkata] 2025-04-28 11:09:40 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:17:18 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 11:17:18 Asia/Kolkata] 2025-04-28 11:17:18 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:17:26 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 35
+[28-Apr-2025 11:17:26 Asia/Kolkata] 2025-04-28 11:17:26 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:18:20 Asia/Kolkata] 2025-04-28 11:18:20 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:18:30 Asia/Kolkata] 2025-04-28 11:18:30 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:18:41 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 110
+[28-Apr-2025 11:18:41 Asia/Kolkata] 2025-04-28 11:18:41 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:18:42 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 110
+[28-Apr-2025 11:18:42 Asia/Kolkata] 2025-04-28 11:18:42 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:18:42 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 110
+[28-Apr-2025 11:18:42 Asia/Kolkata] 2025-04-28 11:18:42 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:18:48 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\schemes_ajax.php on line 110
+[28-Apr-2025 11:18:48 Asia/Kolkata] 2025-04-28 11:18:48 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:19:05 Asia/Kolkata] 2025-04-28 11:19:05 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:19:14 Asia/Kolkata] 2025-04-28 11:19:14 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:19:23 Asia/Kolkata] 2025-04-28 11:19:23 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:19:30 Asia/Kolkata] 2025-04-28 11:19:30 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:20:57 Asia/Kolkata] 2025-04-28 11:20:57 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:23:16 Asia/Kolkata] 2025-04-28 11:23:16 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:23:30 Asia/Kolkata] 2025-04-28 11:23:30 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 11:23:47 Asia/Kolkata] 2025-04-28 11:23:47 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:24:11 Asia/Kolkata] User data: Array
+(
+    [user_id] => 7
+    [username] => admin
+    [full_name] => Administrator
+    [email] => admin@softpro.com
+    [password] => $2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C
+    [status] => active
+    [role_id] => 1
+)
+
+[28-Apr-2025 15:24:34 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 51
+[28-Apr-2025 15:24:34 Asia/Kolkata] 2025-04-28 15:24:34 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:24:40 Asia/Kolkata] 2025-04-28 15:24:40 - Sectors error: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'Officia magni esse' for key 'sector_code'
+[28-Apr-2025 15:24:48 Asia/Kolkata] 2025-04-28 15:24:48 - Sectors error: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'Officia magni esse' for key 'sector_code'
+[28-Apr-2025 15:29:28 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 51
+[28-Apr-2025 15:29:29 Asia/Kolkata] 2025-04-28 15:29:29 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:30:43 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 51
+[28-Apr-2025 15:30:43 Asia/Kolkata] 2025-04-28 15:30:43 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:30:47 Asia/Kolkata] 2025-04-28 15:30:47 - Sectors error: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'Voluptatibus est om' for key 'sector_code'
+[28-Apr-2025 15:33:10 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 51
+[28-Apr-2025 15:33:10 Asia/Kolkata] 2025-04-28 15:33:10 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:34:12 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 105
+[28-Apr-2025 15:34:12 Asia/Kolkata] 2025-04-28 15:34:12 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:34:13 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 105
+[28-Apr-2025 15:34:13 Asia/Kolkata] 2025-04-28 15:34:13 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:34:13 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 105
+[28-Apr-2025 15:34:13 Asia/Kolkata] 2025-04-28 15:34:13 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:34:13 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 105
+[28-Apr-2025 15:34:13 Asia/Kolkata] 2025-04-28 15:34:13 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:34:14 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 105
+[28-Apr-2025 15:34:14 Asia/Kolkata] 2025-04-28 15:34:14 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:34:21 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 105
+[28-Apr-2025 15:34:21 Asia/Kolkata] 2025-04-28 15:34:21 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:34:37 Asia/Kolkata] 2025-04-28 15:34:37 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:34:46 Asia/Kolkata] 2025-04-28 15:34:46 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:34:56 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 126
+[28-Apr-2025 15:34:56 Asia/Kolkata] 2025-04-28 15:34:56 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:35:06 Asia/Kolkata] PHP Warning:  Undefined array key "id" in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\sectors_ajax.php on line 126
+[28-Apr-2025 15:35:06 Asia/Kolkata] 2025-04-28 15:35:06 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:35:40 Asia/Kolkata] 2025-04-28 15:35:40 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:39:37 Asia/Kolkata] 2025-04-28 15:39:37 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 15:45:57 Asia/Kolkata] 2025-04-28 15:45:57 - Courses error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 's.name' in 'field list'
+[28-Apr-2025 15:45:59 Asia/Kolkata] 2025-04-28 15:45:59 - Courses error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 's.name' in 'field list'
+[28-Apr-2025 15:47:50 Asia/Kolkata] 2025-04-28 15:47:50 - Courses error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 's.name' in 'field list'
+[28-Apr-2025 15:55:59 Asia/Kolkata] 2025-04-28 15:55:59 - Courses error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 's.name' in 'field list'
+[28-Apr-2025 16:29:11 Asia/Kolkata] 2025-04-28 16:29:11 - Courses error: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`skill`.`courses`, CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`scheme_id`) REFERENCES `schemes` (`scheme_id`))
+[28-Apr-2025 16:32:44 Asia/Kolkata] 2025-04-28 16:32:44 - Courses error: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`skill`.`courses`, CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`scheme_id`) REFERENCES `schemes` (`scheme_id`))
+[28-Apr-2025 16:32:52 Asia/Kolkata] 2025-04-28 16:32:52 - Courses error: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`skill`.`courses`, CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`scheme_id`) REFERENCES `schemes` (`scheme_id`))
+[28-Apr-2025 16:33:52 Asia/Kolkata] 2025-04-28 16:33:52 - Courses error: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`skill`.`courses`, CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`scheme_id`) REFERENCES `schemes` (`scheme_id`))
+[28-Apr-2025 16:34:16 Asia/Kolkata] 2025-04-28 16:34:16 - Courses error: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`skill`.`courses`, CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`scheme_id`) REFERENCES `schemes` (`scheme_id`))
+[28-Apr-2025 16:40:33 Asia/Kolkata] 2025-04-28 16:40:33 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 16:44:12 Asia/Kolkata] 2025-04-28 16:44:12 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 16:44:27 Asia/Kolkata] 2025-04-28 16:44:27 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 16:48:13 Asia/Kolkata] 2025-04-28 16:48:13 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[28-Apr-2025 17:03:12 Asia/Kolkata] 2025-04-28 17:03:12 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:03:14 Asia/Kolkata] 2025-04-28 17:03:14 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:05:19 Asia/Kolkata] 2025-04-28 17:05:19 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:05:33 Asia/Kolkata] 2025-04-28 17:05:33 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:00 Asia/Kolkata] 2025-04-28 17:09:00 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:01 Asia/Kolkata] 2025-04-28 17:09:01 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:02 Asia/Kolkata] 2025-04-28 17:09:02 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:03 Asia/Kolkata] 2025-04-28 17:09:03 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:03 Asia/Kolkata] 2025-04-28 17:09:03 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:03 Asia/Kolkata] 2025-04-28 17:09:03 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:03 Asia/Kolkata] 2025-04-28 17:09:03 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:03 Asia/Kolkata] 2025-04-28 17:09:03 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:04 Asia/Kolkata] 2025-04-28 17:09:04 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:04 Asia/Kolkata] 2025-04-28 17:09:04 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:04 Asia/Kolkata] 2025-04-28 17:09:04 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:04 Asia/Kolkata] 2025-04-28 17:09:04 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:09:04 Asia/Kolkata] 2025-04-28 17:09:04 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:11:18 Asia/Kolkata] 2025-04-28 17:11:18 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:11:41 Asia/Kolkata] 2025-04-28 17:11:41 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:13:58 Asia/Kolkata] PHP Fatal error:  Uncaught TypeError: Unsupported operand types: PDO * int in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\batches_ajax.php:6
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\inc\ajax\batches_ajax.php on line 6
+[28-Apr-2025 17:15:00 Asia/Kolkata] 2025-04-28 17:15:00 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:15:06 Asia/Kolkata] 2025-04-28 17:15:06 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:15:53 Asia/Kolkata] 2025-04-28 17:15:53 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:18:31 Asia/Kolkata] 2025-04-28 17:18:31 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:20:34 Asia/Kolkata] 2025-04-28 17:20:34 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:33:26 Asia/Kolkata] 2025-04-28 17:33:26 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:33:49 Asia/Kolkata] 2025-04-28 17:33:49 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:33:58 Asia/Kolkata] 2025-04-28 17:33:58 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:35:25 Asia/Kolkata] 2025-04-28 17:35:25 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:36:23 Asia/Kolkata] 2025-04-28 17:36:23 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[28-Apr-2025 17:36:58 Asia/Kolkata] 2025-04-28 17:36:58 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist

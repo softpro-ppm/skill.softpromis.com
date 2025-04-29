@@ -6,6 +6,7 @@ define('BASEPATH', true);
 session_start();
 require_once 'config.php';
 require_once 'crud_functions.php';
+$sectors = Sector::getAll();
 
 // Check if user is logged in
 if (!isset($_SESSION['user'])) {
@@ -60,54 +61,29 @@ require_once 'includes/sidebar.php';
                             <table id="sectorsTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
+                                        <th>No.</th>
                                         <th>Sector ID</th>
                                         <th>Name</th>
                                         <th>Description</th>
-                                        <th>Total Courses</th>
-                                        <th>Active Students</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $i = 1; foreach ($sectors as $sector): ?>
                                     <tr>
-                                        <td>SEC001</td>
-                                        <td>Information Technology</td>
-                                        <td>IT and Software Development</td>
-                                        <td>5</td>
-                                        <td>150</td>
-                                        <td><span class="badge badge-success">Active</span></td>
+                                        <td><?= $i++ ?></td>
+                                        <td><?= htmlspecialchars($sector['sector_id']) ?></td>
+                                        <td><?= htmlspecialchars($sector['sector_name']) ?></td>
+                                        <td><?= htmlspecialchars($sector['description']) ?></td>
+                                        <td><span class="badge badge-<?= $sector['status'] === 'active' ? 'success' : 'secondary' ?>"><?= ucfirst($sector['status']) ?></span></td>
                                         <td>
-                                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSectorModal">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSectorModal">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSectorModal">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+                                            <button type="button" class="btn btn-info btn-sm view-sector-btn" data-sector-id="<?= $sector['sector_id'] ?>"><i class="fas fa-eye"></i></button>
+                                            <button type="button" class="btn btn-primary btn-sm edit-sector-btn" data-sector-id="<?= $sector['sector_id'] ?>"><i class="fas fa-edit"></i></button>
+                                            <button type="button" class="btn btn-danger btn-sm delete-sector-btn" data-sector-id="<?= $sector['sector_id'] ?>"><i class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>SEC002</td>
-                                        <td>Digital Marketing</td>
-                                        <td>Online Marketing and SEO</td>
-                                        <td>3</td>
-                                        <td>75</td>
-                                        <td><span class="badge badge-success">Active</span></td>
-                                        <td>
-                                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewSectorModal">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editSectorModal">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteSectorModal">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -129,21 +105,21 @@ require_once 'includes/sidebar.php';
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form>
+            <form id="addSectorForm" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="sectorName">Sector Name</label>
-                                <input type="text" class="form-control" id="sectorName" placeholder="Enter sector name" required>
+                                <input type="text" class="form-control" id="sectorName" name="sector_name" placeholder="Enter sector name" required>
                             </div>
                             <div class="form-group">
                                 <label for="sectorCode">Sector Code</label>
-                                <input type="text" class="form-control" id="sectorCode" placeholder="Enter sector code" required>
+                                <input type="text" class="form-control" id="sectorCode" name="sector_code" placeholder="Enter sector code" required>
                             </div>
                             <div class="form-group">
                                 <label for="sectorType">Sector Type</label>
-                                <select class="form-control select2" id="sectorType" required>
+                                <select class="form-control select2" id="sectorType" name="sector_type" required>
                                     <option value="">Select Type</option>
                                     <option value="Technical">Technical</option>
                                     <option value="Non-Technical">Non-Technical</option>
@@ -154,11 +130,11 @@ require_once 'includes/sidebar.php';
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea class="form-control" id="description" rows="3" placeholder="Enter sector description" required></textarea>
+                                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter sector description" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="jobRoles">Job Roles</label>
-                                <textarea class="form-control" id="jobRoles" rows="3" placeholder="Enter potential job roles" required></textarea>
+                                <textarea class="form-control" id="jobRoles" name="job_roles" rows="3" placeholder="Enter potential job roles" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -167,11 +143,11 @@ require_once 'includes/sidebar.php';
                             <div class="form-group">
                                 <label>Documents</label>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="sectorDoc">
+                                    <input type="file" class="custom-file-input" id="sectorDoc" name="sector_document">
                                     <label class="custom-file-label" for="sectorDoc">Sector Document</label>
                                 </div>
                                 <div class="custom-file mt-2">
-                                    <input type="file" class="custom-file-input" id="curriculumDoc">
+                                    <input type="file" class="custom-file-input" id="curriculumDoc" name="curriculum_document">
                                     <label class="custom-file-label" for="curriculumDoc">Curriculum Document</label>
                                 </div>
                             </div>
@@ -187,7 +163,7 @@ require_once 'includes/sidebar.php';
     </div>
 </div>
 
-<!-- View Sector Modal -->
+<!-- View Sector Modal (dynamic fields) -->
 <div class="modal fade" id="viewSectorModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -200,74 +176,19 @@ require_once 'includes/sidebar.php';
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Sector ID</label>
-                            <p>SEC001</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Sector Name</label>
-                            <p>Information Technology</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Sector Type</label>
-                            <p>Technical</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <p>IT and Software Development</p>
-                        </div>
+                        <div class="form-group"><label>Sector ID</label><p data-field="sector_id"></p></div>
+                        <div class="form-group"><label>Sector Name</label><p data-field="sector_name"></p></div>
+                        <div class="form-group"><label>Sector Code</label><p data-field="sector_code"></p></div>
+                        <div class="form-group"><label>Sector Type</label><p data-field="sector_type"></p></div>
+                        <div class="form-group"><label>Description</label><p data-field="description"></p></div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Job Roles</label>
-                            <p>Software Developer, Web Developer, Database Administrator</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Total Courses</label>
-                            <p>5</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Active Students</label>
-                            <p>150</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Status</label>
-                            <p><span class="badge badge-success">Active</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h5>Associated Courses</h5>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Course ID</th>
-                                        <th>Name</th>
-                                        <th>Duration</th>
-                                        <th>Fee</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>C001</td>
-                                        <td>Web Development</td>
-                                        <td>3 months</td>
-                                        <td>₹15,000</td>
-                                        <td><span class="badge badge-success">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>C003</td>
-                                        <td>Mobile App Development</td>
-                                        <td>4 months</td>
-                                        <td>₹18,000</td>
-                                        <td><span class="badge badge-success">Active</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <div class="form-group"><label>Job Roles</label><p data-field="job_roles"></p></div>
+                        <div class="form-group"><label>Status</label><p data-field="status"></p></div>
+                        <div class="form-group"><label>Sector Document</label><p data-field="sector_document"></p></div>
+                        <div class="form-group"><label>Curriculum Document</label><p data-field="curriculum_document"></p></div>
+                        <div class="form-group"><label>Created At</label><p data-field="created_at"></p></div>
+                        <div class="form-group"><label>Updated At</label><p data-field="updated_at"></p></div>
                     </div>
                 </div>
             </div>
@@ -288,22 +209,22 @@ require_once 'includes/sidebar.php';
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form>
+            <form id="editSectorForm" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="editSectorName">Sector Name</label>
-                                <input type="text" class="form-control" id="editSectorName" value="Information Technology" required>
+                                <input type="text" class="form-control" id="editSectorName" name="sector_name" required>
                             </div>
                             <div class="form-group">
                                 <label for="editSectorCode">Sector Code</label>
-                                <input type="text" class="form-control" id="editSectorCode" value="SEC001" required>
+                                <input type="text" class="form-control" id="editSectorCode" name="sector_code" required>
                             </div>
                             <div class="form-group">
                                 <label for="editSectorType">Sector Type</label>
-                                <select class="form-control select2" id="editSectorType" required>
-                                    <option value="Technical" selected>Technical</option>
+                                <select class="form-control select2" id="editSectorType" name="sector_type" required>
+                                    <option value="Technical">Technical</option>
                                     <option value="Non-Technical">Non-Technical</option>
                                     <option value="Vocational">Vocational</option>
                                 </select>
@@ -312,11 +233,11 @@ require_once 'includes/sidebar.php';
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="editDescription">Description</label>
-                                <textarea class="form-control" id="editDescription" rows="3" required>IT and Software Development</textarea>
+                                <textarea class="form-control" id="editDescription" name="description" rows="3" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="editJobRoles">Job Roles</label>
-                                <textarea class="form-control" id="editJobRoles" rows="3" required>Software Developer, Web Developer, Database Administrator</textarea>
+                                <textarea class="form-control" id="editJobRoles" name="job_roles" rows="3" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -325,11 +246,11 @@ require_once 'includes/sidebar.php';
                             <div class="form-group">
                                 <label>Documents</label>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="editSectorDoc">
+                                    <input type="file" class="custom-file-input" id="editSectorDoc" name="sector_document">
                                     <label class="custom-file-label" for="editSectorDoc">Sector Document</label>
                                 </div>
                                 <div class="custom-file mt-2">
-                                    <input type="file" class="custom-file-input" id="editCurriculumDoc">
+                                    <input type="file" class="custom-file-input" id="editCurriculumDoc" name="curriculum_document">
                                     <label class="custom-file-label" for="editCurriculumDoc">Curriculum Document</label>
                                 </div>
                             </div>
@@ -372,16 +293,151 @@ require_once 'includes/sidebar.php';
 
 <script>
 $(function () {
-    // Initialize DataTable with default configuration
     $('#sectorsTable').DataTable();
+    $('.select2').select2({ theme: 'bootstrap4' });
+    bsCustomFileInput.init();
 
-    // Initialize Select2
-    $('.select2').select2({
-        theme: 'bootstrap4'
+    // Toast function
+    function showToast(type, message) {
+        var toast = $('<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">'
+            + '<div class="toast-header bg-' + (type === 'success' ? 'success' : 'danger') + ' text-white">'
+            + '<strong class="mr-auto">' + (type === 'success' ? 'Success' : 'Error') + '</strong>'
+            + '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">'
+            + '<span aria-hidden="true">&times;</span>'
+            + '</button></div>'
+            + '<div class="toast-body">' + message + '</div></div>');
+        $('#toast-container').append(toast);
+        toast.toast('show');
+        toast.on('hidden.bs.toast', function () { $(this).remove(); });
+    }
+    if (!$('#toast-container').length) {
+        $('body').append('<div id="toast-container" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;"></div>');
+    }
+
+    // --- AJAX Add Sector ---
+    $('#addSectorForm').on('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        var formData = new FormData(form);
+        var sectorCode = $('#sectorCode').val();
+        // Check for duplicate code before submitting
+        $.ajax({
+            url: 'inc/ajax/sectors_ajax.php',
+            type: 'POST',
+            data: { action: 'check_code', sector_code: sectorCode },
+            dataType: 'json',
+            async: false,
+            success: function(checkResp) {
+                if (checkResp.success && checkResp.data && checkResp.data.exists) {
+                    showToast('error', 'Sector Code already exists. Please use a unique code.');
+                } else {
+                    // Proceed with actual form submission
+                    formData.append('action', 'create');
+                    $.ajax({
+                        url: 'inc/ajax/sectors_ajax.php',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                showToast('success', response.message);
+                                setTimeout(function(){ location.reload(); }, 1200);
+                            } else {
+                                showToast('error', response.message);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     });
 
-    // Initialize custom file input
-    bsCustomFileInput.init();
+    // --- AJAX View Sector ---
+    $(document).on('click', '.view-sector-btn', function() {
+        var sector_id = $(this).data('sector-id');
+        $.post('inc/ajax/sectors_ajax.php', { action: 'get', sector_id: sector_id }, function(response) {
+            if (response.success && response.data) {
+                var s = response.data;
+                for (const key in s) {
+                    var val = s[key] || '';
+                    if (key === 'sector_document' && val) {
+                        val = '<a href="' + val + '" target="_blank">Download</a>';
+                    }
+                    if (key === 'curriculum_document' && val) {
+                        val = '<a href="' + val + '" target="_blank">Download</a>';
+                    }
+                    $('#viewSectorModal [data-field="' + key + '"]').html(val);
+                }
+                $('#viewSectorModal').modal('show');
+            } else {
+                showToast('error', 'Could not fetch sector details.');
+            }
+        }, 'json');
+    });
+
+    // --- AJAX Edit Sector: populate modal ---
+    $(document).on('click', '.edit-sector-btn', function() {
+        var sector_id = $(this).data('sector-id');
+        $.post('inc/ajax/sectors_ajax.php', { action: 'get', sector_id: sector_id }, function(response) {
+            if (response.success && response.data) {
+                var s = response.data;
+                $('#editSectorName').val(s.sector_name);
+                $('#editSectorCode').val(s.sector_code);
+                $('#editSectorType').val(s.sector_type).trigger('change');
+                $('#editDescription').val(s.description);
+                $('#editJobRoles').val(s.job_roles);
+                // Clear file inputs
+                $('#editSectorDoc').val("");
+                $('#editCurriculumDoc').val("");
+                $('#editSectorModal').data('sector-id', sector_id);
+                $('#editSectorModal').modal('show');
+            } else {
+                showToast('error', 'Could not fetch sector details.');
+            }
+        }, 'json');
+    });
+
+    // --- AJAX Edit Sector: submit ---
+    $('#editSectorForm').on('submit', function(e) {
+        e.preventDefault();
+        var sector_id = $('#editSectorModal').data('sector-id');
+        var formData = new FormData(this);
+        formData.append('action', 'update');
+        formData.append('sector_id', sector_id);
+        $.ajax({
+            url: 'inc/ajax/sectors_ajax.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    showToast('success', response.message);
+                    setTimeout(function(){ location.reload(); }, 1200);
+                } else {
+                    showToast('error', response.message);
+                }
+            }
+        });
+    });
+
+    // --- AJAX Delete Sector ---
+    $(document).on('click', '.delete-sector-btn', function() {
+        var sector_id = $(this).data('sector-id');
+        if (confirm('Are you sure you want to delete this sector?')) {
+            $.post('inc/ajax/sectors_ajax.php', { action: 'delete', sector_id: sector_id }, function(response) {
+                if (response.success) {
+                    showToast('success', response.message);
+                    setTimeout(function(){ location.reload(); }, 1200);
+                } else {
+                    showToast('error', response.message);
+                }
+            }, 'json');
+        }
+    });
 });
 </script>
 </body>

@@ -114,7 +114,7 @@ class TrainingCenter {
 class Sector {
     public static function getAll() {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("SELECT * FROM sectors WHERE status = 'active'");
+        $stmt = $conn->prepare("SELECT * FROM sectors WHERE status = 'active' ORDER BY sector_id DESC");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -260,31 +260,39 @@ class Batch {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO batches (center_id, course_id, batch_code, start_date, end_date, capacity) 
-                               VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO batches (center_id, course_id, batch_code, start_date, end_date, capacity, status, trainer_id, schedule, remarks) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         return $stmt->execute([
             $data['center_id'],
             $data['course_id'],
             $data['batch_code'],
             $data['start_date'],
             $data['end_date'],
-            $data['capacity']
+            $data['capacity'],
+            $data['status'],
+            $data['trainer_id'],
+            $data['schedule'],
+            $data['remarks']
         ]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE batches 
-                               SET center_id = ?, course_id = ?, start_date = ?, end_date = ?, 
-                                   capacity = ?, status = ? 
+                               SET center_id = ?, course_id = ?, batch_code = ?, start_date = ?, end_date = ?, 
+                                   capacity = ?, status = ?, trainer_id = ?, schedule = ?, remarks = ? 
                                WHERE batch_id = ?");
         return $stmt->execute([
             $data['center_id'],
             $data['course_id'],
+            $data['batch_code'],
             $data['start_date'],
             $data['end_date'],
             $data['capacity'],
             $data['status'],
+            $data['trainer_id'],
+            $data['schedule'],
+            $data['remarks'],
             $id
         ]);
     }

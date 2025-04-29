@@ -10,193 +10,134 @@ header('Content-Type: application/json');
 
 $action = $_POST['action'] ?? '';
 
+function handleFileUpload($fileKey, $uploadDir = '../../uploads/sectors/') {
+    if (!isset($_FILES[$fileKey]) || $_FILES[$fileKey]['error'] !== UPLOAD_ERR_OK) {
+        return null;
+    }
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+    $filename = uniqid() . '_' . basename($_FILES[$fileKey]['name']);
+    $targetPath = $uploadDir . $filename;
+    if (move_uploaded_file($_FILES[$fileKey]['tmp_name'], $targetPath)) {
+        return 'uploads/sectors/' . $filename;
+    }
+    return null;
+}
+
 try {
     $pdo = getDBConnection();
 
     switch ($action) {
         case 'create':
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $sector_name = sanitizeInput($_POST['sector_name'] ?? '');
+            $sector_code = sanitizeInput($_POST['sector_code'] ?? '');
+            $sector_type = sanitizeInput($_POST['sector_type'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
+            $job_roles = sanitizeInput($_POST['job_roles'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
-            $parent_id = (int)($_POST['parent_id'] ?? 0);
+            $sector_document = handleFileUpload('sector_document');
+            $curriculum_document = handleFileUpload('curriculum_document');
 
-            if (empty($name)) {
-                sendJSONResponse(false, 'Name is required');
+            if (empty($sector_name) || empty($sector_code)) {
+                sendJSONResponse(false, 'Sector Name and Code are required');
             }
 
-            // Check if parent sector exists if provided
-            if ($parent_id > 0) {
-                $stmt = $pdo->prepare("SELECT id FROM sectors WHERE id = ?");
-                $stmt->execute([$parent_id]);
-                if (!$stmt->fetch()) {
-                    sendJSONResponse(false, 'Parent sector not found');
-                }
-            }
+            $stmt = $pdo->prepare("INSERT INTO sectors (sector_name, sector_code, sector_type, description, job_roles, sector_document, curriculum_document, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+            $stmt->execute([
+                $sector_name, $sector_code, $sector_type, $description, $job_roles, $sector_document, $curriculum_document, $status
+            ]);
 
-            $stmt = $pdo->prepare("
-                INSERT INTO sectors (name, description, status, parent_id, created_at)
-                VALUES (?, ?, ?, ?, NOW())
-            ");
-            $stmt->execute([$name, $description, $status, $parent_id]);
-
-            logAudit($_SESSION['user']['id'], 'create_sector', [
-                'name' => $name,
-                'parent_id' => $parent_id
+            logAudit($_SESSION['user']['user_id'], 'create_sector', [
+                'sector_name' => $sector_name,
+                'sector_code' => $sector_code
             ]);
 
             sendJSONResponse(true, 'Sector created successfully', [
-                'id' => $pdo->lastInsertId()
-            ]);
-            break;
-
-        case 'read':
-            $page = (int)($_POST['page'] ?? 1);
-            $perPage = (int)($_POST['per_page'] ?? 10);
-            $search = sanitizeInput($_POST['search'] ?? '');
-            $status = sanitizeInput($_POST['status'] ?? '');
-            $parent_id = (int)($_POST['parent_id'] ?? 0);
-
-            $where = [];
-            $params = [];
-
-            if (!empty($search)) {
-                $searchFields = ['name', 'description'];
-                $searchResult = buildSearchQuery($searchFields, $search);
-                $where[] = "(" . $searchResult['conditions'] . ")";
-                $params = array_merge($params, $searchResult['params']);
-            }
-
-            if (!empty($status)) {
-                $where[] = "status = ?";
-                $params[] = $status;
-            }
-
-            if ($parent_id > 0) {
-                $where[] = "parent_id = ?";
-                $params[] = $parent_id;
-            }
-
-            $whereClause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
-
-            // Get total count
-            $countStmt = $pdo->prepare("SELECT COUNT(*) FROM sectors $whereClause");
-            $countStmt->execute($params);
-            $total = $countStmt->fetchColumn();
-
-            // Get pagination info
-            $pagination = getPagination($page, $total, $perPage);
-
-            // Get data with parent sector info
-            $stmt = $pdo->prepare("
-                SELECT s.*, p.name as parent_name 
-                FROM sectors s
-                LEFT JOIN sectors p ON s.parent_id = p.id
-                $whereClause
-                ORDER BY s.created_at DESC
-                LIMIT ? OFFSET ?
-            ");
-            $stmt->execute([...$params, $pagination['per_page'], $pagination['offset']]);
-            $sectors = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            sendJSONResponse(true, 'Sectors retrieved successfully', [
-                'data' => $sectors,
-                'pagination' => $pagination
+                'sector_id' => $pdo->lastInsertId()
             ]);
             break;
 
         case 'update':
-            $id = (int)($_POST['id'] ?? 0);
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $sector_id = (int)($_POST['sector_id'] ?? 0);
+            $sector_name = sanitizeInput($_POST['sector_name'] ?? '');
+            $sector_code = sanitizeInput($_POST['sector_code'] ?? '');
+            $sector_type = sanitizeInput($_POST['sector_type'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
+            $job_roles = sanitizeInput($_POST['job_roles'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
-            $parent_id = (int)($_POST['parent_id'] ?? 0);
 
-            if (empty($id) || empty($name)) {
-                sendJSONResponse(false, 'ID and name are required');
+            // File uploads (optional, only update if new file is uploaded)
+            $sector_document = handleFileUpload('sector_document');
+            $curriculum_document = handleFileUpload('curriculum_document');
+
+            if (empty($sector_id) || empty($sector_name) || empty($sector_code)) {
+                sendJSONResponse(false, 'Required fields are missing');
             }
 
-            // Check if parent sector exists if provided
-            if ($parent_id > 0) {
-                $stmt = $pdo->prepare("SELECT id FROM sectors WHERE id = ?");
-                $stmt->execute([$parent_id]);
-                if (!$stmt->fetch()) {
-                    sendJSONResponse(false, 'Parent sector not found');
-                }
+            // Build dynamic SQL for optional file updates
+            $fields = [
+                'sector_name = ?',
+                'sector_code = ?',
+                'sector_type = ?',
+                'description = ?',
+                'job_roles = ?',
+                'status = ?',
+                'updated_at = NOW()'
+            ];
+            $params = [
+                $sector_name, $sector_code, $sector_type, $description, $job_roles, $status
+            ];
+            if ($sector_document) {
+                $fields[] = 'sector_document = ?';
+                $params[] = $sector_document;
             }
-
-            // Prevent circular reference
-            if ($parent_id === $id) {
-                sendJSONResponse(false, 'A sector cannot be its own parent');
+            if ($curriculum_document) {
+                $fields[] = 'curriculum_document = ?';
+                $params[] = $curriculum_document;
             }
+            $params[] = $sector_id;
 
-            $stmt = $pdo->prepare("
-                UPDATE sectors 
-                SET name = ?, description = ?, status = ?, parent_id = ?,
-                    updated_at = NOW()
-                WHERE id = ?
-            ");
-            $stmt->execute([$name, $description, $status, $parent_id, $id]);
+            $sql = "UPDATE sectors SET " . implode(', ', $fields) . " WHERE sector_id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute($params);
 
-            logAudit($_SESSION['user']['id'], 'update_sector', [
-                'id' => $id,
-                'name' => $name,
-                'parent_id' => $parent_id
+            logAudit($_SESSION['user']['user_id'], 'update_sector', [
+                'sector_id' => $sector_id,
+                'sector_name' => $sector_name
             ]);
 
             sendJSONResponse(true, 'Sector updated successfully');
             break;
 
         case 'delete':
-            $id = (int)($_POST['id'] ?? 0);
-
-            if (empty($id)) {
-                sendJSONResponse(false, 'ID is required');
+            $sector_id = (int)($_POST['sector_id'] ?? 0);
+            if (empty($sector_id)) {
+                sendJSONResponse(false, 'Sector ID is required');
             }
-
-            // Check if sector has child sectors
-            $stmt = $pdo->prepare("SELECT COUNT(*) FROM sectors WHERE parent_id = ?");
-            $stmt->execute([$id]);
-            if ($stmt->fetchColumn() > 0) {
-                sendJSONResponse(false, 'Cannot delete sector with child sectors');
-            }
-
-            // Get sector info for audit log
-            $stmt = $pdo->prepare("SELECT name, parent_id FROM sectors WHERE id = ?");
-            $stmt->execute([$id]);
+            $stmt = $pdo->prepare("SELECT sector_name FROM sectors WHERE sector_id = ?");
+            $stmt->execute([$sector_id]);
             $sector = $stmt->fetch(PDO::FETCH_ASSOC);
-
             if (!$sector) {
                 sendJSONResponse(false, 'Sector not found');
             }
-
-            $stmt = $pdo->prepare("DELETE FROM sectors WHERE id = ?");
-            $stmt->execute([$id]);
-
-            logAudit($_SESSION['user']['id'], 'delete_sector', [
-                'id' => $id,
-                'name' => $sector['name'],
-                'parent_id' => $sector['parent_id']
+            $stmt = $pdo->prepare("DELETE FROM sectors WHERE sector_id = ?");
+            $stmt->execute([$sector_id]);
+            logAudit($_SESSION['user']['user_id'], 'delete_sector', [
+                'sector_id' => $sector_id,
+                'sector_name' => $sector['sector_name']
             ]);
-
             sendJSONResponse(true, 'Sector deleted successfully');
             break;
 
         case 'get':
-            $id = (int)($_POST['id'] ?? 0);
-
-            if (empty($id)) {
-                sendJSONResponse(false, 'ID is required');
+            $sector_id = (int)($_POST['sector_id'] ?? 0);
+            if (empty($sector_id)) {
+                sendJSONResponse(false, 'Sector ID is required');
             }
-
-            $stmt = $pdo->prepare("
-                SELECT s.*, p.name as parent_name 
-                FROM sectors s
-                LEFT JOIN sectors p ON s.parent_id = p.id
-                WHERE s.id = ?
-            ");
-            $stmt->execute([$id]);
+            $stmt = $pdo->prepare("SELECT * FROM sectors WHERE sector_id = ?");
+            $stmt->execute([$sector_id]);
             $sector = $stmt->fetch(PDO::FETCH_ASSOC);
-
             if ($sector) {
                 sendJSONResponse(true, 'Sector retrieved successfully', $sector);
             } else {
@@ -204,33 +145,15 @@ try {
             }
             break;
 
-        case 'get_tree':
-            // Get all sectors for tree view
-            $stmt = $pdo->query("
-                SELECT id, name, parent_id, status
-                FROM sectors
-                ORDER BY name
-            ");
-            $sectors = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            // Build tree structure
-            $tree = [];
-            $map = [];
-
-            foreach ($sectors as $sector) {
-                $map[$sector['id']] = $sector;
-                $map[$sector['id']]['children'] = [];
+        case 'check_code':
+            $sector_code = sanitizeInput($_POST['sector_code'] ?? '');
+            if (empty($sector_code)) {
+                sendJSONResponse(false, 'Sector code is required');
             }
-
-            foreach ($sectors as $sector) {
-                if ($sector['parent_id'] > 0 && isset($map[$sector['parent_id']])) {
-                    $map[$sector['parent_id']]['children'][] = &$map[$sector['id']];
-                } else {
-                    $tree[] = &$map[$sector['id']];
-                }
-            }
-
-            sendJSONResponse(true, 'Sector tree retrieved successfully', $tree);
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM sectors WHERE sector_code = ?");
+            $stmt->execute([$sector_code]);
+            $exists = $stmt->fetchColumn() > 0;
+            sendJSONResponse(true, 'Check complete', ['exists' => $exists]);
             break;
 
         default:
@@ -238,5 +161,9 @@ try {
     }
 } catch (PDOException $e) {
     logError("Sectors error: " . $e->getMessage());
-    sendJSONResponse(false, 'An error occurred. Please try again later.');
+    if ($e->getCode() == 23000 && strpos($e->getMessage(), 'Duplicate entry') !== false) {
+        sendJSONResponse(false, 'Sector Code already exists. Please use a unique code.');
+    } else {
+        sendJSONResponse(false, 'An error occurred. Please try again later.');
+    }
 } 

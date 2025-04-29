@@ -66,48 +66,7 @@ require_once 'includes/sidebar.php';
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>B001</td>
-                  <td>Web Development</td>
-                  <td>ABC Training Center - Mumbai</td>
-                  <td>01/01/2024</td>
-                  <td>31/03/2024</td>
-                  <td>25/30</td>
-                  <td>John Doe</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewBatchModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editBatchModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteBatchModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>B002</td>
-                  <td>Digital Marketing</td>
-                  <td>ABC Training Center - Pune</td>
-                  <td>15/01/2024</td>
-                  <td>15/04/2024</td>
-                  <td>20/25</td>
-                  <td>Jane Smith</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewBatchModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editBatchModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteBatchModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                <!-- Dynamic rows will be loaded here by AJAX -->
               </tbody>
             </table>
           </div>
@@ -134,6 +93,10 @@ require_once 'includes/sidebar.php';
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
+                <div class="form-group">
+                  <label for="batchCode">Batch Code</label>
+                  <input type="text" class="form-control" id="batchCode" placeholder="Enter batch code" required>
+                </div>
                 <div class="form-group">
                   <label for="course">Course</label>
                   <select class="form-control select2" id="course" required>
@@ -311,6 +274,10 @@ require_once 'includes/sidebar.php';
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
+                  <label for="editBatchCode">Batch Code</label>
+                  <input type="text" class="form-control" id="editBatchCode" required>
+                </div>
+                <div class="form-group">
                   <label for="editCourse">Course</label>
                   <select class="form-control select2" id="editCourse" required>
                     <option value="C001" selected>Web Development</option>
@@ -402,32 +369,225 @@ require_once 'includes/sidebar.php';
 <?php include 'includes/js.php'; ?>
 
 <script>
-  $(function () {
-    // Initialize DataTable
-    $('#batchesTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true
-    });
+$(function () {
+  // Initialize DataTable
+  var batchesTable = $('#batchesTable').DataTable({
+    "paging": true,
+    "lengthChange": true,
+    "searching": true,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "responsive": true
+  });
 
-    // Initialize Select2
-    $('.select2').select2({
-      theme: 'bootstrap4'
-    });
+  $('.select2').select2({ theme: 'bootstrap4' });
+  bsCustomFileInput && bsCustomFileInput.init();
 
-    // Initialize date picker
-    $('.datepicker').daterangepicker({
-      singleDatePicker: true,
-      showDropdowns: true,
-      locale: {
-        format: 'DD/MM/YYYY'
+  // Helper: Show toast
+  function showToast(type, message) {
+    var toast = $('<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">'
+      + '<div class="toast-header bg-' + (type === 'success' ? 'success' : 'danger') + ' text-white">'
+      + '<strong class="mr-auto">' + (type === 'success' ? 'Success' : 'Error') + '</strong>'
+      + '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">'
+      + '<span aria-hidden="true">&times;</span>'
+      + '</button></div>'
+      + '<div class="toast-body">' + message + '</div></div>');
+    if (!$('#toast-container').length) {
+      $('body').append('<div id="toast-container" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;"></div>');
+    }
+    $('#toast-container').append(toast);
+    toast.toast('show');
+    toast.on('hidden.bs.toast', function () { $(this).remove(); });
+  }
+
+  // Load batches
+  function loadBatches() {
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'POST',
+      data: { action: 'read' },
+      dataType: 'json',
+      success: function (response) {
+        if (response.success && response.data) {
+          var rows = '';
+          $.each(response.data, function (i, batch) {
+            rows += '<tr>' +
+              '<td>' + batch.batch_code + '</td>' +
+              '<td>' + (batch.course_name || '') + '</td>' +
+              '<td>' + (batch.center_name || '') + '</td>' +
+              '<td>' + (batch.start_date || '') + '</td>' +
+              '<td>' + (batch.end_date || '') + '</td>' +
+              '<td>' + (batch.capacity || 0) + '</td>' +
+              '<td>' + (batch.trainer_id || '') + '</td>' +
+              '<td><span class="badge badge-' + (batch.status === 'active' ? 'success' : 'secondary') + '">' + (batch.status ? batch.status.charAt(0).toUpperCase() + batch.status.slice(1) : '') + '</span></td>' +
+              '<td>' +
+                '<button type="button" class="btn btn-info btn-sm view-batch-btn" data-id="' + batch.batch_id + '"><i class="fas fa-eye"></i></button> ' +
+                '<button type="button" class="btn btn-primary btn-sm edit-batch-btn" data-id="' + batch.batch_id + '"><i class="fas fa-edit"></i></button> ' +
+                '<button type="button" class="btn btn-danger btn-sm delete-batch-btn" data-id="' + batch.batch_id + '"><i class="fas fa-trash"></i></button>' +
+              '</td>' +
+            '</tr>';
+          });
+          $('#batchesTable tbody').html(rows);
+        } else {
+          $('#batchesTable tbody').html('<tr><td colspan="9">No batches found.</td></tr>');
+        }
+      }
+    });
+  }
+  loadBatches();
+
+  // Add Batch
+  $('#addBatchModal form').on('submit', function (e) {
+    e.preventDefault();
+    var formData = {
+      action: 'create',
+      batch_code: $('#batchCode').val(),
+      course_id: $('#course').val(),
+      center_id: $('#trainingCenter').val(),
+      trainer_id: $('#trainer').val(),
+      start_date: $('#startDate input').val(),
+      end_date: $('#endDate input').val(),
+      capacity: $('#capacity').val(),
+      schedule: $('#schedule').val(),
+      remarks: $('#remarks').val(),
+      status: 'upcoming'
+    };
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'POST',
+      data: formData,
+      dataType: 'json',
+      success: function (response) {
+        if (response.success) {
+          showToast('success', response.message);
+          $('#addBatchModal').modal('hide');
+          loadBatches();
+        } else {
+          showToast('error', response.message);
+        }
       }
     });
   });
+
+  // Edit Batch: open modal and fill data
+  $(document).on('click', '.edit-batch-btn', function () {
+    var id = $(this).data('id');
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'POST',
+      data: { action: 'get', batch_id: id },
+      dataType: 'json',
+      success: function (response) {
+        if (response.success && response.data) {
+          var b = response.data;
+          $('#editBatchModal').data('id', b.batch_id);
+          $('#editBatchCode').val(b.batch_code);
+          $('#editCourse').val(b.course_id).trigger('change');
+          $('#editTrainingCenter').val(b.center_id).trigger('change');
+          $('#editTrainer').val(b.trainer_id).trigger('change');
+          $('#editStartDate input').val(b.start_date);
+          $('#editEndDate input').val(b.end_date);
+          $('#editCapacity').val(b.capacity);
+          $('#editSchedule').val(b.schedule);
+          $('#editRemarks').val(b.remarks);
+          $('#editBatchModal').modal('show');
+        } else {
+          showToast('error', 'Could not fetch batch details.');
+        }
+      }
+    });
+  });
+
+  // Edit Batch: submit
+  $('#editBatchModal form').on('submit', function (e) {
+    e.preventDefault();
+    var id = $('#editBatchModal').data('id');
+    var formData = {
+      action: 'update',
+      batch_id: id,
+      batch_code: $('#editBatchCode').val(),
+      course_id: $('#editCourse').val(),
+      center_id: $('#editTrainingCenter').val(),
+      trainer_id: $('#editTrainer').val(),
+      start_date: $('#editStartDate input').val(),
+      end_date: $('#editEndDate input').val(),
+      capacity: $('#editCapacity').val(),
+      schedule: $('#editSchedule').val(),
+      remarks: $('#editRemarks').val(),
+      status: 'upcoming'
+    };
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'POST',
+      data: formData,
+      dataType: 'json',
+      success: function (response) {
+        if (response.success) {
+          showToast('success', response.message);
+          $('#editBatchModal').modal('hide');
+          loadBatches();
+        } else {
+          showToast('error', response.message);
+        }
+      }
+    });
+  });
+
+  // Delete Batch: open modal
+  $(document).on('click', '.delete-batch-btn', function () {
+    var id = $(this).data('id');
+    $('#deleteBatchModal').data('id', id).modal('show');
+  });
+
+  // Delete Batch: confirm
+  $('#deleteBatchModal .btn-danger').on('click', function () {
+    var id = $('#deleteBatchModal').data('id');
+    if (!id) {
+      showToast('error', 'Batch ID is missing.');
+      return;
+    }
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'POST',
+      data: { action: 'delete', batch_id: id },
+      dataType: 'json',
+      success: function (response) {
+        if (response.success) {
+          showToast('success', response.message);
+          $('#deleteBatchModal').modal('hide');
+          loadBatches();
+        } else {
+          showToast('error', response.message);
+        }
+      }
+    });
+  });
+
+  // View Batch: open modal and fill data
+  $(document).on('click', '.view-batch-btn', function () {
+    var id = $(this).data('id');
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'POST',
+      data: { action: 'get', batch_id: id },
+      dataType: 'json',
+      success: function (response) {
+        if (response.success && response.data) {
+          var b = response.data;
+          $('#viewBatchModal .modal-title').text('View Batch: ' + b.batch_code);
+          // Fill in the modal fields as needed
+          // Example:
+          // $('#viewBatchModal [data-field="batch_code"]').text(b.batch_code);
+          // ...
+          $('#viewBatchModal').modal('show');
+        } else {
+          showToast('error', 'Could not fetch batch details.');
+        }
+      }
+    });
+  });
+});
 </script>
 </body>
 </html> 

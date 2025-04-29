@@ -15,41 +15,29 @@ try {
 
     switch ($action) {
         case 'create':
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $scheme_name = sanitizeInput($_POST['scheme_name'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
-            $start_date = sanitizeInput($_POST['start_date'] ?? '');
-            $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
-            $funding_amount = (float)($_POST['funding_amount'] ?? 0);
-            $eligibility_criteria = sanitizeInput($_POST['eligibility_criteria'] ?? '');
 
-            if (empty($name) || empty($start_date) || empty($end_date)) {
+            if (empty($scheme_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
-            }
-
-            if (strtotime($end_date) < strtotime($start_date)) {
-                sendJSONResponse(false, 'End date cannot be before start date');
             }
 
             $stmt = $pdo->prepare("
                 INSERT INTO schemes (
-                    name, description, start_date, end_date, status,
-                    funding_amount, eligibility_criteria, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
+                    scheme_name, description, status, created_at
+                ) VALUES (?, ?, ?, NOW())
             ");
             $stmt->execute([
-                $name, $description, $start_date, $end_date, $status,
-                $funding_amount, $eligibility_criteria
+                $scheme_name, $description, $status
             ]);
 
-            logAudit($_SESSION['user']['id'], 'create_scheme', [
-                'name' => $name,
-                'start_date' => $start_date,
-                'end_date' => $end_date
+            logAudit($_SESSION['user']['user_id'], 'create_scheme', [
+                'scheme_name' => $scheme_name
             ]);
 
             sendJSONResponse(true, 'Scheme created successfully', [
-                'id' => $pdo->lastInsertId()
+                'scheme_id' => $pdo->lastInsertId()
             ]);
             break;
 
@@ -63,7 +51,7 @@ try {
             $params = [];
 
             if (!empty($search)) {
-                $searchFields = ['name', 'description', 'eligibility_criteria'];
+                $searchFields = ['scheme_name', 'description'];
                 $searchResult = buildSearchQuery($searchFields, $search);
                 $where[] = "(" . $searchResult['conditions'] . ")";
                 $params = array_merge($params, $searchResult['params']);
@@ -101,83 +89,68 @@ try {
             break;
 
         case 'update':
-            $id = (int)($_POST['id'] ?? 0);
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $scheme_id = (int)($_POST['id'] ?? 0);
+            $scheme_name = sanitizeInput($_POST['name'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
-            $start_date = sanitizeInput($_POST['start_date'] ?? '');
-            $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
-            $funding_amount = (float)($_POST['funding_amount'] ?? 0);
-            $eligibility_criteria = sanitizeInput($_POST['eligibility_criteria'] ?? '');
 
-            if (empty($id) || empty($name) || empty($start_date) || empty($end_date)) {
+            if (empty($scheme_id) || empty($scheme_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
-            }
-
-            if (strtotime($end_date) < strtotime($start_date)) {
-                sendJSONResponse(false, 'End date cannot be before start date');
             }
 
             $stmt = $pdo->prepare("
                 UPDATE schemes 
-                SET name = ?, description = ?, start_date = ?, end_date = ?,
-                    status = ?, funding_amount = ?, eligibility_criteria = ?,
-                    updated_at = NOW()
-                WHERE id = ?
+                SET scheme_name = ?, description = ?, status = ?, updated_at = NOW()
+                WHERE scheme_id = ?
             ");
             $stmt->execute([
-                $name, $description, $start_date, $end_date, $status,
-                $funding_amount, $eligibility_criteria, $id
+                $scheme_name, $description, $status, $scheme_id
             ]);
 
-            logAudit($_SESSION['user']['id'], 'update_scheme', [
-                'id' => $id,
-                'name' => $name,
-                'start_date' => $start_date,
-                'end_date' => $end_date
+            logAudit($_SESSION['user']['user_id'], 'update_scheme', [
+                'scheme_id' => $scheme_id,
+                'scheme_name' => $scheme_name
             ]);
 
             sendJSONResponse(true, 'Scheme updated successfully');
             break;
 
         case 'delete':
-            $id = (int)($_POST['id'] ?? 0);
+            $scheme_id = (int)($_POST['id'] ?? 0);
 
-            if (empty($id)) {
+            if (empty($scheme_id)) {
                 sendJSONResponse(false, 'ID is required');
             }
 
             // Get scheme info for audit log
-            $stmt = $pdo->prepare("SELECT name, start_date, end_date FROM schemes WHERE id = ?");
-            $stmt->execute([$id]);
+            $stmt = $pdo->prepare("SELECT scheme_name FROM schemes WHERE scheme_id = ?");
+            $stmt->execute([$scheme_id]);
             $scheme = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if (!$scheme) {
                 sendJSONResponse(false, 'Scheme not found');
             }
 
-            $stmt = $pdo->prepare("DELETE FROM schemes WHERE id = ?");
-            $stmt->execute([$id]);
+            $stmt = $pdo->prepare("DELETE FROM schemes WHERE scheme_id = ?");
+            $stmt->execute([$scheme_id]);
 
-            logAudit($_SESSION['user']['id'], 'delete_scheme', [
-                'id' => $id,
-                'name' => $scheme['name'],
-                'start_date' => $scheme['start_date'],
-                'end_date' => $scheme['end_date']
+            logAudit($_SESSION['user']['user_id'], 'delete_scheme', [
+                'scheme_id' => $scheme_id,
+                'scheme_name' => $scheme['scheme_name']
             ]);
 
             sendJSONResponse(true, 'Scheme deleted successfully');
             break;
 
         case 'get':
-            $id = (int)($_POST['id'] ?? 0);
+            $scheme_id = (int)($_POST['id'] ?? 0);
 
-            if (empty($id)) {
+            if (empty($scheme_id)) {
                 sendJSONResponse(false, 'ID is required');
             }
 
-            $stmt = $pdo->prepare("SELECT * FROM schemes WHERE id = ?");
-            $stmt->execute([$id]);
+            $stmt = $pdo->prepare("SELECT * FROM schemes WHERE scheme_id = ?");
+            $stmt->execute([$scheme_id]);
             $scheme = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($scheme) {

@@ -21,6 +21,9 @@ require_once 'includes/header.php';
 
 // Include sidebar
 require_once 'includes/sidebar.php';
+
+$sectors = Sector::getAll();
+$schemes = Scheme::getAll();
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -64,47 +67,8 @@ require_once 'includes/sidebar.php';
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>C001</td>
-                  <td>Web Development</td>
-                  <td>Information Technology</td>
-                  <td>3 months</td>
-                  <td>₹15,000</td>
-                  <td>2</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCourseModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCourseModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCourseModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>C002</td>
-                  <td>Digital Marketing</td>
-                  <td>Digital Marketing</td>
-                  <td>2 months</td>
-                  <td>₹12,000</td>
-                  <td>1</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#viewCourseModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editCourseModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteCourseModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+              <tbody id="coursesTableBody">
+                <!-- Dynamic rows will be loaded here by AJAX -->
               </tbody>
             </table>
           </div>
@@ -130,6 +94,10 @@ require_once 'includes/sidebar.php';
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
+                  <label for="courseCode">Course Code</label>
+                  <input type="text" class="form-control" id="courseCode" placeholder="Enter course code" required>
+                </div>
+                <div class="form-group">
                   <label for="courseName">Course Name</label>
                   <input type="text" class="form-control" id="courseName" placeholder="Enter course name" required>
                 </div>
@@ -137,8 +105,18 @@ require_once 'includes/sidebar.php';
                   <label for="sector">Sector</label>
                   <select class="form-control select2" id="sector" required>
                     <option value="">Select Sector</option>
-                    <option value="SEC001">Information Technology</option>
-                    <option value="SEC002">Digital Marketing</option>
+                    <?php foreach ($sectors as $sector): ?>
+                      <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="scheme">Scheme</label>
+                  <select class="form-control select2" id="scheme" name="scheme_id">
+                    <option value="">Select Scheme</option>
+                    <?php foreach ($schemes as $scheme): ?>
+                      <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                    <?php endforeach; ?>
                   </select>
                 </div>
                 <div class="form-group">
@@ -205,37 +183,37 @@ require_once 'includes/sidebar.php';
             <div class="col-md-6">
               <div class="form-group">
                 <label>Course ID</label>
-                <p>C001</p>
+                <p data-field="course_id"></p>
               </div>
               <div class="form-group">
                 <label>Course Name</label>
-                <p>Web Development</p>
+                <p data-field="course_name"></p>
               </div>
               <div class="form-group">
                 <label>Sector</label>
-                <p>Information Technology</p>
+                <p data-field="sector_name"></p>
               </div>
               <div class="form-group">
                 <label>Duration</label>
-                <p>3 months</p>
+                <p data-field="duration_hours"></p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Fee</label>
-                <p>₹15,000</p>
+                <p data-field="fee"></p>
               </div>
               <div class="form-group">
                 <label>Prerequisites</label>
-                <p>Basic knowledge of HTML and CSS</p>
+                <p data-field="prerequisites"></p>
               </div>
               <div class="form-group">
                 <label>Active Batches</label>
-                <p>2</p>
+                <p data-field="active_batches"></p>
               </div>
               <div class="form-group">
                 <label>Status</label>
-                <p><span class="badge badge-success">Active</span></p>
+                <p data-field="status"></p>
               </div>
             </div>
           </div>
@@ -243,11 +221,11 @@ require_once 'includes/sidebar.php';
             <div class="col-md-12">
               <div class="form-group">
                 <label>Description</label>
-                <p>Comprehensive course covering front-end and back-end web development technologies.</p>
+                <p data-field="description"></p>
               </div>
               <div class="form-group">
                 <label>Learning Outcomes</label>
-                <p>1. Build responsive websites<br>2. Create dynamic web applications<br>3. Implement database connectivity</p>
+                <p data-field="syllabus"></p>
               </div>
             </div>
           </div>
@@ -308,39 +286,52 @@ require_once 'includes/sidebar.php';
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
+                  <label for="editCourseCode">Course Code</label>
+                  <input type="text" class="form-control" id="editCourseCode" required>
+                </div>
+                <div class="form-group">
                   <label for="editCourseName">Course Name</label>
-                  <input type="text" class="form-control" id="editCourseName" value="Web Development" required>
+                  <input type="text" class="form-control" id="editCourseName" required>
                 </div>
                 <div class="form-group">
                   <label for="editSector">Sector</label>
                   <select class="form-control select2" id="editSector" required>
-                    <option value="SEC001" selected>Information Technology</option>
-                    <option value="SEC002">Digital Marketing</option>
+                    <option value="">Select Sector</option>
+                    <?php foreach ($sectors as $sector): ?>
+                      <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="editScheme">Scheme</label>
+                  <select class="form-control select2" id="editScheme" name="scheme_id">
+                    <option value="">Select Scheme</option>
+                    <?php foreach ($schemes as $scheme): ?>
+                      <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                    <?php endforeach; ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="editDuration">Duration (months)</label>
-                  <input type="number" class="form-control" id="editDuration" value="3" required>
+                  <input type="number" class="form-control" id="editDuration" required>
                 </div>
                 <div class="form-group">
                   <label for="editFee">Course Fee (₹)</label>
-                  <input type="number" class="form-control" id="editFee" value="15000" required>
+                  <input type="number" class="form-control" id="editFee" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="editDescription">Description</label>
-                  <textarea class="form-control" id="editDescription" rows="3" required>Comprehensive course covering front-end and back-end web development technologies.</textarea>
+                  <textarea class="form-control" id="editDescription" rows="3" required></textarea>
                 </div>
                 <div class="form-group">
                   <label for="editPrerequisites">Prerequisites</label>
-                  <textarea class="form-control" id="editPrerequisites" rows="3">Basic knowledge of HTML and CSS</textarea>
+                  <textarea class="form-control" id="editPrerequisites" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="editLearningOutcomes">Learning Outcomes</label>
-                  <textarea class="form-control" id="editLearningOutcomes" rows="3" required>1. Build responsive websites
-2. Create dynamic web applications
-3. Implement database connectivity</textarea>
+                  <textarea class="form-control" id="editLearningOutcomes" rows="3" required></textarea>
                 </div>
               </div>
             </div>
@@ -396,26 +387,245 @@ require_once 'includes/sidebar.php';
 <?php include 'includes/js.php'; ?>
 
 <script>
-  $(function () {
-    // Initialize DataTable
-    $('#coursesTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true
-    });
-
-    // Initialize Select2
-    $('.select2').select2({
-      theme: 'bootstrap4'
-    });
-
-    // Initialize custom file input
-    bsCustomFileInput.init();
+$(function () {
+  // Initialize DataTable
+  var coursesTable = $('#coursesTable').DataTable({
+    "paging": true,
+    "lengthChange": true,
+    "searching": true,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "responsive": true
   });
+
+  $('.select2').select2({ theme: 'bootstrap4' });
+  bsCustomFileInput.init();
+
+  // Helper: Show toast
+  function showToast(type, message) {
+    var toast = $('<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">'
+      + '<div class="toast-header bg-' + (type === 'success' ? 'success' : 'danger') + ' text-white">'
+      + '<strong class="mr-auto">' + (type === 'success' ? 'Success' : 'Error') + '</strong>'
+      + '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">'
+      + '<span aria-hidden="true">&times;</span>'
+      + '</button></div>'
+      + '<div class="toast-body">' + message + '</div></div>');
+    if (!$('#toast-container').length) {
+      $('body').append('<div id="toast-container" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;"></div>');
+    }
+    $('#toast-container').append(toast);
+    toast.toast('show');
+    toast.on('hidden.bs.toast', function () { $(this).remove(); });
+  }
+
+  // Load courses
+  function loadCourses() {
+    $.ajax({
+      url: 'inc/ajax/courses_ajax.php',
+      type: 'POST',
+      data: { action: 'read', per_page: 100 },
+      dataType: 'json',
+      success: function (response) {
+        if (response.success && response.data) {
+          var rows = '';
+          $.each(response.data, function (i, course) {
+            rows += '<tr>' +
+              '<td>' + (i + 1) + '</td>' +
+              '<td>' + course.course_name + '</td>' +
+              '<td>' + (course.sector_name || '') + '</td>' +
+              '<td>' + course.duration_hours + ' hours</td>' +
+              '<td>₹' + (course.fee || 0) + '</td>' +
+              '<td>' + (course.active_batches || 0) + '</td>' +
+              '<td><span class="badge badge-' + (course.status === 'active' ? 'success' : 'secondary') + '">' + (course.status ? course.status.charAt(0).toUpperCase() + course.status.slice(1) : '') + '</span></td>' +
+              '<td>' +
+                '<button type="button" class="btn btn-info btn-sm view-course-btn" data-id="' + course.course_id + '"><i class="fas fa-eye"></i></button> ' +
+                '<button type="button" class="btn btn-primary btn-sm edit-course-btn" data-id="' + course.course_id + '"><i class="fas fa-edit"></i></button> ' +
+                '<button type="button" class="btn btn-danger btn-sm delete-course-btn" data-id="' + course.course_id + '"><i class="fas fa-trash"></i></button>' +
+              '</td>' +
+            '</tr>';
+          });
+          $('#coursesTableBody').html(rows);
+        } else {
+          $('#coursesTableBody').html('<tr><td colspan="8">No courses found.</td></tr>');
+        }
+      }
+    });
+  }
+  loadCourses();
+
+  // Add Course
+  $('#addCourseModal form').on('submit', function (e) {
+    e.preventDefault();
+    var courseCode = $('#courseCode').val().trim();
+    var courseName = $('#courseName').val().trim();
+    var sectorId = $('#sector').val();
+    var schemeId = $('#scheme').val();
+    var durationMonths = $('#duration').val();
+    var durationHours = parseInt(durationMonths) * 30 * 1; // 1 month = 30 hours (adjust as needed)
+    if (!courseCode || !courseName || !sectorId || sectorId === '' || sectorId === '0' || !durationMonths || durationHours <= 0) {
+      showToast('error', 'Please fill all required fields: Course Code, Course Name, Sector, and Duration.');
+      return;
+    }
+    var formData = {
+      action: 'create',
+      course_code: courseCode,
+      course_name: courseName,
+      sector_id: sectorId,
+      scheme_id: schemeId,
+      duration_hours: durationHours,
+      fee: $('#fee').val(),
+      description: $('#description').val(),
+      prerequisites: $('#prerequisites').val(),
+      syllabus: $('#learningOutcomes').val(),
+      status: 'active'
+    };
+    console.log(formData);
+    $.ajax({
+      url: 'inc/ajax/courses_ajax.php',
+      type: 'POST',
+      data: formData,
+      dataType: 'json',
+      success: function (response) {
+        if (response.success) {
+          showToast('success', response.message);
+          $('#addCourseModal').modal('hide');
+          loadCourses();
+        } else {
+          showToast('error', response.message);
+        }
+      }
+    });
+  });
+
+  // Edit Course: open modal and fill data
+  $(document).on('click', '.edit-course-btn', function () {
+    var id = $(this).data('id');
+    $.ajax({
+      url: 'inc/ajax/courses_ajax.php',
+      type: 'POST',
+      data: { action: 'get', course_id: id },
+      dataType: 'json',
+      success: function (response) {
+        if (response.success && response.data) {
+          var c = response.data;
+          $('#editCourseCode').val(c.course_code);
+          $('#editCourseName').val(c.course_name);
+          $('#editSector').val(c.sector_id).trigger('change');
+          $('#editScheme').val(c.scheme_id).trigger('change');
+          var months = c.duration_hours ? Math.round(c.duration_hours / 30) : '';
+          $('#editDuration').val(months);
+          $('#editFee').val(c.fee);
+          $('#editDescription').val(c.description);
+          $('#editPrerequisites').val(c.prerequisites);
+          $('#editLearningOutcomes').val(c.syllabus);
+          $('#editCourseModal').data('id', c.course_id).modal('show');
+        } else {
+          showToast('error', 'Could not fetch course details.');
+        }
+      }
+    });
+  });
+
+  // Edit Course: submit
+  $('#editCourseModal form').on('submit', function (e) {
+    e.preventDefault();
+    var id = $('#editCourseModal').data('id');
+    var months = $('#editDuration').val();
+    var hours = parseInt(months) * 30;
+    var formData = {
+      action: 'update',
+      course_id: id,
+      course_code: $('#editCourseCode').val(),
+      course_name: $('#editCourseName').val(),
+      sector_id: $('#editSector').val(),
+      scheme_id: $('#editScheme').val(),
+      duration_hours: hours,
+      fee: $('#editFee').val(),
+      description: $('#editDescription').val(),
+      prerequisites: $('#editPrerequisites').val(),
+      syllabus: $('#editLearningOutcomes').val(),
+      status: 'active'
+    };
+    $.ajax({
+      url: 'inc/ajax/courses_ajax.php',
+      type: 'POST',
+      data: formData,
+      dataType: 'json',
+      success: function (response) {
+        if (response.success) {
+          showToast('success', response.message);
+          $('#editCourseModal').modal('hide');
+          loadCourses();
+        } else {
+          showToast('error', response.message);
+        }
+      }
+    });
+  });
+
+  // Delete Course: open modal
+  $(document).on('click', '.delete-course-btn', function () {
+    var id = $(this).data('id');
+    // Store the course_id in a hidden field in the modal
+    $('#deleteCourseModal').data('id', id);
+    // Optionally update modal content with course info if needed
+    $('#deleteCourseModal').modal('show');
+  });
+
+  // Delete Course: confirm
+  $('#deleteCourseModal .btn-danger').on('click', function () {
+    var id = $('#deleteCourseModal').data('id');
+    if (!id) {
+      showToast('error', 'Course ID is missing.');
+      return;
+    }
+    $.ajax({
+      url: 'inc/ajax/courses_ajax.php',
+      type: 'POST',
+      data: { action: 'delete', course_id: id },
+      dataType: 'json',
+      success: function (response) {
+        if (response.success) {
+          showToast('success', response.message);
+          $('#deleteCourseModal').modal('hide');
+          loadCourses();
+        } else {
+          showToast('error', response.message);
+        }
+      }
+    });
+  });
+
+  // View Course: open modal and fill data
+  $(document).on('click', '.view-course-btn', function () {
+    var id = $(this).data('id');
+    $.ajax({
+      url: 'inc/ajax/courses_ajax.php',
+      type: 'POST',
+      data: { action: 'get', course_id: id },
+      dataType: 'json',
+      success: function (response) {
+        if (response.success && response.data) {
+          var c = response.data;
+          $('#viewCourseModal .modal-title').text('View Course: ' + c.course_name);
+          $('#viewCourseModal [data-field="course_id"]').text(c.course_id);
+          $('#viewCourseModal [data-field="course_name"]').text(c.course_name);
+          $('#viewCourseModal [data-field="sector_name"]').text(c.sector_name);
+          $('#viewCourseModal [data-field="duration_hours"]').text(c.duration_hours + ' hours');
+          $('#viewCourseModal [data-field="fee"]').text('₹' + (c.fee || 0));
+          $('#viewCourseModal [data-field="prerequisites"]').text(c.prerequisites);
+          $('#viewCourseModal [data-field="status"]').html('<span class="badge badge-' + (c.status === 'active' ? 'success' : 'secondary') + '">' + (c.status ? c.status.charAt(0).toUpperCase() + c.status.slice(1) : '') + '</span>');
+          $('#viewCourseModal [data-field="description"]').text(c.description);
+          $('#viewCourseModal [data-field="syllabus"]').html(c.syllabus ? c.syllabus.replace(/\n/g, '<br>') : '');
+          $('#viewCourseModal').modal('show');
+        } else {
+          showToast('error', 'Could not fetch course details.');
+        }
+      }
+    });
+  });
+});
 </script>
 </body>
 </html> 

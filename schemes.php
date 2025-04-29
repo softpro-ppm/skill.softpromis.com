@@ -69,7 +69,7 @@ try {
             <table id="schemesTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Scheme ID</th>
+                  <th>#</th>
                   <th>Scheme Name</th>
                   <th>Description</th>
                   <th>Status</th>
@@ -79,9 +79,9 @@ try {
                 </tr>
               </thead>
               <tbody>
-                <?php foreach ($schemes as $scheme): ?>
+                <?php $serial = 1; foreach ($schemes as $scheme): ?>
                   <tr>
-                    <td><?= htmlspecialchars($scheme['scheme_id']) ?></td>
+                    <td><?= $serial++ ?></td>
                     <td><?= htmlspecialchars($scheme['scheme_name']) ?></td>
                     <td><?= htmlspecialchars($scheme['description']) ?></td>
                     <td>
@@ -128,69 +128,22 @@ try {
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form>
+        <form id="addSchemeForm">
           <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="schemeName">Scheme Name</label>
-                  <input type="text" class="form-control" id="schemeName" placeholder="Enter scheme name" required>
-                </div>
-                <div class="form-group">
-                  <label for="schemeType">Scheme Type</label>
-                  <select class="form-control select2" id="schemeType" required>
-                    <option value="">Select Type</option>
-                    <option value="Government">Government</option>
-                    <option value="Private">Private</option>
-                    <option value="Corporate">Corporate</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="startDate">Start Date</label>
-                  <input type="date" class="form-control" id="startDate" required>
-                </div>
-                <div class="form-group">
-                  <label for="endDate">End Date</label>
-                  <input type="date" class="form-control" id="endDate" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="targetBeneficiaries">Target Beneficiaries</label>
-                  <input type="number" class="form-control" id="targetBeneficiaries" placeholder="Enter target number" required>
-                </div>
-                <div class="form-group">
-                  <label for="eligibility">Eligibility Criteria</label>
-                  <textarea class="form-control" id="eligibility" rows="3" placeholder="Enter eligibility criteria" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="benefits">Benefits</label>
-                  <textarea class="form-control" id="benefits" rows="3" placeholder="Enter scheme benefits" required></textarea>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="schemeName">Scheme Name</label>
+              <input type="text" class="form-control" id="schemeName" name="scheme_name" placeholder="Enter scheme name" required>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="description">Description</label>
-                  <textarea class="form-control" id="description" rows="3" placeholder="Enter scheme description"></textarea>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter scheme description"></textarea>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Documents</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="schemeDoc">
-                    <label class="custom-file-label" for="schemeDoc">Scheme Document</label>
-                  </div>
-                  <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="guidelinesDoc">
-                    <label class="custom-file-label" for="guidelinesDoc">Guidelines Document</label>
-                  </div>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="status">Status</label>
+              <select class="form-control" id="status" name="status">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
@@ -217,75 +170,29 @@ try {
             <div class="col-md-6">
               <div class="form-group">
                 <label>Scheme ID</label>
-                <p>S001</p>
+                <p data-field="scheme_id"></p>
               </div>
               <div class="form-group">
                 <label>Scheme Name</label>
-                <p>PMKVY 4.0</p>
+                <p data-field="scheme_name"></p>
               </div>
               <div class="form-group">
-                <label>Scheme Type</label>
-                <p>Government</p>
-              </div>
-              <div class="form-group">
-                <label>Start Date</label>
-                <p>01/01/2024</p>
-              </div>
-              <div class="form-group">
-                <label>End Date</label>
-                <p>31/12/2024</p>
+                <label>Description</label>
+                <p data-field="description"></p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Target Beneficiaries</label>
-                <p>1000</p>
-              </div>
-              <div class="form-group">
-                <label>Eligibility Criteria</label>
-                <p>Age: 18-35 years, Education: 10th pass</p>
-              </div>
-              <div class="form-group">
-                <label>Benefits</label>
-                <p>Free training, Certification, Placement assistance</p>
-              </div>
-              <div class="form-group">
                 <label>Status</label>
-                <p><span class="badge badge-success">Active</span></p>
+                <p data-field="status"></p>
               </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <h5>Associated Courses</h5>
-              <div class="table-responsive">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Course ID</th>
-                      <th>Name</th>
-                      <th>Duration</th>
-                      <th>Fee</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>C001</td>
-                      <td>Web Development</td>
-                      <td>3 months</td>
-                      <td>₹15,000</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td>C002</td>
-                      <td>Digital Marketing</td>
-                      <td>2 months</td>
-                      <td>₹12,000</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="form-group">
+                <label>Created At</label>
+                <p data-field="created_at"></p>
+              </div>
+              <div class="form-group">
+                <label>Updated At</label>
+                <p data-field="updated_at"></p>
               </div>
             </div>
           </div>
@@ -307,68 +214,23 @@ try {
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form>
+        <form id="editSchemeForm">
+          <input type="hidden" id="editSchemeId" name="scheme_id">
           <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editSchemeName">Scheme Name</label>
-                  <input type="text" class="form-control" id="editSchemeName" value="PMKVY 4.0" required>
-                </div>
-                <div class="form-group">
-                  <label for="editSchemeType">Scheme Type</label>
-                  <select class="form-control select2" id="editSchemeType" required>
-                    <option value="Government" selected>Government</option>
-                    <option value="Private">Private</option>
-                    <option value="Corporate">Corporate</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="editStartDate">Start Date</label>
-                  <input type="date" class="form-control" id="editStartDate" value="2024-01-01" required>
-                </div>
-                <div class="form-group">
-                  <label for="editEndDate">End Date</label>
-                  <input type="date" class="form-control" id="editEndDate" value="2024-12-31" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editTargetBeneficiaries">Target Beneficiaries</label>
-                  <input type="number" class="form-control" id="editTargetBeneficiaries" value="1000" required>
-                </div>
-                <div class="form-group">
-                  <label for="editEligibility">Eligibility Criteria</label>
-                  <textarea class="form-control" id="editEligibility" rows="3" required>Age: 18-35 years, Education: 10th pass</textarea>
-                </div>
-                <div class="form-group">
-                  <label for="editBenefits">Benefits</label>
-                  <textarea class="form-control" id="editBenefits" rows="3" required>Free training, Certification, Placement assistance</textarea>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="editSchemeName">Scheme Name</label>
+              <input type="text" class="form-control" id="editSchemeName" name="scheme_name" required>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label for="editDescription">Description</label>
-                  <textarea class="form-control" id="editDescription" rows="3">Pradhan Mantri Kaushal Vikas Yojana 4.0</textarea>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="editDescription">Description</label>
+              <textarea class="form-control" id="editDescription" name="description" rows="3"></textarea>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Documents</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="editSchemeDoc">
-                    <label class="custom-file-label" for="editSchemeDoc">Scheme Document</label>
-                  </div>
-                  <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="editGuidelinesDoc">
-                    <label class="custom-file-label" for="editGuidelinesDoc">Guidelines Document</label>
-                  </div>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="editStatus">Status</label>
+              <select class="form-control" id="editStatus" name="status">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
@@ -391,13 +253,12 @@ try {
           </button>
         </div>
         <div class="modal-body">
+          <input type="hidden" id="deleteSchemeId">
           <p>Are you sure you want to delete this scheme? This action cannot be undone.</p>
-          <p><strong>Scheme:</strong> PMKVY 4.0</p>
-          <p><strong>Associated Courses:</strong> 2</p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Scheme</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteScheme">Delete Scheme</button>
         </div>
       </div>
     </div>
@@ -409,6 +270,7 @@ try {
   $(function () {
     // Initialize DataTable
     $('#schemesTable').DataTable({
+      order: [[4, 'desc']], // Order by Created At (5th column, 0-indexed)
       dom: 'Bfrtip',
       buttons: [
         { extend: 'copy', className: 'btn btn-secondary btn-sm', text: 'Copy' },
@@ -428,13 +290,13 @@ try {
     bsCustomFileInput.init();
 
     // --- AJAX Add Scheme ---
-    $('#addSchemeModal form').on('submit', function(e) {
+    $('#addSchemeForm').on('submit', function(e) {
       e.preventDefault();
       var data = {
         action: 'create',
         scheme_name: $('#schemeName').val(),
         description: $('#description').val(),
-        status: 'active' // or get from a field if you add it
+        status: $('#status').val()
       };
       $.post('inc/ajax/schemes_ajax.php', data, function(response) {
         if (response.success) {
@@ -471,10 +333,10 @@ try {
       $.post('inc/ajax/schemes_ajax.php', { action: 'get', id: scheme_id }, function(response) {
         if (response.success && response.data) {
           var s = response.data;
-          $('#editSchemeModal [name="scheme_id"]').val(s.scheme_id);
-          $('#editSchemeModal #editSchemeName').val(s.scheme_name);
-          $('#editSchemeModal #editDescription').val(s.description);
-          $('#editSchemeModal #editStatus').val(s.status);
+          $('#editSchemeId').val(s.scheme_id);
+          $('#editSchemeName').val(s.scheme_name);
+          $('#editDescription').val(s.description);
+          $('#editStatus').val(s.status);
           $('#editSchemeModal').modal('show');
         } else {
           alert('Could not fetch scheme details.');
@@ -483,14 +345,14 @@ try {
     });
 
     // --- AJAX Edit Scheme: submit ---
-    $('#editSchemeModal form').on('submit', function(e) {
+    $('#editSchemeForm').on('submit', function(e) {
       e.preventDefault();
       var data = {
         action: 'update',
-        scheme_id: $('#editSchemeModal [name="scheme_id"]').val(),
-        scheme_name: $('#editSchemeModal #editSchemeName').val(),
-        description: $('#editSchemeModal #editDescription').val(),
-        status: $('#editSchemeModal #editStatus').val()
+        id: $('#editSchemeId').val(),
+        name: $('#editSchemeName').val(),
+        description: $('#editDescription').val(),
+        status: $('#editStatus').val()
       };
       $.post('inc/ajax/schemes_ajax.php', data, function(response) {
         if (response.success) {
@@ -505,11 +367,16 @@ try {
     var deleteSchemeId = null;
     $(document).on('click', '.delete-scheme-btn', function() {
       deleteSchemeId = $(this).data('scheme-id');
+      $('#deleteSchemeId').val(deleteSchemeId);
       $('#deleteSchemeModal').modal('show');
     });
-    $('#deleteSchemeModal .btn-danger').on('click', function() {
-      if (!deleteSchemeId) return;
-      $.post('inc/ajax/schemes_ajax.php', { action: 'delete', id: deleteSchemeId }, function(response) {
+    $('#confirmDeleteScheme').on('click', function() {
+      var scheme_id = $('#deleteSchemeId').val();
+      console.log('Deleting scheme_id:', scheme_id); // Debug: print the ID being sent
+      var $btn = $(this);
+      $btn.prop('disabled', true); // Prevent double click
+      $.post('inc/ajax/schemes_ajax.php', { action: 'delete', id: scheme_id }, function(response) {
+        $btn.prop('disabled', false); // Re-enable after response
         if (response.success) {
           location.reload();
         } else {
