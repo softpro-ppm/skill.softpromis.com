@@ -54,7 +54,7 @@ require_once 'includes/sidebar.php';
             <table id="batchesTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Batch ID</th>
+                  <th>Batch Code</th>
                   <th>Course</th>
                   <th>Training Center</th>
                   <th>Start Date</th>
@@ -66,7 +66,7 @@ require_once 'includes/sidebar.php';
                 </tr>
               </thead>
               <tbody>
-                <!-- Dynamic rows will be loaded here by AJAX -->
+                <!-- Dynamic rows will be loaded here by DataTables -->
               </tbody>
             </table>
           </div>
@@ -76,8 +76,6 @@ require_once 'includes/sidebar.php';
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-</div>
-<!-- ./wrapper -->
 
   <!-- Add Batch Modal -->
   <div class="modal fade" id="addBatchModal">
@@ -89,48 +87,63 @@ require_once 'includes/sidebar.php';
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form>
+        <form id="addBatchForm">
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="batchCode">Batch Code</label>
-                  <input type="text" class="form-control" id="batchCode" placeholder="Enter batch code" required>
+                  <input type="text" class="form-control" id="batchCode" name="batch_code" placeholder="Enter batch code" required>
                 </div>
                 <div class="form-group">
                   <label for="course">Course</label>
-                  <select class="form-control select2" id="course" required>
+                  <select class="form-control select2" id="course" name="course_id" required>
                     <option value="">Select Course</option>
-                    <option value="C001">Web Development</option>
-                    <option value="C002">Digital Marketing</option>
+                    <?php
+                    // Fetch courses from database
+                    $courses = Course::getAll();
+                    foreach ($courses as $course) {
+                        echo "<option value='{$course['course_id']}'>{$course['course_name']}</option>";
+                    }
+                    ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="trainingCenter">Training Center</label>
-                  <select class="form-control select2" id="trainingCenter" required>
+                  <select class="form-control select2" id="trainingCenter" name="center_id" required>
                     <option value="">Select Center</option>
-                    <option value="TC001">ABC Training Center - Mumbai</option>
-                    <option value="TC002">ABC Training Center - Pune</option>
+                    <?php
+                    // Fetch training centers from database
+                    $centers = TrainingCenter::getAll();
+                    foreach ($centers as $center) {
+                        echo "<option value='{$center['center_id']}'>{$center['center_name']}</option>";
+                    }
+                    ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="trainer">Trainer</label>
-                  <select class="form-control select2" id="trainer" required>
+                  <select class="form-control select2" id="trainer" name="trainer_id" required>
                     <option value="">Select Trainer</option>
-                    <option value="T001">John Doe</option>
-                    <option value="T002">Jane Smith</option>
+                    <?php
+                    // Fetch trainers from database
+                    $trainers = Trainer::getAll();
+                    foreach ($trainers as $trainer) {
+                        echo "<option value='{$trainer['id']}'>{$trainer['name']}</option>";
+                    }
+                    ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="capacity">Batch Capacity</label>
-                  <input type="number" class="form-control" id="capacity" placeholder="Enter batch capacity" required>
+                  <input type="number" class="form-control" id="capacity" name="capacity" placeholder="Enter batch capacity" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="startDate">Start Date</label>
                   <div class="input-group date" id="startDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#startDate" required>
+                    <input type="text" class="form-control datetimepicker-input" name="start_date" data-target="#startDate" required>
                     <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -139,7 +152,7 @@ require_once 'includes/sidebar.php';
                 <div class="form-group">
                   <label for="endDate">End Date</label>
                   <div class="input-group date" id="endDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#endDate" required>
+                    <input type="text" class="form-control datetimepicker-input" name="end_date" data-target="#endDate" required>
                     <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -147,11 +160,11 @@ require_once 'includes/sidebar.php';
                 </div>
                 <div class="form-group">
                   <label for="schedule">Schedule</label>
-                  <textarea class="form-control" id="schedule" rows="3" placeholder="Enter batch schedule" required></textarea>
+                  <textarea class="form-control" id="schedule" name="schedule" rows="3" placeholder="Enter batch schedule" required></textarea>
                 </div>
                 <div class="form-group">
                   <label for="remarks">Remarks</label>
-                  <textarea class="form-control" id="remarks" rows="3" placeholder="Enter any remarks"></textarea>
+                  <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter any remarks"></textarea>
                 </div>
               </div>
             </div>
@@ -179,38 +192,38 @@ require_once 'includes/sidebar.php';
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Batch ID</label>
-                <p>B001</p>
+                <label>Batch Code</label>
+                <p id="viewBatchCode"></p>
               </div>
-            <div class="form-group">
+              <div class="form-group">
                 <label>Course</label>
-                <p>Web Development</p>
-            </div>
-            <div class="form-group">
+                <p id="viewCourse"></p>
+              </div>
+              <div class="form-group">
                 <label>Training Center</label>
-                <p>ABC Training Center - Mumbai</p>
-            </div>
-            <div class="form-group">
+                <p id="viewCenter"></p>
+              </div>
+              <div class="form-group">
                 <label>Trainer</label>
-                <p>John Doe</p>
+                <p id="viewTrainer"></p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Start Date</label>
-                <p>01/01/2024</p>
+                <p id="viewStartDate"></p>
               </div>
               <div class="form-group">
                 <label>End Date</label>
-                <p>31/03/2024</p>
+                <p id="viewEndDate"></p>
               </div>
               <div class="form-group">
                 <label>Schedule</label>
-                <p>Monday to Friday, 10:00 AM - 1:00 PM</p>
-            </div>
-            <div class="form-group">
+                <p id="viewSchedule"></p>
+              </div>
+              <div class="form-group">
                 <label>Status</label>
-                <p><span class="badge badge-success">Active</span></p>
+                <p id="viewStatus"></p>
               </div>
             </div>
           </div>
@@ -218,7 +231,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-12">
               <h5>Enrolled Students</h5>
               <div class="table-responsive">
-                <table class="table table-bordered">
+                <table id="enrolledStudentsTable" class="table table-bordered">
                   <thead>
                     <tr>
                       <th>Student ID</th>
@@ -230,22 +243,7 @@ require_once 'includes/sidebar.php';
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>S001</td>
-                      <td>Rajesh Kumar</td>
-                      <td>rajesh@example.com</td>
-                      <td>+91 9876543210</td>
-                      <td><span class="badge badge-success">Paid</span></td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td>S002</td>
-                      <td>Priya Sharma</td>
-                      <td>priya@example.com</td>
-                      <td>+91 9876543211</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
+                    <!-- Dynamic rows will be loaded here by AJAX -->
                   </tbody>
                 </table>
               </div>
@@ -269,45 +267,58 @@ require_once 'includes/sidebar.php';
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form>
+        <form id="editBatchForm">
+          <input type="hidden" id="editBatchId" name="batch_id">
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="editBatchCode">Batch Code</label>
-                  <input type="text" class="form-control" id="editBatchCode" required>
+                  <input type="text" class="form-control" id="editBatchCode" name="batch_code" placeholder="Enter batch code" required>
                 </div>
                 <div class="form-group">
                   <label for="editCourse">Course</label>
-                  <select class="form-control select2" id="editCourse" required>
-                    <option value="C001" selected>Web Development</option>
-                    <option value="C002">Digital Marketing</option>
+                  <select class="form-control select2" id="editCourse" name="course_id" required>
+                    <option value="">Select Course</option>
+                    <?php
+                    foreach ($courses as $course) {
+                        echo "<option value='{$course['course_id']}'>{$course['course_name']}</option>";
+                    }
+                    ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="editTrainingCenter">Training Center</label>
-                  <select class="form-control select2" id="editTrainingCenter" required>
-                    <option value="TC001" selected>ABC Training Center - Mumbai</option>
-                    <option value="TC002">ABC Training Center - Pune</option>
+                  <select class="form-control select2" id="editTrainingCenter" name="center_id" required>
+                    <option value="">Select Center</option>
+                    <?php
+                    foreach ($centers as $center) {
+                        echo "<option value='{$center['center_id']}'>{$center['center_name']}</option>";
+                    }
+                    ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="editTrainer">Trainer</label>
-                  <select class="form-control select2" id="editTrainer" required>
-                    <option value="T001" selected>John Doe</option>
-                    <option value="T002">Jane Smith</option>
+                  <select class="form-control select2" id="editTrainer" name="trainer_id" required>
+                    <option value="">Select Trainer</option>
+                    <?php
+                    foreach ($trainers as $trainer) {
+                        echo "<option value='{$trainer['id']}'>{$trainer['name']}</option>";
+                    }
+                    ?>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="editCapacity">Batch Capacity</label>
-                  <input type="number" class="form-control" id="editCapacity" value="30" required>
+                  <input type="number" class="form-control" id="editCapacity" name="capacity" placeholder="Enter batch capacity" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="editStartDate">Start Date</label>
                   <div class="input-group date" id="editStartDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#editStartDate" value="01/01/2024" required>
+                    <input type="text" class="form-control datetimepicker-input" name="start_date" data-target="#editStartDate" required>
                     <div class="input-group-append" data-target="#editStartDate" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -316,7 +327,7 @@ require_once 'includes/sidebar.php';
                 <div class="form-group">
                   <label for="editEndDate">End Date</label>
                   <div class="input-group date" id="editEndDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#editEndDate" value="31/03/2024" required>
+                    <input type="text" class="form-control datetimepicker-input" name="end_date" data-target="#editEndDate" required>
                     <div class="input-group-append" data-target="#editEndDate" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -324,11 +335,20 @@ require_once 'includes/sidebar.php';
                 </div>
                 <div class="form-group">
                   <label for="editSchedule">Schedule</label>
-                  <textarea class="form-control" id="editSchedule" rows="3" required>Monday to Friday, 10:00 AM - 1:00 PM</textarea>
+                  <textarea class="form-control" id="editSchedule" name="schedule" rows="3" placeholder="Enter batch schedule" required></textarea>
                 </div>
                 <div class="form-group">
                   <label for="editRemarks">Remarks</label>
-                  <textarea class="form-control" id="editRemarks" rows="3">Regular batch with focus on practical training</textarea>
+                  <textarea class="form-control" id="editRemarks" name="remarks" rows="3" placeholder="Enter any remarks"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="editStatus">Status</label>
+                  <select class="form-control" id="editStatus" name="status" required>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -342,252 +362,10 @@ require_once 'includes/sidebar.php';
     </div>
   </div>
 
-  <!-- Delete Batch Modal -->
-  <div class="modal fade" id="deleteBatchModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Delete Batch</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete this batch? This action cannot be undone.</p>
-          <p><strong>Batch:</strong> B001 - Web Development</p>
-          <p><strong>Enrolled Students:</strong> 25</p>
-          <p><strong>Training Center:</strong> ABC Training Center - Mumbai</p>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Batch</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<?php
+// Include footer
+require_once 'includes/footer.php';
+?>
 
-<?php include 'includes/js.php'; ?>
-
-<script>
-$(function () {
-  // Initialize DataTable
-  var batchesTable = $('#batchesTable').DataTable({
-    "paging": true,
-    "lengthChange": true,
-    "searching": true,
-    "ordering": true,
-    "info": true,
-    "autoWidth": false,
-    "responsive": true
-  });
-
-  $('.select2').select2({ theme: 'bootstrap4' });
-  bsCustomFileInput && bsCustomFileInput.init();
-
-  // Helper: Show toast
-  function showToast(type, message) {
-    var toast = $('<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">'
-      + '<div class="toast-header bg-' + (type === 'success' ? 'success' : 'danger') + ' text-white">'
-      + '<strong class="mr-auto">' + (type === 'success' ? 'Success' : 'Error') + '</strong>'
-      + '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">'
-      + '<span aria-hidden="true">&times;</span>'
-      + '</button></div>'
-      + '<div class="toast-body">' + message + '</div></div>');
-    if (!$('#toast-container').length) {
-      $('body').append('<div id="toast-container" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;"></div>');
-    }
-    $('#toast-container').append(toast);
-    toast.toast('show');
-    toast.on('hidden.bs.toast', function () { $(this).remove(); });
-  }
-
-  // Load batches
-  function loadBatches() {
-    $.ajax({
-      url: 'inc/ajax/batches_ajax.php',
-      type: 'POST',
-      data: { action: 'read' },
-      dataType: 'json',
-      success: function (response) {
-        if (response.success && response.data) {
-          var rows = '';
-          $.each(response.data, function (i, batch) {
-            rows += '<tr>' +
-              '<td>' + batch.batch_code + '</td>' +
-              '<td>' + (batch.course_name || '') + '</td>' +
-              '<td>' + (batch.center_name || '') + '</td>' +
-              '<td>' + (batch.start_date || '') + '</td>' +
-              '<td>' + (batch.end_date || '') + '</td>' +
-              '<td>' + (batch.capacity || 0) + '</td>' +
-              '<td>' + (batch.trainer_id || '') + '</td>' +
-              '<td><span class="badge badge-' + (batch.status === 'active' ? 'success' : 'secondary') + '">' + (batch.status ? batch.status.charAt(0).toUpperCase() + batch.status.slice(1) : '') + '</span></td>' +
-              '<td>' +
-                '<button type="button" class="btn btn-info btn-sm view-batch-btn" data-id="' + batch.batch_id + '"><i class="fas fa-eye"></i></button> ' +
-                '<button type="button" class="btn btn-primary btn-sm edit-batch-btn" data-id="' + batch.batch_id + '"><i class="fas fa-edit"></i></button> ' +
-                '<button type="button" class="btn btn-danger btn-sm delete-batch-btn" data-id="' + batch.batch_id + '"><i class="fas fa-trash"></i></button>' +
-              '</td>' +
-            '</tr>';
-          });
-          $('#batchesTable tbody').html(rows);
-        } else {
-          $('#batchesTable tbody').html('<tr><td colspan="9">No batches found.</td></tr>');
-        }
-      }
-    });
-  }
-  loadBatches();
-
-  // Add Batch
-  $('#addBatchModal form').on('submit', function (e) {
-    e.preventDefault();
-    var formData = {
-      action: 'create',
-      batch_code: $('#batchCode').val(),
-      course_id: $('#course').val(),
-      center_id: $('#trainingCenter').val(),
-      trainer_id: $('#trainer').val(),
-      start_date: $('#startDate input').val(),
-      end_date: $('#endDate input').val(),
-      capacity: $('#capacity').val(),
-      schedule: $('#schedule').val(),
-      remarks: $('#remarks').val(),
-      status: 'upcoming'
-    };
-    $.ajax({
-      url: 'inc/ajax/batches_ajax.php',
-      type: 'POST',
-      data: formData,
-      dataType: 'json',
-      success: function (response) {
-        if (response.success) {
-          showToast('success', response.message);
-          $('#addBatchModal').modal('hide');
-          loadBatches();
-        } else {
-          showToast('error', response.message);
-        }
-      }
-    });
-  });
-
-  // Edit Batch: open modal and fill data
-  $(document).on('click', '.edit-batch-btn', function () {
-    var id = $(this).data('id');
-    $.ajax({
-      url: 'inc/ajax/batches_ajax.php',
-      type: 'POST',
-      data: { action: 'get', batch_id: id },
-      dataType: 'json',
-      success: function (response) {
-        if (response.success && response.data) {
-          var b = response.data;
-          $('#editBatchModal').data('id', b.batch_id);
-          $('#editBatchCode').val(b.batch_code);
-          $('#editCourse').val(b.course_id).trigger('change');
-          $('#editTrainingCenter').val(b.center_id).trigger('change');
-          $('#editTrainer').val(b.trainer_id).trigger('change');
-          $('#editStartDate input').val(b.start_date);
-          $('#editEndDate input').val(b.end_date);
-          $('#editCapacity').val(b.capacity);
-          $('#editSchedule').val(b.schedule);
-          $('#editRemarks').val(b.remarks);
-          $('#editBatchModal').modal('show');
-        } else {
-          showToast('error', 'Could not fetch batch details.');
-        }
-      }
-    });
-  });
-
-  // Edit Batch: submit
-  $('#editBatchModal form').on('submit', function (e) {
-    e.preventDefault();
-    var id = $('#editBatchModal').data('id');
-    var formData = {
-      action: 'update',
-      batch_id: id,
-      batch_code: $('#editBatchCode').val(),
-      course_id: $('#editCourse').val(),
-      center_id: $('#editTrainingCenter').val(),
-      trainer_id: $('#editTrainer').val(),
-      start_date: $('#editStartDate input').val(),
-      end_date: $('#editEndDate input').val(),
-      capacity: $('#editCapacity').val(),
-      schedule: $('#editSchedule').val(),
-      remarks: $('#editRemarks').val(),
-      status: 'upcoming'
-    };
-    $.ajax({
-      url: 'inc/ajax/batches_ajax.php',
-      type: 'POST',
-      data: formData,
-      dataType: 'json',
-      success: function (response) {
-        if (response.success) {
-          showToast('success', response.message);
-          $('#editBatchModal').modal('hide');
-          loadBatches();
-        } else {
-          showToast('error', response.message);
-        }
-      }
-    });
-  });
-
-  // Delete Batch: open modal
-  $(document).on('click', '.delete-batch-btn', function () {
-    var id = $(this).data('id');
-    $('#deleteBatchModal').data('id', id).modal('show');
-  });
-
-  // Delete Batch: confirm
-  $('#deleteBatchModal .btn-danger').on('click', function () {
-    var id = $('#deleteBatchModal').data('id');
-    if (!id) {
-      showToast('error', 'Batch ID is missing.');
-      return;
-    }
-    $.ajax({
-      url: 'inc/ajax/batches_ajax.php',
-      type: 'POST',
-      data: { action: 'delete', batch_id: id },
-      dataType: 'json',
-      success: function (response) {
-        if (response.success) {
-          showToast('success', response.message);
-          $('#deleteBatchModal').modal('hide');
-          loadBatches();
-        } else {
-          showToast('error', response.message);
-        }
-      }
-    });
-  });
-
-  // View Batch: open modal and fill data
-  $(document).on('click', '.view-batch-btn', function () {
-    var id = $(this).data('id');
-    $.ajax({
-      url: 'inc/ajax/batches_ajax.php',
-      type: 'POST',
-      data: { action: 'get', batch_id: id },
-      dataType: 'json',
-      success: function (response) {
-        if (response.success && response.data) {
-          var b = response.data;
-          $('#viewBatchModal .modal-title').text('View Batch: ' + b.batch_code);
-          // Fill in the modal fields as needed
-          // Example:
-          // $('#viewBatchModal [data-field="batch_code"]').text(b.batch_code);
-          // ...
-          $('#viewBatchModal').modal('show');
-        } else {
-          showToast('error', 'Could not fetch batch details.');
-        }
-      }
-    });
-  });
-});
-</script>
-</body>
-</html> 
+<!-- Required JavaScript -->
+<script src="assets/js/batches.js"></script>

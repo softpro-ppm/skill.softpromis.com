@@ -1992,3 +1992,87 @@ Stack trace:
 [28-Apr-2025 17:35:25 Asia/Kolkata] 2025-04-28 17:35:25 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
 [28-Apr-2025 17:36:23 Asia/Kolkata] 2025-04-28 17:36:23 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
 [28-Apr-2025 17:36:58 Asia/Kolkata] 2025-04-28 17:36:58 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[29-Apr-2025 06:23:22 Asia/Kolkata] User data: Array
+(
+    [user_id] => 7
+    [username] => admin
+    [full_name] => Administrator
+    [email] => admin@softpro.com
+    [password] => $2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C
+    [status] => active
+    [role_id] => 1
+)
+
+[29-Apr-2025 06:23:37 Asia/Kolkata] 2025-04-29 06:23:37 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[29-Apr-2025 06:23:43 Asia/Kolkata] 2025-04-29 06:23:43 - Audit log error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill.audit_logs' doesn't exist
+[29-Apr-2025 06:23:46 Asia/Kolkata] 2025-04-29 06:23:46 - Batches error: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_batches does not exist
+[29-Apr-2025 06:27:07 Asia/Kolkata] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_courses does not exist in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php:188
+Stack trace:
+#0 C:\xampp\htdocs\skill.softpromis.com\crud_functions.php(188): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\skill.softpromis.com\batches.php(104): Course::getAll()
+#2 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 188
+[29-Apr-2025 06:27:08 Asia/Kolkata] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_courses does not exist in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php:188
+Stack trace:
+#0 C:\xampp\htdocs\skill.softpromis.com\crud_functions.php(188): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\skill.softpromis.com\batches.php(104): Course::getAll()
+#2 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 188
+[29-Apr-2025 06:27:11 Asia/Kolkata] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_courses does not exist in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php:188
+Stack trace:
+#0 C:\xampp\htdocs\skill.softpromis.com\crud_functions.php(188): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\skill.softpromis.com\batches.php(104): Course::getAll()
+#2 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 188
+[29-Apr-2025 06:27:11 Asia/Kolkata] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_courses does not exist in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php:188
+Stack trace:
+#0 C:\xampp\htdocs\skill.softpromis.com\crud_functions.php(188): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\skill.softpromis.com\batches.php(104): Course::getAll()
+#2 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 188
+[29-Apr-2025 06:30:03 Asia/Kolkata] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_courses does not exist in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php:188
+Stack trace:
+#0 C:\xampp\htdocs\skill.softpromis.com\crud_functions.php(188): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\skill.softpromis.com\batches.php(104): Course::getAll()
+#2 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 188
+[29-Apr-2025 06:30:03 Asia/Kolkata] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_courses does not exist in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php:188
+Stack trace:
+#0 C:\xampp\htdocs\skill.softpromis.com\crud_functions.php(188): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\skill.softpromis.com\batches.php(104): Course::getAll()
+#2 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 188
+[29-Apr-2025 06:30:09 Asia/Kolkata] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_courses does not exist in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php:188
+Stack trace:
+#0 C:\xampp\htdocs\skill.softpromis.com\crud_functions.php(188): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\skill.softpromis.com\batches.php(104): Course::getAll()
+#2 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 188
+[29-Apr-2025 06:30:11 Asia/Kolkata] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_courses does not exist in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php:188
+Stack trace:
+#0 C:\xampp\htdocs\skill.softpromis.com\crud_functions.php(188): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\skill.softpromis.com\batches.php(104): Course::getAll()
+#2 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 188
+[29-Apr-2025 06:30:11 Asia/Kolkata] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_courses does not exist in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php:188
+Stack trace:
+#0 C:\xampp\htdocs\skill.softpromis.com\crud_functions.php(188): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\skill.softpromis.com\batches.php(104): Course::getAll()
+#2 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 188
+[29-Apr-2025 06:30:11 Asia/Kolkata] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1305 PROCEDURE skill.sp_get_courses does not exist in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php:188
+Stack trace:
+#0 C:\xampp\htdocs\skill.softpromis.com\crud_functions.php(188): PDOStatement->execute(Array)
+#1 C:\xampp\htdocs\skill.softpromis.com\batches.php(104): Course::getAll()
+#2 {main}
+  thrown in C:\xampp\htdocs\skill.softpromis.com\crud_functions.php on line 188
+[29-Apr-2025 07:14:27 Asia/Kolkata] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[29-Apr-2025 07:14:27 Asia/Kolkata] Login error: Database connection failed. Please check your database settings.
+[29-Apr-2025 07:14:38 Asia/Kolkata] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[29-Apr-2025 07:14:38 Asia/Kolkata] Login error: Database connection failed. Please check your database settings.
+[29-Apr-2025 07:14:47 Asia/Kolkata] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[29-Apr-2025 07:14:47 Asia/Kolkata] Login error: Database connection failed. Please check your database settings.
+[29-Apr-2025 07:15:43 Asia/Kolkata] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[29-Apr-2025 07:15:43 Asia/Kolkata] Login error: Database connection failed. Please check your database settings.
+[29-Apr-2025 07:15:52 Asia/Kolkata] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[29-Apr-2025 07:15:52 Asia/Kolkata] Login error: Database connection failed. Please check your database settings.
