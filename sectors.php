@@ -261,13 +261,12 @@ $(function () {
                 if(response.status === 'success') {
                     $('#addSectorModal').modal('hide');
                     toastr.success(response.message || 'Sector added successfully');
-                    // Use DataTable API to reload after modal is fully hidden
-                    $('#addSectorModal').on('hidden.bs.modal', function() {
+                    // Always reload table after modal is hidden
+                    $('#addSectorModal').one('hidden.bs.modal', function() {
+                        table.clear().draw();
                         table.ajax.reload(null, false);
                         $form[0].reset();
                         $form.find('.is-invalid').removeClass('is-invalid');
-                        // Unbind to prevent multiple triggers
-                        $(this).off('hidden.bs.modal');
                     });
                 } else {
                     toastr.error(response.message || 'Error adding sector');
