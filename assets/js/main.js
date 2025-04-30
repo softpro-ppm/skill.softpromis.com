@@ -210,4 +210,42 @@ $(document).ready(function() {
         passwordInput.attr('type', type);
         $(this).toggleClass('fa-eye fa-eye-slash');
     });
+
+    // Find the course update AJAX call and add error logging
+    $(document).on('submit', '#editCourseForm', function(e) {
+        e.preventDefault();
+
+        if (!validateForm(this)) {
+            return false;
+        }
+
+        const formData = new FormData(this);
+        const submitBtn = $(this).find('[type="submit"]');
+        const originalText = submitBtn.html();
+
+        $.ajax({
+            url: 'inc/ajax/courses_ajax.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: () => {
+                submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Processing...').prop('disabled', true);
+            },
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message || 'Operation completed successfully');
+                } else {
+                    toastr.error(response.message || 'An error occurred');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log('AJAX error:', xhr.responseText, status, error);
+                toastr.error('An error occurred while updating the course.');
+            },
+            complete: () => {
+                submitBtn.html(originalText).prop('disabled', false);
+            }
+        });
+    });
 }); 
