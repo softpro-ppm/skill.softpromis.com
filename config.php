@@ -16,9 +16,6 @@ if ($is_local) {
     define('DB_NAME', 'u820431346_skill');
     define('SITE_URL', 'https://skill.softpromis.com');
 
-
-    
-
 }
 
 // Application configuration
