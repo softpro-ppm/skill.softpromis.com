@@ -16,13 +16,18 @@ $action = $_REQUEST['action'] ?? '';
 try {
     switch ($action) {
         case 'list':
-            // Return all batches with course and center names for DataTable
+            // Debug: Log and return all batches with course and center names for DataTable
             $stmt = $pdo->query("SELECT b.batch_id, b.batch_code, b.start_date, b.end_date, b.capacity, b.status, c.course_name, tc.center_name
                 FROM batches b
                 JOIN courses c ON b.course_id = c.course_id
                 JOIN training_centers tc ON b.center_id = tc.center_id
                 ORDER BY b.batch_id DESC");
             $batches = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($batches)) {
+                error_log('[DEBUG] No batches found or join failed in batches_ajax.php');
+            } else {
+                error_log('[DEBUG] Batches found: ' . json_encode($batches));
+            }
             echo json_encode(['status' => 'success', 'data' => $batches]);
             exit;
         case 'add':
