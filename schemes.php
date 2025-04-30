@@ -327,10 +327,10 @@ try {
     });
 
     // View Scheme
-    $(document).on('click', '.view-scheme', function(e) {
+    $(document).on('click', '.view-scheme-btn', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        var schemeId = $(this).data('id');
+        var schemeId = $(this).data('scheme-id');
         var $modal = $('#viewSchemeModal');
         
         // Show loading state
@@ -402,10 +402,10 @@ try {
     });
 
     // Edit Scheme
-    $(document).on('click', '.edit-scheme', function(e) {
+    $(document).on('click', '.edit-scheme-btn', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        var schemeId = $(this).data('id');
+        var schemeId = $(this).data('scheme-id');
         var $modal = $('#editSchemeModal');
         
         // Reset form and show loading state
@@ -485,8 +485,8 @@ try {
     });
 
     // Delete Scheme
-    $(document).on('click', '.delete-scheme', function() {
-        var schemeId = $(this).data('id');
+    $(document).on('click', '.delete-scheme-btn', function() {
+        var schemeId = $(this).data('scheme-id');
         
         // Set scheme ID in modal
         $('#deleteSchemeId').val(schemeId);
