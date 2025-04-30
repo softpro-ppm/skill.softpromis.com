@@ -439,6 +439,23 @@ require_once 'includes/sidebar.php';
                         </div>
                     </div>
                 </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Documents</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="d-block">Registration Document</label>
+                                    <p id="view_registration_doc" class="form-control-static"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="d-block">Agreement Document</label>
+                                    <p id="view_agreement_doc" class="form-control-static"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -454,6 +471,17 @@ require_once 'includes/sidebar.php';
     border: 1px solid #dee2e6;
     border-radius: 4px;
     min-height: 35px;
+}
+.document-link {
+    color: #007bff;
+    text-decoration: none;
+}
+.document-link:hover {
+    text-decoration: underline;
+}
+.document-not-uploaded {
+    color: #6c757d;
+    font-style: italic;
 }
 </style>
 
@@ -754,6 +782,29 @@ $(function () {
                     $('#view_status').html('<span class="badge badge-' + (data.status === 'active' ? 'success' : 'danger') + '">' + 
                         data.status.charAt(0).toUpperCase() + data.status.slice(1) + '</span>');
                     $('#view_centers').text(data.center_count || '0');
+
+                    // Set document information
+                    if(data.registration_doc) {
+                        $('#view_registration_doc').html(
+                            '<a href="uploads/partners/' + data.registration_doc + '" target="_blank" class="document-link">' +
+                            '<i class="fas fa-file-pdf"></i> View Document</a>'
+                        );
+                    } else {
+                        $('#view_registration_doc').html(
+                            '<span class="document-not-uploaded">No document uploaded</span>'
+                        );
+                    }
+
+                    if(data.agreement_doc) {
+                        $('#view_agreement_doc').html(
+                            '<a href="uploads/partners/' + data.agreement_doc + '" target="_blank" class="document-link">' +
+                            '<i class="fas fa-file-pdf"></i> View Document</a>'
+                        );
+                    } else {
+                        $('#view_agreement_doc').html(
+                            '<span class="document-not-uploaded">No document uploaded</span>'
+                        );
+                    }
                     
                     // Show the modal
                     $('#viewPartnerModal').modal('show');
