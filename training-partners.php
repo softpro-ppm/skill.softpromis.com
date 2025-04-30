@@ -90,7 +90,10 @@ if(isset($_POST['action'])) {
                         "phone" => htmlspecialchars($row['phone']),
                         "center_count" => $row['center_count'],
                         "status" => $row['status'],
-                        "actions" => '<button type="button" class="btn btn-info btn-sm edit-btn mr-1" data-id="' . $row['partner_id'] . '">
+                        "actions" => '<button type="button" class="btn btn-primary btn-sm view-btn mr-1" data-id="' . $row['partner_id'] . '">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm edit-btn mr-1" data-id="' . $row['partner_id'] . '">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button type="button" class="btn btn-danger btn-sm delete-btn" 
@@ -387,6 +390,73 @@ require_once 'includes/sidebar.php';
     </div>
 </div>
 
+<!-- View Partner Modal -->
+<div class="modal fade" id="viewPartnerModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Partner Details</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Partner Name</label>
+                            <p id="view_partner_name" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Person</label>
+                            <p id="view_contact_person" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <p id="view_email" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <p id="view_phone" class="form-control-static"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Address</label>
+                            <p id="view_address" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Website</label>
+                            <p id="view_website" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <p id="view_status" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Training Centers</label>
+                            <p id="view_centers" class="form-control-static"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-control-static {
+    padding: 7px 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    min-height: 35px;
+}
+</style>
+
 <?php include 'includes/js.php'; ?>
 
 <!-- DataTables & Extensions JS -->
@@ -656,5 +726,45 @@ $(function () {
 
     // Initialize custom file input
     bsCustomFileInput.init();
+
+    // Handle view button click
+    $(document).on('click', '.view-btn', function() {
+        var partnerId = $(this).data('id');
+        
+        // Get partner data
+        $.ajax({
+            url: 'training-partners.php',
+            type: 'POST',
+            data: {
+                action: 'get_partner',
+                partner_id: partnerId
+            },
+            dataType: 'json',
+            success: function(response) {
+                if(response.status) {
+                    var data = response.data;
+                    
+                    // Set the data in the view modal
+                    $('#view_partner_name').text(data.partner_name);
+                    $('#view_contact_person').text(data.contact_person);
+                    $('#view_email').text(data.email);
+                    $('#view_phone').text(data.phone);
+                    $('#view_address').text(data.address);
+                    $('#view_website').html(data.website ? '<a href="' + data.website + '" target="_blank">' + data.website + '</a>' : 'N/A');
+                    $('#view_status').html('<span class="badge badge-' + (data.status === 'active' ? 'success' : 'danger') + '">' + 
+                        data.status.charAt(0).toUpperCase() + data.status.slice(1) + '</span>');
+                    $('#view_centers').text(data.center_count || '0');
+                    
+                    // Show the modal
+                    $('#viewPartnerModal').modal('show');
+                } else {
+                    toastr.error(response.message || 'Error fetching partner data');
+                }
+            },
+            error: function() {
+                toastr.error('Error fetching partner data');
+            }
+        });
+    });
 });
 </script>
