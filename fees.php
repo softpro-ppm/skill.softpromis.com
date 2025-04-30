@@ -278,46 +278,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>RCPT001</td>
-                  <td>Rahul Sharma</td>
-                  <td>Web Development</td>
-                  <td>₹5,000</td>
-                  <td>01/01/2024</td>
-                  <td>Online</td>
-                  <td><span class="badge badge-success">Paid</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewPaymentModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editPaymentModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deletePaymentModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>RCPT002</td>
-                  <td>Priya Patel</td>
-                  <td>Digital Marketing</td>
-                  <td>₹3,000</td>
-                  <td>15/01/2024</td>
-                  <td>Cash</td>
-                  <td><span class="badge badge-warning">Pending</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewPaymentModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editPaymentModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deletePaymentModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                <!-- DataTables will populate this -->
               </tbody>
             </table>
           </div>
@@ -531,14 +492,46 @@
 
 <script>
   $(function () {
-    $('#paymentsTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
+    var table = $('#paymentsTable').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: {
+        url: 'inc/ajax/fees_ajax.php',
+        type: 'POST',
+        data: { action: 'list' },
+        dataSrc: function(json) {
+          return json.data || [];
+        }
+      },
+      columns: [
+        { data: 'receipt_no' },
+        { data: 'student_name' },
+        { data: 'course_name' },
+        { data: 'amount', render: function(data) { return '₹' + data; } },
+        { data: 'payment_date' },
+        { data: 'payment_mode' },
+        { data: 'status', render: function(data) {
+            var badge = 'secondary';
+            if (data === 'Paid') badge = 'success';
+            if (data === 'Pending') badge = 'warning';
+            if (data === 'Overdue') badge = 'danger';
+            return '<span class="badge badge-' + badge + '">' + data + '</span>';
+          }
+        },
+        { data: null, orderable: false, searchable: false, render: function(data, type, row) {
+            return '<button class="btn btn-sm btn-info view-payment-btn" data-id="' + row.fee_id + '"><i class="fas fa-eye"></i></button>' +
+                   '<button class="btn btn-sm btn-primary edit-payment-btn" data-id="' + row.fee_id + '"><i class="fas fa-edit"></i></button>' +
+                   '<button class="btn btn-sm btn-danger delete-payment-btn" data-id="' + row.fee_id + '"><i class="fas fa-trash"></i></button>';
+          }
+        }
+      ],
+      paging: true,
+      lengthChange: true,
+      searching: true,
+      ordering: true,
+      info: true,
+      autoWidth: false,
+      responsive: true
     });
 
     // Initialize Select2

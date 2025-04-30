@@ -114,44 +114,7 @@ require_once 'includes/sidebar.php';
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>CERT001</td>
-                  <td>Rahul Sharma</td>
-                  <td>Web Development</td>
-                  <td>01/01/2024</td>
-                  <td>01/01/2027</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCertificateModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCertificateModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCertificateModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>CERT002</td>
-                  <td>Priya Patel</td>
-                  <td>Digital Marketing</td>
-                  <td>15/01/2024</td>
-                  <td>15/01/2027</td>
-                  <td><span class="badge badge-warning">Pending</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCertificateModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCertificateModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCertificateModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                <!-- DataTables will populate this -->
               </tbody>
             </table>
           </div>
@@ -351,8 +314,46 @@ require_once 'includes/sidebar.php';
 
 <script>
   $(function () {
-    // Initialize DataTable with default configuration
-    $('#certificatesTable').DataTable();
+    $('#certificatesTable').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: {
+        url: 'inc/ajax/certificates_ajax.php',
+        type: 'POST',
+        data: { action: 'list' },
+        dataSrc: function(json) {
+          return json.data || [];
+        }
+      },
+      columns: [
+        { data: 'certificate_no' },
+        { data: 'student_name' },
+        { data: 'course_name' },
+        { data: 'issue_date' },
+        { data: 'expiry_date' },
+        { data: 'status', render: function(data) {
+            var badge = 'secondary';
+            if (data === 'Active') badge = 'success';
+            if (data === 'Pending') badge = 'warning';
+            if (data === 'Expired') badge = 'danger';
+            return '<span class="badge badge-' + badge + '">' + data + '</span>';
+          }
+        },
+        { data: null, orderable: false, searchable: false, render: function(data, type, row) {
+            return '<button class="btn btn-sm btn-info view-certificate-btn" data-id="' + row.certificate_id + '"><i class="fas fa-eye"></i></button>' +
+                   '<button class="btn btn-sm btn-primary edit-certificate-btn" data-id="' + row.certificate_id + '"><i class="fas fa-edit"></i></button>' +
+                   '<button class="btn btn-sm btn-danger delete-certificate-btn" data-id="' + row.certificate_id + '"><i class="fas fa-trash"></i></button>';
+          }
+        }
+      ],
+      paging: true,
+      lengthChange: true,
+      searching: true,
+      ordering: true,
+      info: true,
+      autoWidth: false,
+      responsive: true
+    });
 
     // Initialize Select2
     $('.select2').select2({

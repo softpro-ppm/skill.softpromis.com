@@ -115,46 +115,7 @@ require_once 'includes/sidebar.php';
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>ASS001</td>
-                  <td>Rahul Sharma</td>
-                  <td>Web Development</td>
-                  <td>Practical</td>
-                  <td>01/01/2024</td>
-                  <td>85%</td>
-                  <td><span class="badge badge-success">Passed</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewAssessmentModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editAssessmentModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteAssessmentModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>ASS002</td>
-                  <td>Priya Patel</td>
-                  <td>Digital Marketing</td>
-                  <td>Theory</td>
-                  <td>15/01/2024</td>
-                  <td>65%</td>
-                  <td><span class="badge badge-warning">Pending Review</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewAssessmentModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editAssessmentModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteAssessmentModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                <!-- DataTables will populate this -->
               </tbody>
             </table>
           </div>
@@ -348,8 +309,47 @@ require_once 'includes/sidebar.php';
 
 <script>
   $(function () {
-    // Initialize DataTable with default configuration
-    $('#assessmentsTable').DataTable();
+    $('#assessmentsTable').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: {
+        url: 'inc/ajax/assessments_ajax.php',
+        type: 'POST',
+        data: { action: 'list' },
+        dataSrc: function(json) {
+          return json.data || [];
+        }
+      },
+      columns: [
+        { data: 'assessment_id' },
+        { data: 'student_name' },
+        { data: 'course_name' },
+        { data: 'type' },
+        { data: 'date' },
+        { data: 'score', render: function(data) { return data + '%'; } },
+        { data: 'status', render: function(data) {
+            var badge = 'secondary';
+            if (data === 'Passed') badge = 'success';
+            if (data === 'Pending Review') badge = 'warning';
+            if (data === 'Failed') badge = 'danger';
+            return '<span class="badge badge-' + badge + '">' + data + '</span>';
+          }
+        },
+        { data: null, orderable: false, searchable: false, render: function(data, type, row) {
+            return '<button class="btn btn-sm btn-info view-assessment-btn" data-id="' + row.assessment_id + '"><i class="fas fa-eye"></i></button>' +
+                   '<button class="btn btn-sm btn-primary edit-assessment-btn" data-id="' + row.assessment_id + '"><i class="fas fa-edit"></i></button>' +
+                   '<button class="btn btn-sm btn-danger delete-assessment-btn" data-id="' + row.assessment_id + '"><i class="fas fa-trash"></i></button>';
+          }
+        }
+      ],
+      paging: true,
+      lengthChange: true,
+      searching: true,
+      ordering: true,
+      info: true,
+      autoWidth: false,
+      responsive: true
+    });
 
     // Initialize Select2
     $('.select2').select2({

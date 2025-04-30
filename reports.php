@@ -362,23 +362,7 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- Sample data -->
-                <tr>
-                  <td>ST001</td>
-                  <td>John Doe</td>
-                  <td>Web Development</td>
-                  <td>Batch 2024-01</td>
-                  <td>Center 1</td>
-                  <td>PMKVY</td>
-                  <td><span class="badge badge-success">Pass</span></td>
-                  <td><span class="badge badge-success">Paid</span></td>
-                  <td><span class="badge badge-info">Issued</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-sm btn-success"><i class="fas fa-file-download"></i></button>
-                  </td>
-                </tr>
+                <!-- DataTables will populate this -->
               </tbody>
             </table>
           </div>
@@ -423,38 +407,64 @@ $(document).ready(function() {
 
   // Initialize DataTable
   const table = $('#reportTable').DataTable({
-    dom: 'Bfrtip',
-    buttons: [
-      {
-        extend: 'excel',
-        text: '<i class="fas fa-file-excel"></i> Export to Excel',
-        className: 'btn btn-success',
-        exportOptions: {
-          columns: ':not(:last-child)'
+    processing: true,
+    serverSide: false,
+    ajax: {
+      url: 'inc/ajax/reports_ajax.php',
+      type: 'POST',
+      data: function(d) {
+        // You can add filter values here if needed
+        return $.extend({}, d, { action: 'list' });
+      },
+      dataSrc: function(json) {
+        return json.data || [];
+      }
+    },
+    columns: [
+      { data: 'student_id' },
+      { data: 'name' },
+      { data: 'course' },
+      { data: 'batch' },
+      { data: 'training_center' },
+      { data: 'scheme' },
+      { data: 'result', render: function(data) {
+          var badge = 'secondary';
+          if (data === 'Pass') badge = 'success';
+          if (data === 'Fail') badge = 'danger';
+          if (data === 'Pending') badge = 'warning';
+          return '<span class="badge badge-' + badge + '">' + data + '</span>';
         }
       },
-      {
-        extend: 'pdf',
-        text: '<i class="fas fa-file-pdf"></i> Export to PDF',
-        className: 'btn btn-danger',
-        exportOptions: {
-          columns: ':not(:last-child)'
+      { data: 'payment', render: function(data) {
+          var badge = 'secondary';
+          if (data === 'Paid') badge = 'success';
+          if (data === 'Partial') badge = 'warning';
+          if (data === 'Pending') badge = 'danger';
+          return '<span class="badge badge-' + badge + '">' + data + '</span>';
         }
       },
-      {
-        extend: 'print',
-        text: '<i class="fas fa-print"></i> Print',
-        className: 'btn btn-info',
-        exportOptions: {
-          columns: ':not(:last-child)'
+      { data: 'certificate', render: function(data) {
+          var badge = 'secondary';
+          if (data === 'Issued') badge = 'info';
+          if (data === 'Pending') badge = 'warning';
+          if (data === 'Not Issued') badge = 'danger';
+          return '<span class="badge badge-' + badge + '">' + data + '</span>';
+        }
+      },
+      { data: null, orderable: false, searchable: false, render: function(data, type, row) {
+          return '<button class="btn btn-sm btn-info view-report-btn" data-id="' + row.student_id + '"><i class="fas fa-eye"></i></button>' +
+                 '<button class="btn btn-sm btn-primary edit-report-btn" data-id="' + row.student_id + '"><i class="fas fa-edit"></i></button>' +
+                 '<button class="btn btn-sm btn-success download-report-btn" data-id="' + row.student_id + '"><i class="fas fa-file-download"></i></button>';
         }
       }
     ],
-    responsive: true,
+    paging: true,
     lengthChange: true,
+    searching: true,
+    ordering: true,
+    info: true,
     autoWidth: false,
-    pageLength: 10,
-    order: [[0, 'asc']]
+    responsive: true
   });
 
   // Report Type Switching

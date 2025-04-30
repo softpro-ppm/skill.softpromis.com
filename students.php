@@ -100,31 +100,7 @@ try {
                 </tr>
               </thead>
               <tbody>
-                <?php foreach ($students as $student): ?>
-                  <tr>
-                    <td><?= htmlspecialchars($student['enrollment_no']) ?></td>
-                    <td><?= htmlspecialchars($student['first_name']) ?></td>
-                    <td><?= htmlspecialchars($student['last_name']) ?></td>
-                    <td><?= htmlspecialchars(ucfirst($student['gender'])) ?></td>
-                    <td><?= htmlspecialchars($student['mobile']) ?></td>
-                    <td><?= htmlspecialchars($student['email']) ?></td>
-                    <td><?= htmlspecialchars($student['date_of_birth']) ?></td>
-                    <td><?= htmlspecialchars($student['address']) ?></td>
-                    <td>
-                      <div class="btn-group" role="group">
-                        <button class="btn btn-sm btn-info view-student-btn" data-student-id="<?= $student['student_id'] ?>">
-                          <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-primary edit-student-btn" data-student-id="<?= $student['student_id'] ?>">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-student-btn" data-student-id="<?= $student['student_id'] ?>">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                <?php endforeach; ?>
+                <!-- DataTables will populate this -->
               </tbody>
             </table>
           </div>
@@ -313,8 +289,36 @@ try {
 
 <script>
   $(function () {
-    // Initialize DataTable with default configuration
-    $('#studentsTable').DataTable({
+    // Initialize DataTable with AJAX
+    var table = $('#studentsTable').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: {
+        url: 'inc/ajax/students_ajax.php',
+        type: 'POST',
+        data: { action: 'list' },
+        dataSrc: function(json) {
+          return json.data || [];
+        }
+      },
+      columns: [
+        { data: 'enrollment_no' },
+        { data: 'first_name' },
+        { data: 'last_name' },
+        { data: 'gender', render: function(data) { return data ? data.charAt(0).toUpperCase() + data.slice(1) : ''; } },
+        { data: 'mobile' },
+        { data: 'email' },
+        { data: 'date_of_birth' },
+        { data: 'address' },
+        { data: null, orderable: false, searchable: false, render: function(data, type, row) {
+            return '<div class="btn-group" role="group">' +
+              '<button class="btn btn-sm btn-info view-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-eye"></i></button>' +
+              '<button class="btn btn-sm btn-primary edit-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-edit"></i></button>' +
+              '<button class="btn btn-sm btn-danger delete-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-trash"></i></button>' +
+              '</div>';
+          }
+        }
+      ],
       dom: 'Bfrtip',
       buttons: [
         { extend: 'copy', className: 'btn btn-secondary btn-sm', text: 'Copy' },

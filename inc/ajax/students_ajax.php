@@ -185,6 +185,12 @@ try {
             sendJSONResponse(true, 'Student batches retrieved successfully', $batches);
             break;
 
+        case 'list':
+            $stmt = $pdo->query('SELECT student_id, enrollment_no, first_name, last_name, gender, mobile, email, date_of_birth, address FROM students ORDER BY created_at DESC');
+            $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode([ 'data' => $students ]);
+            exit;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }
