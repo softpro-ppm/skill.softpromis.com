@@ -9,7 +9,7 @@ require_once '../../crud_functions.php';
 header('Content-Type: application/json');
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user']) || !isset($_SESSION['user']['user_id'])) {
     echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
     exit;
 }
