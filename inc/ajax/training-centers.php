@@ -2,10 +2,26 @@
 require_once '../../config.php';
 require_once '../../crud_functions.php';
 
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
+    exit;
+}
+
+// Establish database connection
+try {
+    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    if ($conn->connect_error) {
+        throw new Exception("Connection failed: " . $conn->connect_error);
+    }
+} catch (Exception $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Database connection failed']);
     exit;
 }
 
@@ -47,9 +63,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     }
                 } catch (Exception $e) {
                     error_log("Error fetching training centers list: " . $e->getMessage());
-                    echo json_encode(['status' => 'error', 'message' => 'Error fetching training centers list']);
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'Error fetching training centers list',
+                        'data' => []
+                    ]);
                 }
-                exit;
                 break;
 
             case 'get':
@@ -81,12 +100,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     error_log("Error fetching training center details: " . $e->getMessage());
                     echo json_encode(['status' => 'error', 'message' => 'Error fetching training center details']);
                 }
-                exit;
                 break;
         }
     }
 }
 
+$conn->close();
 echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
 exit;
 ?> 

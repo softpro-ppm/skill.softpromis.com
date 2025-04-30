@@ -504,6 +504,13 @@ $(function () {
             "data": function(d) {
                 d.action = "list";
             },
+            "dataSrc": function(json) {
+                if (json.status === 'error') {
+                    toastr.error(json.message || 'Error loading data');
+                    return [];
+                }
+                return json.data || [];
+            },
             "error": function(xhr, error, thrown) {
                 toastr.error('Error loading data. Please try again.');
                 console.error('DataTables error:', error, thrown);
