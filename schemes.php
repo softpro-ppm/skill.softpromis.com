@@ -440,6 +440,10 @@ try {
                 console.log('Edit scheme response:', response); // DEBUG
                 if(response.status === 'success' && response.data) {
                     var scheme = response.data;
+                    console.log('editSchemeId:', $modal.find('#editSchemeId'));
+                    console.log('editSchemeName:', $modal.find('#editSchemeName'));
+                    console.log('editDescription:', $modal.find('#editDescription'));
+                    console.log('editStatus:', $modal.find('#editStatus'));
                     $modal.find('#editSchemeId').val(scheme.scheme_id || '');
                     $modal.find('#editSchemeName').val(scheme.scheme_name || '');
                     $modal.find('#editDescription').val(scheme.description || '');
