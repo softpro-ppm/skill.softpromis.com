@@ -497,33 +497,31 @@ $(function () {
     // Initialize DataTable
     var table = $('#centersTable').DataTable({
         "processing": true,
-        "serverSide": true,
-        "serverMethod": "post",
+        "serverSide": false,
         "ajax": {
-            "url": "training-centers.php",
+            "url": "inc/ajax/training-centers.php",
+            "type": "GET",
             "data": function(d) {
                 d.action = "list";
             },
             "error": function(xhr, error, thrown) {
                 toastr.error('Error loading data. Please try again.');
                 console.error('DataTables error:', error, thrown);
-            },
-            "dataSrc": function(json) {
-                if (json.error) {
-                    toastr.error(json.error);
-                    return [];
-                }
-                return json.data;
             }
         },
         "columns": [
-            { "data": "center_id" },
+            { "data": "id" },
             { "data": "partner_name" },
             { "data": "center_name" },
             { "data": "contact_person" },
             { "data": "email" },
             { "data": "phone" },
-            { "data": "full_address" },
+            { 
+                "data": null,
+                "render": function(data, type, row) {
+                    return row.address + ', ' + row.city + ', ' + row.state + ' - ' + row.pincode;
+                }
+            },
             { 
                 "data": "status",
                 "render": function(data, type, row) {
@@ -536,9 +534,16 @@ $(function () {
                 }
             },
             { 
-                "data": "actions",
+                "data": null,
                 "orderable": false,
-                "searchable": false
+                "searchable": false,
+                "render": function(data, type, row) {
+                    return '<div class="btn-group btn-group-sm">' +
+                           '<button type="button" class="btn btn-info view-center" data-id="' + row.id + '"><i class="fas fa-eye"></i></button>' +
+                           '<button type="button" class="btn btn-primary edit-btn" data-id="' + row.id + '"><i class="fas fa-edit"></i></button>' +
+                           '<button type="button" class="btn btn-danger delete-btn" data-id="' + row.id + '" data-name="' + row.center_name + '"><i class="fas fa-trash"></i></button>' +
+                           '</div>';
+                }
             }
         ],
         "responsive": true,
