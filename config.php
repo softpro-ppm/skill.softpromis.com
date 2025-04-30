@@ -10,19 +10,12 @@ if ($is_local) {
     define('DB_NAME', 'skill');
     define('SITE_URL', 'http://localhost/skill.softpromis.com');
 } else {
-    // define('DB_HOST', 'localhost');
-    // define('DB_USER', 'u820431346_skill');
-    // define('DB_PASS', 'Y4w~op65to');
-    // define('DB_NAME', 'u820431346_skill');
-    // define('SITE_URL', 'https://skill.softpromis.com');
+    define('DB_HOST', 'localhost');
+    define('DB_USER', 'u820431346_skill');
+    define('DB_PASS', 'Y4w~op65to');
+    define('DB_NAME', 'u820431346_skill');
+    define('SITE_URL', 'https://skill.softpromis.com');
 
-
-
-     define('DB_HOST', 'localhost');
-    define('DB_USER', 'fnkjyinw_skill');
-    define('DB_PASS', 'Ple_jY[l!0wb');
-    define('DB_NAME', 'fnkjyinw_skill');
-    define('SITE_URL', 'https://umakant.online/skill');
 
     
 
