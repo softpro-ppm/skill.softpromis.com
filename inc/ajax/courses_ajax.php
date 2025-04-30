@@ -24,7 +24,7 @@ try {
             $syllabus = sanitizeInput($_POST['syllabus'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
             $sector_id = (int)($_POST['sector_id'] ?? 0);
-            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            $scheme_id = isset($_POST['scheme_id']) && $_POST['scheme_id'] !== '' ? (int)$_POST['scheme_id'] : null;
 
             if (empty($course_name) || empty($course_code) || $duration_hours <= 0 || $sector_id <= 0) {
                 sendJSONResponse(false, 'Required fields are missing');
@@ -38,7 +38,7 @@ try {
             }
 
             // Validate scheme if provided
-            if ($scheme_id > 0) {
+            if ($scheme_id !== null) {
                 $stmt = $pdo->prepare("SELECT scheme_id FROM schemes WHERE scheme_id = ?");
                 $stmt->execute([$scheme_id]);
                 if (!$stmt->fetch()) {
@@ -109,7 +109,7 @@ try {
             $syllabus = sanitizeInput($_POST['syllabus'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
             $sector_id = (int)($_POST['sector_id'] ?? 0);
-            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            $scheme_id = isset($_POST['scheme_id']) && $_POST['scheme_id'] !== '' ? (int)$_POST['scheme_id'] : null;
 
             if (empty($course_id) || empty($course_name) || empty($course_code) || $duration_hours <= 0 || $sector_id <= 0) {
                 sendJSONResponse(false, 'Required fields are missing');
@@ -122,7 +122,7 @@ try {
                 sendJSONResponse(false, 'Invalid sector');
             }
             // Validate scheme if provided
-            if ($scheme_id > 0) {
+            if ($scheme_id !== null) {
                 $stmt = $pdo->prepare("SELECT scheme_id FROM schemes WHERE scheme_id = ?");
                 $stmt->execute([$scheme_id]);
                 if (!$stmt->fetch()) {
