@@ -352,53 +352,40 @@ try {
                 scheme_id: schemeId
             },
             success: function(response) {
-                if(response.status === 'success') {
+                if(response.status === 'success' && response.data) {
                     var scheme = response.data;
-                    
-                    // Update modal content
                     $modal.find('.modal-body').html(`
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="font-weight-bold">Scheme ID:</label>
-                                    <p data-field="scheme_id"></p>
+                                    <p data-field="scheme_id">${scheme.scheme_id}</p>
                                 </div>
                                 <div class="form-group">
                                     <label class="font-weight-bold">Scheme Name:</label>
-                                    <p data-field="scheme_name"></p>
+                                    <p data-field="scheme_name">${scheme.scheme_name}</p>
                                 </div>
                                 <div class="form-group">
                                     <label class="font-weight-bold">Description:</label>
-                                    <p data-field="description"></p>
+                                    <p data-field="description">${scheme.description || 'N/A'}</p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="font-weight-bold">Status:</label>
-                                    <p data-field="status"></p>
+                                    <p data-field="status"><span class="badge badge-${scheme.status === 'active' ? 'success' : 'danger'}">${scheme.status.charAt(0).toUpperCase() + scheme.status.slice(1)}</span></p>
                                 </div>
                                 <div class="form-group">
                                     <label class="font-weight-bold">Created At:</label>
-                                    <p data-field="created_at"></p>
+                                    <p data-field="created_at">${scheme.created_at}</p>
                                 </div>
                                 <div class="form-group">
                                     <label class="font-weight-bold">Updated At:</label>
-                                    <p data-field="updated_at"></p>
+                                    <p data-field="updated_at">${scheme.updated_at || 'N/A'}</p>
                                 </div>
                             </div>
                         </div>
                     `);
-                    
-                    // Populate fields
-                    $modal.find('[data-field="scheme_id"]').text(scheme.scheme_id);
-                    $modal.find('[data-field="scheme_name"]').text(scheme.scheme_name);
-                    $modal.find('[data-field="description"]').text(scheme.description || 'N/A');
-                    $modal.find('[data-field="status"]').html(
-                        '<span class="badge badge-' + (scheme.status === 'active' ? 'success' : 'danger') + '">' + 
-                        scheme.status.charAt(0).toUpperCase() + scheme.status.slice(1) + '</span>'
-                    );
-                    $modal.find('[data-field="created_at"]').text(scheme.created_at);
-                    $modal.find('[data-field="updated_at"]').text(scheme.updated_at || 'N/A');
                 } else {
                     $modal.find('.modal-body').html(
                         '<div class="alert alert-danger">' + (response.message || 'Error fetching scheme details') + '</div>'
