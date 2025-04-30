@@ -273,16 +273,16 @@ $(function () {
                     var s = response.data;
                     $modal.find('[data-field="scheme_id"]').text(s.scheme_id || '');
                     $modal.find('[data-field="scheme_name"]').text(s.scheme_name || '');
-                    $modal.find('[data-field="description"]').text(s.description || 'N/A');
-                    $modal.find('[data-field="status"]').html('<span class="badge badge-' + (s.status === 'active' ? 'success' : 'danger') + '">' + (s.status ? (s.status.charAt(0).toUpperCase() + s.status.slice(1)) : 'N/A') + '</span>');
-                    $modal.find('[data-field="created_at"]').text(s.created_at || 'N/A');
-                    $modal.find('[data-field="updated_at"]').text(s.updated_at || 'N/A');
+                    $modal.find('[data-field="description"]').text(s.description || '');
+                    $modal.find('[data-field="status"]').html('<span class="badge badge-' + (s.status === 'active' ? 'success' : 'danger') + '">' + (s.status ? (s.status.charAt(0).toUpperCase() + s.status.slice(1)) : '') + '</span>');
+                    $modal.find('[data-field="created_at"]').text(s.created_at || '');
+                    $modal.find('[data-field="updated_at"]').text(s.updated_at || '');
                 } else {
-                    $modal.find('.modal-body').prepend('<div class="alert alert-danger">' + (response.message || 'Error fetching scheme details') + '</div>');
+                    $modal.find('[data-field]').text('');
                 }
             },
             error: function() {
-                $modal.find('.modal-body').prepend('<div class="alert alert-danger">Error fetching scheme details. Please try again.</div>');
+                $modal.find('[data-field]').text('');
             }
         });
     });
