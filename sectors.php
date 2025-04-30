@@ -262,7 +262,13 @@ $(function () {
                     $('#addSectorModal').modal('hide');
                     table.ajax.reload(null, false);
                     $form[0].reset();
+                    toastr.success(response.message || 'Sector added successfully');
+                } else {
+                    toastr.error(response.message || 'Error adding sector');
                 }
+            },
+            error: function() {
+                toastr.error('Error adding sector');
             }
         });
     });
@@ -340,7 +346,13 @@ $(function () {
                     $('#editSectorModal').modal('hide');
                     table.ajax.reload(null, false);
                     $form[0].reset();
+                    toastr.success(response.message || 'Sector updated successfully');
+                } else {
+                    toastr.error(response.message || 'Error updating sector');
                 }
+            },
+            error: function() {
+                toastr.error('Error updating sector');
             }
         });
     });
