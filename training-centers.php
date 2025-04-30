@@ -53,14 +53,11 @@ if(isset($_POST['action'])) {
                         "phone" => htmlspecialchars($row['phone']),
                         "full_address" => htmlspecialchars($row['full_address']),
                         "status" => $row['status'],
-                        "actions" => '<button type="button" class="btn btn-info btn-sm edit-btn mr-1" data-id="' . $row['center_id'] . '">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-sm delete-btn" 
-                                        data-id="' . $row['center_id'] . '" 
-                                        data-name="' . htmlspecialchars($row['center_name']) . '">
-                                        <i class="fas fa-trash"></i>
-                                    </button>'
+                        "actions" => '<div class="btn-group btn-group-sm">' +
+                                    '<button type="button" class="btn btn-info view-btn" data-id="' + $row['center_id'] + '"><i class="fas fa-eye"></i></button>' +
+                                    '<button type="button" class="btn btn-primary edit-btn" data-id="' + $row['center_id'] + '"><i class="fas fa-edit"></i></button>' +
+                                    '<button type="button" class="btn btn-danger delete-btn" data-id="' + $row['center_id'] + '"><i class="fas fa-trash"></i></button>' +
+                                    '</div>'
                     );
                 }
                 
@@ -418,6 +415,57 @@ require_once 'includes/sidebar.php';
     </div>
   </div>
 
+<!-- View Training Center Modal -->
+<div class="modal fade" id="viewCenterModal" tabindex="-1" role="dialog" aria-labelledby="viewCenterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewCenterModalLabel">Training Center Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Center Name:</strong> <span id="view-center-name"></span></p>
+                        <p><strong>Training Partner:</strong> <span id="view-partner-name"></span></p>
+                        <p><strong>Contact Person:</strong> <span id="view-contact-person"></span></p>
+                        <p><strong>Email:</strong> <span id="view-email"></span></p>
+                        <p><strong>Phone:</strong> <span id="view-phone"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Address:</strong> <span id="view-address"></span></p>
+                        <p><strong>City:</strong> <span id="view-city"></span></p>
+                        <p><strong>State:</strong> <span id="view-state"></span></p>
+                        <p><strong>Pincode:</strong> <span id="view-pincode"></span></p>
+                        <p><strong>Status:</strong> <span id="view-status"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-control-static {
+    padding: 7px 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    min-height: 35px;
+}
+.btn-group-sm > .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+</style>
+
 <?php include 'includes/js.php'; ?>
 
 <!-- DataTables & Extensions JS -->
@@ -449,10 +497,10 @@ $(function () {
     // Initialize DataTable
     var table = $('#centersTable').DataTable({
         "processing": true,
-        "serverSide": false,
+        "serverSide": true,
+        "serverMethod": "post",
         "ajax": {
             "url": "training-centers.php",
-            "type": "POST",
             "data": function(d) {
                 d.action = "list";
             },
@@ -523,11 +571,9 @@ $(function () {
         "pageLength": 10
     });
 
-    // Handle edit button click
-    $(document).on('click', '.edit-btn', function() {
+    // View Center
+    $('#centersTable').on('click', '.view-btn', function() {
         var centerId = $(this).data('id');
-        
-        // Get center data first
         $.ajax({
             url: 'training-centers.php',
             type: 'POST',
@@ -694,6 +740,42 @@ $(function () {
             },
             error: function() {
                 toastr.error('Error deleting center');
+            }
+        });
+    });
+
+    // View center details
+    $(document).on('click', '.view-center', function() {
+        var centerId = $(this).data('id');
+        
+        $.ajax({
+            url: 'inc/ajax/training-centers.php',
+            type: 'GET',
+            data: {
+                action: 'get',
+                center_id: centerId
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    var data = response.data;
+                    $('#view-center-name').text(data.center_name);
+                    $('#view-partner-name').text(data.partner_name);
+                    $('#view-contact-person').text(data.contact_person);
+                    $('#view-email').text(data.email);
+                    $('#view-phone').text(data.phone);
+                    $('#view-address').text(data.address);
+                    $('#view-city').text(data.city);
+                    $('#view-state').text(data.state);
+                    $('#view-pincode').text(data.pincode);
+                    $('#view-status').text(data.status === '1' ? 'Active' : 'Inactive');
+                    
+                    $('#viewCenterModal').modal('show');
+                } else {
+                    toastr.error(response.message || 'Error fetching center details');
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Error fetching center details');
             }
         });
     });
