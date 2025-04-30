@@ -261,7 +261,8 @@ $(function () {
         e.preventDefault();
         var schemeId = $(this).data('scheme-id');
         var $modal = $('#viewSchemeModal');
-        $modal.find('.modal-body').html('<div class="text-center py-5"><i class="fas fa-spinner fa-spin fa-3x"></i><p class="mt-2">Loading...</p></div>');
+        $modal.find('.modal-body .alert').remove();
+        $modal.find('[data-field]').text('');
         $modal.modal({ backdrop: 'static', keyboard: false, show: true });
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
@@ -270,26 +271,18 @@ $(function () {
             success: function(response) {
                 if(response.status === 'success' && response.data && typeof response.data === 'object') {
                     var s = response.data;
-                    $modal.find('.modal-body').html(`
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group"><label class="font-weight-bold">Scheme ID:</label><p>${s.scheme_id || ''}</p></div>
-                                <div class="form-group"><label class="font-weight-bold">Scheme Name:</label><p>${s.scheme_name || ''}</p></div>
-                                <div class="form-group"><label class="font-weight-bold">Description:</label><p>${s.description || 'N/A'}</p></div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group"><label class="font-weight-bold">Status:</label><p><span class="badge badge-${s.status === 'active' ? 'success' : 'danger'}">${s.status ? (s.status.charAt(0).toUpperCase() + s.status.slice(1)) : 'N/A'}</span></p></div>
-                                <div class="form-group"><label class="font-weight-bold">Created At:</label><p>${s.created_at || 'N/A'}</p></div>
-                                <div class="form-group"><label class="font-weight-bold">Updated At:</label><p>${s.updated_at || 'N/A'}</p></div>
-                            </div>
-                        </div>
-                    `);
+                    $modal.find('[data-field="scheme_id"]').text(s.scheme_id || '');
+                    $modal.find('[data-field="scheme_name"]').text(s.scheme_name || '');
+                    $modal.find('[data-field="description"]').text(s.description || 'N/A');
+                    $modal.find('[data-field="status"]').html('<span class="badge badge-' + (s.status === 'active' ? 'success' : 'danger') + '">' + (s.status ? (s.status.charAt(0).toUpperCase() + s.status.slice(1)) : 'N/A') + '</span>');
+                    $modal.find('[data-field="created_at"]').text(s.created_at || 'N/A');
+                    $modal.find('[data-field="updated_at"]').text(s.updated_at || 'N/A');
                 } else {
-                    $modal.find('.modal-body').html('<div class="alert alert-danger">' + (response.message || 'Error fetching scheme details') + '</div>');
+                    $modal.find('.modal-body').prepend('<div class="alert alert-danger">' + (response.message || 'Error fetching scheme details') + '</div>');
                 }
             },
             error: function() {
-                $modal.find('.modal-body').html('<div class="alert alert-danger">Error fetching scheme details. Please try again.</div>');
+                $modal.find('.modal-body').prepend('<div class="alert alert-danger">Error fetching scheme details. Please try again.</div>');
             }
         });
     });
