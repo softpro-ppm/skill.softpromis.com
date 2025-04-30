@@ -509,10 +509,6 @@ $(function () {
                     return [];
                 }
                 return json.data || [];
-            },
-            "error": function(xhr, error, thrown) {
-                toastr.error('Error loading data. Please try again.');
-                console.error('DataTables error:', error, thrown);
             }
         },
         "columns": [
@@ -525,7 +521,11 @@ $(function () {
             { 
                 "data": null,
                 "render": function(data, type, row) {
-                    return row.address + ', ' + row.city + ', ' + row.state + ' - ' + row.pincode;
+                    var address = [row.address];
+                    if (row.city) address.push(row.city);
+                    if (row.state) address.push(row.state);
+                    if (row.pincode) address.push(row.pincode);
+                    return address.filter(Boolean).join(', ');
                 }
             },
             { 
@@ -579,7 +579,20 @@ $(function () {
                 }
             }
         ],
-        "pageLength": 10
+        "pageLength": 10,
+        "language": {
+            "emptyTable": "No training centers found",
+            "zeroRecords": "No matching records found",
+            "loadingRecords": "Loading...",
+            "processing": "Processing...",
+            "error": "Error loading data. Please try again."
+        }
+    });
+
+    // Error handling for DataTables
+    table.on('error.dt', function(e, settings, techNote, message) {
+        console.error('DataTables error:', message);
+        toastr.error('Error loading data. Please try again.');
     });
 
     // View Center

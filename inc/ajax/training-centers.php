@@ -40,8 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     if ($result) {
                         $data = array();
                         while ($row = $result->fetch_assoc()) {
+                            // Clean and prepare the data
                             $data[] = array(
-                                'center_id' => $row['center_id'],
+                                'center_id' => (int)$row['center_id'],
                                 'partner_name' => htmlspecialchars($row['partner_name'] ?? ''),
                                 'center_name' => htmlspecialchars($row['center_name']),
                                 'contact_person' => htmlspecialchars($row['contact_person']),
@@ -54,9 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                 'status' => $row['status']
                             );
                         }
+                        
                         echo json_encode([
                             'status' => 'success',
-                            'data' => $data
+                            'data' => $data,
+                            'recordsTotal' => count($data),
+                            'recordsFiltered' => count($data)
                         ]);
                     } else {
                         throw new Exception($conn->error);
@@ -106,6 +110,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 $conn->close();
-echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
 exit;
 ?> 
