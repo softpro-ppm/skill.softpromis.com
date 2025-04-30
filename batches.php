@@ -79,7 +79,7 @@ require_once 'includes/sidebar.php';
 
   <!-- Add Batch Modal -->
   <div class="modal fade" id="addBatchModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Add New Batch</h4>
@@ -89,84 +89,48 @@ require_once 'includes/sidebar.php';
         </div>
         <form id="addBatchForm">
           <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="batchCode">Batch Code</label>
-                  <input type="text" class="form-control" id="batchCode" name="batch_code" placeholder="Enter batch code" required>
-                </div>
-                <div class="form-group">
-                  <label for="course">Course</label>
-                  <select class="form-control select2" id="course" name="course_id" required>
-                    <option value="">Select Course</option>
-                    <?php
-                    // Fetch courses from database
-                    $courses = Course::getAll();
-                    foreach ($courses as $course) {
-                        echo "<option value='{$course['course_id']}'>{$course['course_name']}</option>";
-                    }
-                    ?>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="trainingCenter">Training Center</label>
-                  <select class="form-control select2" id="trainingCenter" name="center_id" required>
-                    <option value="">Select Center</option>
-                    <?php
-                    // Fetch training centers from database
-                    $centers = TrainingCenter::getAll();
-                    foreach ($centers as $center) {
-                        echo "<option value='{$center['center_id']}'>{$center['center_name']}</option>";
-                    }
-                    ?>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="trainer">Trainer</label>
-                  <select class="form-control select2" id="trainer" name="trainer_id" required>
-                    <option value="">Select Trainer</option>
-                    <?php
-                    // Fetch trainers from database
-                    $trainers = Trainer::getAll();
-                    foreach ($trainers as $trainer) {
-                        echo "<option value='{$trainer['id']}'>{$trainer['name']}</option>";
-                    }
-                    ?>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="capacity">Batch Capacity</label>
-                  <input type="number" class="form-control" id="capacity" name="capacity" placeholder="Enter batch capacity" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="startDate">Start Date</label>
-                  <div class="input-group date" id="startDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" name="start_date" data-target="#startDate" required>
-                    <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="endDate">End Date</label>
-                  <div class="input-group date" id="endDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" name="end_date" data-target="#endDate" required>
-                    <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="schedule">Schedule</label>
-                  <textarea class="form-control" id="schedule" name="schedule" rows="3" placeholder="Enter batch schedule" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="remarks">Remarks</label>
-                  <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter any remarks"></textarea>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="batchCode">Batch Code</label>
+              <input type="text" class="form-control" id="batchCode" name="batch_code" required>
+            </div>
+            <div class="form-group">
+              <label for="course">Course</label>
+              <select class="form-control" id="course" name="course_id" required>
+                <option value="">Select Course</option>
+                <?php foreach (Course::getAll() as $course) {
+                  echo "<option value='{$course['course_id']}'>{$course['course_name']}</option>";
+                } ?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="center">Training Center</label>
+              <select class="form-control" id="center" name="center_id" required>
+                <option value="">Select Center</option>
+                <?php foreach (TrainingCenter::getAll() as $center) {
+                  echo "<option value='{$center['center_id']}'>{$center['center_name']}</option>";
+                } ?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="startDate">Start Date</label>
+              <input type="date" class="form-control" id="startDate" name="start_date" required>
+            </div>
+            <div class="form-group">
+              <label for="endDate">End Date</label>
+              <input type="date" class="form-control" id="endDate" name="end_date" required>
+            </div>
+            <div class="form-group">
+              <label for="capacity">Batch Capacity</label>
+              <input type="number" class="form-control" id="capacity" name="capacity" required>
+            </div>
+            <div class="form-group">
+              <label for="status">Status</label>
+              <select class="form-control" id="status" name="status" required>
+                <option value="upcoming">Upcoming</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
@@ -178,88 +142,9 @@ require_once 'includes/sidebar.php';
     </div>
   </div>
 
-  <!-- View Batch Modal -->
-  <div class="modal fade" id="viewBatchModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">View Batch Details</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Batch Code</label>
-                <p id="viewBatchCode"></p>
-              </div>
-              <div class="form-group">
-                <label>Course</label>
-                <p id="viewCourse"></p>
-              </div>
-              <div class="form-group">
-                <label>Training Center</label>
-                <p id="viewCenter"></p>
-              </div>
-              <div class="form-group">
-                <label>Trainer</label>
-                <p id="viewTrainer"></p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Start Date</label>
-                <p id="viewStartDate"></p>
-              </div>
-              <div class="form-group">
-                <label>End Date</label>
-                <p id="viewEndDate"></p>
-              </div>
-              <div class="form-group">
-                <label>Schedule</label>
-                <p id="viewSchedule"></p>
-              </div>
-              <div class="form-group">
-                <label>Status</label>
-                <p id="viewStatus"></p>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <h5>Enrolled Students</h5>
-              <div class="table-responsive">
-                <table id="enrolledStudentsTable" class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Student ID</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Fee Status</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Dynamic rows will be loaded here by AJAX -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Edit Batch Modal -->
   <div class="modal fade" id="editBatchModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Edit Batch</h4>
@@ -270,87 +155,48 @@ require_once 'includes/sidebar.php';
         <form id="editBatchForm">
           <input type="hidden" id="editBatchId" name="batch_id">
           <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editBatchCode">Batch Code</label>
-                  <input type="text" class="form-control" id="editBatchCode" name="batch_code" placeholder="Enter batch code" required>
-                </div>
-                <div class="form-group">
-                  <label for="editCourse">Course</label>
-                  <select class="form-control select2" id="editCourse" name="course_id" required>
-                    <option value="">Select Course</option>
-                    <?php
-                    foreach ($courses as $course) {
-                        echo "<option value='{$course['course_id']}'>{$course['course_name']}</option>";
-                    }
-                    ?>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="editTrainingCenter">Training Center</label>
-                  <select class="form-control select2" id="editTrainingCenter" name="center_id" required>
-                    <option value="">Select Center</option>
-                    <?php
-                    foreach ($centers as $center) {
-                        echo "<option value='{$center['center_id']}'>{$center['center_name']}</option>";
-                    }
-                    ?>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="editTrainer">Trainer</label>
-                  <select class="form-control select2" id="editTrainer" name="trainer_id" required>
-                    <option value="">Select Trainer</option>
-                    <?php
-                    foreach ($trainers as $trainer) {
-                        echo "<option value='{$trainer['id']}'>{$trainer['name']}</option>";
-                    }
-                    ?>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="editCapacity">Batch Capacity</label>
-                  <input type="number" class="form-control" id="editCapacity" name="capacity" placeholder="Enter batch capacity" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="editStartDate">Start Date</label>
-                  <div class="input-group date" id="editStartDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" name="start_date" data-target="#editStartDate" required>
-                    <div class="input-group-append" data-target="#editStartDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="editEndDate">End Date</label>
-                  <div class="input-group date" id="editEndDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" name="end_date" data-target="#editEndDate" required>
-                    <div class="input-group-append" data-target="#editEndDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="editSchedule">Schedule</label>
-                  <textarea class="form-control" id="editSchedule" name="schedule" rows="3" placeholder="Enter batch schedule" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="editRemarks">Remarks</label>
-                  <textarea class="form-control" id="editRemarks" name="remarks" rows="3" placeholder="Enter any remarks"></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="editStatus">Status</label>
-                  <select class="form-control" id="editStatus" name="status" required>
-                    <option value="upcoming">Upcoming</option>
-                    <option value="ongoing">Ongoing</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="editBatchCode">Batch Code</label>
+              <input type="text" class="form-control" id="editBatchCode" name="batch_code" required>
+            </div>
+            <div class="form-group">
+              <label for="editCourse">Course</label>
+              <select class="form-control" id="editCourse" name="course_id" required>
+                <option value="">Select Course</option>
+                <?php foreach (Course::getAll() as $course) {
+                  echo "<option value='{$course['course_id']}'>{$course['course_name']}</option>";
+                } ?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editCenter">Training Center</label>
+              <select class="form-control" id="editCenter" name="center_id" required>
+                <option value="">Select Center</option>
+                <?php foreach (TrainingCenter::getAll() as $center) {
+                  echo "<option value='{$center['center_id']}'>{$center['center_name']}</option>";
+                } ?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editStartDate">Start Date</label>
+              <input type="date" class="form-control" id="editStartDate" name="start_date" required>
+            </div>
+            <div class="form-group">
+              <label for="editEndDate">End Date</label>
+              <input type="date" class="form-control" id="editEndDate" name="end_date" required>
+            </div>
+            <div class="form-group">
+              <label for="editCapacity">Batch Capacity</label>
+              <input type="number" class="form-control" id="editCapacity" name="capacity" required>
+            </div>
+            <div class="form-group">
+              <label for="editStatus">Status</label>
+              <select class="form-control" id="editStatus" name="status" required>
+                <option value="upcoming">Upcoming</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
@@ -369,3 +215,109 @@ require_once 'includes/footer.php';
 
 <!-- Required JavaScript -->
 <script src="assets/js/batches.js"></script>
+
+<script>
+$(function () {
+  // --- ADD ---
+  $('#addBatchForm').on('submit', function(e) {
+    e.preventDefault();
+    var $form = $(this);
+    var isValid = true;
+    $form.find('[required]').each(function() {
+      if (!$(this).val()) {
+        isValid = false;
+        $(this).addClass('is-invalid');
+      } else {
+        $(this).removeClass('is-invalid');
+      }
+    });
+    if (!isValid) return false;
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'POST',
+      data: $form.serialize() + '&action=add',
+      dataType: 'json',
+      success: function(response) {
+        if(response.status === 'success') {
+          $('#addBatchModal').modal('hide');
+          toastr.success(response.message || 'Batch added successfully');
+          $form[0].reset();
+          $form.find('.is-invalid').removeClass('is-invalid');
+          $('#addBatchModal').one('hidden.bs.modal', function() {
+            $('#batchesTable').DataTable().ajax.reload(null, true);
+          });
+        } else {
+          toastr.error(response.message || 'Error adding batch');
+        }
+      },
+      error: function() {
+        toastr.error('Error adding batch');
+      }
+    });
+  });
+
+  // --- EDIT (populate modal) ---
+  $(document).on('click', '.edit-batch-btn', function() {
+    var batchId = $(this).data('batch-id');
+    var $modal = $('#editBatchModal');
+    $modal.find('form')[0].reset();
+    $modal.find('.is-invalid').removeClass('is-invalid');
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'GET',
+      data: { action: 'get', batch_id: batchId },
+      dataType: 'json',
+      success: function(response) {
+        var b = response.data || {};
+        $modal.find('#editBatchId').val(b.batch_id || '');
+        $modal.find('#editBatchCode').val(b.batch_code || '');
+        $modal.find('#editCourse').val(b.course_id || '').trigger('change');
+        $modal.find('#editCenter').val(b.center_id || '').trigger('change');
+        $modal.find('#editStartDate').val(b.start_date || '');
+        $modal.find('#editEndDate').val(b.end_date || '');
+        $modal.find('#editCapacity').val(b.capacity || '');
+        $modal.find('#editStatus').val(b.status || 'upcoming');
+        $modal.modal('show');
+      }
+    });
+  });
+
+  // --- EDIT (submit) ---
+  $('#editBatchForm').on('submit', function(e) {
+    e.preventDefault();
+    var $form = $(this);
+    var isValid = true;
+    $form.find('[required]').each(function() {
+      if (!$(this).val()) {
+        isValid = false;
+        $(this).addClass('is-invalid');
+      } else {
+        $(this).removeClass('is-invalid');
+      }
+    });
+    if (!isValid) return false;
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'POST',
+      data: $form.serialize() + '&action=edit',
+      dataType: 'json',
+      success: function(response) {
+        if(response.status === 'success') {
+          $('#editBatchModal').modal('hide');
+          toastr.success(response.message || 'Batch updated successfully');
+          $form[0].reset();
+          $form.find('.is-invalid').removeClass('is-invalid');
+          $('#editBatchModal').one('hidden.bs.modal', function() {
+            $('#batchesTable').DataTable().ajax.reload(null, true);
+          });
+        } else {
+          toastr.error(response.message || 'Error updating batch');
+        }
+      },
+      error: function() {
+        toastr.error('Error updating batch');
+      }
+    });
+  });
+});
+</script>
