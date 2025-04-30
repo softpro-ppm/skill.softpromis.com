@@ -426,8 +426,14 @@ $(function () {
 
     // --- Reset forms on modal close ---
     $('#addSchemeModal, #editSchemeModal').on('hidden.bs.modal', function () {
-        $(this).find('form')[0].reset();
-        $(this).find('.is-invalid').removeClass('is-invalid');
+        var $form = $(this).find('form');
+        if ($form.length) {
+            $form[0].reset();
+            $form.find('.is-invalid').removeClass('is-invalid');
+            // Explicitly clear all input, textarea, and select fields
+            $form.find('input[type="text"], input[type="hidden"], textarea').val('');
+            $form.find('select').prop('selectedIndex', 0);
+        }
     });
 });
 </script>
