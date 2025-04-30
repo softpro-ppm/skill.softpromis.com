@@ -474,6 +474,7 @@ try {
                     $modal.modal('hide');
                     toastr.success(response.message || 'Scheme updated successfully');
                     $('#schemesTable').DataTable().ajax.reload();
+                    $form[0].reset();
                 } else {
                     toastr.error(response.message || 'Error updating scheme');
                 }
@@ -525,10 +526,9 @@ try {
     // Add Scheme Form Submission
     $('#addSchemeForm').on('submit', function(e) {
         e.preventDefault();
-        
-        // Basic validation
+        var $form = $(this);
         var isValid = true;
-        $(this).find('[required]').each(function() {
+        $form.find('[required]').each(function() {
             if (!$(this).val()) {
                 isValid = false;
                 $(this).addClass('is-invalid');
@@ -536,23 +536,21 @@ try {
                 $(this).removeClass('is-invalid');
             }
         });
-        
         if (!isValid) {
             toastr.error('Please fill in all required fields');
             return false;
         }
-        
         // Submit form
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
-            data: $(this).serialize() + '&action=add',
+            data: $form.serialize() + '&action=add',
             success: function(response) {
                 if(response.status === 'success') {
                     $('#addSchemeModal').modal('hide');
-                    table.ajax.reload();
+                    $('#schemesTable').DataTable().ajax.reload();
                     toastr.success(response.message || 'Scheme added successfully');
-                    $('#addSchemeForm')[0].reset();
+                    $form[0].reset();
                 } else {
                     toastr.error(response.message || 'Error adding scheme');
                 }
@@ -561,6 +559,12 @@ try {
                 toastr.error('Error adding scheme');
             }
         });
+    });
+
+    // Reset forms when modals are closed
+    $('#addSchemeModal, #editSchemeModal').on('hidden.bs.modal', function () {
+        $(this).find('form')[0].reset();
+        $(this).find('.is-invalid').removeClass('is-invalid');
     });
 
     // Make sure Bootstrap is properly initialized
