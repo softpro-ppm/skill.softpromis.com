@@ -347,7 +347,9 @@ $(function () {
                 if(response.status === 'success') {
                     $modal.modal('hide');
                     toastr.success(response.message || 'Scheme updated successfully');
-                    table.ajax.reload();
+                    setTimeout(function() {
+                        table.ajax.reload(null, false);
+                    }, 400);
                     setTimeout(function() {
                         $form[0].reset();
                         $form.find('.is-invalid').removeClass('is-invalid');
@@ -388,8 +390,10 @@ $(function () {
             success: function(response) {
                 if(response.status === 'success') {
                     $('#addSchemeModal').modal('hide');
-                    table.ajax.reload();
                     toastr.success(response.message || 'Scheme added successfully');
+                    setTimeout(function() {
+                        table.ajax.reload(null, false);
+                    }, 400);
                     setTimeout(function() {
                         $form[0].reset();
                         $form.find('.is-invalid').removeClass('is-invalid');
