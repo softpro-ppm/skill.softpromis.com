@@ -225,12 +225,18 @@ $(function () {
       url: 'inc/ajax/batches_ajax.php',
       type: 'GET',
       data: function (d) { d.action = 'list'; },
-      dataSrc: function (json) { return json.data || []; }
+      dataSrc: function (json) {
+        if (!json || !json.data) {
+          toastr.error('No data returned from server.');
+          return [];
+        }
+        return json.data;
+      }
     },
     columns: [
       { data: 'batch_code' },
-      { data: 'course_name' },
-      { data: 'center_name' },
+      { data: 'course_name', defaultContent: '-' },
+      { data: 'center_name', defaultContent: '-' },
       { data: 'start_date' },
       { data: 'end_date' },
       { data: 'capacity' },
