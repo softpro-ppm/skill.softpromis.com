@@ -261,13 +261,11 @@ $(function () {
                 if(response.status === 'success') {
                     $('#addSectorModal').modal('hide');
                     toastr.success(response.message || 'Sector added successfully');
-                    // Always reload table after modal is hidden
-                    $('#addSectorModal').one('hidden.bs.modal', function() {
-                        table.clear().draw();
+                    $form[0].reset();
+                    $form.find('.is-invalid').removeClass('is-invalid');
+                    setTimeout(function() {
                         table.ajax.reload(null, false);
-                        $form[0].reset();
-                        $form.find('.is-invalid').removeClass('is-invalid');
-                    });
+                    }, 400);
                 } else {
                     toastr.error(response.message || 'Error adding sector');
                 }
@@ -349,14 +347,12 @@ $(function () {
             success: function(response) {
                 if(response.status === 'success') {
                     $('#editSectorModal').modal('hide');
-                    setTimeout(function() {
-                        $form[0].reset();
-                        $form.find('.is-invalid').removeClass('is-invalid');
-                    }, 300);
+                    toastr.success(response.message || 'Sector updated successfully');
+                    $form[0].reset();
+                    $form.find('.is-invalid').removeClass('is-invalid');
                     setTimeout(function() {
                         table.ajax.reload(null, false);
                     }, 400);
-                    toastr.success(response.message || 'Sector updated successfully');
                 } else {
                     toastr.error(response.message || 'Error updating sector');
                 }
