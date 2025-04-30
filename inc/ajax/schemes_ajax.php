@@ -22,14 +22,22 @@ try {
                     scheme_name,
                     description,
                     status,
-                    created_at,
-                    updated_at
+                    DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at,
+                    DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at
                 FROM schemes 
                 ORDER BY created_at DESC
             ");
             $schemes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            sendJSONResponse(true, 'Schemes retrieved successfully', $schemes);
+            // Format for DataTables
+            $response = [
+                'status' => 'success',
+                'message' => 'Schemes retrieved successfully',
+                'data' => $schemes
+            ];
+            
+            echo json_encode($response);
+            exit;
             break;
 
         case 'add':
@@ -118,7 +126,17 @@ try {
                 sendJSONResponse(false, 'Scheme ID is required');
             }
 
-            $stmt = $pdo->prepare("SELECT * FROM schemes WHERE scheme_id = ?");
+            $stmt = $pdo->prepare("
+                SELECT 
+                    scheme_id,
+                    scheme_name,
+                    description,
+                    status,
+                    DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at,
+                    DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at
+                FROM schemes 
+                WHERE scheme_id = ?
+            ");
             $stmt->execute([$scheme_id]);
             $scheme = $stmt->fetch(PDO::FETCH_ASSOC);
 

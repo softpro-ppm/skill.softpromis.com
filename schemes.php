@@ -287,15 +287,19 @@ try {
             }
         },
         "columns": [
-            { "data": "scheme_id" },
+            { 
+                "data": null,
+                "render": function(data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
             { "data": "scheme_name" },
             { "data": "description" },
             { 
                 "data": "status",
                 "render": function(data, type, row) {
                     if (type === 'display') {
-                        var badgeClass = data === 'active' ? 'success' : 'danger';
-                        return '<span class="badge badge-' + badgeClass + '">' + 
+                        return '<span class="badge badge-' + (data === 'active' ? 'success' : 'danger') + '">' + 
                                data.charAt(0).toUpperCase() + data.slice(1) + '</span>';
                     }
                     return data;
@@ -311,7 +315,7 @@ try {
                     return '<div class="btn-group btn-group-sm">' +
                            '<button type="button" class="btn btn-info view-scheme" data-id="' + row.scheme_id + '"><i class="fas fa-eye"></i></button>' +
                            '<button type="button" class="btn btn-primary edit-scheme" data-id="' + row.scheme_id + '"><i class="fas fa-edit"></i></button>' +
-                           '<button type="button" class="btn btn-danger delete-scheme" data-id="' + row.scheme_id + '" data-name="' + row.scheme_name + '"><i class="fas fa-trash"></i></button>' +
+                           '<button type="button" class="btn btn-danger delete-scheme" data-id="' + row.scheme_id + '"><i class="fas fa-trash"></i></button>' +
                            '</div>';
                 }
             }
@@ -319,7 +323,7 @@ try {
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
-        "order": [[0, 'desc']]
+        "order": [[0, 'asc']]
     });
 
     // View Scheme
@@ -335,18 +339,18 @@ try {
             },
             success: function(response) {
                 if(response.status === 'success') {
-                    var data = response.data;
+                    var scheme = response.data;
                     
                     // Populate modal fields
-                    $('#viewSchemeModal [data-field="scheme_id"]').text(data.scheme_id);
-                    $('#viewSchemeModal [data-field="scheme_name"]').text(data.scheme_name);
-                    $('#viewSchemeModal [data-field="description"]').text(data.description);
+                    $('#viewSchemeModal [data-field="scheme_id"]').text(scheme.scheme_id);
+                    $('#viewSchemeModal [data-field="scheme_name"]').text(scheme.scheme_name);
+                    $('#viewSchemeModal [data-field="description"]').text(scheme.description || 'N/A');
                     $('#viewSchemeModal [data-field="status"]').html(
-                        '<span class="badge badge-' + (data.status === 'active' ? 'success' : 'danger') + '">' + 
-                        data.status.charAt(0).toUpperCase() + data.status.slice(1) + '</span>'
+                        '<span class="badge badge-' + (scheme.status === 'active' ? 'success' : 'danger') + '">' + 
+                        scheme.status.charAt(0).toUpperCase() + scheme.status.slice(1) + '</span>'
                     );
-                    $('#viewSchemeModal [data-field="created_at"]').text(data.created_at);
-                    $('#viewSchemeModal [data-field="updated_at"]').text(data.updated_at);
+                    $('#viewSchemeModal [data-field="created_at"]').text(scheme.created_at);
+                    $('#viewSchemeModal [data-field="updated_at"]').text(scheme.updated_at || 'N/A');
                     
                     // Show modal
                     $('#viewSchemeModal').modal('show');
@@ -400,7 +404,6 @@ try {
     // Delete Scheme
     $(document).on('click', '.delete-scheme', function() {
         var schemeId = $(this).data('id');
-        var schemeName = $(this).data('name');
         
         // Set scheme ID in modal
         $('#deleteSchemeId').val(schemeId);
