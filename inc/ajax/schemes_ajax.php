@@ -8,19 +8,37 @@ checkPermission('admin');
 
 header('Content-Type: application/json');
 
-$action = $_POST['action'] ?? '';
+$action = $_REQUEST['action'] ?? '';
 
 try {
     $pdo = getDBConnection();
 
     switch ($action) {
-        case 'create':
+        case 'list':
+            // Get all schemes for DataTables
+            $stmt = $pdo->query("
+                SELECT 
+                    scheme_id,
+                    scheme_name,
+                    description,
+                    status,
+                    created_at,
+                    updated_at
+                FROM schemes 
+                ORDER BY created_at DESC
+            ");
+            $schemes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            sendJSONResponse(true, 'Schemes retrieved successfully', $schemes);
+            break;
+
+        case 'add':
             $scheme_name = sanitizeInput($_POST['scheme_name'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
 
             if (empty($scheme_name)) {
-                sendJSONResponse(false, 'Required fields are missing');
+                sendJSONResponse(false, 'Scheme name is required');
             }
 
             $stmt = $pdo->prepare("
@@ -36,61 +54,12 @@ try {
                 'scheme_name' => $scheme_name
             ]);
 
-            sendJSONResponse(true, 'Scheme created successfully', [
-                'scheme_id' => $pdo->lastInsertId()
-            ]);
+            sendJSONResponse(true, 'Scheme added successfully');
             break;
 
-        case 'read':
-            $page = (int)($_POST['page'] ?? 1);
-            $perPage = (int)($_POST['per_page'] ?? 10);
-            $search = sanitizeInput($_POST['search'] ?? '');
-            $status = sanitizeInput($_POST['status'] ?? '');
-
-            $where = [];
-            $params = [];
-
-            if (!empty($search)) {
-                $searchFields = ['scheme_name', 'description'];
-                $searchResult = buildSearchQuery($searchFields, $search);
-                $where[] = "(" . $searchResult['conditions'] . ")";
-                $params = array_merge($params, $searchResult['params']);
-            }
-
-            if (!empty($status)) {
-                $where[] = "status = ?";
-                $params[] = $status;
-            }
-
-            $whereClause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
-
-            // Get total count
-            $countStmt = $pdo->prepare("SELECT COUNT(*) FROM schemes $whereClause");
-            $countStmt->execute($params);
-            $total = $countStmt->fetchColumn();
-
-            // Get pagination info
-            $pagination = getPagination($page, $total, $perPage);
-
-            // Get data
-            $stmt = $pdo->prepare("
-                SELECT * FROM schemes 
-                $whereClause
-                ORDER BY created_at DESC
-                LIMIT ? OFFSET ?
-            ");
-            $stmt->execute([...$params, $pagination['per_page'], $pagination['offset']]);
-            $schemes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            sendJSONResponse(true, 'Schemes retrieved successfully', [
-                'data' => $schemes,
-                'pagination' => $pagination
-            ]);
-            break;
-
-        case 'update':
-            $scheme_id = (int)($_POST['id'] ?? 0);
-            $scheme_name = sanitizeInput($_POST['name'] ?? '');
+        case 'edit':
+            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            $scheme_name = sanitizeInput($_POST['scheme_name'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
 
@@ -116,10 +85,10 @@ try {
             break;
 
         case 'delete':
-            $scheme_id = (int)($_POST['id'] ?? 0);
+            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
 
             if (empty($scheme_id)) {
-                sendJSONResponse(false, 'ID is required');
+                sendJSONResponse(false, 'Scheme ID is required');
             }
 
             // Get scheme info for audit log
@@ -143,10 +112,10 @@ try {
             break;
 
         case 'get':
-            $scheme_id = (int)($_POST['id'] ?? 0);
+            $scheme_id = (int)($_GET['scheme_id'] ?? 0);
 
             if (empty($scheme_id)) {
-                sendJSONResponse(false, 'ID is required');
+                sendJSONResponse(false, 'Scheme ID is required');
             }
 
             $stmt = $pdo->prepare("SELECT * FROM schemes WHERE scheme_id = ?");
