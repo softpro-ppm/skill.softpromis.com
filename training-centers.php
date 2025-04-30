@@ -675,14 +675,19 @@ $(function () {
     $(document).on('click', '.edit-btn', function() {
         var centerId = $(this).data('id');
         
-        // Reset form
+        // Reset form and show modal
         $('#centerForm')[0].reset();
         $('.is-invalid').removeClass('is-invalid');
-        
-        // Show loading in modal
-        $('#centerModal .modal-body').html('<div class="text-center"><i class="fas fa-spinner fa-spin fa-3x"></i></div>');
         $('#centerModal').modal('show');
         
+        // Update modal title
+        $('.modal-title').text('Edit Training Center');
+        
+        // Show loading state in submit button
+        var submitBtn = $('#centerModal button[type="submit"]');
+        submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+        
+        // Load center data
         $.ajax({
             url: 'inc/ajax/training-centers.php',
             type: 'GET',
@@ -697,7 +702,30 @@ $(function () {
                     
                     // Set form values
                     $('#center_id').val(data.center_id);
-                    $('#partner_id').val(data.partner_id).trigger('change');
+                    
+                    // Load and set partner dropdown
+                    $.ajax({
+                        url: 'inc/ajax/training-centers.php',
+                        type: 'GET',
+                        data: { action: 'get_partners' },
+                        success: function(partnersResponse) {
+                            if(partnersResponse.status === 'success') {
+                                var $partnerSelect = $('#partner_id');
+                                $partnerSelect.empty();
+                                $partnerSelect.append('<option value="">Select Partner</option>');
+                                
+                                partnersResponse.data.forEach(function(partner) {
+                                    var selected = partner.partner_id == data.partner_id ? 'selected' : '';
+                                    $partnerSelect.append('<option value="' + partner.partner_id + '" ' + selected + '>' + partner.partner_name + '</option>');
+                                });
+                                
+                                // Initialize or refresh Select2
+                                $partnerSelect.trigger('change');
+                            }
+                        }
+                    });
+                    
+                    // Set other form values
                     $('#center_name').val(data.center_name);
                     $('#contact_person').val(data.contact_person);
                     $('#email').val(data.email);
@@ -708,8 +736,8 @@ $(function () {
                     $('#pincode').val(data.pincode);
                     $('#status').val(data.status);
                     
-                    // Update modal title
-                    $('.modal-title').text('Edit Training Center');
+                    // Enable submit button
+                    submitBtn.prop('disabled', false).text('Save Changes');
                 } else {
                     toastr.error(response.message || 'Error fetching center data');
                     $('#centerModal').modal('hide');
@@ -736,15 +764,13 @@ $(function () {
             if (!value || value.trim() === '') {
                 isValid = false;
                 $('#' + field).addClass('is-invalid');
-                toastr.error(field.replace('_', ' ') + ' is required');
+                toastr.error(field.replace('_', ' ').toUpperCase() + ' is required');
             } else {
                 $('#' + field).removeClass('is-invalid');
             }
         });
         
-        if (!isValid) {
-            return false;
-        }
+        if (!isValid) return false;
         
         // Prepare form data
         var formData = new FormData(this);

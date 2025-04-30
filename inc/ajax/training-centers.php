@@ -186,6 +186,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['action'])) {
         switch ($_GET['action']) {
+            case 'get_partners':
+                try {
+                    $sql = "SELECT partner_id, partner_name 
+                            FROM training_partners 
+                            WHERE status = 'active' 
+                            ORDER BY partner_name";
+                    
+                    $result = $conn->query($sql);
+                    
+                    if ($result) {
+                        $partners = array();
+                        while ($row = $result->fetch_assoc()) {
+                            $partners[] = array(
+                                'partner_id' => (int)$row['partner_id'],
+                                'partner_name' => htmlspecialchars($row['partner_name'])
+                            );
+                        }
+                        echo json_encode([
+                            'status' => 'success',
+                            'data' => $partners
+                        ]);
+                    } else {
+                        throw new Exception($conn->error);
+                    }
+                } catch (Exception $e) {
+                    error_log("Error fetching partners list: " . $e->getMessage());
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => 'Error fetching partners list'
+                    ]);
+                }
+                break;
+
             case 'list':
                 try {
                     $sql = "SELECT tc.*, tp.partner_name 
