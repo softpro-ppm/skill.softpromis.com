@@ -311,7 +311,7 @@ $(function () {
             type: 'GET',
             data: { action: 'get', scheme_id: schemeId },
             success: function(response) {
-                if(response.status === 'success' && response.data) {
+                if(response.status === 'success' && response.data && typeof response.data === 'object') {
                     var s = response.data;
                     $modal.find('.modal-body').html(`
                         <div class="row">
@@ -460,8 +460,8 @@ $(function () {
             success: function(response) {
                 $('#deleteSchemeModal').modal('hide');
                 if(response.status === 'success') {
-                    table.ajax.reload();
                     toastr.success(response.message || 'Scheme deleted successfully');
+                    table.ajax.reload(null, false);
                 } else {
                     toastr.error(response.message || 'Error deleting scheme');
                 }
