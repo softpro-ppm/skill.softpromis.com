@@ -267,122 +267,63 @@ try {
 <?php include 'includes/js.php'; ?>
 
 <script>
-  $(function () {
-    // Initialize DataTable
+$(function () {
+    // DataTable initialization
     var table = $('#schemesTable').DataTable({
-        "processing": true,
-        "serverSide": false,
-        "ajax": {
-            "url": "inc/ajax/schemes_ajax.php",
-            "type": "GET",
-            "data": function(d) {
-                d.action = "list";
-            },
-            "dataSrc": function(json) {
-                if (json.status === 'error') {
-                    toastr.error(json.message || 'Error loading data');
-                    return [];
-                }
-                return json.data || [];
-            }
+        processing: true,
+        serverSide: false,
+        ajax: {
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'GET',
+            data: function (d) { d.action = 'list'; },
+            dataSrc: function (json) { return json.data || []; }
         },
-        "columns": [
-            { 
-                "data": null,
-                "render": function(data, type, row, meta) {
-                    return meta.row + 1;
-                }
-            },
-            { "data": "scheme_name" },
-            { "data": "description" },
-            { 
-                "data": "status",
-                "render": function(data, type, row) {
-                    if (type === 'display') {
-                        return '<span class="badge badge-' + (data === 'active' ? 'success' : 'danger') + '">' + 
-                               data.charAt(0).toUpperCase() + data.slice(1) + '</span>';
-                    }
-                    return data;
-                }
-            },
-            { "data": "created_at" },
-            { "data": "updated_at" },
-            { 
-                "data": null,
-                "orderable": false,
-                "searchable": false,
-                "render": function(data, type, row) {
-                    return '<div class="btn-group btn-group-sm">' +
-                           '<button type="button" class="btn btn-info view-scheme" data-id="' + row.scheme_id + '"><i class="fas fa-eye"></i></button>' +
-                           '<button type="button" class="btn btn-primary edit-scheme" data-id="' + row.scheme_id + '"><i class="fas fa-edit"></i></button>' +
-                           '<button type="button" class="btn btn-danger delete-scheme" data-id="' + row.scheme_id + '"><i class="fas fa-trash"></i></button>' +
-                           '</div>';
-                }
-            }
+        columns: [
+            { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
+            { data: 'scheme_name' },
+            { data: 'description' },
+            { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'danger') + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
+            { data: 'created_at' },
+            { data: 'updated_at' },
+            { data: null, orderable: false, searchable: false, render: function (data, type, row) {
+                return '<div class="btn-group btn-group-sm">' +
+                    '<button type="button" class="btn btn-info view-scheme-btn" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-eye"></i></button>' +
+                    '<button type="button" class="btn btn-primary edit-scheme-btn" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-edit"></i></button>' +
+                    '<button type="button" class="btn btn-danger delete-scheme-btn" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-trash"></i></button>' +
+                    '</div>';
+            } }
         ],
-        "responsive": true,
-        "lengthChange": true,
-        "autoWidth": false,
-        "order": [[0, 'asc']]
+        responsive: true,
+        lengthChange: true,
+        autoWidth: false,
+        order: [[0, 'asc']]
     });
 
-    // View Scheme
+    // --- VIEW ---
     $(document).on('click', '.view-scheme-btn', function(e) {
         e.preventDefault();
-        e.stopPropagation();
         var schemeId = $(this).data('scheme-id');
         var $modal = $('#viewSchemeModal');
-        
-        // Show loading state
         $modal.find('.modal-body').html('<div class="text-center py-5"><i class="fas fa-spinner fa-spin fa-3x"></i><p class="mt-2">Loading...</p></div>');
-        
-        // Show modal
-        $modal.modal({
-            backdrop: 'static',
-            keyboard: false,
-            show: true
-        });
-        
-        // Fetch scheme details
+        $modal.modal({ backdrop: 'static', keyboard: false, show: true });
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'GET',
-            data: {
-                action: 'get',
-                scheme_id: schemeId
-            },
+            data: { action: 'get', scheme_id: schemeId },
             success: function(response) {
                 if(response.status === 'success' && response.data) {
-                    var scheme = response.data;
+                    var s = response.data;
                     $modal.find('.modal-body').html(`
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Scheme ID:</label>
-                                    <p data-field="scheme_id">${scheme.scheme_id || ''}</p>
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Scheme Name:</label>
-                                    <p data-field="scheme_name">${scheme.scheme_name || ''}</p>
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Description:</label>
-                                    <p data-field="description">${scheme.description || 'N/A'}</p>
-                                </div>
+                                <div class="form-group"><label class="font-weight-bold">Scheme ID:</label><p>${s.scheme_id || ''}</p></div>
+                                <div class="form-group"><label class="font-weight-bold">Scheme Name:</label><p>${s.scheme_name || ''}</p></div>
+                                <div class="form-group"><label class="font-weight-bold">Description:</label><p>${s.description || 'N/A'}</p></div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Status:</label>
-                                    <p data-field="status"><span class="badge badge-${scheme.status === 'active' ? 'success' : 'danger'}">${scheme.status ? (scheme.status.charAt(0).toUpperCase() + scheme.status.slice(1)) : 'N/A'}</span></p>
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Created At:</label>
-                                    <p data-field="created_at">${scheme.created_at || 'N/A'}</p>
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Updated At:</label>
-                                    <p data-field="updated_at">${scheme.updated_at || 'N/A'}</p>
-                                </div>
+                                <div class="form-group"><label class="font-weight-bold">Status:</label><p><span class="badge badge-${s.status === 'active' ? 'success' : 'danger'}">${s.status ? (s.status.charAt(0).toUpperCase() + s.status.slice(1)) : 'N/A'}</span></p></div>
+                                <div class="form-group"><label class="font-weight-bold">Created At:</label><p>${s.created_at || 'N/A'}</p></div>
+                                <div class="form-group"><label class="font-weight-bold">Updated At:</label><p>${s.updated_at || 'N/A'}</p></div>
                             </div>
                         </div>
                     `);
@@ -396,45 +337,28 @@ try {
         });
     });
 
-    // Close modal handler
-    $('.modal').on('hidden.bs.modal', function() {
-        $(this).find('.modal-body').html('');
-    });
-
-    // Edit Scheme
+    // --- EDIT (populate modal) ---
     $(document).on('click', '.edit-scheme-btn', function(e) {
         e.preventDefault();
-        e.stopPropagation();
         var schemeId = $(this).data('scheme-id');
         var $modal = $('#editSchemeModal');
-        
-        // Reset form and show loading state
         $modal.find('form')[0].reset();
         $modal.find('.is-invalid').removeClass('is-invalid');
-        $modal.find('.modal-body .alert').remove(); // Remove any previous alerts
+        $modal.find('.modal-body .alert').remove();
         $modal.find('.modal-body').append('<div class="text-center py-2" id="edit-loading"><i class="fas fa-spinner fa-spin fa-2x"></i></div>');
-        $modal.modal({
-            backdrop: 'static',
-            keyboard: false,
-            show: true
-        });
-        
-        // Fetch scheme details
+        $modal.modal({ backdrop: 'static', keyboard: false, show: true });
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'GET',
-            data: {
-                action: 'get',
-                scheme_id: schemeId
-            },
+            data: { action: 'get', scheme_id: schemeId },
             success: function(response) {
                 $('#edit-loading').remove();
                 if(response.status === 'success' && response.data) {
-                    var scheme = response.data;
-                    $modal.find('#editSchemeId').val(scheme.scheme_id || '');
-                    $modal.find('#editSchemeName').val(scheme.scheme_name || '');
-                    $modal.find('#editDescription').val(scheme.description || '');
-                    $modal.find('#editStatus').val(scheme.status || 'active');
+                    var s = response.data;
+                    $modal.find('#editSchemeId').val(s.scheme_id || '');
+                    $modal.find('#editSchemeName').val(s.scheme_name || '');
+                    $modal.find('#editDescription').val(s.description || '');
+                    $modal.find('#editStatus').val(s.status || 'active');
                 } else {
                     $modal.find('.modal-body').prepend('<div class="alert alert-danger">' + (response.message || 'Error fetching scheme data') + '</div>');
                 }
@@ -446,7 +370,7 @@ try {
         });
     });
 
-    // Edit Scheme Form Submission
+    // --- EDIT (submit) ---
     $('#editSchemeForm').on('submit', function(e) {
         e.preventDefault();
         var $form = $(this);
@@ -464,7 +388,6 @@ try {
             toastr.error('Please fill in all required fields');
             return false;
         }
-        // Submit form
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
@@ -473,7 +396,7 @@ try {
                 if(response.status === 'success') {
                     $modal.modal('hide');
                     toastr.success(response.message || 'Scheme updated successfully');
-                    $('#schemesTable').DataTable().ajax.reload();
+                    table.ajax.reload();
                     $form[0].reset();
                 } else {
                     toastr.error(response.message || 'Error updating scheme');
@@ -485,45 +408,7 @@ try {
         });
     });
 
-    // Delete Scheme
-    $(document).on('click', '.delete-scheme-btn', function() {
-        var schemeId = $(this).data('scheme-id');
-        
-        // Set scheme ID in modal
-        $('#deleteSchemeId').val(schemeId);
-        
-        // Show confirmation modal
-        $('#deleteSchemeModal').modal('show');
-    });
-
-    // Handle delete confirmation
-    $('#confirmDeleteScheme').on('click', function() {
-        var schemeId = $('#deleteSchemeId').val();
-        
-        $.ajax({
-            url: 'inc/ajax/schemes_ajax.php',
-            type: 'POST',
-            data: {
-                action: 'delete',
-                scheme_id: schemeId
-            },
-            success: function(response) {
-                $('#deleteSchemeModal').modal('hide');
-                if(response.status === 'success') {
-                    table.ajax.reload();
-                    toastr.success(response.message || 'Scheme deleted successfully');
-                } else {
-                    toastr.error(response.message || 'Error deleting scheme');
-                }
-            },
-            error: function() {
-                $('#deleteSchemeModal').modal('hide');
-                toastr.error('Error deleting scheme');
-            }
-        });
-    });
-
-    // Add Scheme Form Submission
+    // --- ADD ---
     $('#addSchemeForm').on('submit', function(e) {
         e.preventDefault();
         var $form = $(this);
@@ -540,7 +425,6 @@ try {
             toastr.error('Please fill in all required fields');
             return false;
         }
-        // Submit form
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
@@ -548,7 +432,7 @@ try {
             success: function(response) {
                 if(response.status === 'success') {
                     $('#addSchemeModal').modal('hide');
-                    $('#schemesTable').DataTable().ajax.reload();
+                    table.ajax.reload();
                     toastr.success(response.message || 'Scheme added successfully');
                     $form[0].reset();
                 } else {
@@ -561,22 +445,40 @@ try {
         });
     });
 
-    // Reset forms when modals are closed
+    // --- DELETE ---
+    $(document).on('click', '.delete-scheme-btn', function() {
+        var schemeId = $(this).data('scheme-id');
+        $('#deleteSchemeId').val(schemeId);
+        $('#deleteSchemeModal').modal('show');
+    });
+    $('#confirmDeleteScheme').on('click', function() {
+        var schemeId = $('#deleteSchemeId').val();
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: { action: 'delete', scheme_id: schemeId },
+            success: function(response) {
+                $('#deleteSchemeModal').modal('hide');
+                if(response.status === 'success') {
+                    table.ajax.reload();
+                    toastr.success(response.message || 'Scheme deleted successfully');
+                } else {
+                    toastr.error(response.message || 'Error deleting scheme');
+                }
+            },
+            error: function() {
+                $('#deleteSchemeModal').modal('hide');
+                toastr.error('Error deleting scheme');
+            }
+        });
+    });
+
+    // --- Reset forms on modal close ---
     $('#addSchemeModal, #editSchemeModal').on('hidden.bs.modal', function () {
         $(this).find('form')[0].reset();
         $(this).find('.is-invalid').removeClass('is-invalid');
     });
-
-    // Make sure Bootstrap is properly initialized
-    if (typeof $.fn.modal === 'undefined') {
-        console.error('Bootstrap modal is not loaded');
-    }
-    
-    // Initialize all modals
-    $('.modal').modal({
-        show: false
-    });
-  });
+});
 </script>
 </body>
 </html> 
