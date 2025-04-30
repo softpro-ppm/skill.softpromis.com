@@ -411,13 +411,23 @@ try {
     });
 
     // Edit Scheme
-    $(document).on('click', '.edit-scheme', function() {
+    $(document).on('click', '.edit-scheme', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         var schemeId = $(this).data('id');
+        var $modal = $('#editSchemeModal');
         
-        // Reset form and show modal
-        $('#editSchemeForm')[0].reset();
-        $('.is-invalid').removeClass('is-invalid');
+        // Reset form and show loading state
+        $modal.find('form')[0].reset();
+        $modal.find('.is-invalid').removeClass('is-invalid');
+        $modal.find('.modal-body').append('<div class="text-center py-2" id="edit-loading"><i class="fas fa-spinner fa-spin fa-2x"></i></div>');
+        $modal.modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true
+        });
         
+        // Fetch scheme details
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'GET',
@@ -426,23 +436,58 @@ try {
                 scheme_id: schemeId
             },
             success: function(response) {
-                if(response.status === 'success') {
-                    var data = response.data;
-                    
-                    // Set form values
-                    $('#editSchemeId').val(data.scheme_id);
-                    $('#editSchemeName').val(data.scheme_name);
-                    $('#editDescription').val(data.description);
-                    $('#editStatus').val(data.status);
-                    
-                    // Show modal
-                    $('#editSchemeModal').modal('show');
+                $('#edit-loading').remove();
+                if(response.status === 'success' && response.data) {
+                    var scheme = response.data;
+                    $modal.find('#editSchemeId').val(scheme.scheme_id);
+                    $modal.find('#editSchemeName').val(scheme.scheme_name);
+                    $modal.find('#editDescription').val(scheme.description);
+                    $modal.find('#editStatus').val(scheme.status);
                 } else {
-                    toastr.error(response.message || 'Error fetching scheme data');
+                    $modal.find('.modal-body').prepend('<div class="alert alert-danger">' + (response.message || 'Error fetching scheme data') + '</div>');
                 }
             },
             error: function() {
-                toastr.error('Error fetching scheme data');
+                $('#edit-loading').remove();
+                $modal.find('.modal-body').prepend('<div class="alert alert-danger">Error fetching scheme data. Please try again.</div>');
+            }
+        });
+    });
+
+    // Edit Scheme Form Submission
+    $('#editSchemeForm').on('submit', function(e) {
+        e.preventDefault();
+        var $form = $(this);
+        var $modal = $('#editSchemeModal');
+        var isValid = true;
+        $form.find('[required]').each(function() {
+            if (!$(this).val()) {
+                isValid = false;
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        if (!isValid) {
+            toastr.error('Please fill in all required fields');
+            return false;
+        }
+        // Submit form
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: $form.serialize() + '&action=edit',
+            success: function(response) {
+                if(response.status === 'success') {
+                    $modal.modal('hide');
+                    toastr.success(response.message || 'Scheme updated successfully');
+                    $('#schemesTable').DataTable().ajax.reload();
+                } else {
+                    toastr.error(response.message || 'Error updating scheme');
+                }
+            },
+            error: function() {
+                toastr.error('Error updating scheme');
             }
         });
     });
@@ -522,46 +567,6 @@ try {
             },
             error: function() {
                 toastr.error('Error adding scheme');
-            }
-        });
-    });
-
-    // Edit Scheme Form Submission
-    $('#editSchemeForm').on('submit', function(e) {
-        e.preventDefault();
-        
-        // Basic validation
-        var isValid = true;
-        $(this).find('[required]').each(function() {
-            if (!$(this).val()) {
-                isValid = false;
-                $(this).addClass('is-invalid');
-            } else {
-                $(this).removeClass('is-invalid');
-            }
-        });
-        
-        if (!isValid) {
-            toastr.error('Please fill in all required fields');
-            return false;
-        }
-        
-        // Submit form
-        $.ajax({
-            url: 'inc/ajax/schemes_ajax.php',
-            type: 'POST',
-            data: $(this).serialize() + '&action=edit',
-            success: function(response) {
-                if(response.status === 'success') {
-                    $('#editSchemeModal').modal('hide');
-                    table.ajax.reload();
-                    toastr.success(response.message || 'Scheme updated successfully');
-                } else {
-                    toastr.error(response.message || 'Error updating scheme');
-                }
-            },
-            error: function() {
-                toastr.error('Error updating scheme');
             }
         });
     });
