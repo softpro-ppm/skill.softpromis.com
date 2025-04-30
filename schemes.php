@@ -437,12 +437,13 @@ try {
             },
             success: function(response) {
                 $('#edit-loading').remove();
+                console.log('Edit scheme response:', response); // DEBUG
                 if(response.status === 'success' && response.data) {
                     var scheme = response.data;
-                    $modal.find('#editSchemeId').val(scheme.scheme_id);
-                    $modal.find('#editSchemeName').val(scheme.scheme_name);
-                    $modal.find('#editDescription').val(scheme.description);
-                    $modal.find('#editStatus').val(scheme.status);
+                    $modal.find('#editSchemeId').val(scheme.scheme_id || '');
+                    $modal.find('#editSchemeName').val(scheme.scheme_name || '');
+                    $modal.find('#editDescription').val(scheme.description || '');
+                    $modal.find('#editStatus').val(scheme.status || 'active');
                 } else {
                     $modal.find('.modal-body').prepend('<div class="alert alert-danger">' + (response.message || 'Error fetching scheme data') + '</div>');
                 }
