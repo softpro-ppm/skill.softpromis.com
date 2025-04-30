@@ -31,6 +31,12 @@ if(isset($_POST['action'])) {
         case 'add':
             $response = array('status' => false, 'message' => '');
             try {
+                // Create uploads directory if it doesn't exist
+                $upload_dir = 'uploads/partners/';
+                if (!file_exists($upload_dir)) {
+                    mkdir($upload_dir, 0777, true);
+                }
+
                 // Sanitize input data
                 $partner_name = mysqli_real_escape_string($conn, $_POST['partner_name']);
                 $contact_person = mysqli_real_escape_string($conn, $_POST['contact_person']);
@@ -40,22 +46,57 @@ if(isset($_POST['action'])) {
                 $website = mysqli_real_escape_string($conn, $_POST['website']);
                 $status = mysqli_real_escape_string($conn, $_POST['status']);
 
+                // Handle file uploads
+                $registration_doc = null;
+                $agreement_doc = null;
+
+                // Process registration document
+                if(isset($_FILES['registration_doc']) && $_FILES['registration_doc']['error'] == 0) {
+                    $file_info = pathinfo($_FILES['registration_doc']['name']);
+                    $registration_doc = uniqid() . '_reg.' . $file_info['extension'];
+                    $target_file = $upload_dir . $registration_doc;
+                    
+                    if(!move_uploaded_file($_FILES['registration_doc']['tmp_name'], $target_file)) {
+                        throw new Exception("Error uploading registration document");
+                    }
+                }
+
+                // Process agreement document
+                if(isset($_FILES['agreement_doc']) && $_FILES['agreement_doc']['error'] == 0) {
+                    $file_info = pathinfo($_FILES['agreement_doc']['name']);
+                    $agreement_doc = uniqid() . '_agr.' . $file_info['extension'];
+                    $target_file = $upload_dir . $agreement_doc;
+                    
+                    if(!move_uploaded_file($_FILES['agreement_doc']['tmp_name'], $target_file)) {
+                        throw new Exception("Error uploading agreement document");
+                    }
+                }
+
                 // Prepare the insert query
-                $query = "INSERT INTO training_partners (partner_name, contact_person, email, phone, address, website, status, created_at, updated_at) 
-                         VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                $query = "INSERT INTO training_partners (partner_name, contact_person, email, phone, address, website, 
+                         registration_doc, agreement_doc, status, created_at, updated_at) 
+                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
                 
                 $stmt = $conn->prepare($query);
                 if (!$stmt) {
                     throw new Exception("Prepare failed: " . $conn->error);
                 }
 
-                $stmt->bind_param("sssssss", $partner_name, $contact_person, $email, $phone, $address, $website, $status);
+                $stmt->bind_param("sssssssss", $partner_name, $contact_person, $email, $phone, $address, $website,
+                                $registration_doc, $agreement_doc, $status);
                 
                 if($stmt->execute()) {
                     $response['status'] = true;
                     $response['message'] = 'Partner added successfully';
                     $response['partner_id'] = $conn->insert_id;
                 } else {
+                    // If insert fails, delete uploaded files
+                    if($registration_doc && file_exists($upload_dir . $registration_doc)) {
+                        unlink($upload_dir . $registration_doc);
+                    }
+                    if($agreement_doc && file_exists($upload_dir . $agreement_doc)) {
+                        unlink($upload_dir . $agreement_doc);
+                    }
                     throw new Exception("Execute failed: " . $stmt->error);
                 }
                 $stmt->close();
@@ -123,36 +164,92 @@ if(isset($_POST['action'])) {
         case 'edit':
             $response = array('status' => false, 'message' => '');
             if(isset($_POST['partner_id'])) {
-                $partner_id = mysqli_real_escape_string($conn, $_POST['partner_id']);
-                $partner_name = mysqli_real_escape_string($conn, $_POST['partner_name']);
-                $contact_person = mysqli_real_escape_string($conn, $_POST['contact_person']);
-                $email = mysqli_real_escape_string($conn, $_POST['email']);
-                $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-                $address = mysqli_real_escape_string($conn, $_POST['address']);
-                $website = mysqli_real_escape_string($conn, $_POST['website']);
-                $status = mysqli_real_escape_string($conn, $_POST['status']);
+                try {
+                    $upload_dir = 'uploads/partners/';
+                    if (!file_exists($upload_dir)) {
+                        mkdir($upload_dir, 0777, true);
+                    }
 
-                $query = "UPDATE training_partners SET 
-                         partner_name = ?, 
-                         contact_person = ?, 
-                         email = ?, 
-                         phone = ?, 
-                         address = ?, 
-                         website = ?,
-                         status = ?, 
-                         updated_at = CURRENT_TIMESTAMP 
-                         WHERE partner_id = ?";
-                
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("sssssssi", $partner_name, $contact_person, $email, $phone, $address, $website, $status, $partner_id);
-                
-                if($stmt->execute()) {
-                    $response['status'] = true;
-                    $response['message'] = 'Partner updated successfully';
-                } else {
-                    $response['message'] = 'Error updating partner';
+                    $partner_id = mysqli_real_escape_string($conn, $_POST['partner_id']);
+                    $partner_name = mysqli_real_escape_string($conn, $_POST['partner_name']);
+                    $contact_person = mysqli_real_escape_string($conn, $_POST['contact_person']);
+                    $email = mysqli_real_escape_string($conn, $_POST['email']);
+                    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+                    $address = mysqli_real_escape_string($conn, $_POST['address']);
+                    $website = mysqli_real_escape_string($conn, $_POST['website']);
+                    $status = mysqli_real_escape_string($conn, $_POST['status']);
+
+                    // Get current document filenames
+                    $current_docs_query = "SELECT registration_doc, agreement_doc FROM training_partners WHERE partner_id = ?";
+                    $stmt = $conn->prepare($current_docs_query);
+                    $stmt->bind_param("i", $partner_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $current_docs = $result->fetch_assoc();
+                    $stmt->close();
+
+                    $registration_doc = $current_docs['registration_doc'];
+                    $agreement_doc = $current_docs['agreement_doc'];
+
+                    // Process registration document
+                    if(isset($_FILES['registration_doc']) && $_FILES['registration_doc']['error'] == 0) {
+                        // Delete old file if exists
+                        if($registration_doc && file_exists($upload_dir . $registration_doc)) {
+                            unlink($upload_dir . $registration_doc);
+                        }
+                        
+                        $file_info = pathinfo($_FILES['registration_doc']['name']);
+                        $registration_doc = uniqid() . '_reg.' . $file_info['extension'];
+                        $target_file = $upload_dir . $registration_doc;
+                        
+                        if(!move_uploaded_file($_FILES['registration_doc']['tmp_name'], $target_file)) {
+                            throw new Exception("Error uploading registration document");
+                        }
+                    }
+
+                    // Process agreement document
+                    if(isset($_FILES['agreement_doc']) && $_FILES['agreement_doc']['error'] == 0) {
+                        // Delete old file if exists
+                        if($agreement_doc && file_exists($upload_dir . $agreement_doc)) {
+                            unlink($upload_dir . $agreement_doc);
+                        }
+                        
+                        $file_info = pathinfo($_FILES['agreement_doc']['name']);
+                        $agreement_doc = uniqid() . '_agr.' . $file_info['extension'];
+                        $target_file = $upload_dir . $agreement_doc;
+                        
+                        if(!move_uploaded_file($_FILES['agreement_doc']['tmp_name'], $target_file)) {
+                            throw new Exception("Error uploading agreement document");
+                        }
+                    }
+
+                    $query = "UPDATE training_partners SET 
+                             partner_name = ?, 
+                             contact_person = ?, 
+                             email = ?, 
+                             phone = ?, 
+                             address = ?, 
+                             website = ?,
+                             registration_doc = ?,
+                             agreement_doc = ?,
+                             status = ?, 
+                             updated_at = CURRENT_TIMESTAMP 
+                             WHERE partner_id = ?";
+                    
+                    $stmt = $conn->prepare($query);
+                    $stmt->bind_param("sssssssssi", $partner_name, $contact_person, $email, $phone, $address, 
+                                    $website, $registration_doc, $agreement_doc, $status, $partner_id);
+                    
+                    if($stmt->execute()) {
+                        $response['status'] = true;
+                        $response['message'] = 'Partner updated successfully';
+                    } else {
+                        throw new Exception("Error updating partner");
+                    }
+                    $stmt->close();
+                } catch (Exception $e) {
+                    $response['message'] = 'Error updating partner: ' . $e->getMessage();
                 }
-                $stmt->close();
             }
             echo json_encode($response);
             exit;
@@ -301,7 +398,7 @@ require_once 'includes/sidebar.php';
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="partnerForm">
+            <form id="partnerForm" enctype="multipart/form-data">
                 <input type="hidden" id="partner_id" name="partner_id" value="">
                 <div class="modal-body">
                     <div class="row">
@@ -346,12 +443,12 @@ require_once 'includes/sidebar.php';
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Documents</label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="registration_doc" name="registration_doc">
+                                <div class="custom-file mb-2">
+                                    <input type="file" class="custom-file-input" id="registration_doc" name="registration_doc" accept=".pdf,.doc,.docx">
                                     <label class="custom-file-label" for="registration_doc">Registration Document</label>
                                 </div>
-                                <div class="custom-file mt-2">
-                                    <input type="file" class="custom-file-input" id="agreement_doc" name="agreement_doc">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="agreement_doc" name="agreement_doc" accept=".pdf,.doc,.docx">
                                     <label class="custom-file-label" for="agreement_doc">Agreement Document</label>
                                 </div>
                             </div>
@@ -699,10 +796,10 @@ $(function () {
             return false;
         }
         
-        // Prepare form data
-        var formData = $(this).serialize();
+        // Create FormData object to handle file uploads
+        var formData = new FormData(this);
         var partnerId = $('#partner_id').val();
-        formData += '&action=' + (partnerId ? 'edit' : 'add');
+        formData.append('action', partnerId ? 'edit' : 'add');
         
         // Disable submit button and show loading state
         var submitBtn = $(this).find('button[type="submit"]');
@@ -714,6 +811,8 @@ $(function () {
             type: 'POST',
             data: formData,
             dataType: 'json',
+            contentType: false,
+            processData: false,
             success: function(response) {
                 if(response.status) {
                     $('#partnerModal').modal('hide');
@@ -723,6 +822,7 @@ $(function () {
                     // Reset form
                     $('#partnerForm')[0].reset();
                     $('#partner_id').val('');
+                    $('.custom-file-label').html('Choose file');
                 } else {
                     toastr.error(response.message || 'Error processing request');
                 }
@@ -736,6 +836,12 @@ $(function () {
                 submitBtn.prop('disabled', false).text(originalText);
             }
         });
+    });
+
+    // Update filename on file selection
+    $('.custom-file-input').on('change', function() {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').html(fileName || 'Choose file');
     });
 
     // Reset form when modal is hidden
