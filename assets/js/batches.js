@@ -5,7 +5,7 @@ $(document).ready(function() {
             url: 'inc/ajax/batches_ajax.php',
             type: 'POST',
             data: function(d) {
-                d.action = 'read';
+                d.action = 'list';
             }
         },
         columns: [
@@ -318,4 +318,4 @@ $(document).ready(function() {
             default: return 'primary';
         }
     }
-}); 
+});
