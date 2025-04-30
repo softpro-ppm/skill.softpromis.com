@@ -263,9 +263,10 @@ $(function () {
                     toastr.success(response.message || 'Sector added successfully');
                     $form[0].reset();
                     $form.find('.is-invalid').removeClass('is-invalid');
-                    setTimeout(function() {
-                        table.ajax.reload(null, false);
-                    }, 400);
+                    // Force reload table after modal is hidden
+                    $('#addSectorModal').one('hidden.bs.modal', function() {
+                        table.ajax.reload(null, true);
+                    });
                 } else {
                     toastr.error(response.message || 'Error adding sector');
                 }
@@ -350,9 +351,10 @@ $(function () {
                     toastr.success(response.message || 'Sector updated successfully');
                     $form[0].reset();
                     $form.find('.is-invalid').removeClass('is-invalid');
-                    setTimeout(function() {
-                        table.ajax.reload(null, false);
-                    }, 400);
+                    // Force reload table after modal is hidden
+                    $('#editSectorModal').one('hidden.bs.modal', function() {
+                        table.ajax.reload(null, true);
+                    });
                 } else {
                     toastr.error(response.message || 'Error updating sector');
                 }
