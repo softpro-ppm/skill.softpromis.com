@@ -260,8 +260,13 @@ $(function () {
             success: function(response) {
                 if(response.status === 'success') {
                     $('#addSectorModal').modal('hide');
-                    table.ajax.reload(null, false);
-                    $form[0].reset();
+                    setTimeout(function() {
+                        $form[0].reset();
+                        $form.find('.is-invalid').removeClass('is-invalid');
+                    }, 300);
+                    setTimeout(function() {
+                        table.ajax.reload(null, false);
+                    }, 400);
                     toastr.success(response.message || 'Sector added successfully');
                 } else {
                     toastr.error(response.message || 'Error adding sector');
@@ -344,8 +349,13 @@ $(function () {
             success: function(response) {
                 if(response.status === 'success') {
                     $('#editSectorModal').modal('hide');
-                    table.ajax.reload(null, false);
-                    $form[0].reset();
+                    setTimeout(function() {
+                        $form[0].reset();
+                        $form.find('.is-invalid').removeClass('is-invalid');
+                    }, 300);
+                    setTimeout(function() {
+                        table.ajax.reload(null, false);
+                    }, 400);
                     toastr.success(response.message || 'Sector updated successfully');
                 } else {
                     toastr.error(response.message || 'Error updating sector');
