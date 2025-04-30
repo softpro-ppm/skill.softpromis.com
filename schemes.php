@@ -292,27 +292,31 @@ $(function () {
         $modal.find('form')[0].reset();
         $modal.find('.is-invalid').removeClass('is-invalid');
         $modal.find('.modal-body .alert').remove();
+        $modal.find('#editSchemeId').val('');
+        $modal.find('#editSchemeName').val('');
+        $modal.find('#editDescription').val('');
+        $modal.find('#editStatus').val('active');
         $modal.find('.modal-body').append('<div class="text-center py-2" id="edit-loading"><i class="fas fa-spinner fa-spin fa-2x"></i></div>');
         $modal.modal({ backdrop: 'static', keyboard: false, show: true });
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'GET',
+            dataType: 'json',
             data: { action: 'get', scheme_id: schemeId },
             success: function(response) {
                 $('#edit-loading').remove();
-                if(response.status === 'success' && response.data) {
-                    var s = response.data;
-                    $modal.find('#editSchemeId').val(s.scheme_id || '');
-                    $modal.find('#editSchemeName').val(s.scheme_name || '');
-                    $modal.find('#editDescription').val(s.description || '');
-                    $modal.find('#editStatus').val(s.status || 'active');
-                } else {
-                    $modal.find('.modal-body').prepend('<div class="alert alert-danger">' + (response.message || 'Error fetching scheme data') + '</div>');
-                }
+                var s = response.data || {};
+                $modal.find('#editSchemeId').val(s.scheme_id || '');
+                $modal.find('#editSchemeName').val(s.scheme_name || '');
+                $modal.find('#editDescription').val(s.description || '');
+                $modal.find('#editStatus').val(s.status || 'active');
             },
             error: function() {
                 $('#edit-loading').remove();
-                $modal.find('.modal-body').prepend('<div class="alert alert-danger">Error fetching scheme data. Please try again.</div>');
+                $modal.find('#editSchemeId').val('');
+                $modal.find('#editSchemeName').val('');
+                $modal.find('#editDescription').val('');
+                $modal.find('#editStatus').val('active');
             }
         });
     });
