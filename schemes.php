@@ -21,21 +21,6 @@ require_once 'includes/header.php';
 
 // Include sidebar
 require_once 'includes/sidebar.php';
-
-// Fetch schemes from DB
-$schemes = [];
-try {
-  $pdo = new PDO(
-    'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
-    DB_USER,
-    DB_PASS,
-    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-  );
-  $stmt = $pdo->query('SELECT * FROM schemes ORDER BY created_at DESC');
-  $schemes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-  echo '<div class="alert alert-danger">Could not fetch schemes: ' . htmlspecialchars($e->getMessage()) . '</div>';
-}
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -79,35 +64,7 @@ try {
                 </tr>
               </thead>
               <tbody>
-                <?php $serial = 1; foreach ($schemes as $scheme): ?>
-                  <tr>
-                    <td><?= $serial++ ?></td>
-                    <td><?= htmlspecialchars($scheme['scheme_name']) ?></td>
-                    <td><?= htmlspecialchars($scheme['description']) ?></td>
-                    <td>
-                      <?php if ($scheme['status'] === 'active'): ?>
-                        <span class="badge badge-success">Active</span>
-                      <?php else: ?>
-                        <span class="badge badge-secondary">Inactive</span>
-                      <?php endif; ?>
-                    </td>
-                    <td><?= htmlspecialchars($scheme['created_at']) ?></td>
-                    <td><?= htmlspecialchars($scheme['updated_at']) ?></td>
-                    <td>
-                      <div class="btn-group" role="group">
-                        <button class="btn btn-sm btn-info view-scheme-btn" data-scheme-id="<?= $scheme['scheme_id'] ?>">
-                          <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-primary edit-scheme-btn" data-scheme-id="<?= $scheme['scheme_id'] ?>">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-scheme-btn" data-scheme-id="<?= $scheme['scheme_id'] ?>">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                <?php endforeach; ?>
+                <!-- DataTables will populate this -->
               </tbody>
             </table>
           </div>
@@ -481,4 +438,4 @@ $(function () {
 });
 </script>
 </body>
-</html> 
+</html>
