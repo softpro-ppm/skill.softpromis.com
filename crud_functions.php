@@ -19,21 +19,22 @@ class TrainingPartner {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO training_partners (partner_name, contact_person, email, phone, address) 
-                               VALUES (?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO training_partners (partner_name, contact_person, email, phone, address, website) 
+                               VALUES (?, ?, ?, ?, ?, ?)");
         return $stmt->execute([
             $data['partner_name'],
             $data['contact_person'],
             $data['email'],
             $data['phone'],
-            $data['address']
+            $data['address'],
+            $data['website']
         ]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE training_partners 
-                               SET partner_name = ?, contact_person = ?, email = ?, phone = ?, address = ?, status = ? 
+                               SET partner_name = ?, contact_person = ?, email = ?, phone = ?, address = ?, website = ?, status = ? 
                                WHERE partner_id = ?");
         return $stmt->execute([
             $data['partner_name'],
@@ -41,6 +42,7 @@ class TrainingPartner {
             $data['email'],
             $data['phone'],
             $data['address'],
+            $data['website'],
             $data['status'],
             $id
         ]);

@@ -1,17 +1,16 @@
 <?php
-// Define BASEPATH constant
-define('BASEPATH', true);
-
-// Start session and include required files
+// Start session
 session_start();
-require_once 'config.php';
-require_once 'crud_functions.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user']) || !isset($_SESSION['user']['user_id'])) {
     header('Location: index.php');
     exit;
 }
+
+// Include required files
+require_once 'config.php';
+require_once 'crud_functions.php';
 
 // Establish database connection
 try {
@@ -53,14 +52,11 @@ if(isset($_POST['action'])) {
                         "phone" => htmlspecialchars($row['phone']),
                         "full_address" => htmlspecialchars($row['full_address']),
                         "status" => $row['status'],
-                        "actions" => '<button type="button" class="btn btn-info btn-sm edit-btn mr-1" data-id="' . $row['center_id'] . '">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-sm delete-btn" 
-                                        data-id="' . $row['center_id'] . '" 
-                                        data-name="' . htmlspecialchars($row['center_name']) . '">
-                                        <i class="fas fa-trash"></i>
-                                    </button>'
+                        "actions" => '<div class="btn-group btn-group-sm">' +
+                                    '<button type="button" class="btn btn-info view-btn" data-id="' + $row['center_id'] + '"><i class="fas fa-eye"></i></button>' +
+                                    '<button type="button" class="btn btn-primary edit-btn" data-id="' + $row['center_id'] + '"><i class="fas fa-edit"></i></button>' +
+                                    '<button type="button" class="btn btn-danger delete-btn" data-id="' + $row['center_id'] + '"><i class="fas fa-trash"></i></button>' +
+                                    '</div>'
                     );
                 }
                 
@@ -418,6 +414,57 @@ require_once 'includes/sidebar.php';
     </div>
   </div>
 
+<!-- View Training Center Modal -->
+<div class="modal fade" id="viewCenterModal" tabindex="-1" role="dialog" aria-labelledby="viewCenterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewCenterModalLabel">Training Center Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Center Name:</strong> <span id="view-center-name"></span></p>
+                        <p><strong>Training Partner:</strong> <span id="view-partner-name"></span></p>
+                        <p><strong>Contact Person:</strong> <span id="view-contact-person"></span></p>
+                        <p><strong>Email:</strong> <span id="view-email"></span></p>
+                        <p><strong>Phone:</strong> <span id="view-phone"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Address:</strong> <span id="view-address"></span></p>
+                        <p><strong>City:</strong> <span id="view-city"></span></p>
+                        <p><strong>State:</strong> <span id="view-state"></span></p>
+                        <p><strong>Pincode:</strong> <span id="view-pincode"></span></p>
+                        <p><strong>Status:</strong> <span id="view-status"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-control-static {
+    padding: 7px 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    min-height: 35px;
+}
+.btn-group-sm > .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+</style>
+
 <?php include 'includes/js.php'; ?>
 
 <!-- DataTables & Extensions JS -->
@@ -451,21 +498,17 @@ $(function () {
         "processing": true,
         "serverSide": false,
         "ajax": {
-            "url": "training-centers.php",
-            "type": "POST",
+            "url": "inc/ajax/training-centers.php",
+            "type": "GET",
             "data": function(d) {
                 d.action = "list";
             },
-            "error": function(xhr, error, thrown) {
-                toastr.error('Error loading data. Please try again.');
-                console.error('DataTables error:', error, thrown);
-            },
             "dataSrc": function(json) {
-                if (json.error) {
-                    toastr.error(json.error);
+                if (json.status === 'error') {
+                    toastr.error(json.message || 'Error loading data');
                     return [];
                 }
-                return json.data;
+                return json.data || [];
             }
         },
         "columns": [
@@ -475,7 +518,16 @@ $(function () {
             { "data": "contact_person" },
             { "data": "email" },
             { "data": "phone" },
-            { "data": "full_address" },
+            { 
+                "data": null,
+                "render": function(data, type, row) {
+                    var address = [row.address];
+                    if (row.city) address.push(row.city);
+                    if (row.state) address.push(row.state);
+                    if (row.pincode) address.push(row.pincode);
+                    return address.filter(Boolean).join(', ');
+                }
+            },
             { 
                 "data": "status",
                 "render": function(data, type, row) {
@@ -488,9 +540,16 @@ $(function () {
                 }
             },
             { 
-                "data": "actions",
+                "data": null,
                 "orderable": false,
-                "searchable": false
+                "searchable": false,
+                "render": function(data, type, row) {
+                    return '<div class="btn-group btn-group-sm">' +
+                           '<button type="button" class="btn btn-info view-center" data-id="' + row.center_id + '"><i class="fas fa-eye"></i></button>' +
+                           '<button type="button" class="btn btn-primary edit-btn" data-id="' + row.center_id + '"><i class="fas fa-edit"></i></button>' +
+                           '<button type="button" class="btn btn-danger delete-btn" data-id="' + row.center_id + '" data-name="' + row.center_name + '"><i class="fas fa-trash"></i></button>' +
+                           '</div>';
+                }
             }
         ],
         "responsive": true,
@@ -520,14 +579,25 @@ $(function () {
                 }
             }
         ],
-        "pageLength": 10
+        "pageLength": 10,
+        "language": {
+            "emptyTable": "No training centers found",
+            "zeroRecords": "No matching records found",
+            "loadingRecords": "Loading...",
+            "processing": "Processing...",
+            "error": "Error loading data. Please try again."
+        }
     });
 
-    // Handle edit button click
-    $(document).on('click', '.edit-btn', function() {
+    // Error handling for DataTables
+    table.on('error.dt', function(e, settings, techNote, message) {
+        console.error('DataTables error:', message);
+        toastr.error('Error loading data. Please try again.');
+    });
+
+    // View Center
+    $('#centersTable').on('click', '.view-btn', function() {
         var centerId = $(this).data('id');
-        
-        // Get center data first
         $.ajax({
             url: 'training-centers.php',
             type: 'POST',
@@ -601,6 +671,57 @@ $(function () {
         }
     });
 
+    // Edit Center
+    $(document).on('click', '.edit-btn', function() {
+        var centerId = $(this).data('id');
+        
+        // Reset form
+        $('#centerForm')[0].reset();
+        $('.is-invalid').removeClass('is-invalid');
+        
+        // Show loading in modal
+        $('#centerModal .modal-body').html('<div class="text-center"><i class="fas fa-spinner fa-spin fa-3x"></i></div>');
+        $('#centerModal').modal('show');
+        
+        $.ajax({
+            url: 'inc/ajax/training-centers.php',
+            type: 'GET',
+            data: {
+                action: 'get',
+                center_id: centerId
+            },
+            dataType: 'json',
+            success: function(response) {
+                if(response.status === 'success') {
+                    var data = response.data;
+                    
+                    // Set form values
+                    $('#center_id').val(data.center_id);
+                    $('#partner_id').val(data.partner_id).trigger('change');
+                    $('#center_name').val(data.center_name);
+                    $('#contact_person').val(data.contact_person);
+                    $('#email').val(data.email);
+                    $('#phone').val(data.phone);
+                    $('#address').val(data.address);
+                    $('#city').val(data.city);
+                    $('#state').val(data.state);
+                    $('#pincode').val(data.pincode);
+                    $('#status').val(data.status);
+                    
+                    // Update modal title
+                    $('.modal-title').text('Edit Training Center');
+                } else {
+                    toastr.error(response.message || 'Error fetching center data');
+                    $('#centerModal').modal('hide');
+                }
+            },
+            error: function() {
+                toastr.error('Error fetching center data');
+                $('#centerModal').modal('hide');
+            }
+        });
+    });
+
     // Handle form submission
     $('#centerForm').on('submit', function(e) {
         e.preventDefault();
@@ -626,9 +747,9 @@ $(function () {
         }
         
         // Prepare form data
-        var formData = $(this).serialize();
+        var formData = new FormData(this);
         var centerId = $('#center_id').val();
-        formData += '&action=' + (centerId ? 'edit' : 'add');
+        formData.append('action', centerId ? 'edit' : 'add');
         
         // Disable submit button and show loading state
         var submitBtn = $(this).find('button[type="submit"]');
@@ -636,12 +757,14 @@ $(function () {
         submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Saving...');
         
         $.ajax({
-            url: 'training-centers.php',
+            url: 'inc/ajax/training-centers.php',
             type: 'POST',
             data: formData,
+            processData: false,
+            contentType: false,
             dataType: 'json',
             success: function(response) {
-                if(response.status) {
+                if(response.status === 'success') {
                     $('#centerModal').modal('hide');
                     table.ajax.reload();
                     toastr.success(response.message);
@@ -694,6 +817,42 @@ $(function () {
             },
             error: function() {
                 toastr.error('Error deleting center');
+            }
+        });
+    });
+
+    // View center details
+    $(document).on('click', '.view-center', function() {
+        var centerId = $(this).data('id');
+        
+        $.ajax({
+            url: 'inc/ajax/training-centers.php',
+            type: 'GET',
+            data: {
+                action: 'get',
+                center_id: centerId
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    var data = response.data;
+                    $('#view-center-name').text(data.center_name);
+                    $('#view-partner-name').text(data.partner_name);
+                    $('#view-contact-person').text(data.contact_person);
+                    $('#view-email').text(data.email);
+                    $('#view-phone').text(data.phone);
+                    $('#view-address').text(data.address);
+                    $('#view-city').text(data.city);
+                    $('#view-state').text(data.state);
+                    $('#view-pincode').text(data.pincode);
+                    $('#view-status').text(data.status === '1' ? 'Active' : 'Inactive');
+                    
+                    $('#viewCenterModal').modal('show');
+                } else {
+                    toastr.error(response.message || 'Error fetching center details');
+                }
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Error fetching center details');
             }
         });
     });

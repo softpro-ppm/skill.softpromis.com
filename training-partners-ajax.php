@@ -54,12 +54,13 @@ try {
                 'contact_person' => $_POST['contact_person'] ?? '',
                 'email' => $_POST['email'] ?? '',
                 'phone' => $_POST['phone'] ?? '',
-                'address' => $_POST['address'] ?? ''
+                'address' => $_POST['address'] ?? '',
+                'website' => $_POST['website'] ?? ''
             ];
 
             // Validate required fields
             foreach ($data as $key => $value) {
-                if (empty($value)) {
+                if (empty($value) && $key !== 'website') {
                     throw new Exception("$key is required");
                 }
             }
@@ -67,6 +68,11 @@ try {
             // Validate email format
             if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
                 throw new Exception('Invalid email format');
+            }
+
+            // Validate website format if provided
+            if (!empty($data['website']) && !filter_var($data['website'], FILTER_VALIDATE_URL)) {
+                throw new Exception('Invalid website URL format');
             }
 
             if (TrainingPartner::create($data)) {
@@ -87,12 +93,13 @@ try {
                 'email' => $_POST['email'] ?? '',
                 'phone' => $_POST['phone'] ?? '',
                 'address' => $_POST['address'] ?? '',
+                'website' => $_POST['website'] ?? '',
                 'status' => $_POST['status'] ?? 'active'
             ];
 
             // Validate required fields
             foreach ($data as $key => $value) {
-                if (empty($value) && $key !== 'status') {
+                if (empty($value) && $key !== 'website' && $key !== 'status') {
                     throw new Exception("$key is required");
                 }
             }
@@ -100,6 +107,11 @@ try {
             // Validate email format
             if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
                 throw new Exception('Invalid email format');
+            }
+
+            // Validate website format if provided
+            if (!empty($data['website']) && !filter_var($data['website'], FILTER_VALIDATE_URL)) {
+                throw new Exception('Invalid website URL format');
             }
 
             if (TrainingPartner::update($partnerId, $data)) {
