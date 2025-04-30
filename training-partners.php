@@ -170,14 +170,14 @@ if(isset($_POST['action'])) {
                         mkdir($upload_dir, 0777, true);
                     }
 
-                    $partner_id = mysqli_real_escape_string($conn, $_POST['partner_id']);
-                    $partner_name = mysqli_real_escape_string($conn, $_POST['partner_name']);
-                    $contact_person = mysqli_real_escape_string($conn, $_POST['contact_person']);
-                    $email = mysqli_real_escape_string($conn, $_POST['email']);
-                    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-                    $address = mysqli_real_escape_string($conn, $_POST['address']);
+                $partner_id = mysqli_real_escape_string($conn, $_POST['partner_id']);
+                $partner_name = mysqli_real_escape_string($conn, $_POST['partner_name']);
+                $contact_person = mysqli_real_escape_string($conn, $_POST['contact_person']);
+                $email = mysqli_real_escape_string($conn, $_POST['email']);
+                $phone = mysqli_real_escape_string($conn, $_POST['phone']);
+                $address = mysqli_real_escape_string($conn, $_POST['address']);
                     $website = mysqli_real_escape_string($conn, $_POST['website']);
-                    $status = mysqli_real_escape_string($conn, $_POST['status']);
+                $status = mysqli_real_escape_string($conn, $_POST['status']);
 
                     // Get current document filenames
                     $current_docs_query = "SELECT registration_doc, agreement_doc FROM training_partners WHERE partner_id = ?";
@@ -223,27 +223,27 @@ if(isset($_POST['action'])) {
                         }
                     }
 
-                    $query = "UPDATE training_partners SET 
-                             partner_name = ?, 
-                             contact_person = ?, 
-                             email = ?, 
-                             phone = ?, 
-                             address = ?, 
+                $query = "UPDATE training_partners SET 
+                         partner_name = ?, 
+                         contact_person = ?, 
+                         email = ?, 
+                         phone = ?, 
+                         address = ?, 
                              website = ?,
                              registration_doc = ?,
                              agreement_doc = ?,
-                             status = ?, 
-                             updated_at = CURRENT_TIMESTAMP 
-                             WHERE partner_id = ?";
-                    
-                    $stmt = $conn->prepare($query);
+                         status = ?, 
+                         updated_at = CURRENT_TIMESTAMP 
+                         WHERE partner_id = ?";
+                
+                $stmt = $conn->prepare($query);
                     $stmt->bind_param("sssssssssi", $partner_name, $contact_person, $email, $phone, $address, 
                                     $website, $registration_doc, $agreement_doc, $status, $partner_id);
-                    
-                    if($stmt->execute()) {
-                        $response['status'] = true;
-                        $response['message'] = 'Partner updated successfully';
-                    } else {
+                
+                if($stmt->execute()) {
+                    $response['status'] = true;
+                    $response['message'] = 'Partner updated successfully';
+                } else {
                         throw new Exception("Error updating partner");
                     }
                     $stmt->close();

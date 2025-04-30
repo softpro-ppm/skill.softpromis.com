@@ -57,12 +57,12 @@ $schemes = Scheme::getAll();
             <table id="coursesTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Course ID</th>
-                  <th>Name</th>
+                  <th>Course Code</th>
+                  <th>Course Name</th>
                   <th>Sector</th>
-                  <th>Duration</th>
-                  <th>Fee</th>
-                  <th>Active Batches</th>
+                  <th>Scheme</th>
+                  <th>Duration (hours)</th>
+                  <th>Description</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -162,8 +162,8 @@ $schemes = Scheme::getAll();
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Course ID</label>
-                <p data-field="course_id"></p>
+                <label>Course Code</label>
+                <p data-field="course_code"></p>
               </div>
               <div class="form-group">
                 <label>Course Name</label>
@@ -174,22 +174,14 @@ $schemes = Scheme::getAll();
                 <p data-field="sector_name"></p>
               </div>
               <div class="form-group">
-                <label>Duration</label>
-                <p data-field="duration_hours"></p>
+                <label>Scheme</label>
+                <p data-field="scheme_name"></p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Fee</label>
-                <p data-field="fee"></p>
-              </div>
-              <div class="form-group">
-                <label>Prerequisites</label>
-                <p data-field="prerequisites"></p>
-              </div>
-              <div class="form-group">
-                <label>Active Batches</label>
-                <p data-field="active_batches"></p>
+                <label>Duration (hours)</label>
+                <p data-field="duration_hours"></p>
               </div>
               <div class="form-group">
                 <label>Status</label>
@@ -202,44 +194,6 @@ $schemes = Scheme::getAll();
               <div class="form-group">
                 <label>Description</label>
                 <p data-field="description"></p>
-              </div>
-              <div class="form-group">
-                <label>Learning Outcomes</label>
-                <p data-field="syllabus"></p>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <h5>Current Batches</h5>
-              <div class="table-responsive">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Batch ID</th>
-                      <th>Start Date</th>
-                      <th>End Date</th>
-                      <th>Students</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>B001</td>
-                      <td>01/01/2024</td>
-                      <td>31/03/2024</td>
-                      <td>25</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td>B005</td>
-                      <td>15/02/2024</td>
-                      <td>15/05/2024</td>
-                      <td>20</td>
-                      <td><span class="badge badge-success">Active</span></td>
-                    </tr>
-                  </tbody>
-                </table>
               </div>
             </div>
           </div>
@@ -391,12 +345,12 @@ $(function () {
           var rows = '';
           $.each(response.data, function (i, course) {
             rows += '<tr>' +
-              '<td>' + (i + 1) + '</td>' +
+              '<td>' + course.course_code + '</td>' +
               '<td>' + course.course_name + '</td>' +
               '<td>' + (course.sector_name || '') + '</td>' +
-              '<td>' + course.duration_hours + ' hours</td>' +
-              '<td>₹' + (course.fee || 0) + '</td>' +
-              '<td>' + (course.active_batches || 0) + '</td>' +
+              '<td>' + (course.scheme_name || '') + '</td>' +
+              '<td>' + course.duration_hours + '</td>' +
+              '<td>' + (course.description || '') + '</td>' +
               '<td><span class="badge badge-' + (course.status === 'active' ? 'success' : 'secondary') + '">' + (course.status ? course.status.charAt(0).toUpperCase() + course.status.slice(1) : '') + '</span></td>' +
               '<td>' +
                 '<button type="button" class="btn btn-info btn-sm view-course-btn" data-id="' + course.course_id + '"><i class="fas fa-eye"></i></button> ' +
@@ -560,15 +514,13 @@ $(function () {
         if (response.success && response.data) {
           var c = response.data;
           $('#viewCourseModal .modal-title').text('View Course: ' + c.course_name);
-          $('#viewCourseModal [data-field="course_id"]').text(c.course_id);
+          $('#viewCourseModal [data-field="course_code"]').text(c.course_code);
           $('#viewCourseModal [data-field="course_name"]').text(c.course_name);
           $('#viewCourseModal [data-field="sector_name"]').text(c.sector_name);
-          $('#viewCourseModal [data-field="duration_hours"]').text(c.duration_hours + ' hours');
-          $('#viewCourseModal [data-field="fee"]').text('₹' + (c.fee || 0));
-          $('#viewCourseModal [data-field="prerequisites"]').text(c.prerequisites);
+          $('#viewCourseModal [data-field="scheme_name"]').text(c.scheme_name);
+          $('#viewCourseModal [data-field="duration_hours"]').text(c.duration_hours);
           $('#viewCourseModal [data-field="status"]').html('<span class="badge badge-' + (c.status === 'active' ? 'success' : 'secondary') + '">' + (c.status ? c.status.charAt(0).toUpperCase() + c.status.slice(1) : '') + '</span>');
           $('#viewCourseModal [data-field="description"]').text(c.description);
-          $('#viewCourseModal [data-field="syllabus"]').html(c.syllabus ? c.syllabus.replace(/\n/g, '<br>') : '');
           $('#viewCourseModal').modal('show');
         } else {
           showToast('error', 'Could not fetch course details.');

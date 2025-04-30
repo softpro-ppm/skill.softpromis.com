@@ -218,6 +218,38 @@ require_once 'includes/footer.php';
 
 <script>
 $(function () {
+  var table = $('#batchesTable').DataTable({
+    processing: true,
+    serverSide: false,
+    ajax: {
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'GET',
+      data: function (d) { d.action = 'list'; },
+      dataSrc: function (json) { return json.data || []; }
+    },
+    columns: [
+      { data: 'batch_code' },
+      { data: 'course_name' },
+      { data: 'center_name' },
+      { data: 'start_date' },
+      { data: 'end_date' },
+      { data: 'capacity' },
+      { data: null, render: function() { return '-'; } }, // Students placeholder
+      { data: null, render: function() { return '-'; } }, // Trainer placeholder
+      { data: 'status', render: function(data) { return '<span class="badge badge-' + (data === 'completed' ? 'success' : (data === 'ongoing' ? 'primary' : (data === 'upcoming' ? 'info' : 'secondary'))) + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
+      { data: null, orderable: false, searchable: false, render: function (data, type, row) {
+        return '<div class="btn-group btn-group-sm">' +
+          '<button type="button" class="btn btn-primary edit-batch-btn" data-batch-id="' + row.batch_id + '"><i class="fas fa-edit"></i></button>' +
+          '<button type="button" class="btn btn-danger delete-batch-btn" data-batch-id="' + row.batch_id + '"><i class="fas fa-trash"></i></button>' +
+          '</div>';
+      } }
+    ],
+    responsive: true,
+    lengthChange: true,
+    autoWidth: false,
+    order: [[0, 'desc']]
+  });
+
   // --- ADD ---
   $('#addBatchForm').on('submit', function(e) {
     e.preventDefault();
