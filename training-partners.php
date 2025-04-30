@@ -37,18 +37,19 @@ if(isset($_POST['action'])) {
                 $email = mysqli_real_escape_string($conn, $_POST['email']);
                 $phone = mysqli_real_escape_string($conn, $_POST['phone']);
                 $address = mysqli_real_escape_string($conn, $_POST['address']);
+                $website = mysqli_real_escape_string($conn, $_POST['website']);
                 $status = mysqli_real_escape_string($conn, $_POST['status']);
 
                 // Prepare the insert query
-                $query = "INSERT INTO training_partners (partner_name, contact_person, email, phone, address, status, created_at, updated_at) 
-                         VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                $query = "INSERT INTO training_partners (partner_name, contact_person, email, phone, address, website, status, created_at, updated_at) 
+                         VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
                 
                 $stmt = $conn->prepare($query);
                 if (!$stmt) {
                     throw new Exception("Prepare failed: " . $conn->error);
                 }
 
-                $stmt->bind_param("ssssss", $partner_name, $contact_person, $email, $phone, $address, $status);
+                $stmt->bind_param("sssssss", $partner_name, $contact_person, $email, $phone, $address, $website, $status);
                 
                 if($stmt->execute()) {
                     $response['status'] = true;
@@ -125,6 +126,7 @@ if(isset($_POST['action'])) {
                 $email = mysqli_real_escape_string($conn, $_POST['email']);
                 $phone = mysqli_real_escape_string($conn, $_POST['phone']);
                 $address = mysqli_real_escape_string($conn, $_POST['address']);
+                $website = mysqli_real_escape_string($conn, $_POST['website']);
                 $status = mysqli_real_escape_string($conn, $_POST['status']);
 
                 $query = "UPDATE training_partners SET 
@@ -133,12 +135,13 @@ if(isset($_POST['action'])) {
                          email = ?, 
                          phone = ?, 
                          address = ?, 
+                         website = ?,
                          status = ?, 
                          updated_at = CURRENT_TIMESTAMP 
                          WHERE partner_id = ?";
                 
                 $stmt = $conn->prepare($query);
-                $stmt->bind_param("ssssssi", $partner_name, $contact_person, $email, $phone, $address, $status, $partner_id);
+                $stmt->bind_param("sssssssi", $partner_name, $contact_person, $email, $phone, $address, $website, $status, $partner_id);
                 
                 if($stmt->execute()) {
                     $response['status'] = true;
@@ -518,6 +521,7 @@ $(function () {
                     $('#email').val(data.email);
                     $('#phone').val(data.phone);
                     $('#address').val(data.address);
+                    $('#website').val(data.website);
                     $('#status').val(data.status).trigger('change');
                     
                     // Update modal title

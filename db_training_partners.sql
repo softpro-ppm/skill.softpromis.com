@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS training_partners (
     email varchar(100) DEFAULT NULL,
     phone varchar(15) DEFAULT NULL,
     address text DEFAULT NULL,
+    website varchar(255) DEFAULT NULL,
     status enum('active','inactive') DEFAULT 'active',
     created_at timestamp NOT NULL DEFAULT current_timestamp(),
     updated_at timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
