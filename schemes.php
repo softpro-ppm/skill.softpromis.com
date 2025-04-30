@@ -352,40 +352,45 @@ try {
                 scheme_id: schemeId
             },
             success: function(response) {
-                if(response.status === 'success' && response.data) {
+                console.log('View scheme response:', response); // DEBUG
+                if(response.status === 'success') {
                     var scheme = response.data;
-                    $modal.find('.modal-body').html(`
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Scheme ID:</label>
-                                    <p data-field="scheme_id">${scheme.scheme_id}</p>
+                    if (scheme && typeof scheme === 'object') {
+                        $modal.find('.modal-body').html(`
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Scheme ID:</label>
+                                        <p data-field="scheme_id">${scheme.scheme_id || ''}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Scheme Name:</label>
+                                        <p data-field="scheme_name">${scheme.scheme_name || ''}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Description:</label>
+                                        <p data-field="description">${scheme.description || 'N/A'}</p>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Scheme Name:</label>
-                                    <p data-field="scheme_name">${scheme.scheme_name}</p>
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Description:</label>
-                                    <p data-field="description">${scheme.description || 'N/A'}</p>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Status:</label>
+                                        <p data-field="status"><span class="badge badge-${scheme.status === 'active' ? 'success' : 'danger'}">${scheme.status ? (scheme.status.charAt(0).toUpperCase() + scheme.status.slice(1)) : 'N/A'}</span></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Created At:</label>
+                                        <p data-field="created_at">${scheme.created_at || 'N/A'}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Updated At:</label>
+                                        <p data-field="updated_at">${scheme.updated_at || 'N/A'}</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Status:</label>
-                                    <p data-field="status"><span class="badge badge-${scheme.status === 'active' ? 'success' : 'danger'}">${scheme.status.charAt(0).toUpperCase() + scheme.status.slice(1)}</span></p>
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Created At:</label>
-                                    <p data-field="created_at">${scheme.created_at}</p>
-                                </div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Updated At:</label>
-                                    <p data-field="updated_at">${scheme.updated_at || 'N/A'}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `);
+                        `);
+                    } else {
+                        $modal.find('.modal-body').html('<div class="alert alert-warning">No scheme data found.</div>');
+                    }
                 } else {
                     $modal.find('.modal-body').html(
                         '<div class="alert alert-danger">' + (response.message || 'Error fetching scheme details') + '</div>'
