@@ -348,7 +348,12 @@ $(function () {
                     $modal.modal('hide');
                     toastr.success(response.message || 'Scheme updated successfully');
                     table.ajax.reload();
-                    $form[0].reset();
+                    setTimeout(function() {
+                        $form[0].reset();
+                        $form.find('.is-invalid').removeClass('is-invalid');
+                        $form.find('input[type="text"], input[type="hidden"], textarea').val('');
+                        $form.find('select').prop('selectedIndex', 0);
+                    }, 500);
                 } else {
                     toastr.error(response.message || 'Error updating scheme');
                 }
@@ -385,7 +390,12 @@ $(function () {
                     $('#addSchemeModal').modal('hide');
                     table.ajax.reload();
                     toastr.success(response.message || 'Scheme added successfully');
-                    $form[0].reset();
+                    setTimeout(function() {
+                        $form[0].reset();
+                        $form.find('.is-invalid').removeClass('is-invalid');
+                        $form.find('input[type="text"], input[type="hidden"], textarea').val('');
+                        $form.find('select').prop('selectedIndex', 0);
+                    }, 500);
                 } else {
                     toastr.error(response.message || 'Error adding scheme');
                 }
@@ -412,7 +422,7 @@ $(function () {
                 $('#deleteSchemeModal').modal('hide');
                 if(response.status === 'success') {
                     toastr.success(response.message || 'Scheme deleted successfully');
-                    table.ajax.reload(null, false);
+                    $('#schemesTable').DataTable().ajax.reload(null, false);
                 } else {
                     toastr.error(response.message || 'Error deleting scheme');
                 }
