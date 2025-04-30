@@ -1,14 +1,14 @@
 <?php
+// Start session
+session_start();
+
+// Include required files
 require_once '../../config.php';
 require_once '../../crud_functions.php';
 
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 header('Content-Type: application/json');
 
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['status' => 'error', 'message' => 'Unauthorized access']);
     exit;
@@ -32,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 try {
                     $sql = "SELECT tc.*, tp.partner_name 
                             FROM training_centers tc 
-                            LEFT JOIN training_partners tp ON tc.partner_id = tp.id 
-                            ORDER BY tc.id DESC";
+                            LEFT JOIN training_partners tp ON tc.partner_id = tp.partner_id 
+                            ORDER BY tc.center_id DESC";
                     
                     $result = $conn->query($sql);
                     
@@ -41,16 +41,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         $data = array();
                         while ($row = $result->fetch_assoc()) {
                             $data[] = array(
-                                'id' => $row['id'],
-                                'partner_name' => htmlspecialchars($row['partner_name']),
+                                'center_id' => $row['center_id'],
+                                'partner_name' => htmlspecialchars($row['partner_name'] ?? ''),
                                 'center_name' => htmlspecialchars($row['center_name']),
                                 'contact_person' => htmlspecialchars($row['contact_person']),
                                 'email' => htmlspecialchars($row['email']),
                                 'phone' => htmlspecialchars($row['phone']),
                                 'address' => htmlspecialchars($row['address']),
-                                'city' => htmlspecialchars($row['city']),
-                                'state' => htmlspecialchars($row['state']),
-                                'pincode' => htmlspecialchars($row['pincode']),
+                                'city' => htmlspecialchars($row['city'] ?? ''),
+                                'state' => htmlspecialchars($row['state'] ?? ''),
+                                'pincode' => htmlspecialchars($row['pincode'] ?? ''),
                                 'status' => $row['status']
                             );
                         }
@@ -82,8 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 try {
                     $sql = "SELECT tc.*, tp.partner_name 
                             FROM training_centers tc 
-                            LEFT JOIN training_partners tp ON tc.partner_id = tp.id 
-                            WHERE tc.id = ?";
+                            LEFT JOIN training_partners tp ON tc.partner_id = tp.partner_id 
+                            WHERE tc.center_id = ?";
                     
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param('i', $center_id);

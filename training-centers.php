@@ -1,17 +1,16 @@
 <?php
-// Define BASEPATH constant
-define('BASEPATH', true);
-
-// Start session and include required files
+// Start session
 session_start();
-require_once 'config.php';
-require_once 'crud_functions.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
 }
+
+// Include required files
+require_once 'config.php';
+require_once 'crud_functions.php';
 
 // Establish database connection
 try {
@@ -517,7 +516,7 @@ $(function () {
             }
         },
         "columns": [
-            { "data": "id" },
+            { "data": "center_id" },
             { "data": "partner_name" },
             { "data": "center_name" },
             { "data": "contact_person" },
@@ -546,9 +545,9 @@ $(function () {
                 "searchable": false,
                 "render": function(data, type, row) {
                     return '<div class="btn-group btn-group-sm">' +
-                           '<button type="button" class="btn btn-info view-center" data-id="' + row.id + '"><i class="fas fa-eye"></i></button>' +
-                           '<button type="button" class="btn btn-primary edit-btn" data-id="' + row.id + '"><i class="fas fa-edit"></i></button>' +
-                           '<button type="button" class="btn btn-danger delete-btn" data-id="' + row.id + '" data-name="' + row.center_name + '"><i class="fas fa-trash"></i></button>' +
+                           '<button type="button" class="btn btn-info view-center" data-id="' + row.center_id + '"><i class="fas fa-eye"></i></button>' +
+                           '<button type="button" class="btn btn-primary edit-btn" data-id="' + row.center_id + '"><i class="fas fa-edit"></i></button>' +
+                           '<button type="button" class="btn btn-danger delete-btn" data-id="' + row.center_id + '" data-name="' + row.center_name + '"><i class="fas fa-trash"></i></button>' +
                            '</div>';
                 }
             }
