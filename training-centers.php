@@ -671,6 +671,57 @@ $(function () {
         }
     });
 
+    // Edit Center
+    $(document).on('click', '.edit-btn', function() {
+        var centerId = $(this).data('id');
+        
+        // Reset form
+        $('#centerForm')[0].reset();
+        $('.is-invalid').removeClass('is-invalid');
+        
+        // Show loading in modal
+        $('#centerModal .modal-body').html('<div class="text-center"><i class="fas fa-spinner fa-spin fa-3x"></i></div>');
+        $('#centerModal').modal('show');
+        
+        $.ajax({
+            url: 'inc/ajax/training-centers.php',
+            type: 'GET',
+            data: {
+                action: 'get',
+                center_id: centerId
+            },
+            dataType: 'json',
+            success: function(response) {
+                if(response.status === 'success') {
+                    var data = response.data;
+                    
+                    // Set form values
+                    $('#center_id').val(data.center_id);
+                    $('#partner_id').val(data.partner_id).trigger('change');
+                    $('#center_name').val(data.center_name);
+                    $('#contact_person').val(data.contact_person);
+                    $('#email').val(data.email);
+                    $('#phone').val(data.phone);
+                    $('#address').val(data.address);
+                    $('#city').val(data.city);
+                    $('#state').val(data.state);
+                    $('#pincode').val(data.pincode);
+                    $('#status').val(data.status);
+                    
+                    // Update modal title
+                    $('.modal-title').text('Edit Training Center');
+                } else {
+                    toastr.error(response.message || 'Error fetching center data');
+                    $('#centerModal').modal('hide');
+                }
+            },
+            error: function() {
+                toastr.error('Error fetching center data');
+                $('#centerModal').modal('hide');
+            }
+        });
+    });
+
     // Handle form submission
     $('#centerForm').on('submit', function(e) {
         e.preventDefault();
@@ -696,9 +747,9 @@ $(function () {
         }
         
         // Prepare form data
-        var formData = $(this).serialize();
+        var formData = new FormData(this);
         var centerId = $('#center_id').val();
-        formData += '&action=' + (centerId ? 'edit' : 'add');
+        formData.append('action', centerId ? 'edit' : 'add');
         
         // Disable submit button and show loading state
         var submitBtn = $(this).find('button[type="submit"]');
@@ -706,12 +757,14 @@ $(function () {
         submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Saving...');
         
         $.ajax({
-            url: 'training-centers.php',
+            url: 'inc/ajax/training-centers.php',
             type: 'POST',
             data: formData,
+            processData: false,
+            contentType: false,
             dataType: 'json',
             success: function(response) {
-                if(response.status) {
+                if(response.status === 'success') {
                     $('#centerModal').modal('hide');
                     table.ajax.reload();
                     toastr.success(response.message);
