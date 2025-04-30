@@ -267,19 +267,16 @@ $(function () {
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'GET',
+            dataType: 'json',
             data: { action: 'get', scheme_id: schemeId },
             success: function(response) {
-                if(response.status === 'success' && response.data && typeof response.data === 'object') {
-                    var s = response.data;
-                    $modal.find('[data-field="scheme_id"]').text(s.scheme_id || '');
-                    $modal.find('[data-field="scheme_name"]').text(s.scheme_name || '');
-                    $modal.find('[data-field="description"]').text(s.description || '');
-                    $modal.find('[data-field="status"]').html('<span class="badge badge-' + (s.status === 'active' ? 'success' : 'danger') + '">' + (s.status ? (s.status.charAt(0).toUpperCase() + s.status.slice(1)) : '') + '</span>');
-                    $modal.find('[data-field="created_at"]').text(s.created_at || '');
-                    $modal.find('[data-field="updated_at"]').text(s.updated_at || '');
-                } else {
-                    $modal.find('[data-field]').text('');
-                }
+                var s = response.data || {};
+                $modal.find('[data-field="scheme_id"]').text(s.scheme_id || '');
+                $modal.find('[data-field="scheme_name"]').text(s.scheme_name || '');
+                $modal.find('[data-field="description"]').text(s.description || '');
+                $modal.find('[data-field="status"]').html(s.status ? '<span class="badge badge-' + (s.status === 'active' ? 'success' : 'danger') + '">' + (s.status.charAt(0).toUpperCase() + s.status.slice(1)) + '</span>' : '');
+                $modal.find('[data-field="created_at"]').text(s.created_at || '');
+                $modal.find('[data-field="updated_at"]').text(s.updated_at || '');
             },
             error: function() {
                 $modal.find('[data-field]').text('');
