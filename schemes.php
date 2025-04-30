@@ -156,11 +156,11 @@ try {
   </div>
 
   <!-- View Scheme Modal -->
-  <div class="modal fade" id="viewSchemeModal">
+  <div class="modal fade" id="viewSchemeModal" tabindex="-1" role="dialog" aria-labelledby="viewSchemeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">View Scheme Details</h4>
+          <h4 class="modal-title" id="viewSchemeModalLabel">View Scheme Details</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -169,36 +169,36 @@ try {
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Scheme ID</label>
+                <label class="font-weight-bold">Scheme ID:</label>
                 <p data-field="scheme_id"></p>
               </div>
               <div class="form-group">
-                <label>Scheme Name</label>
+                <label class="font-weight-bold">Scheme Name:</label>
                 <p data-field="scheme_name"></p>
               </div>
               <div class="form-group">
-                <label>Description</label>
+                <label class="font-weight-bold">Description:</label>
                 <p data-field="description"></p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>Status</label>
+                <label class="font-weight-bold">Status:</label>
                 <p data-field="status"></p>
               </div>
               <div class="form-group">
-                <label>Created At</label>
+                <label class="font-weight-bold">Created At:</label>
                 <p data-field="created_at"></p>
               </div>
               <div class="form-group">
-                <label>Updated At</label>
+                <label class="font-weight-bold">Updated At:</label>
                 <p data-field="updated_at"></p>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -327,9 +327,23 @@ try {
     });
 
     // View Scheme
-    $(document).on('click', '.view-scheme', function() {
+    $(document).on('click', '.view-scheme', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         var schemeId = $(this).data('id');
+        var $modal = $('#viewSchemeModal');
         
+        // Show loading state
+        $modal.find('.modal-body').html('<div class="text-center py-5"><i class="fas fa-spinner fa-spin fa-3x"></i><p class="mt-2">Loading...</p></div>');
+        
+        // Show modal
+        $modal.modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true
+        });
+        
+        // Fetch scheme details
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'GET',
@@ -341,27 +355,67 @@ try {
                 if(response.status === 'success') {
                     var scheme = response.data;
                     
-                    // Populate modal fields
-                    $('#viewSchemeModal [data-field="scheme_id"]').text(scheme.scheme_id);
-                    $('#viewSchemeModal [data-field="scheme_name"]').text(scheme.scheme_name);
-                    $('#viewSchemeModal [data-field="description"]').text(scheme.description || 'N/A');
-                    $('#viewSchemeModal [data-field="status"]').html(
+                    // Update modal content
+                    $modal.find('.modal-body').html(`
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Scheme ID:</label>
+                                    <p data-field="scheme_id"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Scheme Name:</label>
+                                    <p data-field="scheme_name"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Description:</label>
+                                    <p data-field="description"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Status:</label>
+                                    <p data-field="status"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Created At:</label>
+                                    <p data-field="created_at"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Updated At:</label>
+                                    <p data-field="updated_at"></p>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                    
+                    // Populate fields
+                    $modal.find('[data-field="scheme_id"]').text(scheme.scheme_id);
+                    $modal.find('[data-field="scheme_name"]').text(scheme.scheme_name);
+                    $modal.find('[data-field="description"]').text(scheme.description || 'N/A');
+                    $modal.find('[data-field="status"]').html(
                         '<span class="badge badge-' + (scheme.status === 'active' ? 'success' : 'danger') + '">' + 
                         scheme.status.charAt(0).toUpperCase() + scheme.status.slice(1) + '</span>'
                     );
-                    $('#viewSchemeModal [data-field="created_at"]').text(scheme.created_at);
-                    $('#viewSchemeModal [data-field="updated_at"]').text(scheme.updated_at || 'N/A');
-                    
-                    // Show modal
-                    $('#viewSchemeModal').modal('show');
+                    $modal.find('[data-field="created_at"]').text(scheme.created_at);
+                    $modal.find('[data-field="updated_at"]').text(scheme.updated_at || 'N/A');
                 } else {
-                    toastr.error(response.message || 'Error fetching scheme details');
+                    $modal.find('.modal-body').html(
+                        '<div class="alert alert-danger">' + (response.message || 'Error fetching scheme details') + '</div>'
+                    );
                 }
             },
             error: function() {
-                toastr.error('Error fetching scheme details');
+                $modal.find('.modal-body').html(
+                    '<div class="alert alert-danger">Error fetching scheme details. Please try again.</div>'
+                );
             }
         });
+    });
+
+    // Close modal handler
+    $('.modal').on('hidden.bs.modal', function() {
+        $(this).find('.modal-body').html('');
     });
 
     // Edit Scheme
@@ -518,6 +572,16 @@ try {
                 toastr.error('Error updating scheme');
             }
         });
+    });
+
+    // Make sure Bootstrap is properly initialized
+    if (typeof $.fn.modal === 'undefined') {
+        console.error('Bootstrap modal is not loaded');
+    }
+    
+    // Initialize all modals
+    $('.modal').modal({
+        show: false
     });
   });
 </script>
