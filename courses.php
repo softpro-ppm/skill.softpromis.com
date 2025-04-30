@@ -94,16 +94,16 @@ $schemes = Scheme::getAll();
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="courseCode">Course Code</label>
-                  <input type="text" class="form-control" id="courseCode" placeholder="Enter course code" required>
+                  <label for="course_code">Course Code</label>
+                  <input type="text" class="form-control" id="course_code" name="course_code" required>
                 </div>
                 <div class="form-group">
-                  <label for="courseName">Course Name</label>
-                  <input type="text" class="form-control" id="courseName" placeholder="Enter course name" required>
+                  <label for="course_name">Course Name</label>
+                  <input type="text" class="form-control" id="course_name" name="course_name" required>
                 </div>
                 <div class="form-group">
-                  <label for="sector">Sector</label>
-                  <select class="form-control select2" id="sector" required>
+                  <label for="sector_id">Sector</label>
+                  <select class="form-control select2" id="sector_id" name="sector_id" required>
                     <option value="">Select Sector</option>
                     <?php foreach ($sectors as $sector): ?>
                       <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -111,50 +111,30 @@ $schemes = Scheme::getAll();
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="scheme">Scheme</label>
-                  <select class="form-control select2" id="scheme" name="scheme_id">
+                  <label for="scheme_id">Scheme</label>
+                  <select class="form-control select2" id="scheme_id" name="scheme_id">
                     <option value="">Select Scheme</option>
                     <?php foreach ($schemes as $scheme): ?>
                       <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
                     <?php endforeach; ?>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="duration">Duration (months)</label>
-                  <input type="number" class="form-control" id="duration" placeholder="Enter duration" required>
-                </div>
-                <div class="form-group">
-                  <label for="fee">Course Fee (₹)</label>
-                  <input type="number" class="form-control" id="fee" placeholder="Enter fee" required>
-                </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
+                  <label for="duration_hours">Duration (hours)</label>
+                  <input type="number" class="form-control" id="duration_hours" name="duration_hours" required>
+                </div>
+                <div class="form-group">
                   <label for="description">Description</label>
-                  <textarea class="form-control" id="description" rows="3" placeholder="Enter course description" required></textarea>
+                  <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                 </div>
                 <div class="form-group">
-                  <label for="prerequisites">Prerequisites</label>
-                  <textarea class="form-control" id="prerequisites" rows="3" placeholder="Enter prerequisites"></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="learningOutcomes">Learning Outcomes</label>
-                  <textarea class="form-control" id="learningOutcomes" rows="3" placeholder="Enter learning outcomes" required></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Documents</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="courseDoc">
-                    <label class="custom-file-label" for="courseDoc">Course Document</label>
-                  </div>
-                  <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="curriculumDoc">
-                    <label class="custom-file-label" for="curriculumDoc">Curriculum Document</label>
-                  </div>
+                  <label for="status">Status</label>
+                  <select class="form-control" id="status" name="status" required>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -286,16 +266,16 @@ $schemes = Scheme::getAll();
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editCourseCode">Course Code</label>
-                  <input type="text" class="form-control" id="editCourseCode" required>
+                  <label for="edit_course_code">Course Code</label>
+                  <input type="text" class="form-control" id="edit_course_code" name="course_code" required>
                 </div>
                 <div class="form-group">
-                  <label for="editCourseName">Course Name</label>
-                  <input type="text" class="form-control" id="editCourseName" required>
+                  <label for="edit_course_name">Course Name</label>
+                  <input type="text" class="form-control" id="edit_course_name" name="course_name" required>
                 </div>
                 <div class="form-group">
-                  <label for="editSector">Sector</label>
-                  <select class="form-control select2" id="editSector" required>
+                  <label for="edit_sector_id">Sector</label>
+                  <select class="form-control select2" id="edit_sector_id" name="sector_id" required>
                     <option value="">Select Sector</option>
                     <?php foreach ($sectors as $sector): ?>
                       <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -303,50 +283,30 @@ $schemes = Scheme::getAll();
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="editScheme">Scheme</label>
-                  <select class="form-control select2" id="editScheme" name="scheme_id">
+                  <label for="edit_scheme_id">Scheme</label>
+                  <select class="form-control select2" id="edit_scheme_id" name="scheme_id">
                     <option value="">Select Scheme</option>
                     <?php foreach ($schemes as $scheme): ?>
                       <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
                     <?php endforeach; ?>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="editDuration">Duration (months)</label>
-                  <input type="number" class="form-control" id="editDuration" required>
-                </div>
-                <div class="form-group">
-                  <label for="editFee">Course Fee (₹)</label>
-                  <input type="number" class="form-control" id="editFee" required>
-                </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="editDescription">Description</label>
-                  <textarea class="form-control" id="editDescription" rows="3" required></textarea>
+                  <label for="edit_duration_hours">Duration (hours)</label>
+                  <input type="number" class="form-control" id="edit_duration_hours" name="duration_hours" required>
                 </div>
                 <div class="form-group">
-                  <label for="editPrerequisites">Prerequisites</label>
-                  <textarea class="form-control" id="editPrerequisites" rows="3"></textarea>
+                  <label for="edit_description">Description</label>
+                  <textarea class="form-control" id="edit_description" name="description" rows="3" required></textarea>
                 </div>
                 <div class="form-group">
-                  <label for="editLearningOutcomes">Learning Outcomes</label>
-                  <textarea class="form-control" id="editLearningOutcomes" rows="3" required></textarea>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Documents</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="editCourseDoc">
-                    <label class="custom-file-label" for="editCourseDoc">Course Document</label>
-                  </div>
-                  <div class="custom-file mt-2">
-                    <input type="file" class="custom-file-input" id="editCurriculumDoc">
-                    <label class="custom-file-label" for="editCurriculumDoc">Curriculum Document</label>
-                  </div>
+                  <label for="edit_status">Status</label>
+                  <select class="form-control" id="edit_status" name="status" required>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -457,13 +417,12 @@ $(function () {
   // Add Course
   $('#addCourseModal form').on('submit', function (e) {
     e.preventDefault();
-    var courseCode = $('#courseCode').val().trim();
-    var courseName = $('#courseName').val().trim();
-    var sectorId = $('#sector').val();
-    var schemeId = $('#scheme').val();
-    var durationMonths = $('#duration').val();
-    var durationHours = parseInt(durationMonths) * 30 * 1; // 1 month = 30 hours (adjust as needed)
-    if (!courseCode || !courseName || !sectorId || sectorId === '' || sectorId === '0' || !durationMonths || durationHours <= 0) {
+    var courseCode = $('#course_code').val().trim();
+    var courseName = $('#course_name').val().trim();
+    var sectorId = $('#sector_id').val();
+    var schemeId = $('#scheme_id').val();
+    var durationHours = $('#duration_hours').val();
+    if (!courseCode || !courseName || !sectorId || sectorId === '' || sectorId === '0' || !durationHours || durationHours <= 0) {
       showToast('error', 'Please fill all required fields: Course Code, Course Name, Sector, and Duration.');
       return;
     }
@@ -478,7 +437,7 @@ $(function () {
       description: $('#description').val(),
       prerequisites: $('#prerequisites').val(),
       syllabus: $('#learningOutcomes').val(),
-      status: 'active'
+      status: $('#status').val()
     };
     console.log(formData);
     $.ajax({
@@ -509,16 +468,13 @@ $(function () {
       success: function (response) {
         if (response.success && response.data) {
           var c = response.data;
-          $('#editCourseCode').val(c.course_code);
-          $('#editCourseName').val(c.course_name);
-          $('#editSector').val(c.sector_id).trigger('change');
-          $('#editScheme').val(c.scheme_id).trigger('change');
-          var months = c.duration_hours ? Math.round(c.duration_hours / 30) : '';
-          $('#editDuration').val(months);
-          $('#editFee').val(c.fee);
-          $('#editDescription').val(c.description);
-          $('#editPrerequisites').val(c.prerequisites);
-          $('#editLearningOutcomes').val(c.syllabus);
+          $('#edit_course_code').val(c.course_code);
+          $('#edit_course_name').val(c.course_name);
+          $('#edit_sector_id').val(c.sector_id).trigger('change');
+          $('#edit_scheme_id').val(c.scheme_id).trigger('change');
+          $('#edit_duration_hours').val(c.duration_hours);
+          $('#edit_description').val(c.description);
+          $('#edit_status').val(c.status);
           $('#editCourseModal').data('id', c.course_id).modal('show');
         } else {
           showToast('error', 'Could not fetch course details.');
@@ -531,21 +487,16 @@ $(function () {
   $('#editCourseModal form').on('submit', function (e) {
     e.preventDefault();
     var id = $('#editCourseModal').data('id');
-    var months = $('#editDuration').val();
-    var hours = parseInt(months) * 30;
     var formData = {
       action: 'update',
       course_id: id,
-      course_code: $('#editCourseCode').val(),
-      course_name: $('#editCourseName').val(),
-      sector_id: $('#editSector').val(),
-      scheme_id: $('#editScheme').val(),
-      duration_hours: hours,
-      fee: $('#editFee').val(),
-      description: $('#editDescription').val(),
-      prerequisites: $('#editPrerequisites').val(),
-      syllabus: $('#editLearningOutcomes').val(),
-      status: 'active'
+      course_code: $('#edit_course_code').val(),
+      course_name: $('#edit_course_name').val(),
+      sector_id: $('#edit_sector_id').val(),
+      scheme_id: $('#edit_scheme_id').val(),
+      duration_hours: $('#edit_duration_hours').val(),
+      description: $('#edit_description').val(),
+      status: $('#edit_status').val()
     };
     $.ajax({
       url: 'inc/ajax/courses_ajax.php',
