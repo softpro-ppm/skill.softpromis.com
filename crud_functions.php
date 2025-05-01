@@ -64,8 +64,13 @@ class TrainingPartner {
 class TrainingCenter {
     public static function getAll($partnerId = null) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("CALL sp_get_training_centers(?)");
-        $stmt->execute([$partnerId]);
+        if ($partnerId) {
+            $stmt = $conn->prepare("SELECT * FROM training_centers WHERE partner_id = ? AND status = 'active' ORDER BY center_id DESC");
+            $stmt->execute([$partnerId]);
+        } else {
+            $stmt = $conn->prepare("SELECT * FROM training_centers WHERE status = 'active' ORDER BY center_id DESC");
+            $stmt->execute();
+        }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -198,8 +203,16 @@ class Scheme {
 class Course {
     public static function getAll($sectorId = null, $schemeId = null) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("CALL sp_get_courses(?, ?)");
-        $stmt->execute([$sectorId, $schemeId]);
+        if ($sectorId && $schemeId) {
+            $stmt = $conn->prepare("SELECT * FROM courses WHERE sector_id = ? AND scheme_id = ? AND status = 'active' ORDER BY course_id DESC");
+            $stmt->execute([$sectorId, $schemeId]);
+        } elseif ($sectorId) {
+            $stmt = $conn->prepare("SELECT * FROM courses WHERE sector_id = ? AND status = 'active' ORDER BY course_id DESC");
+            $stmt->execute([$sectorId]);
+        } else {
+            $stmt = $conn->prepare("SELECT * FROM courses WHERE status = 'active' ORDER BY course_id DESC");
+            $stmt->execute();
+        }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
