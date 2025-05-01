@@ -15,7 +15,6 @@ $(document).ready(function() {
             { data: 'start_date' },
             { data: 'end_date' },
             { data: 'capacity' },
-            { data: null, defaultContent: '-' }, // Students placeholder
             { data: 'status', render: function(data) {
                 let badgeClass = 'badge-primary';
                 if (data === 'ongoing') badgeClass = 'badge-info';
