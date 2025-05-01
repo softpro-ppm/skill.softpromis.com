@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 01, 2025 at 09:09 AM
+-- Generation Time: May 01, 2025 at 10:01 AM
 -- Server version: 10.11.10-MariaDB
 -- PHP Version: 7.2.34
 
@@ -118,17 +118,20 @@ CREATE TABLE `courses` (
   `description` text DEFAULT NULL,
   `status` enum('active','inactive') DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `fee` decimal(10,2) DEFAULT NULL,
+  `prerequisites` text DEFAULT NULL,
+  `syllabus` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `courses`
 --
 
-INSERT INTO `courses` (`course_id`, `sector_id`, `scheme_id`, `course_code`, `course_name`, `duration_hours`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'WD001', 'Web Development', 480, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(2, 1, 1, 'DM001', 'Digital Marketing', 240, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(3, 1, 3, 'DA001', 'Data Analytics', 360, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04');
+INSERT INTO `courses` (`course_id`, `sector_id`, `scheme_id`, `course_code`, `course_name`, `duration_hours`, `description`, `status`, `created_at`, `updated_at`, `fee`, `prerequisites`, `syllabus`) VALUES
+(1, 1, 1, 'WD001', 'Web Development', 480, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL, NULL, NULL),
+(2, 1, 1, 'DM001', 'Digital Marketing', 240, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL, NULL, NULL),
+(3, 1, 3, 'DA001', 'Data Analytics', 360, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -205,8 +208,7 @@ INSERT INTO `schemes` (`scheme_id`, `scheme_name`, `description`, `status`, `cre
 (1, 'PMKVY', 'Pradhan Mantri Kaushal Vikas Yojana', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
 (2, 'DDU-GKY', 'Deen Dayal Upadhyaya Grameen Kaushalya Yojana', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
 (3, 'Regular', 'Regular Training Programs', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(4, 'Abel Noel', 'Excepturi esse dolo', 'inactive', '2025-04-30 01:11:27', '2025-04-30 01:11:27'),
-(6, 'Cathleen Burgess  yyy', 'Officiis non archite', 'active', '2025-04-30 01:19:31', '2025-05-01 09:07:57');
+(4, 'Abel Noel', 'Excepturi esse dolo', 'inactive', '2025-04-30 01:11:27', '2025-04-30 01:11:27');
 
 -- --------------------------------------------------------
 
@@ -239,9 +241,7 @@ INSERT INTO `sectors` (`sector_id`, `sector_name`, `description`, `status`, `cre
 (10, 'dfv', 'sdc', 'active', '2025-04-30 06:37:47', '2025-04-30 06:37:47'),
 (11, 'sdfv', 'xcv', 'active', '2025-04-30 06:39:35', '2025-04-30 06:39:35'),
 (12, 'sdfv', 'xcv', 'active', '2025-04-30 06:39:43', '2025-04-30 06:39:43'),
-(13, 'testing', 'test', 'active', '2025-04-30 06:42:19', '2025-04-30 06:42:19'),
-(14, 'sdf', 'sdfv', 'active', '2025-04-30 06:45:06', '2025-04-30 06:45:06'),
-(15, 'sdf', 'sdfv', 'active', '2025-04-30 06:45:38', '2025-04-30 06:45:38');
+(13, 'testing', 'test', 'active', '2025-04-30 06:42:19', '2025-04-30 06:42:19');
 
 -- --------------------------------------------------------
 
@@ -329,7 +329,7 @@ INSERT INTO `training_centers` (`center_id`, `partner_id`, `center_name`, `conta
 (2, 1, 'TechSkill Pune Center', 'Sneha Patil', 'pune@techskill.com', '9876543216', 'Hinjewadi, Pune', NULL, NULL, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
 (3, 2, 'DTI Delhi Center', 'Vikram Singh', 'delhi@dti.com', '9876543217', 'Connaught Place, Delhi', NULL, NULL, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
 (4, 1, 'Kameko Patel', 'Irure est accusamus ', 'vubi@mailinator.com', '+1 (326) 925-23', 'Reprehenderit non t', 'Irure molestiae cons', 'Quia repudiandae mol', 'Aliquip li', 'active', '2025-04-26 02:01:19', '2025-04-26 02:04:38'),
-(5, 2, 'Kessie Santana', 'Aspernatur amet vol', 'sibyt@mailinator.com', '+1 (464) 557-50', 'Vitae accusamus corr', 'Autem vero iste itaq', 'Tempor doloribus qua', 'Dolorum it', 'inactive', '2025-04-26 02:04:54', '2025-04-26 02:04:54');
+(5, 2, 'Kessie Santana', 'Aspernatur amet vol', 'sibyt@mailinator.com', '+1 (464) 557-50', 'Vitae accusamus corr', 'Autem vero iste itaq', 'Tempor doloribus qua', 'Dolorum it', 'inactive', '2025-04-26 02:04:54', '2025-05-01 09:16:33');
 
 -- --------------------------------------------------------
 
@@ -360,7 +360,8 @@ INSERT INTO `training_partners` (`partner_id`, `partner_name`, `contact_person`,
 (1, 'TechSkill Solutions', 'Rajesh Kumar', 'contact@techskill.com', '9876543213', 'Mumbai, India', '', 'active', '2025-04-24 05:17:04', '2025-04-26 01:52:08', NULL, NULL),
 (2, 'Digital Training Institute', 'Priya Singh', 'info@dti.com', '9876543214', 'Delhi, India', '', 'active', '2025-04-24 05:17:04', '2025-04-26 01:51:57', NULL, NULL),
 (4, 'Cassidy Carr', 'Et aspernatur do dol', 'gekysopodu@mailinator.com', '+1 (338) 718-60', 'Harum facere asperio', 'https://www.lozupofetok.co', 'active', '2025-04-26 02:22:34', '2025-04-30 00:29:01', NULL, NULL),
-(5, 'bdvs djkbjhs', 'jnjkbjbh', 'hhjhjkhj@gmail', '6756567', 'hjhghgh', '', 'active', '2025-04-30 00:30:31', '2025-04-30 00:38:30', '68117106bd505_reg.jpg', '68117106bd791_agr.jpg');
+(5, 'bdvs djkbjhs', 'jnjkbjbh', 'hhjhjkhj@gmail', '6756567', 'hjhghgh', '', 'active', '2025-04-30 00:30:31', '2025-05-01 09:16:22', '68117106bd505_reg.jpg', '68117106bd791_agr.jpg'),
+(7, 'tytytyty', 'Sunt eum eu qui ut e', 'xunecejybe@mailinator.com', '+1 (227) 851-33', 'Voluptatem et sit ', 'https://www.dybubyboruhiz.ws', 'active', '2025-05-01 09:43:19', '2025-05-01 09:43:30', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -565,7 +566,7 @@ ALTER TABLE `training_centers`
 -- AUTO_INCREMENT for table `training_partners`
 --
 ALTER TABLE `training_partners`
-  MODIFY `partner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `partner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
