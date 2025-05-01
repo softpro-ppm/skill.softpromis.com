@@ -59,8 +59,7 @@ require_once 'includes/sidebar.php';
                   <th>Training Center</th>
                   <th>Start Date</th>
                   <th>End Date</th>
-                  <th>Students</th>
-                  <th>Trainer</th>
+                  <th>Capacity</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -112,46 +111,16 @@ require_once 'includes/sidebar.php';
               </select>
             </div>
             <div class="form-group">
-              <label for="trainer">Trainer</label>
-              <select class="form-control select2" id="trainer" name="trainer_id">
-                <option value="">Select Trainer</option>
-                <!-- Populate dynamically if needed -->
-              </select>
-            </div>
-            <div class="form-group">
               <label for="startDate">Start Date</label>
-              <div class="input-group date" id="startDatePicker" data-target-input="nearest">
-                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
-                <input type="text" class="form-control datetimepicker-input" data-target="#startDatePicker" id="startDate" name="start_date" required />
-                <div class="input-group-append" data-target="#startDatePicker" data-toggle="datetimepicker">
-                  <span class="input-group-text"><i class="far fa-calendar"></i></span>
-                </div>
-              </div>
+              <input type="date" class="form-control" id="startDate" name="start_date" required>
             </div>
             <div class="form-group">
               <label for="endDate">End Date</label>
-              <div class="input-group date" id="endDatePicker" data-target-input="nearest">
-                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
-                <input type="text" class="form-control datetimepicker-input" data-target="#endDatePicker" id="endDate" name="end_date" required />
-                <div class="input-group-append" data-target="#endDatePicker" data-toggle="datetimepicker">
-                  <span class="input-group-text"><i class="far fa-calendar"></i></span>
-                </div>
-              </div>
+              <input type="date" class="form-control" id="endDate" name="end_date" required>
             </div>
             <div class="form-group">
               <label for="capacity">Batch Capacity</label>
-              <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-users"></i></span></div>
-                <input type="number" class="form-control" id="capacity" name="capacity" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="schedule">Schedule</label>
-              <input type="text" class="form-control" id="schedule" name="schedule">
-            </div>
-            <div class="form-group">
-              <label for="remarks">Remarks</label>
-              <textarea class="form-control" id="remarks" name="remarks" rows="2"></textarea>
+              <input type="number" class="form-control" id="capacity" name="capacity" required>
             </div>
             <div class="form-group">
               <label for="status">Status</label>
@@ -208,46 +177,16 @@ require_once 'includes/sidebar.php';
               </select>
             </div>
             <div class="form-group">
-              <label for="editTrainer">Trainer</label>
-              <select class="form-control select2" id="editTrainer" name="trainer_id">
-                <option value="">Select Trainer</option>
-                <!-- Populate dynamically if needed -->
-              </select>
-            </div>
-            <div class="form-group">
               <label for="editStartDate">Start Date</label>
-              <div class="input-group date" id="editStartDatePicker" data-target-input="nearest">
-                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
-                <input type="text" class="form-control datetimepicker-input" data-target="#editStartDatePicker" id="editStartDate" name="start_date" required />
-                <div class="input-group-append" data-target="#editStartDatePicker" data-toggle="datetimepicker">
-                  <span class="input-group-text"><i class="far fa-calendar"></i></span>
-                </div>
-              </div>
+              <input type="date" class="form-control" id="editStartDate" name="start_date" required>
             </div>
             <div class="form-group">
               <label for="editEndDate">End Date</label>
-              <div class="input-group date" id="editEndDatePicker" data-target-input="nearest">
-                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
-                <input type="text" class="form-control datetimepicker-input" data-target="#editEndDatePicker" id="editEndDate" name="end_date" required />
-                <div class="input-group-append" data-target="#editEndDatePicker" data-toggle="datetimepicker">
-                  <span class="input-group-text"><i class="far fa-calendar"></i></span>
-                </div>
-              </div>
+              <input type="date" class="form-control" id="editEndDate" name="end_date" required>
             </div>
             <div class="form-group">
               <label for="editCapacity">Batch Capacity</label>
-              <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-users"></i></span></div>
-                <input type="number" class="form-control" id="editCapacity" name="capacity" required>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="editSchedule">Schedule</label>
-              <input type="text" class="form-control" id="editSchedule" name="schedule">
-            </div>
-            <div class="form-group">
-              <label for="editRemarks">Remarks</label>
-              <textarea class="form-control" id="editRemarks" name="remarks" rows="2"></textarea>
+              <input type="number" class="form-control" id="editCapacity" name="capacity" required>
             </div>
             <div class="form-group">
               <label for="editStatus">Status</label>
@@ -306,7 +245,6 @@ $(function () {
       { data: 'start_date' },
       { data: 'end_date' },
       { data: 'capacity' },
-      { data: 'trainer_name', defaultContent: '-' },
       { data: 'status', render: function(data) { return '<span class="badge badge-' + (data === 'completed' ? 'success' : (data === 'ongoing' ? 'primary' : (data === 'upcoming' ? 'info' : 'secondary'))) + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
       { data: null, orderable: false, searchable: false, render: function (data, type, row) {
         return '<div class="btn-group btn-group-sm">' +
@@ -376,12 +314,9 @@ $(function () {
         $modal.find('#editBatchCode').val(b.batch_code || '');
         $modal.find('#editCourse').val(b.course_id || '').trigger('change');
         $modal.find('#editTrainingCenter').val(b.center_id || '').trigger('change');
-        $modal.find('#editTrainer').val(b.trainer_id || '').trigger('change');
         $modal.find('#editStartDate').val(b.start_date || '');
         $modal.find('#editEndDate').val(b.end_date || '');
         $modal.find('#editCapacity').val(b.capacity || '');
-        $modal.find('#editSchedule').val(b.schedule || '');
-        $modal.find('#editRemarks').val(b.remarks || '');
         $modal.find('#editStatus').val(b.status || 'upcoming');
         $modal.modal('show');
       }
