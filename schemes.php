@@ -343,8 +343,9 @@ $(function () {
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
             data: $form.serialize() + '&action=edit',
+            dataType: 'json',
             success: function(response) {
-                if(response.status === 'success') {
+                if(response.success) {
                     $modal.modal('hide');
                     toastr.success(response.message || 'Scheme updated successfully');
                     setTimeout(function() {
@@ -387,8 +388,9 @@ $(function () {
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
             data: $form.serialize() + '&action=add',
+            dataType: 'json',
             success: function(response) {
-                if(response.status === 'success') {
+                if(response.success) {
                     $('#addSchemeModal').modal('hide');
                     toastr.success(response.message || 'Scheme added successfully');
                     setTimeout(function() {
@@ -422,11 +424,12 @@ $(function () {
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
             data: { action: 'delete', scheme_id: schemeId },
+            dataType: 'json',
             success: function(response) {
                 $('#deleteSchemeModal').modal('hide');
-                if(response.status === 'success') {
+                if(response.success) {
                     toastr.success(response.message || 'Scheme deleted successfully');
-                    $('#schemesTable').DataTable().ajax.reload(null, false);
+                    table.ajax.reload(null, false);
                 } else {
                     toastr.error(response.message || 'Error deleting scheme');
                 }
