@@ -363,9 +363,11 @@ $(function () {
       { data: 'syllabus' },
       { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'secondary') + '">' + (data ? data.charAt(0).toUpperCase() + data.slice(1) : '') + '</span>'; } },
       { data: null, orderable: false, searchable: false, render: function (data, type, row) {
-        return '<button type="button" class="btn btn-info btn-sm view-course-btn" data-id="' + row.course_id + '"><i class="fas fa-eye"></i></button> ' +
-          '<button type="button" class="btn btn-primary btn-sm edit-course-btn" data-id="' + row.course_id + '"><i class="fas fa-edit"></i></button> ' +
-          '<button type="button" class="btn btn-danger btn-sm delete-course-btn" data-id="' + row.course_id + '"><i class="fas fa-trash"></i></button>';
+        return '<div class="btn-group btn-group-sm">' +
+          '<button type="button" class="btn btn-info view-course-btn" data-id="' + row.course_id + '"><i class="fas fa-eye"></i></button>' +
+          '<button type="button" class="btn btn-primary edit-course-btn" data-id="' + row.course_id + '"><i class="fas fa-edit"></i></button>' +
+          '<button type="button" class="btn btn-danger delete-course-btn" data-id="' + row.course_id + '"><i class="fas fa-trash"></i></button>' +
+        '</div>';
       } }
     ],
     responsive: true,
