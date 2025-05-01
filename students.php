@@ -370,6 +370,85 @@ try {
       // Load batches based on selected course
     });
 
+    // Helper: reset and hide modals
+    function resetStudentForm($form) {
+      $form[0].reset();
+      $form.find('.is-invalid').removeClass('is-invalid');
+    }
+
+    // Add Student AJAX
+    $('#addStudentForm').on('submit', function(e) {
+      e.preventDefault();
+      var $form = $(this);
+      var $btn = $form.find('button[type="submit"]');
+      var originalText = $btn.html();
+      $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Saving...');
+      $.post('inc/ajax/students_ajax.php', $form.serialize() + '&action=create', function(response) {
+        if (response.success) {
+          toastr.success(response.message || 'Student added successfully');
+          $('#addStudentModal').modal('hide');
+          resetStudentForm($form);
+          table.ajax.reload(null, false);
+        } else {
+          toastr.error(response.message || 'Failed to add student');
+        }
+        $btn.prop('disabled', false).html(originalText);
+      }, 'json').fail(function() {
+        toastr.error('An error occurred. Please try again.');
+        $btn.prop('disabled', false).html(originalText);
+      });
+    });
+
+    // Edit Student AJAX
+    $('#editStudentForm').on('submit', function(e) {
+      e.preventDefault();
+      var $form = $(this);
+      var $btn = $form.find('button[type="submit"]');
+      var originalText = $btn.html();
+      $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Saving...');
+      $.post('inc/ajax/students_ajax.php', $form.serialize() + '&action=update', function(response) {
+        if (response.success) {
+          toastr.success(response.message || 'Student updated successfully');
+          $('#editStudentModal').modal('hide');
+          resetStudentForm($form);
+          table.ajax.reload(null, false);
+        } else {
+          toastr.error(response.message || 'Failed to update student');
+        }
+        $btn.prop('disabled', false).html(originalText);
+      }, 'json').fail(function() {
+        toastr.error('An error occurred. Please try again.');
+        $btn.prop('disabled', false).html(originalText);
+      });
+    });
+
+    // Confirm Delete AJAX
+    $('#confirmDeleteStudent').on('click', function() {
+      var student_id = $('#deleteStudentId').val();
+      var $btn = $(this);
+      var originalText = $btn.html();
+      $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Deleting...');
+      $.post('inc/ajax/students_ajax.php', { action: 'delete', student_id: student_id }, function(response) {
+        if (response.success) {
+          toastr.success(response.message || 'Student deleted successfully');
+          $('#deleteStudentModal').modal('hide');
+          table.ajax.reload(null, false);
+        } else {
+          toastr.error(response.message || 'Failed to delete student');
+        }
+        $btn.prop('disabled', false).html(originalText);
+      }, 'json').fail(function() {
+        toastr.error('An error occurred. Please try again.');
+        $btn.prop('disabled', false).html(originalText);
+      });
+    });
+
+    // Reset forms on modal close
+    $('#addStudentModal, #editStudentModal').on('hidden.bs.modal', function () {
+      var $form = $(this).find('form');
+      if ($form.length) resetStudentForm($form);
+    });
+
     // Open Edit Modal and populate fields
     $(document).on('click', '.edit-student-btn', function() {
       var student_id = $(this).data('student-id');
@@ -386,53 +465,17 @@ try {
           $('#editAddress').val(s.address);
           $('#editStudentModal').modal('show');
         } else {
-          alert('Could not fetch student details.');
+          toastr.error('Could not fetch student details.');
         }
-      }, 'json');
-    });
-
-    // Add Student AJAX
-    $('#addStudentForm').on('submit', function(e) {
-      e.preventDefault();
-      var formData = $(this).serialize() + '&action=create';
-      $.post('inc/ajax/students_ajax.php', formData, function(response) {
-        if (response.success) {
-          location.reload();
-        } else {
-          alert(response.message);
-        }
-      }, 'json');
-    });
-
-    // Edit Student AJAX
-    $('#editStudentForm').on('submit', function(e) {
-      e.preventDefault();
-      var formData = $(this).serialize() + '&action=update';
-      $.post('inc/ajax/students_ajax.php', formData, function(response) {
-        if (response.success) {
-          location.reload();
-        } else {
-          alert(response.message);
-        }
-      }, 'json');
+      }, 'json').fail(function() {
+        toastr.error('An error occurred. Please try again.');
+      });
     });
 
     // Open Delete Modal
     $(document).on('click', '.delete-student-btn', function() {
       $('#deleteStudentId').val($(this).data('student-id'));
       $('#deleteStudentModal').modal('show');
-    });
-
-    // Confirm Delete AJAX
-    $('#confirmDeleteStudent').on('click', function() {
-      var student_id = $('#deleteStudentId').val();
-      $.post('inc/ajax/students_ajax.php', { action: 'delete', student_id: student_id }, function(response) {
-        if (response.success) {
-          location.reload();
-        } else {
-          alert(response.message);
-        }
-      }, 'json');
     });
 
     // Open View Modal and populate fields
@@ -451,11 +494,13 @@ try {
           $('#viewAddress').text(s.address);
           $('#viewStudentModal').modal('show');
         } else {
-          alert('Could not fetch student details.');
+          toastr.error('Could not fetch student details.');
         }
-      }, 'json');
+      }, 'json').fail(function() {
+        toastr.error('An error occurred. Please try again.');
+      });
     });
   });
 </script>
 </body>
-</html> 
+</html>
