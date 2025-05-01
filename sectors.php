@@ -258,15 +258,16 @@ $(function () {
             data: $form.serialize() + '&action=add',
             dataType: 'json',
             success: function(response) {
-                if(response.status === 'success') {
+                if(response.success) {
                     $('#addSectorModal').modal('hide');
                     toastr.success(response.message || 'Sector added successfully');
-                    $form[0].reset();
-                    $form.find('.is-invalid').removeClass('is-invalid');
-                    // Force reload table after modal is hidden
                     $('#addSectorModal').one('hidden.bs.modal', function() {
-                        table.ajax.reload(null, true);
+                        table.ajax.reload(null, false);
                     });
+                    setTimeout(function() {
+                        $form[0].reset();
+                        $form.find('.is-invalid').removeClass('is-invalid');
+                    }, 500);
                 } else {
                     toastr.error(response.message || 'Error adding sector');
                 }
@@ -346,15 +347,16 @@ $(function () {
             data: $form.serialize() + '&action=edit',
             dataType: 'json',
             success: function(response) {
-                if(response.status === 'success') {
+                if(response.success) {
                     $('#editSectorModal').modal('hide');
                     toastr.success(response.message || 'Sector updated successfully');
-                    $form[0].reset();
-                    $form.find('.is-invalid').removeClass('is-invalid');
-                    // Force reload table after modal is hidden
                     $('#editSectorModal').one('hidden.bs.modal', function() {
-                        table.ajax.reload(null, true);
+                        table.ajax.reload(null, false);
                     });
+                    setTimeout(function() {
+                        $form[0].reset();
+                        $form.find('.is-invalid').removeClass('is-invalid');
+                    }, 500);
                 } else {
                     toastr.error(response.message || 'Error updating sector');
                 }
@@ -380,9 +382,16 @@ $(function () {
             dataType: 'json',
             success: function(response) {
                 $('#deleteSectorModal').modal('hide');
-                if(response.status === 'success') {
+                if(response.success) {
+                    toastr.success(response.message || 'Sector deleted successfully');
                     table.ajax.reload(null, false);
+                } else {
+                    toastr.error(response.message || 'Error deleting sector');
                 }
+            },
+            error: function() {
+                $('#deleteSectorModal').modal('hide');
+                toastr.error('Error deleting sector');
             }
         });
     });
