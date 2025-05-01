@@ -19,22 +19,25 @@ class TrainingPartner {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO training_partners (partner_name, contact_person, email, phone, address, website) 
-                               VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO training_partners (partner_name, contact_person, email, phone, address, website, status, created_at, updated_at, registration_doc, agreement_doc) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, ?)");
         return $stmt->execute([
             $data['partner_name'],
             $data['contact_person'],
             $data['email'],
             $data['phone'],
             $data['address'],
-            $data['website']
+            $data['website'],
+            $data['status'],
+            $data['registration_doc'] ?? null,
+            $data['agreement_doc'] ?? null
         ]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE training_partners 
-                               SET partner_name = ?, contact_person = ?, email = ?, phone = ?, address = ?, website = ?, status = ? 
+                               SET partner_name = ?, contact_person = ?, email = ?, phone = ?, address = ?, website = ?, status = ?, updated_at = NOW(), registration_doc = ?, agreement_doc = ? 
                                WHERE partner_id = ?");
         return $stmt->execute([
             $data['partner_name'],
@@ -44,6 +47,8 @@ class TrainingPartner {
             $data['address'],
             $data['website'],
             $data['status'],
+            $data['registration_doc'] ?? null,
+            $data['agreement_doc'] ?? null,
             $id
         ]);
     }
@@ -75,15 +80,19 @@ class TrainingCenter {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO training_centers (partner_id, center_name, contact_person, email, phone, address) 
-                               VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO training_centers (partner_id, center_name, contact_person, email, phone, address, city, state, pincode, status, created_at, updated_at) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
         return $stmt->execute([
             $data['partner_id'],
             $data['center_name'],
             $data['contact_person'],
             $data['email'],
             $data['phone'],
-            $data['address']
+            $data['address'],
+            $data['city'],
+            $data['state'],
+            $data['pincode'],
+            $data['status']
         ]);
     }
 
@@ -91,7 +100,7 @@ class TrainingCenter {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE training_centers 
                                SET partner_id = ?, center_name = ?, contact_person = ?, email = ?, phone = ?, 
-                                   address = ?, status = ? 
+                                   address = ?, city = ?, state = ?, pincode = ?, status = ?, updated_at = NOW() 
                                WHERE center_id = ?");
         return $stmt->execute([
             $data['partner_id'],
@@ -100,6 +109,9 @@ class TrainingCenter {
             $data['email'],
             $data['phone'],
             $data['address'],
+            $data['city'],
+            $data['state'],
+            $data['pincode'],
             $data['status'],
             $id
         ]);
@@ -130,13 +142,13 @@ class Sector {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO sectors (sector_name, description) VALUES (?, ?)");
-        return $stmt->execute([$data['sector_name'], $data['description']]);
+        $stmt = $conn->prepare("INSERT INTO sectors (sector_name, description, status, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
+        return $stmt->execute([$data['sector_name'], $data['description'], $data['status']]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("UPDATE sectors SET sector_name = ?, description = ?, status = ? WHERE sector_id = ?");
+        $stmt = $conn->prepare("UPDATE sectors SET sector_name = ?, description = ?, status = ?, updated_at = NOW() WHERE sector_id = ?");
         return $stmt->execute([$data['sector_name'], $data['description'], $data['status'], $id]);
     }
 
@@ -165,13 +177,13 @@ class Scheme {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO schemes (scheme_name, description) VALUES (?, ?)");
-        return $stmt->execute([$data['scheme_name'], $data['description']]);
+        $stmt = $conn->prepare("INSERT INTO schemes (scheme_name, description, status, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
+        return $stmt->execute([$data['scheme_name'], $data['description'], $data['status']]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("UPDATE schemes SET scheme_name = ?, description = ?, status = ? WHERE scheme_id = ?");
+        $stmt = $conn->prepare("UPDATE schemes SET scheme_name = ?, description = ?, status = ?, updated_at = NOW() WHERE scheme_id = ?");
         return $stmt->execute([$data['scheme_name'], $data['description'], $data['status'], $id]);
     }
 
@@ -204,27 +216,28 @@ class Course {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO courses (sector_id, scheme_id, course_code, course_name, duration_hours, description) 
-                               VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO courses (sector_id, scheme_id, course_code, course_name, duration_hours, description, status, created_at, updated_at) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
         return $stmt->execute([
             $data['sector_id'],
             $data['scheme_id'],
             $data['course_code'],
             $data['course_name'],
             $data['duration_hours'],
-            $data['description']
+            $data['description'],
+            $data['status']
         ]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE courses 
-                               SET sector_id = ?, scheme_id = ?, course_name = ?, duration_hours = ?, 
-                                   description = ?, status = ? 
+                               SET sector_id = ?, scheme_id = ?, course_code = ?, course_name = ?, duration_hours = ?, description = ?, status = ?, updated_at = NOW() 
                                WHERE course_id = ?");
         return $stmt->execute([
             $data['sector_id'],
             $data['scheme_id'],
+            $data['course_code'],
             $data['course_name'],
             $data['duration_hours'],
             $data['description'],
@@ -262,8 +275,8 @@ class Batch {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO batches (center_id, course_id, batch_code, start_date, end_date, capacity, status, trainer_id, schedule, remarks) 
-                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO batches (center_id, course_id, batch_code, start_date, end_date, capacity, status, created_at, updated_at) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
         return $stmt->execute([
             $data['center_id'],
             $data['course_id'],
@@ -271,10 +284,7 @@ class Batch {
             $data['start_date'],
             $data['end_date'],
             $data['capacity'],
-            $data['status'],
-            $data['trainer_id'],
-            $data['schedule'],
-            $data['remarks']
+            $data['status']
         ]);
     }
 
@@ -282,7 +292,7 @@ class Batch {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE batches 
                                SET center_id = ?, course_id = ?, batch_code = ?, start_date = ?, end_date = ?, 
-                                   capacity = ?, status = ?, trainer_id = ?, schedule = ?, remarks = ? 
+                                   capacity = ?, status = ?, updated_at = NOW() 
                                WHERE batch_id = ?");
         return $stmt->execute([
             $data['center_id'],
@@ -292,9 +302,6 @@ class Batch {
             $data['end_date'],
             $data['capacity'],
             $data['status'],
-            $data['trainer_id'],
-            $data['schedule'],
-            $data['remarks'],
             $id
         ]);
     }
@@ -324,7 +331,8 @@ class Student {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("CALL sp_create_student(?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO students (enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, created_at, updated_at) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
         return $stmt->execute([
             $data['enrollment_no'],
             $data['first_name'],
@@ -341,7 +349,7 @@ class Student {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE students 
                                SET first_name = ?, last_name = ?, email = ?, mobile = ?, 
-                                   date_of_birth = ?, gender = ?, address = ? 
+                                   date_of_birth = ?, gender = ?, address = ?, updated_at = NOW() 
                                WHERE student_id = ?");
         return $stmt->execute([
             $data['first_name'],
@@ -615,4 +623,4 @@ class Role {
         return $stmt->execute([$roleId]);
     }
 }
-?> 
+?>
