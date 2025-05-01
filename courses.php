@@ -304,80 +304,47 @@ $schemes = Scheme::getAll();
 $(function () {
   // Initialize DataTable
   var coursesTable = $('#coursesTable').DataTable({
-    "paging": true,
-    "lengthChange": true,
-    "searching": true,
-    "ordering": true,
-    "info": true,
-    "autoWidth": false,
-    "responsive": true
+    processing: true,
+    serverSide: false,
+    ajax: {
+      url: 'inc/ajax/courses_ajax.php',
+      type: 'POST',
+      data: function (d) { d.action = 'read'; d.per_page = 100; },
+      dataSrc: function (json) { return json.data || []; }
+    },
+    columns: [
+      { data: 'course_code' },
+      { data: 'course_name' },
+      { data: 'sector_name' },
+      { data: 'scheme_name' },
+      { data: 'duration_hours' },
+      { data: 'description' },
+      { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'secondary') + '">' + (data ? data.charAt(0).toUpperCase() + data.slice(1) : '') + '</span>'; } },
+      { data: null, orderable: false, searchable: false, render: function (data, type, row) {
+        return '<button type="button" class="btn btn-info btn-sm view-course-btn" data-id="' + row.course_id + '"><i class="fas fa-eye"></i></button> ' +
+          '<button type="button" class="btn btn-primary btn-sm edit-course-btn" data-id="' + row.course_id + '"><i class="fas fa-edit"></i></button> ' +
+          '<button type="button" class="btn btn-danger btn-sm delete-course-btn" data-id="' + row.course_id + '"><i class="fas fa-trash"></i></button>';
+      } }
+    ],
+    responsive: true,
+    lengthChange: true,
+    autoWidth: false,
+    order: [[0, 'asc']]
   });
 
   $('.select2').select2({ theme: 'bootstrap4' });
   bsCustomFileInput.init();
 
-  // Helper: Show toast
-  function showToast(type, message) {
-    var toast = $('<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">'
-      + '<div class="toast-header bg-' + (type === 'success' ? 'success' : 'danger') + ' text-white">'
-      + '<strong class="mr-auto">' + (type === 'success' ? 'Success' : 'Error') + '</strong>'
-      + '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">'
-      + '<span aria-hidden="true">&times;</span>'
-      + '</button></div>'
-      + '<div class="toast-body">' + message + '</div></div>');
-    if (!$('#toast-container').length) {
-      $('body').append('<div id="toast-container" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;"></div>');
-    }
-    $('#toast-container').append(toast);
-    toast.toast('show');
-    toast.on('hidden.bs.toast', function () { $(this).remove(); });
-  }
-
-  // Load courses
-  function loadCourses() {
-    $.ajax({
-      url: 'inc/ajax/courses_ajax.php',
-      type: 'POST',
-      data: { action: 'read', per_page: 100 },
-      dataType: 'json',
-      success: function (response) {
-        if (response.success && response.data) {
-          var rows = '';
-          $.each(response.data, function (i, course) {
-            rows += '<tr>' +
-              '<td>' + course.course_code + '</td>' +
-              '<td>' + course.course_name + '</td>' +
-              '<td>' + (course.sector_name || '') + '</td>' +
-              '<td>' + (course.scheme_name || '') + '</td>' +
-              '<td>' + course.duration_hours + '</td>' +
-              '<td>' + (course.description || '') + '</td>' +
-              '<td><span class="badge badge-' + (course.status === 'active' ? 'success' : 'secondary') + '">' + (course.status ? course.status.charAt(0).toUpperCase() + course.status.slice(1) : '') + '</span></td>' +
-              '<td>' +
-                '<button type="button" class="btn btn-info btn-sm view-course-btn" data-id="' + course.course_id + '"><i class="fas fa-eye"></i></button> ' +
-                '<button type="button" class="btn btn-primary btn-sm edit-course-btn" data-id="' + course.course_id + '"><i class="fas fa-edit"></i></button> ' +
-                '<button type="button" class="btn btn-danger btn-sm delete-course-btn" data-id="' + course.course_id + '"><i class="fas fa-trash"></i></button>' +
-              '</td>' +
-            '</tr>';
-          });
-          $('#coursesTableBody').html(rows);
-        } else {
-          $('#coursesTableBody').html('<tr><td colspan="8">No courses found.</td></tr>');
-        }
-      }
-    });
-  }
-  loadCourses();
-
   // Add Course
   $('#addCourseModal form').on('submit', function (e) {
     e.preventDefault();
+    var $form = $(this);
     var courseCode = $('#course_code').val().trim();
     var courseName = $('#course_name').val().trim();
     var sectorId = $('#sector_id').val();
-    var schemeId = $('#scheme_id').val();
     var durationHours = $('#duration_hours').val();
     if (!courseCode || !courseName || !sectorId || sectorId === '' || sectorId === '0' || !durationHours || durationHours <= 0) {
-      showToast('error', 'Please fill all required fields: Course Code, Course Name, Sector, and Duration.');
+      toastr.error('Please fill all required fields: Course Code, Course Name, Sector, and Duration.');
       return;
     }
     var formData = {
@@ -385,15 +352,11 @@ $(function () {
       course_code: courseCode,
       course_name: courseName,
       sector_id: sectorId,
-      scheme_id: schemeId,
+      scheme_id: $('#scheme_id').val(),
       duration_hours: durationHours,
-      fee: $('#fee').val(),
       description: $('#description').val(),
-      prerequisites: $('#prerequisites').val(),
-      syllabus: $('#learningOutcomes').val(),
       status: $('#status').val()
     };
-    console.log(formData);
     $.ajax({
       url: 'inc/ajax/courses_ajax.php',
       type: 'POST',
@@ -401,12 +364,21 @@ $(function () {
       dataType: 'json',
       success: function (response) {
         if (response.success) {
-          showToast('success', response.message);
           $('#addCourseModal').modal('hide');
-          loadCourses();
+          toastr.success(response.message || 'Course added successfully');
+          $('#addCourseModal').one('hidden.bs.modal', function() {
+            coursesTable.ajax.reload(null, false);
+          });
+          setTimeout(function() {
+            $form[0].reset();
+            $form.find('.is-invalid').removeClass('is-invalid');
+          }, 500);
         } else {
-          showToast('error', response.message);
+          toastr.error(response.message || 'Error adding course');
         }
+      },
+      error: function() {
+        toastr.error('Error adding course');
       }
     });
   });
@@ -431,8 +403,11 @@ $(function () {
           $('#edit_status').val(c.status);
           $('#editCourseModal').data('id', c.course_id).modal('show');
         } else {
-          showToast('error', 'Could not fetch course details.');
+          toastr.error('Could not fetch course details.');
         }
+      },
+      error: function() {
+        toastr.error('Could not fetch course details.');
       }
     });
   });
@@ -440,6 +415,7 @@ $(function () {
   // Edit Course: submit
   $('#editCourseModal form').on('submit', function (e) {
     e.preventDefault();
+    var $form = $(this);
     var id = $('#editCourseModal').data('id');
     var formData = {
       action: 'update',
@@ -459,12 +435,21 @@ $(function () {
       dataType: 'json',
       success: function (response) {
         if (response.success) {
-          showToast('success', response.message);
           $('#editCourseModal').modal('hide');
-          loadCourses();
+          toastr.success(response.message || 'Course updated successfully');
+          $('#editCourseModal').one('hidden.bs.modal', function() {
+            coursesTable.ajax.reload(null, false);
+          });
+          setTimeout(function() {
+            $form[0].reset();
+            $form.find('.is-invalid').removeClass('is-invalid');
+          }, 500);
         } else {
-          showToast('error', response.message);
+          toastr.error(response.message || 'Error updating course');
         }
+      },
+      error: function() {
+        toastr.error('Error updating course');
       }
     });
   });
@@ -472,9 +457,7 @@ $(function () {
   // Delete Course: open modal
   $(document).on('click', '.delete-course-btn', function () {
     var id = $(this).data('id');
-    // Store the course_id in a hidden field in the modal
     $('#deleteCourseModal').data('id', id);
-    // Optionally update modal content with course info if needed
     $('#deleteCourseModal').modal('show');
   });
 
@@ -482,7 +465,7 @@ $(function () {
   $('#deleteCourseModal .btn-danger').on('click', function () {
     var id = $('#deleteCourseModal').data('id');
     if (!id) {
-      showToast('error', 'Course ID is missing.');
+      toastr.error('Course ID is missing.');
       return;
     }
     $.ajax({
@@ -491,13 +474,17 @@ $(function () {
       data: { action: 'delete', course_id: id },
       dataType: 'json',
       success: function (response) {
+        $('#deleteCourseModal').modal('hide');
         if (response.success) {
-          showToast('success', response.message);
-          $('#deleteCourseModal').modal('hide');
-          loadCourses();
+          toastr.success(response.message || 'Course deleted successfully');
+          coursesTable.ajax.reload(null, false);
         } else {
-          showToast('error', response.message);
+          toastr.error(response.message || 'Error deleting course');
         }
+      },
+      error: function() {
+        $('#deleteCourseModal').modal('hide');
+        toastr.error('Error deleting course');
       }
     });
   });
@@ -523,12 +510,24 @@ $(function () {
           $('#viewCourseModal [data-field="description"]').text(c.description);
           $('#viewCourseModal').modal('show');
         } else {
-          showToast('error', 'Could not fetch course details.');
+          toastr.error('Could not fetch course details.');
         }
+      },
+      error: function() {
+        toastr.error('Could not fetch course details.');
       }
     });
+  });
+
+  // --- Reset forms on modal close ---
+  $('#addCourseModal, #editCourseModal').on('hidden.bs.modal', function () {
+    var $form = $(this).find('form');
+    if ($form.length) {
+      $form[0].reset();
+      $form.find('.is-invalid').removeClass('is-invalid');
+    }
   });
 });
 </script>
 </body>
-</html> 
+</html>
