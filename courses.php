@@ -62,7 +62,10 @@ $schemes = Scheme::getAll();
                   <th>Sector</th>
                   <th>Scheme</th>
                   <th>Duration (hours)</th>
+                  <th>Fee</th>
                   <th>Description</th>
+                  <th>Prerequisites</th>
+                  <th>Syllabus</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -119,6 +122,10 @@ $schemes = Scheme::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
+                <div class="form-group">
+                  <label for="fee">Fee</label>
+                  <input type="number" step="0.01" class="form-control" id="fee" name="fee">
+                </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
@@ -127,7 +134,15 @@ $schemes = Scheme::getAll();
                 </div>
                 <div class="form-group">
                   <label for="description">Description</label>
-                  <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                  <textarea class="form-control" id="description" name="description" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="prerequisites">Prerequisites</label>
+                  <textarea class="form-control" id="prerequisites" name="prerequisites" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="syllabus">Syllabus</label>
+                  <textarea class="form-control" id="syllabus" name="syllabus" rows="2"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="status">Status</label>
@@ -177,6 +192,10 @@ $schemes = Scheme::getAll();
                 <label>Scheme</label>
                 <p data-field="scheme_name"></p>
               </div>
+              <div class="form-group">
+                <label>Fee</label>
+                <p data-field="fee"></p>
+              </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
@@ -194,6 +213,14 @@ $schemes = Scheme::getAll();
               <div class="form-group">
                 <label>Description</label>
                 <p data-field="description"></p>
+              </div>
+              <div class="form-group">
+                <label>Prerequisites</label>
+                <p data-field="prerequisites"></p>
+              </div>
+              <div class="form-group">
+                <label>Syllabus</label>
+                <p data-field="syllabus"></p>
               </div>
             </div>
           </div>
@@ -245,6 +272,10 @@ $schemes = Scheme::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
+                <div class="form-group">
+                  <label for="edit_fee">Fee</label>
+                  <input type="number" step="0.01" class="form-control" id="edit_fee" name="fee">
+                </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
@@ -253,7 +284,15 @@ $schemes = Scheme::getAll();
                 </div>
                 <div class="form-group">
                   <label for="edit_description">Description</label>
-                  <textarea class="form-control" id="edit_description" name="description" rows="3" required></textarea>
+                  <textarea class="form-control" id="edit_description" name="description" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="edit_prerequisites">Prerequisites</label>
+                  <textarea class="form-control" id="edit_prerequisites" name="prerequisites" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="edit_syllabus">Syllabus</label>
+                  <textarea class="form-control" id="edit_syllabus" name="syllabus" rows="2"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="edit_status">Status</label>
@@ -318,7 +357,10 @@ $(function () {
       { data: 'sector_name' },
       { data: 'scheme_name' },
       { data: 'duration_hours' },
+      { data: 'fee' },
       { data: 'description' },
+      { data: 'prerequisites' },
+      { data: 'syllabus' },
       { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'secondary') + '">' + (data ? data.charAt(0).toUpperCase() + data.slice(1) : '') + '</span>'; } },
       { data: null, orderable: false, searchable: false, render: function (data, type, row) {
         return '<button type="button" class="btn btn-info btn-sm view-course-btn" data-id="' + row.course_id + '"><i class="fas fa-eye"></i></button> ' +
@@ -354,7 +396,10 @@ $(function () {
       sector_id: sectorId,
       scheme_id: $('#scheme_id').val(),
       duration_hours: durationHours,
+      fee: $('#fee').val(),
       description: $('#description').val(),
+      prerequisites: $('#prerequisites').val(),
+      syllabus: $('#syllabus').val(),
       status: $('#status').val()
     };
     $.ajax({
@@ -399,7 +444,10 @@ $(function () {
           $('#edit_sector_id').val(c.sector_id).trigger('change');
           $('#edit_scheme_id').val(c.scheme_id).trigger('change');
           $('#edit_duration_hours').val(c.duration_hours);
+          $('#edit_fee').val(c.fee);
           $('#edit_description').val(c.description);
+          $('#edit_prerequisites').val(c.prerequisites);
+          $('#edit_syllabus').val(c.syllabus);
           $('#edit_status').val(c.status);
           $('#editCourseModal').data('id', c.course_id).modal('show');
         } else {
@@ -425,7 +473,10 @@ $(function () {
       sector_id: $('#edit_sector_id').val(),
       scheme_id: $('#edit_scheme_id').val(),
       duration_hours: $('#edit_duration_hours').val(),
+      fee: $('#edit_fee').val(),
       description: $('#edit_description').val(),
+      prerequisites: $('#edit_prerequisites').val(),
+      syllabus: $('#edit_syllabus').val(),
       status: $('#edit_status').val()
     };
     $.ajax({
@@ -506,8 +557,11 @@ $(function () {
           $('#viewCourseModal [data-field="sector_name"]').text(c.sector_name);
           $('#viewCourseModal [data-field="scheme_name"]').text(c.scheme_name);
           $('#viewCourseModal [data-field="duration_hours"]').text(c.duration_hours);
-          $('#viewCourseModal [data-field="status"]').html('<span class="badge badge-' + (c.status === 'active' ? 'success' : 'secondary') + '">' + (c.status ? c.status.charAt(0).toUpperCase() + c.status.slice(1) : '') + '</span>');
+          $('#viewCourseModal [data-field="fee"]').text(c.fee);
           $('#viewCourseModal [data-field="description"]').text(c.description);
+          $('#viewCourseModal [data-field="prerequisites"]').text(c.prerequisites);
+          $('#viewCourseModal [data-field="syllabus"]').text(c.syllabus);
+          $('#viewCourseModal [data-field="status"]').html('<span class="badge badge-' + (c.status === 'active' ? 'success' : 'secondary') + '">' + (c.status ? c.status.charAt(0).toUpperCase() + c.status.slice(1) : '') + '</span>');
           $('#viewCourseModal').modal('show');
         } else {
           toastr.error('Could not fetch course details.');
