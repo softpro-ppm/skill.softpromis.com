@@ -282,7 +282,7 @@ $(function () {
           $form[0].reset();
           $form.find('.is-invalid').removeClass('is-invalid');
           $('#addBatchModal').one('hidden.bs.modal', function() {
-            $('#batchesTable').DataTable().ajax.reload(null, true);
+            table.ajax.reload(null, true);
           });
         } else {
           toastr.error(response.message || 'Error adding batch');
@@ -346,7 +346,7 @@ $(function () {
           $form[0].reset();
           $form.find('.is-invalid').removeClass('is-invalid');
           $('#editBatchModal').one('hidden.bs.modal', function() {
-            $('#batchesTable').DataTable().ajax.reload(null, true);
+            table.ajax.reload(null, true);
           });
         } else {
           toastr.error(response.message || 'Error updating batch');
@@ -356,6 +356,30 @@ $(function () {
         toastr.error('Error updating batch');
       }
     });
+  });
+
+  // --- DELETE ---
+  $(document).on('click', '.delete-batch-btn', function() {
+    var batchId = $(this).data('batch-id');
+    if (confirm('Are you sure you want to delete this batch?')) {
+      $.ajax({
+        url: 'inc/ajax/batches_ajax.php',
+        type: 'POST',
+        data: { action: 'delete', batch_id: batchId },
+        dataType: 'json',
+        success: function(response) {
+          if(response.status === 'success') {
+            toastr.success(response.message || 'Batch deleted successfully');
+            table.ajax.reload(null, true);
+          } else {
+            toastr.error(response.message || 'Error deleting batch');
+          }
+        },
+        error: function() {
+          toastr.error('Error deleting batch');
+        }
+      });
+    }
   });
 });
 </script>
