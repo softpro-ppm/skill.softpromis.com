@@ -282,10 +282,23 @@ try {
             sendJSONResponse(true, 'Batch fee payments retrieved successfully', $fees);
             break;
 
+        case 'list':
+            $stmt = $pdo->query('
+                SELECT f.id, f.receipt_no, s.first_name AS student_name, c.name AS course_name, f.amount, f.payment_date, f.payment_method, f.status
+                FROM fees f
+                JOIN students s ON f.student_id = s.student_id
+                LEFT JOIN batches b ON f.batch_id = b.batch_id
+                LEFT JOIN courses c ON b.course_id = c.course_id
+                ORDER BY f.created_at DESC
+            ');
+            $fees = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode([ 'data' => $fees ]);
+            exit;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }
 } catch (PDOException $e) {
     logError("Fees error: " . $e->getMessage());
     sendJSONResponse(false, 'An error occurred. Please try again later.');
-} 
+}
