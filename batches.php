@@ -95,7 +95,7 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="form-group">
               <label for="course">Course</label>
-              <select class="form-control" id="course" name="course_id" required>
+              <select class="form-control select2" id="course" name="course_id" required>
                 <option value="">Select Course</option>
                 <?php foreach (Course::getAll() as $course) {
                   echo "<option value='{$course['course_id']}'>{$course['course_name']}</option>";
@@ -104,7 +104,7 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="form-group">
               <label for="center">Training Center</label>
-              <select class="form-control" id="center" name="center_id" required>
+              <select class="form-control select2" id="center" name="center_id" required>
                 <option value="">Select Center</option>
                 <?php foreach (TrainingCenter::getAll() as $center) {
                   echo "<option value='{$center['center_id']}'>{$center['center_name']}</option>";
@@ -112,17 +112,30 @@ require_once 'includes/sidebar.php';
               </select>
             </div>
             <div class="form-group">
+              <label for="trainer">Trainer</label>
+              <select class="form-control select2" id="trainer" name="trainer_id">
+                <option value="">Select Trainer</option>
+                <!-- Populate dynamically if needed -->
+              </select>
+            </div>
+            <div class="form-group">
               <label for="startDate">Start Date</label>
-              <div class="input-group">
+              <div class="input-group date" id="startDatePicker" data-target-input="nearest">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
-                <input type="date" class="form-control" id="startDate" name="start_date" required>
+                <input type="text" class="form-control datetimepicker-input" data-target="#startDatePicker" id="startDate" name="start_date" required />
+                <div class="input-group-append" data-target="#startDatePicker" data-toggle="datetimepicker">
+                  <span class="input-group-text"><i class="far fa-calendar"></i></span>
+                </div>
               </div>
             </div>
             <div class="form-group">
               <label for="endDate">End Date</label>
-              <div class="input-group">
+              <div class="input-group date" id="endDatePicker" data-target-input="nearest">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
-                <input type="date" class="form-control" id="endDate" name="end_date" required>
+                <input type="text" class="form-control datetimepicker-input" data-target="#endDatePicker" id="endDate" name="end_date" required />
+                <div class="input-group-append" data-target="#endDatePicker" data-toggle="datetimepicker">
+                  <span class="input-group-text"><i class="far fa-calendar"></i></span>
+                </div>
               </div>
             </div>
             <div class="form-group">
@@ -131,6 +144,14 @@ require_once 'includes/sidebar.php';
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-users"></i></span></div>
                 <input type="number" class="form-control" id="capacity" name="capacity" required>
               </div>
+            </div>
+            <div class="form-group">
+              <label for="schedule">Schedule</label>
+              <input type="text" class="form-control" id="schedule" name="schedule">
+            </div>
+            <div class="form-group">
+              <label for="remarks">Remarks</label>
+              <textarea class="form-control" id="remarks" name="remarks" rows="2"></textarea>
             </div>
             <div class="form-group">
               <label for="status">Status</label>
@@ -170,7 +191,7 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="form-group">
               <label for="editCourse">Course</label>
-              <select class="form-control" id="editCourse" name="course_id" required>
+              <select class="form-control select2" id="editCourse" name="course_id" required>
                 <option value="">Select Course</option>
                 <?php foreach (Course::getAll() as $course) {
                   echo "<option value='{$course['course_id']}'>{$course['course_name']}</option>";
@@ -179,7 +200,7 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="form-group">
               <label for="editCenter">Training Center</label>
-              <select class="form-control" id="editCenter" name="center_id" required>
+              <select class="form-control select2" id="editCenter" name="center_id" required>
                 <option value="">Select Center</option>
                 <?php foreach (TrainingCenter::getAll() as $center) {
                   echo "<option value='{$center['center_id']}'>{$center['center_name']}</option>";
@@ -187,17 +208,30 @@ require_once 'includes/sidebar.php';
               </select>
             </div>
             <div class="form-group">
+              <label for="editTrainer">Trainer</label>
+              <select class="form-control select2" id="editTrainer" name="trainer_id">
+                <option value="">Select Trainer</option>
+                <!-- Populate dynamically if needed -->
+              </select>
+            </div>
+            <div class="form-group">
               <label for="editStartDate">Start Date</label>
-              <div class="input-group">
+              <div class="input-group date" id="editStartDatePicker" data-target-input="nearest">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
-                <input type="date" class="form-control" id="editStartDate" name="start_date" required>
+                <input type="text" class="form-control datetimepicker-input" data-target="#editStartDatePicker" id="editStartDate" name="start_date" required />
+                <div class="input-group-append" data-target="#editStartDatePicker" data-toggle="datetimepicker">
+                  <span class="input-group-text"><i class="far fa-calendar"></i></span>
+                </div>
               </div>
             </div>
             <div class="form-group">
               <label for="editEndDate">End Date</label>
-              <div class="input-group">
+              <div class="input-group date" id="editEndDatePicker" data-target-input="nearest">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
-                <input type="date" class="form-control" id="editEndDate" name="end_date" required>
+                <input type="text" class="form-control datetimepicker-input" data-target="#editEndDatePicker" id="editEndDate" name="end_date" required />
+                <div class="input-group-append" data-target="#editEndDatePicker" data-toggle="datetimepicker">
+                  <span class="input-group-text"><i class="far fa-calendar"></i></span>
+                </div>
               </div>
             </div>
             <div class="form-group">
@@ -206,6 +240,14 @@ require_once 'includes/sidebar.php';
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-users"></i></span></div>
                 <input type="number" class="form-control" id="editCapacity" name="capacity" required>
               </div>
+            </div>
+            <div class="form-group">
+              <label for="editSchedule">Schedule</label>
+              <input type="text" class="form-control" id="editSchedule" name="schedule">
+            </div>
+            <div class="form-group">
+              <label for="editRemarks">Remarks</label>
+              <textarea class="form-control" id="editRemarks" name="remarks" rows="2"></textarea>
             </div>
             <div class="form-group">
               <label for="editStatus">Status</label>
@@ -264,8 +306,7 @@ $(function () {
       { data: 'start_date' },
       { data: 'end_date' },
       { data: 'capacity' },
-      { data: null, render: function() { return '-'; } }, // Students placeholder
-      { data: null, render: function() { return '-'; } }, // Trainer placeholder
+      { data: 'trainer_name', defaultContent: '-' },
       { data: 'status', render: function(data) { return '<span class="badge badge-' + (data === 'completed' ? 'success' : (data === 'ongoing' ? 'primary' : (data === 'upcoming' ? 'info' : 'secondary'))) + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
       { data: null, orderable: false, searchable: false, render: function (data, type, row) {
         return '<div class="btn-group btn-group-sm">' +
@@ -335,9 +376,12 @@ $(function () {
         $modal.find('#editBatchCode').val(b.batch_code || '');
         $modal.find('#editCourse').val(b.course_id || '').trigger('change');
         $modal.find('#editCenter').val(b.center_id || '').trigger('change');
+        $modal.find('#editTrainer').val(b.trainer_id || '').trigger('change');
         $modal.find('#editStartDate').val(b.start_date || '');
         $modal.find('#editEndDate').val(b.end_date || '');
         $modal.find('#editCapacity').val(b.capacity || '');
+        $modal.find('#editSchedule').val(b.schedule || '');
+        $modal.find('#editRemarks').val(b.remarks || '');
         $modal.find('#editStatus').val(b.status || 'upcoming');
         $modal.modal('show');
       }
