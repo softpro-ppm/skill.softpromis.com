@@ -103,8 +103,8 @@ require_once 'includes/sidebar.php';
               </select>
             </div>
             <div class="form-group">
-              <label for="center">Training Center</label>
-              <select class="form-control select2" id="center" name="center_id" required>
+              <label for="trainingCenter">Training Center</label>
+              <select class="form-control select2" id="trainingCenter" name="center_id" required>
                 <option value="">Select Center</option>
                 <?php foreach (TrainingCenter::getAll() as $center) {
                   echo "<option value='{$center['center_id']}'>{$center['center_name']}</option>";
@@ -199,8 +199,8 @@ require_once 'includes/sidebar.php';
               </select>
             </div>
             <div class="form-group">
-              <label for="editCenter">Training Center</label>
-              <select class="form-control select2" id="editCenter" name="center_id" required>
+              <label for="editTrainingCenter">Training Center</label>
+              <select class="form-control select2" id="editTrainingCenter" name="center_id" required>
                 <option value="">Select Center</option>
                 <?php foreach (TrainingCenter::getAll() as $center) {
                   echo "<option value='{$center['center_id']}'>{$center['center_name']}</option>";
@@ -375,7 +375,7 @@ $(function () {
         $modal.find('#editBatchId').val(b.batch_id || '');
         $modal.find('#editBatchCode').val(b.batch_code || '');
         $modal.find('#editCourse').val(b.course_id || '').trigger('change');
-        $modal.find('#editCenter').val(b.center_id || '').trigger('change');
+        $modal.find('#editTrainingCenter').val(b.center_id || '').trigger('change');
         $modal.find('#editTrainer').val(b.trainer_id || '').trigger('change');
         $modal.find('#editStartDate').val(b.start_date || '');
         $modal.find('#editEndDate').val(b.end_date || '');
