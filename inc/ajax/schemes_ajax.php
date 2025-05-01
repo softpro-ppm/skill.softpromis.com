@@ -51,8 +51,8 @@ try {
 
             $stmt = $pdo->prepare("
                 INSERT INTO schemes (
-                    scheme_name, description, status, created_at
-                ) VALUES (?, ?, ?, NOW())
+                    scheme_name, description, status, created_at, updated_at
+                ) VALUES (?, ?, ?, NOW(), NOW())
             ");
             $stmt->execute([
                 $scheme_name, $description, $status
@@ -153,4 +153,4 @@ try {
 } catch (PDOException $e) {
     logError("Schemes error: " . $e->getMessage());
     sendJSONResponse(false, 'An error occurred. Please try again later.');
-} 
+}

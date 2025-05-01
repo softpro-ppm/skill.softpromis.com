@@ -48,8 +48,8 @@ try {
 
             $stmt = $pdo->prepare("
                 INSERT INTO courses (
-                    sector_id, scheme_id, course_code, course_name, duration_hours, fee, description, prerequisites, syllabus, status, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                    sector_id, scheme_id, course_code, course_name, duration_hours, fee, description, prerequisites, syllabus, status, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
             ");
             $stmt->execute([
                 $sector_id, $scheme_id, $course_code, $course_name, $duration_hours, $fee, $description, $prerequisites, $syllabus, $status
@@ -185,4 +185,4 @@ try {
 } catch (PDOException $e) {
     logError("Courses error: " . $e->getMessage());
     sendJSONResponse(false, 'An error occurred. Please try again later.');
-} 
+}

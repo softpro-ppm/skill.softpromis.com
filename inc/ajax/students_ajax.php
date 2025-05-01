@@ -36,8 +36,8 @@ try {
             }
 
             $stmt = $pdo->prepare("INSERT INTO students (
-                enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, created_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+                enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
             $stmt->execute([
                 $enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address
             ]);
@@ -197,4 +197,4 @@ try {
 } catch (PDOException $e) {
     logError("Students error: " . $e->getMessage());
     sendJSONResponse(false, 'An error occurred. Please try again later.');
-} 
+}

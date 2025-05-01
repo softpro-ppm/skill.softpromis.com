@@ -44,7 +44,7 @@ try {
             if (strtotime($end_date) < strtotime($start_date)) {
                 sendJSONResponse(false, 'End date cannot be before start date');
             }
-            $stmt = $pdo->prepare("INSERT INTO batches (center_id, course_id, batch_code, start_date, end_date, capacity, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO batches (center_id, course_id, batch_code, start_date, end_date, capacity, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
             $result = $stmt->execute([$center_id, $course_id, $batch_code, $start_date, $end_date, $capacity, $status]);
             if ($result) {
                 sendJSONResponse(true, 'Batch added successfully');
@@ -67,7 +67,7 @@ try {
             if (strtotime($end_date) < strtotime($start_date)) {
                 sendJSONResponse(false, 'End date cannot be before start date');
             }
-            $stmt = $pdo->prepare("UPDATE batches SET center_id = ?, course_id = ?, batch_code = ?, start_date = ?, end_date = ?, capacity = ?, status = ? WHERE batch_id = ?");
+            $stmt = $pdo->prepare("UPDATE batches SET center_id = ?, course_id = ?, batch_code = ?, start_date = ?, end_date = ?, capacity = ?, status = ?, updated_at = NOW() WHERE batch_id = ?");
             $result = $stmt->execute([$center_id, $course_id, $batch_code, $start_date, $end_date, $capacity, $status, $batch_id]);
             if ($result) {
                 sendJSONResponse(true, 'Batch updated successfully');

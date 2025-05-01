@@ -28,6 +28,9 @@ try {
         email VARCHAR(100),
         phone VARCHAR(15),
         address TEXT,
+        website VARCHAR(255),
+        registration_doc TEXT,
+        agreement_doc TEXT,
         status ENUM('active', 'inactive') DEFAULT 'active',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -57,6 +60,9 @@ try {
             $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
             $phone = trim($_POST['phone'] ?? '');
             $address = trim($_POST['address'] ?? '');
+            $website = trim($_POST['website'] ?? '');
+            $registration_doc = trim($_POST['registration_doc'] ?? '');
+            $agreement_doc = trim($_POST['agreement_doc'] ?? '');
             $status = $_POST['status'] ?? 'active';
 
             if (empty($partner_name)) {
@@ -75,12 +81,12 @@ try {
                 exit;
             }
 
-            // Insert new partner
+            // Insert new partner (all fields)
             $stmt = $pdo->prepare("
-                INSERT INTO training_partners (partner_name, contact_person, email, phone, address, status)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO training_partners (partner_name, contact_person, email, phone, address, website, registration_doc, agreement_doc, status, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
             ");
-            $stmt->execute([$partner_name, $contact_person, $email, $phone, $address, $status]);
+            $stmt->execute([$partner_name, $contact_person, $email, $phone, $address, $website, $registration_doc, $agreement_doc, $status]);
             
             echo json_encode([
                 'success' => true,
@@ -120,6 +126,9 @@ try {
             $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
             $phone = trim($_POST['phone'] ?? '');
             $address = trim($_POST['address'] ?? '');
+            $website = trim($_POST['website'] ?? '');
+            $registration_doc = trim($_POST['registration_doc'] ?? '');
+            $agreement_doc = trim($_POST['agreement_doc'] ?? '');
             $status = $_POST['status'] ?? 'active';
 
             if (empty($partner_name)) {
@@ -138,14 +147,13 @@ try {
                 exit;
             }
 
-            // Update partner
+            // Update partner (all fields)
             $stmt = $pdo->prepare("
                 UPDATE training_partners 
-                SET partner_name = ?, contact_person = ?, email = ?, phone = ?, 
-                    address = ?, status = ?
+                SET partner_name = ?, contact_person = ?, email = ?, phone = ?, address = ?, website = ?, registration_doc = ?, agreement_doc = ?, status = ?, updated_at = NOW()
                 WHERE partner_id = ?
             ");
-            $stmt->execute([$partner_name, $contact_person, $email, $phone, $address, $status, $partner_id]);
+            $stmt->execute([$partner_name, $contact_person, $email, $phone, $address, $website, $registration_doc, $agreement_doc, $status, $partner_id]);
             
             echo json_encode([
                 'success' => true,
@@ -200,4 +208,4 @@ try {
         'success' => false,
         'message' => 'An unexpected error occurred'
     ]);
-} 
+}

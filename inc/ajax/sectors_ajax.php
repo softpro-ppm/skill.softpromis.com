@@ -25,7 +25,7 @@ try {
             if (empty($sector_name)) {
                 sendJSONResponse(false, 'Sector name is required');
             }
-            $stmt = $pdo->prepare("INSERT INTO sectors (sector_name, description, status, created_at) VALUES (?, ?, ?, NOW())");
+            $stmt = $pdo->prepare("INSERT INTO sectors (sector_name, description, status, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
             $stmt->execute([$sector_name, $description, $status]);
             logAudit($_SESSION['user']['user_id'], 'create_sector', ['sector_name' => $sector_name]);
             sendJSONResponse(true, 'Sector added successfully');

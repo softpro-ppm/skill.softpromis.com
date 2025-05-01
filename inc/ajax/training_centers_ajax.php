@@ -15,6 +15,7 @@ try {
 
     switch ($action) {
         case 'create':
+            $partner_id = (int)($_POST['partner_id'] ?? 0);
             $name = sanitizeInput($_POST['name'] ?? '');
             $address = sanitizeInput($_POST['address'] ?? '');
             $city = sanitizeInput($_POST['city'] ?? '');
@@ -24,7 +25,6 @@ try {
             $email = sanitizeInput($_POST['email'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'active');
-            $partner_id = 1; // Fixed partner ID
 
             if (empty($name) || empty($address) || empty($city) || empty($state) || empty($pincode)) {
                 sendJSONResponse(false, 'Required fields are missing');
@@ -40,13 +40,11 @@ try {
 
             $stmt = $pdo->prepare("
                 INSERT INTO training_centers (
-                    name, address, city, state, pincode, phone, email, 
-                    capacity, status, partner_id, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                    partner_id, name, address, city, state, pincode, phone, email, capacity, status, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
             ");
             $stmt->execute([
-                $name, $address, $city, $state, $pincode, $phone, $email,
-                $capacity, $status, $partner_id
+                $partner_id, $name, $address, $city, $state, $pincode, $phone, $email, $capacity, $status
             ]);
 
             logAudit($_SESSION['user']['id'], 'create_center', [
@@ -111,6 +109,7 @@ try {
 
         case 'update':
             $id = (int)($_POST['id'] ?? 0);
+            $partner_id = (int)($_POST['partner_id'] ?? 0);
             $name = sanitizeInput($_POST['name'] ?? '');
             $address = sanitizeInput($_POST['address'] ?? '');
             $city = sanitizeInput($_POST['city'] ?? '');
@@ -120,7 +119,6 @@ try {
             $email = sanitizeInput($_POST['email'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'active');
-            $partner_id = 1; // Fixed partner ID
 
             if (empty($id) || empty($name) || empty($address) || empty($city) || empty($state) || empty($pincode)) {
                 sendJSONResponse(false, 'Required fields are missing');
@@ -136,14 +134,12 @@ try {
 
             $stmt = $pdo->prepare("
                 UPDATE training_centers 
-                SET name = ?, address = ?, city = ?, state = ?, pincode = ?,
-                    phone = ?, email = ?, capacity = ?, status = ?, partner_id = ?,
-                    updated_at = NOW()
+                SET partner_id = ?, name = ?, address = ?, city = ?, state = ?, pincode = ?,
+                    phone = ?, email = ?, capacity = ?, status = ?, updated_at = NOW()
                 WHERE id = ?
             ");
             $stmt->execute([
-                $name, $address, $city, $state, $pincode, $phone, $email,
-                $capacity, $status, $partner_id, $id
+                $partner_id, $name, $address, $city, $state, $pincode, $phone, $email, $capacity, $status, $id
             ]);
 
             logAudit($_SESSION['user']['id'], 'update_center', [
@@ -214,4 +210,4 @@ try {
 } catch (PDOException $e) {
     logError("Training centers error: " . $e->getMessage());
     sendJSONResponse(false, 'An error occurred. Please try again later.');
-} 
+}
