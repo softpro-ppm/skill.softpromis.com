@@ -113,15 +113,24 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="form-group">
               <label for="startDate">Start Date</label>
-              <input type="date" class="form-control" id="startDate" name="start_date" required>
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
+                <input type="date" class="form-control" id="startDate" name="start_date" required>
+              </div>
             </div>
             <div class="form-group">
               <label for="endDate">End Date</label>
-              <input type="date" class="form-control" id="endDate" name="end_date" required>
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
+                <input type="date" class="form-control" id="endDate" name="end_date" required>
+              </div>
             </div>
             <div class="form-group">
               <label for="capacity">Batch Capacity</label>
-              <input type="number" class="form-control" id="capacity" name="capacity" required>
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-users"></i></span></div>
+                <input type="number" class="form-control" id="capacity" name="capacity" required>
+              </div>
             </div>
             <div class="form-group">
               <label for="status">Status</label>
@@ -179,15 +188,24 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="form-group">
               <label for="editStartDate">Start Date</label>
-              <input type="date" class="form-control" id="editStartDate" name="start_date" required>
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
+                <input type="date" class="form-control" id="editStartDate" name="start_date" required>
+              </div>
             </div>
             <div class="form-group">
               <label for="editEndDate">End Date</label>
-              <input type="date" class="form-control" id="editEndDate" name="end_date" required>
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-calendar-alt"></i></span></div>
+                <input type="date" class="form-control" id="editEndDate" name="end_date" required>
+              </div>
             </div>
             <div class="form-group">
               <label for="editCapacity">Batch Capacity</label>
-              <input type="number" class="form-control" id="editCapacity" name="capacity" required>
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-users"></i></span></div>
+                <input type="number" class="form-control" id="editCapacity" name="capacity" required>
+              </div>
             </div>
             <div class="form-group">
               <label for="editStatus">Status</label>
@@ -276,7 +294,7 @@ $(function () {
       data: $form.serialize() + '&action=add',
       dataType: 'json',
       success: function(response) {
-        if(response.status === 'success') {
+        if(response.success) {
           $('#addBatchModal').modal('hide');
           toastr.success(response.message || 'Batch added successfully');
           $form[0].reset();
@@ -340,7 +358,7 @@ $(function () {
       data: $form.serialize() + '&action=edit',
       dataType: 'json',
       success: function(response) {
-        if(response.status === 'success') {
+        if(response.success) {
           $('#editBatchModal').modal('hide');
           toastr.success(response.message || 'Batch updated successfully');
           $form[0].reset();
@@ -368,7 +386,7 @@ $(function () {
         data: { action: 'delete', batch_id: batchId },
         dataType: 'json',
         success: function(response) {
-          if(response.status === 'success') {
+          if(response.success) {
             toastr.success(response.message || 'Batch deleted successfully');
             table.ajax.reload(null, true);
           } else {
