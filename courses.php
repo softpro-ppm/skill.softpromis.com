@@ -168,59 +168,33 @@ $schemes = Scheme::getAll();
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">View Course Details</h4>
+          <h4 class="modal-title">View Course: <span id="viewCourseTitle"></span></h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Course Code</label>
-                <p data-field="course_code"></p>
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-md-6">
+                <div class="mb-2"><strong>Course Code:</strong> <span data-field="course_code"></span></div>
+                <div class="mb-2"><strong>Course Name:</strong> <span data-field="course_name"></span></div>
+                <div class="mb-2"><strong>Sector:</strong> <span data-field="sector_name"></span></div>
+                <div class="mb-2"><strong>Scheme:</strong> <span data-field="scheme_name"></span></div>
+                <div class="mb-2"><strong>Fee:</strong> <span data-field="fee"></span></div>
               </div>
-              <div class="form-group">
-                <label>Course Name</label>
-                <p data-field="course_name"></p>
-              </div>
-              <div class="form-group">
-                <label>Sector</label>
-                <p data-field="sector_name"></p>
-              </div>
-              <div class="form-group">
-                <label>Scheme</label>
-                <p data-field="scheme_name"></p>
-              </div>
-              <div class="form-group">
-                <label>Fee</label>
-                <p data-field="fee"></p>
+              <div class="col-md-6">
+                <div class="mb-2"><strong>Duration (hours):</strong> <span data-field="duration_hours"></span></div>
+                <div class="mb-2"><strong>Status:</strong> <span data-field="status"></span></div>
+                <div class="mb-2"><strong>Created At:</strong> <span data-field="created_at"></span></div>
+                <div class="mb-2"><strong>Updated At:</strong> <span data-field="updated_at"></span></div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Duration (hours)</label>
-                <p data-field="duration_hours"></p>
-              </div>
-              <div class="form-group">
-                <label>Status</label>
-                <p data-field="status"></p>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Description</label>
-                <p data-field="description"></p>
-              </div>
-              <div class="form-group">
-                <label>Prerequisites</label>
-                <p data-field="prerequisites"></p>
-              </div>
-              <div class="form-group">
-                <label>Syllabus</label>
-                <p data-field="syllabus"></p>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-2"><strong>Description:</strong><br><span data-field="description"></span></div>
+                <div class="mb-2"><strong>Prerequisites:</strong><br><span data-field="prerequisites"></span></div>
+                <div class="mb-2"><strong>Syllabus:</strong><br><span data-field="syllabus"></span></div>
               </div>
             </div>
           </div>
@@ -553,7 +527,7 @@ $(function () {
       success: function (response) {
         if (response.success && response.data) {
           var c = response.data;
-          $('#viewCourseModal .modal-title').text('View Course: ' + c.course_name);
+          $('#viewCourseTitle').text(c.course_name);
           $('#viewCourseModal [data-field="course_code"]').text(c.course_code);
           $('#viewCourseModal [data-field="course_name"]').text(c.course_name);
           $('#viewCourseModal [data-field="sector_name"]').text(c.sector_name);
@@ -564,6 +538,8 @@ $(function () {
           $('#viewCourseModal [data-field="prerequisites"]').text(c.prerequisites);
           $('#viewCourseModal [data-field="syllabus"]').text(c.syllabus);
           $('#viewCourseModal [data-field="status"]').html('<span class="badge badge-' + (c.status === 'active' ? 'success' : 'secondary') + '">' + (c.status ? c.status.charAt(0).toUpperCase() + c.status.slice(1) : '') + '</span>');
+          $('#viewCourseModal [data-field="created_at"]').text(c.created_at || '');
+          $('#viewCourseModal [data-field="updated_at"]').text(c.updated_at || '');
           $('#viewCourseModal').modal('show');
         } else {
           toastr.error('Could not fetch course details.');
