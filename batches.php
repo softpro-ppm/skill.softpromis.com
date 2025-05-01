@@ -236,6 +236,12 @@ require_once 'includes/footer.php';
 
 <script>
 $(function () {
+  // Fallback: Always open Add Batch modal on button click
+  $(document).on('click', '[data-toggle="modal"][data-target="#addBatchModal"]', function(e) {
+    e.preventDefault();
+    $('#addBatchModal').modal('show');
+  });
+
   var table = $('#batchesTable').DataTable({
     processing: true,
     serverSide: false,
