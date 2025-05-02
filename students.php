@@ -136,11 +136,11 @@ try {
               <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly>
             </div>
             <div class="form-group">
-              <label for="addFirstName">First Name</label>
+              <label for="addFirstName">First Name <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="addFirstName" name="first_name" required>
             </div>
             <div class="form-group">
-              <label for="addLastName">Last Name</label>
+              <label for="addLastName">Last Name <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="addLastName" name="last_name" required>
             </div>
             <div class="form-group">
@@ -229,11 +229,11 @@ try {
           <div class="modal-body">
             <input type="hidden" id="editStudentId" name="student_id">
             <div class="form-group">
-              <label for="editFirstName">First Name</label>
+              <label for="editFirstName">First Name <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="editFirstName" name="first_name" required>
             </div>
             <div class="form-group">
-              <label for="editLastName">Last Name</label>
+              <label for="editLastName">Last Name <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="editLastName" name="last_name" required>
             </div>
             <div class="form-group">
