@@ -328,16 +328,17 @@ $(function () {
 
     $(document).on('click', '.view-student-btn', function () {
         var studentId = $(this).data('student-id');
+        var modal = $('#viewStudentModal');
+        // Remove any previous alerts
+        modal.find('.alert').remove();
         $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: studentId }, function (response) {
-            var modal = $('#viewStudentModal');
-            if (response.status === 'success') {
+            if (response.status === 'success' && response.data) {
                 var data = response.data;
                 modal.find('[data-field]').each(function () {
                     var field = $(this).data('field');
                     $(this).text(data[field] || '');
                 });
             } else {
-                // Show error message in modal fields
                 modal.find('[data-field]').text('');
                 modal.find('.modal-body').prepend('<div class="alert alert-danger">' + (response.message || 'Failed to fetch student details.') + '</div>');
             }
