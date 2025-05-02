@@ -85,24 +85,32 @@ try {
             </div>
           </div>
           <div class="card-body">
-            <table id="studentsTable" class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>Enrollment No</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Gender</th>
-                  <th>Mobile</th>
-                  <th>Email</th>
-                  <th>Date of Birth</th>
-                  <th>Address</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- DataTables will populate this -->
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table id="studentsTable" class="table table-bordered table-striped table-hover table-sm align-middle">
+                <thead class="thead-dark">
+                  <tr>
+                    <th class="text-center" style="width:60px;">Sr. No.</th>
+                    <th>Enrollment No</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Gender</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>Date of Birth</th>
+                    <th>Address</th>
+                    <th class="text-center" style="width:110px; white-space:nowrap;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- DataTables will populate this -->
+                </tbody>
+              </table>
+            </div>
+            <style>
+              #studentsTable td, #studentsTable th { vertical-align: middle !important; }
+              #studentsTable .btn-group .btn { margin-right: 2px; }
+              #studentsTable .btn-group .btn:last-child { margin-right: 0; }
+            </style>
           </div>
         </div>
       </div>
@@ -289,7 +297,7 @@ try {
 
 <script>
   $(function () {
-    // Initialize DataTable with AJAX
+    // Add static Sr. No. column to DataTable
     var table = $('#studentsTable').DataTable({
       processing: true,
       serverSide: false,
@@ -297,11 +305,10 @@ try {
         url: 'inc/ajax/students_ajax.php',
         type: 'POST',
         data: { action: 'list' },
-        dataSrc: function(json) {
-          return json.data || [];
-        }
+        dataSrc: function(json) { return json.data || []; }
       },
       columns: [
+        { data: null, render: function (data, type, row, meta) { return meta.row + 1; }, orderable: false, searchable: false, className: 'text-center' },
         { data: 'enrollment_no' },
         { data: 'first_name' },
         { data: 'last_name' },
@@ -310,23 +317,17 @@ try {
         { data: 'email' },
         { data: 'date_of_birth' },
         { data: 'address' },
-        { data: null, orderable: false, searchable: false, render: function(data, type, row) {
-            return '<div class="btn-group" role="group">' +
-              '<button class="btn btn-sm btn-info view-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-eye"></i></button>' +
-              '<button class="btn btn-sm btn-primary edit-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-edit"></i></button>' +
-              '<button class="btn btn-sm btn-danger delete-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-trash"></i></button>' +
+        { data: null, orderable: false, searchable: false, className: 'text-center', render: function(data, type, row) {
+            return '<div class="btn-group btn-group-sm">' +
+              '<button class="btn btn-info view-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-eye"></i></button>' +
+              '<button class="btn btn-primary edit-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-edit"></i></button>' +
+              '<button class="btn btn-danger delete-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-trash"></i></button>' +
               '</div>';
           }
         }
       ],
-      dom: 'Bfrtip',
-      buttons: [
-        { extend: 'copy', className: 'btn btn-secondary btn-sm', text: 'Copy' },
-        { extend: 'csv', className: 'btn btn-secondary btn-sm', text: 'CSV' },
-        { extend: 'excel', className: 'btn btn-secondary btn-sm', text: 'Excel' },
-        { extend: 'pdf', className: 'btn btn-secondary btn-sm', text: 'PDF' },
-        { extend: 'print', className: 'btn btn-secondary btn-sm', text: 'Print' }
-      ]
+      responsive: true,
+      order: [[1, 'desc']]
     });
 
     // Initialize Select2
@@ -387,7 +388,7 @@ try {
         if (response.success) {
           toastr.success(response.message || 'Student added successfully');
           $('#addStudentModal').modal('hide');
-          resetStudentForm($form);
+          $form[0].reset();
           table.ajax.reload(null, false);
         } else {
           toastr.error(response.message || 'Failed to add student');
@@ -410,7 +411,7 @@ try {
         if (response.success) {
           toastr.success(response.message || 'Student updated successfully');
           $('#editStudentModal').modal('hide');
-          resetStudentForm($form);
+          $form[0].reset();
           table.ajax.reload(null, false);
         } else {
           toastr.error(response.message || 'Failed to update student');
