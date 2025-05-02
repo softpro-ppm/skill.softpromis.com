@@ -131,7 +131,7 @@ try {
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- Add Student Modal (Bootstrap 5) -->
+  <!-- Add Student Modal (Bootstrap 5, improved) -->
   <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -139,35 +139,39 @@ try {
           <h5 class="modal-title" id="addStudentModalLabel">Add New Student</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="addStudentForm">
+        <form id="addStudentForm" novalidate>
           <div class="modal-body">
             <div class="mb-3">
               <label for="addEnrollmentNo" class="form-label">Enrollment No</label>
-              <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly>
+              <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly aria-label="Enrollment Number">
             </div>
             <div class="mb-3">
               <label for="addFirstName" class="form-label">First Name <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="addFirstName" name="first_name" required placeholder="Enter first name">
+              <input type="text" class="form-control" id="addFirstName" name="first_name" required placeholder="Enter first name" aria-label="First Name">
+              <div class="invalid-feedback">First name is required.</div>
             </div>
             <div class="mb-3">
               <label for="addLastName" class="form-label">Last Name <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="addLastName" name="last_name" required placeholder="Enter last name">
+              <input type="text" class="form-control" id="addLastName" name="last_name" required placeholder="Enter last name" aria-label="Last Name">
+              <div class="invalid-feedback">Last name is required.</div>
             </div>
             <div class="mb-3">
               <label for="addEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="addEmail" name="email" placeholder="Enter email">
+              <input type="email" class="form-control" id="addEmail" name="email" placeholder="Enter email" aria-label="Email">
+              <div class="invalid-feedback">Please enter a valid email.</div>
             </div>
             <div class="mb-3">
               <label for="addMobile" class="form-label">Mobile</label>
-              <input type="text" class="form-control" id="addMobile" name="mobile" placeholder="Enter mobile number">
+              <input type="tel" class="form-control" id="addMobile" name="mobile" pattern="^[0-9]{10,15}$" placeholder="Enter mobile number" aria-label="Mobile">
+              <div class="invalid-feedback">Please enter a valid mobile number.</div>
             </div>
             <div class="mb-3">
               <label for="addDOB" class="form-label">Date of Birth</label>
-              <input type="date" class="form-control" id="addDOB" name="date_of_birth">
+              <input type="date" class="form-control" id="addDOB" name="date_of_birth" aria-label="Date of Birth">
             </div>
             <div class="mb-3">
               <label for="addGender" class="form-label">Gender</label>
-              <select class="form-select" id="addGender" name="gender">
+              <select class="form-select" id="addGender" name="gender" aria-label="Gender">
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -176,7 +180,7 @@ try {
             </div>
             <div class="mb-3">
               <label for="addAddress" class="form-label">Address</label>
-              <textarea class="form-control" id="addAddress" name="address" placeholder="Enter address"></textarea>
+              <textarea class="form-control" id="addAddress" name="address" placeholder="Enter address" aria-label="Address"></textarea>
             </div>
           </div>
           <div class="modal-footer">
@@ -188,7 +192,7 @@ try {
     </div>
   </div>
 
-  <!-- Edit Student Modal (Bootstrap 5) -->
+  <!-- Edit Student Modal (Bootstrap 5, improved) -->
   <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -196,36 +200,40 @@ try {
           <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="editStudentForm">
+        <form id="editStudentForm" novalidate>
           <input type="hidden" id="editStudentId" name="student_id">
           <div class="modal-body">
             <div class="mb-3">
               <label for="editEnrollmentNo" class="form-label">Enrollment No</label>
-              <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" readonly>
+              <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" readonly aria-label="Enrollment Number">
             </div>
             <div class="mb-3">
               <label for="editFirstName" class="form-label">First Name <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="editFirstName" name="first_name" required placeholder="Enter first name">
+              <input type="text" class="form-control" id="editFirstName" name="first_name" required placeholder="Enter first name" aria-label="First Name">
+              <div class="invalid-feedback">First name is required.</div>
             </div>
             <div class="mb-3">
               <label for="editLastName" class="form-label">Last Name <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="editLastName" name="last_name" required placeholder="Enter last name">
+              <input type="text" class="form-control" id="editLastName" name="last_name" required placeholder="Enter last name" aria-label="Last Name">
+              <div class="invalid-feedback">Last name is required.</div>
             </div>
             <div class="mb-3">
               <label for="editEmail" class="form-label">Email</label>
-              <input type="email" class="form-control" id="editEmail" name="email" placeholder="Enter email">
+              <input type="email" class="form-control" id="editEmail" name="email" placeholder="Enter email" aria-label="Email">
+              <div class="invalid-feedback">Please enter a valid email.</div>
             </div>
             <div class="mb-3">
               <label for="editMobile" class="form-label">Mobile</label>
-              <input type="text" class="form-control" id="editMobile" name="mobile" placeholder="Enter mobile number">
+              <input type="tel" class="form-control" id="editMobile" name="mobile" pattern="^[0-9]{10,15}$" placeholder="Enter mobile number" aria-label="Mobile">
+              <div class="invalid-feedback">Please enter a valid mobile number.</div>
             </div>
             <div class="mb-3">
               <label for="editDOB" class="form-label">Date of Birth</label>
-              <input type="date" class="form-control" id="editDOB" name="date_of_birth">
+              <input type="date" class="form-control" id="editDOB" name="date_of_birth" aria-label="Date of Birth">
             </div>
             <div class="mb-3">
               <label for="editGender" class="form-label">Gender</label>
-              <select class="form-select" id="editGender" name="gender">
+              <select class="form-select" id="editGender" name="gender" aria-label="Gender">
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -234,7 +242,7 @@ try {
             </div>
             <div class="mb-3">
               <label for="editAddress" class="form-label">Address</label>
-              <textarea class="form-control" id="editAddress" name="address" placeholder="Enter address"></textarea>
+              <textarea class="form-control" id="editAddress" name="address" placeholder="Enter address" aria-label="Address"></textarea>
             </div>
           </div>
           <div class="modal-footer">
@@ -457,6 +465,21 @@ try {
         showAlert('error', 'An error occurred. Please try again.');
       });
     });
+
+    // Bootstrap 5 validation for add/edit forms
+    (function () {
+      'use strict';
+      var forms = document.querySelectorAll('#addStudentForm, #editStudentForm');
+      Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
   });
 </script>
 </body>
