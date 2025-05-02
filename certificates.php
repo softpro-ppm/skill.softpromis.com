@@ -251,11 +251,11 @@ require_once 'includes/sidebar.php';
         }
       },
       columns: [
-        { data: 'certificate_no' },
+        { data: 'certificate_number' },
         { data: 'student_name' },
         { data: 'course_name' },
         { data: 'issue_date' },
-        { data: 'expiry_date' },
+        { data: 'valid_until' },
         { data: 'status', render: function(data) {
             var badge = 'secondary';
             if (data === 'Active') badge = 'success';
@@ -283,15 +283,6 @@ require_once 'includes/sidebar.php';
     // Initialize Select2
     $('.select2').select2({
       theme: 'bootstrap4'
-    });
-
-    // Initialize date picker
-    $('.datepicker').daterangepicker({
-      singleDatePicker: true,
-      showDropdowns: true,
-      locale: {
-        format: 'DD/MM/YYYY'
-      }
     });
 
     // Load course and batch details when student is selected
