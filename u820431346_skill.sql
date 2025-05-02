@@ -86,10 +86,12 @@ INSERT INTO `batches` (`batch_id`, `center_id`, `course_id`, `batch_code`, `star
 CREATE TABLE `certificates` (
   `certificate_id` int(11) NOT NULL,
   `enrollment_id` int(11) DEFAULT NULL,
-  `certificate_no` varchar(50) DEFAULT NULL,
+  `certificate_number` varchar(50) DEFAULT NULL,
+  `certificate_type` enum('completion','achievement','specialization') DEFAULT NULL,
   `issue_date` date DEFAULT NULL,
   `valid_until` date DEFAULT NULL,
   `status` enum('issued','revoked') DEFAULT 'issued',
+  `remarks` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -98,9 +100,9 @@ CREATE TABLE `certificates` (
 -- Dumping data for table `certificates`
 --
 
-INSERT INTO `certificates` (`certificate_id`, `enrollment_id`, `certificate_no`, `issue_date`, `valid_until`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'CERT001', '2024-06-30', '2026-06-30', 'issued', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(2, 2, 'CERT002', '2024-06-30', '2026-06-30', 'issued', '2025-04-24 05:17:04', '2025-04-24 05:17:04');
+INSERT INTO `certificates` (`certificate_id`, `enrollment_id`, `certificate_number`, `certificate_type`, `issue_date`, `valid_until`, `status`, `remarks`, `created_at`, `updated_at`) VALUES
+(1, 1, 'CERT001', 'completion', '2024-06-30', '2026-06-30', 'issued', 'Good performance', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
+(2, 2, 'CERT002', 'achievement', '2024-06-30', '2026-06-30', 'issued', 'Excellent practical skills', '2025-04-24 05:17:04', '2025-04-24 05:17:04');
 
 -- --------------------------------------------------------
 
@@ -420,7 +422,7 @@ ALTER TABLE `batches`
 --
 ALTER TABLE `certificates`
   ADD PRIMARY KEY (`certificate_id`),
-  ADD UNIQUE KEY `certificate_no` (`certificate_no`),
+  ADD UNIQUE KEY `certificate_number` (`certificate_number`),
   ADD KEY `enrollment_id` (`enrollment_id`);
 
 --
