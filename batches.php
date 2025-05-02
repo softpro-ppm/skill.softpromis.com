@@ -55,15 +55,15 @@ require_once 'includes/sidebar.php';
               <table id="batchesTable" class="table table-bordered table-striped table-hover table-sm align-middle">
                 <thead class="thead-dark">
                   <tr>
-                    <th>Sr. No.</th>
+                    <th class="text-center" style="width:60px;">Sr. No.</th>
                     <th>Batch Code</th>
                     <th>Course</th>
                     <th>Training Center</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Capacity</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th class="text-center" style="width:90px;">Capacity</th>
+                    <th class="text-center" style="width:100px;">Status</th>
+                    <th class="text-center" style="width:110px; white-space:nowrap;">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -71,6 +71,21 @@ require_once 'includes/sidebar.php';
                 </tbody>
               </table>
             </div>
+            <style>
+              #batchesTable td, #batchesTable th {
+                vertical-align: middle !important;
+              }
+              #batchesTable .badge {
+                font-size: 0.95em;
+                padding: 0.45em 0.8em;
+              }
+              #batchesTable .btn-group .btn {
+                margin-right: 2px;
+              }
+              #batchesTable .btn-group .btn:last-child {
+                margin-right: 0;
+              }
+            </style>
           </div>
         </div>
       </div>
