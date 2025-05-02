@@ -67,7 +67,38 @@ require_once 'includes/sidebar.php';
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- Dynamic rows will be loaded here by DataTables -->
+                  <?php
+                  $batches = [];
+                  try {
+                    $pdo = getDBConnection();
+                    $stmt = $pdo->query("SELECT b.batch_id, b.batch_code, b.start_date, b.end_date, b.capacity, b.status, c.course_name, tc.center_name
+                      FROM batches b
+                      LEFT JOIN courses c ON b.course_id = c.course_id
+                      LEFT JOIN training_centers tc ON b.center_id = tc.center_id
+                      ORDER BY b.batch_id DESC");
+                    $batches = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                  } catch (Exception $e) {}
+                  $sr = 1;
+                  foreach ($batches as $row): ?>
+                    <tr>
+                      <td class="text-center"><?php echo $sr++; ?></td>
+                      <td><?php echo htmlspecialchars($row['batch_code']); ?></td>
+                      <td><?php echo htmlspecialchars($row['course_name']); ?></td>
+                      <td><?php echo htmlspecialchars($row['center_name']); ?></td>
+                      <td><?php echo htmlspecialchars($row['start_date']); ?></td>
+                      <td><?php echo htmlspecialchars($row['end_date']); ?></td>
+                      <td class="text-center"><?php echo htmlspecialchars($row['capacity']); ?></td>
+                      <td class="text-center"><span class="badge badge-<?php
+                        echo $row['status'] === 'completed' ? 'success' : ($row['status'] === 'ongoing' ? 'primary' : ($row['status'] === 'upcoming' ? 'info' : 'secondary'));
+                      ?>"><?php echo ucfirst($row['status']); ?></span></td>
+                      <td class="text-center" style="white-space:nowrap;">
+                        <div class="btn-group btn-group-sm">
+                          <button type="button" class="btn btn-primary edit-batch-btn" data-batch-id="<?php echo $row['batch_id']; ?>"><i class="fas fa-edit"></i></button>
+                          <button type="button" class="btn btn-danger delete-batch-btn" data-batch-id="<?php echo $row['batch_id']; ?>"><i class="fas fa-trash"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>
@@ -257,7 +288,6 @@ $(function () {
       }
     },
     columns: [
-      { data: null, render: function (data, type, row, meta) { return meta.row + 1; }, orderable: false, searchable: false },
       { data: 'batch_code' },
       { data: 'course_name', defaultContent: '-' },
       { data: 'center_name', defaultContent: '-' },
