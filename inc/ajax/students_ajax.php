@@ -182,17 +182,7 @@ try {
     }
 } catch (PDOException $e) {
     logError("Students error: " . $e->getMessage());
-    sendJSONResponse(false, 'An error occurred. Please try again later.');
-}
-
-function sendJSONResponse($success, $message, $data = null) {
-    $response = [
-        'status' => $success ? 'success' : 'error',
-        'message' => $message
-    ];
-    if ($data !== null) {
-        $response['data'] = $data;
-    }
-    echo json_encode($response);
+    // For DataTables, return an empty data array on error
+    echo json_encode(['data' => [], 'error' => 'An error occurred. Please try again later.']);
     exit;
 }
