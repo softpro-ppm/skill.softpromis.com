@@ -200,6 +200,10 @@ try {
           <input type="hidden" id="editStudentId" name="student_id">
           <div class="modal-body">
             <div class="mb-3">
+              <label for="editEnrollmentNo" class="form-label">Enrollment No</label>
+              <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" readonly>
+            </div>
+            <div class="mb-3">
               <label for="editFirstName" class="form-label">First Name <span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="editFirstName" name="first_name" required placeholder="Enter first name">
             </div>
@@ -408,6 +412,7 @@ try {
         if (response.status === 'success' && response.data) {
           var s = response.data;
           $('#editStudentId').val(s.student_id);
+          $('#editEnrollmentNo').val(s.enrollment_no);
           $('#editFirstName').val(s.first_name);
           $('#editLastName').val(s.last_name);
           $('#editGender').val(s.gender);
