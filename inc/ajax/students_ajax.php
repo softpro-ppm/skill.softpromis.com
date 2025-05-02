@@ -95,7 +95,7 @@ try {
         case 'list':
             $stmt = $pdo->query('SELECT student_id, enrollment_no, first_name, last_name, gender, mobile, email, date_of_birth, address FROM students ORDER BY created_at DESC');
             $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo json_encode(['data' => $students]);
+            echo json_encode(['success' => true, 'data' => $students]);
             exit;
 
         default:
@@ -103,6 +103,6 @@ try {
     }
 } catch (PDOException $e) {
     logError('Students error: ' . $e->getMessage());
-    echo json_encode(['data' => [], 'error' => 'An error occurred. Please try again later.']);
+    echo json_encode(['success' => false, 'data' => [], 'error' => 'An error occurred. Please try again later.']);
     exit;
 }

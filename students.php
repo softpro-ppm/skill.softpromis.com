@@ -88,9 +88,7 @@ try {
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="addStudentModalLabel">Add New Student</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="addStudentForm" novalidate>
                 <div class="modal-body">
@@ -134,7 +132,7 @@ try {
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save Student</button>
                 </div>
             </form>
@@ -142,14 +140,12 @@ try {
     </div>
 </div>
 <!-- View Student Modal -->
-<div class="modal fade" id="viewStudentModal">
+<div class="modal fade" id="viewStudentModal" tabindex="-1" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">View Student Details</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h4 class="modal-title" id="viewStudentModalLabel">View Student Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group"><label>Enrollment No</label><p data-field="enrollment_no"></p></div>
@@ -162,7 +158,7 @@ try {
                 <div class="form-group"><label>Address</label><p data-field="address"></p></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -173,9 +169,7 @@ try {
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="editStudentModalLabel">Edit Student</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="editStudentForm" novalidate>
                 <input type="hidden" id="editStudentId" name="student_id">
@@ -220,7 +214,7 @@ try {
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Update Student</button>
                 </div>
             </form>
@@ -228,21 +222,19 @@ try {
     </div>
 </div>
 <!-- Delete Student Modal -->
-<div class="modal fade" id="deleteStudentModal">
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Delete Student</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h4 class="modal-title" id="deleteStudentModalLabel">Delete Student</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="deleteStudentId">
                 <p>Are you sure you want to delete this student? This action cannot be undone.</p>
             </div>
             <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" id="confirmDeleteStudent">Delete Student</button>
             </div>
         </div>
@@ -285,11 +277,18 @@ $(function () {
     });
 
     function showError($el, message) {
-        $el.removeClass('d-none').text(message);
+        $el.removeClass('d-none').text(message).show();
     }
     function hideError($el) {
-        $el.addClass('d-none').text('');
+        $el.addClass('d-none').text('').hide();
     }
+
+    // Reset forms and errors on modal close
+    $('#addStudentModal, #editStudentModal').on('hidden.bs.modal', function () {
+        $(this).find('form')[0].reset();
+        hideError($(this).find('.alert'));
+        $(this).find('.is-invalid').removeClass('is-invalid');
+    });
 
     $('#addStudentForm').on('submit', function (e) {
         e.preventDefault();
@@ -297,7 +296,6 @@ $(function () {
         var $btn = $form.find('button[type="submit"]');
         var $error = $('#addStudentError');
         hideError($error);
-        // Client-side validation
         var valid = true;
         $form.find('[required]').each(function() {
             if (!$(this).val()) {
@@ -311,9 +309,9 @@ $(function () {
             showError($error, 'Please fill all required fields.');
             return;
         }
-        $btn.prop('disabled', true).text('Saving...');
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Saving...');
         $.post('inc/ajax/students_ajax.php', $form.serialize() + '&action=create', function (response) {
-            if (response.status === 'success') {
+            if (response.success) {
                 $('#addStudentModal').modal('hide');
                 table.ajax.reload();
                 toastr.success(response.message || 'Student added successfully.');
@@ -331,7 +329,6 @@ $(function () {
         var $btn = $form.find('button[type="submit"]');
         var $error = $('#editStudentError');
         hideError($error);
-        // Client-side validation
         var valid = true;
         $form.find('[required]').each(function() {
             if (!$(this).val()) {
@@ -345,9 +342,9 @@ $(function () {
             showError($error, 'Please fill all required fields.');
             return;
         }
-        $btn.prop('disabled', true).text('Updating...');
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Updating...');
         $.post('inc/ajax/students_ajax.php', $form.serialize() + '&action=update', function (response) {
-            if (response.status === 'success') {
+            if (response.success) {
                 $('#editStudentModal').modal('hide');
                 table.ajax.reload();
                 toastr.success(response.message || 'Student updated successfully.');
@@ -361,6 +358,8 @@ $(function () {
 
     $('#confirmDeleteStudent').on('click', function () {
         var studentId = $('#deleteStudentId').val();
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Deleting...');
         Swal.fire({
             title: 'Are you sure?',
             text: 'This action cannot be undone!',
@@ -372,14 +371,17 @@ $(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.post('inc/ajax/students_ajax.php', { action: 'delete', student_id: studentId }, function (response) {
-                    if (response.status === 'success') {
+                    if (response.success) {
                         $('#deleteStudentModal').modal('hide');
                         table.ajax.reload();
                         toastr.success(response.message || 'Student deleted successfully.');
                     } else {
                         toastr.error(response.message || 'Failed to delete student.');
                     }
+                    $btn.prop('disabled', false).text('Delete Student');
                 }, 'json');
+            } else {
+                $btn.prop('disabled', false).text('Delete Student');
             }
         });
     });
@@ -387,10 +389,9 @@ $(function () {
     $(document).on('click', '.view-student-btn', function () {
         var studentId = $(this).data('student-id');
         var modal = $('#viewStudentModal');
-        // Remove any previous alerts
         modal.find('.alert').remove();
         $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: studentId }, function (response) {
-            if (response.status === 'success' && response.data) {
+            if (response.success && response.data) {
                 var data = response.data;
                 modal.find('[data-field]').each(function () {
                     var field = $(this).data('field');
@@ -407,7 +408,7 @@ $(function () {
     $(document).on('click', '.edit-student-btn', function () {
         var studentId = $(this).data('student-id');
         $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: studentId }, function (response) {
-            if (response.status === 'success') {
+            if (response.success) {
                 var data = response.data;
                 $('#editStudentForm').find('[name]').each(function () {
                     var name = $(this).attr('name');
