@@ -83,28 +83,29 @@ try {
     </section>
 </div>
 <!-- Add Student Modal -->
-<div class="modal fade" id="addStudentModal">
+<div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Add New Student</h4>
+                <h4 class="modal-title" id="addStudentModalLabel">Add New Student</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="addStudentForm">
+            <form id="addStudentForm" novalidate>
                 <div class="modal-body">
+                    <div id="addStudentError" class="alert alert-danger d-none"></div>
                     <div class="form-group">
-                        <label for="addEnrollmentNo">Enrollment No</label>
-                        <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly required>
+                        <label for="addEnrollmentNo">Enrollment No <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="addFirstName">First Name</label>
-                        <input type="text" class="form-control" id="addFirstName" name="first_name" required>
+                        <label for="addFirstName">First Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="addFirstName" name="first_name" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="addLastName">Last Name</label>
-                        <input type="text" class="form-control" id="addLastName" name="last_name" required>
+                        <label for="addLastName">Last Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="addLastName" name="last_name" required aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="addEmail">Email</label>
@@ -167,29 +168,30 @@ try {
     </div>
 </div>
 <!-- Edit Student Modal -->
-<div class="modal fade" id="editStudentModal">
+<div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Edit Student</h4>
+                <h4 class="modal-title" id="editStudentModalLabel">Edit Student</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="editStudentForm">
+            <form id="editStudentForm" novalidate>
                 <input type="hidden" id="editStudentId" name="student_id">
                 <div class="modal-body">
+                    <div id="editStudentError" class="alert alert-danger d-none"></div>
                     <div class="form-group">
-                        <label for="editEnrollmentNo">Enrollment No</label>
-                        <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" readonly required>
+                        <label for="editEnrollmentNo">Enrollment No <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" readonly required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="editFirstName">First Name</label>
-                        <input type="text" class="form-control" id="editFirstName" name="first_name" required>
+                        <label for="editFirstName">First Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editFirstName" name="first_name" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="editLastName">Last Name</label>
-                        <input type="text" class="form-control" id="editLastName" name="last_name" required>
+                        <label for="editLastName">Last Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editLastName" name="last_name" required aria-required="true">
                     </div>
                     <div class="form-group">
                         <label for="editEmail">Email</label>
@@ -282,17 +284,42 @@ $(function () {
         order: [[0, 'asc']]
     });
 
+    function showError($el, message) {
+        $el.removeClass('d-none').text(message);
+    }
+    function hideError($el) {
+        $el.addClass('d-none').text('');
+    }
+
     $('#addStudentForm').on('submit', function (e) {
         e.preventDefault();
         var $form = $(this);
         var $btn = $form.find('button[type="submit"]');
+        var $error = $('#addStudentError');
+        hideError($error);
+        // Client-side validation
+        var valid = true;
+        $form.find('[required]').each(function() {
+            if (!$(this).val()) {
+                valid = false;
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        if (!valid) {
+            showError($error, 'Please fill all required fields.');
+            return;
+        }
         $btn.prop('disabled', true).text('Saving...');
         $.post('inc/ajax/students_ajax.php', $form.serialize() + '&action=create', function (response) {
             if (response.status === 'success') {
                 $('#addStudentModal').modal('hide');
                 table.ajax.reload();
+                toastr.success(response.message || 'Student added successfully.');
             } else {
-                alert(response.message || 'Failed to add student.');
+                showError($error, response.message || 'Failed to add student.');
+                toastr.error(response.message || 'Failed to add student.');
             }
             $btn.prop('disabled', false).text('Save Student');
         }, 'json');
@@ -302,13 +329,31 @@ $(function () {
         e.preventDefault();
         var $form = $(this);
         var $btn = $form.find('button[type="submit"]');
+        var $error = $('#editStudentError');
+        hideError($error);
+        // Client-side validation
+        var valid = true;
+        $form.find('[required]').each(function() {
+            if (!$(this).val()) {
+                valid = false;
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        if (!valid) {
+            showError($error, 'Please fill all required fields.');
+            return;
+        }
         $btn.prop('disabled', true).text('Updating...');
         $.post('inc/ajax/students_ajax.php', $form.serialize() + '&action=update', function (response) {
             if (response.status === 'success') {
                 $('#editStudentModal').modal('hide');
                 table.ajax.reload();
+                toastr.success(response.message || 'Student updated successfully.');
             } else {
-                alert(response.message || 'Failed to update student.');
+                showError($error, response.message || 'Failed to update student.');
+                toastr.error(response.message || 'Failed to update student.');
             }
             $btn.prop('disabled', false).text('Update Student');
         }, 'json');
@@ -316,14 +361,27 @@ $(function () {
 
     $('#confirmDeleteStudent').on('click', function () {
         var studentId = $('#deleteStudentId').val();
-        $.post('inc/ajax/students_ajax.php', { action: 'delete', student_id: studentId }, function (response) {
-            if (response.status === 'success') {
-                $('#deleteStudentModal').modal('hide');
-                table.ajax.reload();
-            } else {
-                alert(response.message || 'Failed to delete student.');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This action cannot be undone!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post('inc/ajax/students_ajax.php', { action: 'delete', student_id: studentId }, function (response) {
+                    if (response.status === 'success') {
+                        $('#deleteStudentModal').modal('hide');
+                        table.ajax.reload();
+                        toastr.success(response.message || 'Student deleted successfully.');
+                    } else {
+                        toastr.error(response.message || 'Failed to delete student.');
+                    }
+                }, 'json');
             }
-        }, 'json');
+        });
     });
 
     $(document).on('click', '.view-student-btn', function () {
