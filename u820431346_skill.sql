@@ -148,7 +148,9 @@ CREATE TABLE `fees` (
   `transaction_id` varchar(100) DEFAULT NULL,
   `status` enum('pending','paid','failed') DEFAULT 'pending',
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `notes` TEXT DEFAULT NULL,
+  `receipt_no` VARCHAR(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
