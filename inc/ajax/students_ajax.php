@@ -78,7 +78,7 @@ try {
 
             // Get data
             $stmt = $pdo->prepare("
-                SELECT * FROM students s
+                SELECT student_id, enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, created_at, updated_at FROM students s
                 $whereClause
                 ORDER BY s.created_at DESC
                 LIMIT ? OFFSET ?
@@ -171,9 +171,8 @@ try {
             break;
 
         case 'list':
-            $stmt = $pdo->query('SELECT student_id, enrollment_no, first_name, last_name, gender, mobile, email, date_of_birth, address FROM students ORDER BY created_at DESC');
+            $stmt = $pdo->query('SELECT student_id, enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, created_at, updated_at FROM students ORDER BY created_at DESC');
             $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            // DataTables expects only {data: ...}
             echo json_encode([ 'data' => $students ]);
             exit;
 
