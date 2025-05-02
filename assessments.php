@@ -110,6 +110,7 @@ require_once 'includes/sidebar.php';
                   <th>Type</th>
                   <th>Date</th>
                   <th>Score</th>
+                  <th>Max Score</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -141,31 +142,15 @@ require_once 'includes/sidebar.php';
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="assessmentId">Assessment ID</label>
-                  <input type="text" class="form-control" id="assessmentId" readonly>
-                  <small class="form-text text-muted">Auto-generated</small>
-                </div>
-                <div class="form-group">
-                  <label for="student">Student</label>
-                  <select class="form-control select2" id="student" required>
-                    <option value="">Select Student</option>
-                    <option value="1">Rahul Sharma (ENR001)</option>
-                    <option value="2">Priya Patel (ENR002)</option>
+                  <label for="addEnrollmentId">Student (Enrollment)</label>
+                  <select class="form-control select2" id="addEnrollmentId" name="enrollment_id" required>
+                    <option value="">Select Enrollment</option>
+                    <!-- Dynamically populated -->
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="course">Course</label>
-                  <input type="text" class="form-control" id="course" readonly>
-                </div>
-                <div class="form-group">
-                  <label for="batch">Batch</label>
-                  <input type="text" class="form-control" id="batch" readonly>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="assessmentType">Assessment Type</label>
-                  <select class="form-control" id="assessmentType" required>
+                  <label for="addAssessmentType">Assessment Type</label>
+                  <select class="form-control" id="addAssessmentType" name="assessment_type" required>
                     <option value="">Select Type</option>
                     <option value="theory">Theory</option>
                     <option value="practical">Practical</option>
@@ -173,21 +158,30 @@ require_once 'includes/sidebar.php';
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="assessmentDate">Assessment Date</label>
-                  <div class="input-group date" id="assessmentDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#assessmentDate" required>
-                    <div class="input-group-append" data-target="#assessmentDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
+                  <label for="addAssessmentDate">Assessment Date</label>
+                  <input type="date" class="form-control" id="addAssessmentDate" name="assessment_date" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="addScore">Score</label>
+                  <input type="number" class="form-control" id="addScore" name="score" min="0" max="100" required>
                 </div>
                 <div class="form-group">
-                  <label for="score">Score (%)</label>
-                  <input type="number" class="form-control" id="score" min="0" max="100" required>
+                  <label for="addMaxScore">Max Score</label>
+                  <input type="number" class="form-control" id="addMaxScore" name="max_score" value="100" min="1" max="1000" required>
                 </div>
                 <div class="form-group">
-                  <label for="remarks">Remarks</label>
-                  <textarea class="form-control" id="remarks" rows="2"></textarea>
+                  <label for="addStatus">Status</label>
+                  <select class="form-control" id="addStatus" name="status" required>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="failed">Failed</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="addRemarks">Remarks</label>
+                  <textarea class="form-control" id="addRemarks" name="remarks" rows="2"></textarea>
                 </div>
               </div>
             </div>
@@ -195,7 +189,7 @@ require_once 'includes/sidebar.php';
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Assessment</button>
+          <button type="submit" class="btn btn-primary" form="addAssessmentForm">Save Assessment</button>
         </div>
       </div>
     </div>
@@ -272,13 +266,58 @@ require_once 'includes/sidebar.php';
         </div>
         <div class="modal-body">
           <form id="editAssessmentForm">
-            <!-- Same form fields as Add Assessment Modal -->
-            <!-- Pre-populated with existing data -->
+            <input type="hidden" id="editAssessmentId" name="assessment_id">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editEnrollmentId">Student (Enrollment)</label>
+                  <select class="form-control select2" id="editEnrollmentId" name="enrollment_id" required>
+                    <option value="">Select Enrollment</option>
+                    <!-- Dynamically populated -->
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="editAssessmentType">Assessment Type</label>
+                  <select class="form-control" id="editAssessmentType" name="assessment_type" required>
+                    <option value="">Select Type</option>
+                    <option value="theory">Theory</option>
+                    <option value="practical">Practical</option>
+                    <option value="project">Project</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="editAssessmentDate">Assessment Date</label>
+                  <input type="date" class="form-control" id="editAssessmentDate" name="assessment_date" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editScore">Score</label>
+                  <input type="number" class="form-control" id="editScore" name="score" min="0" max="100" required>
+                </div>
+                <div class="form-group">
+                  <label for="editMaxScore">Max Score</label>
+                  <input type="number" class="form-control" id="editMaxScore" name="max_score" value="100" min="1" max="1000" required>
+                </div>
+                <div class="form-group">
+                  <label for="editStatus">Status</label>
+                  <select class="form-control" id="editStatus" name="status" required>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="failed">Failed</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="editRemarks">Remarks</label>
+                  <textarea class="form-control" id="editRemarks" name="remarks" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Changes</button>
+          <button type="submit" class="btn btn-primary" form="editAssessmentForm">Save Changes</button>
         </div>
       </div>
     </div>
@@ -324,15 +363,16 @@ require_once 'includes/sidebar.php';
         { data: 'assessment_id' },
         { data: 'student_name' },
         { data: 'course_name' },
-        { data: 'type' },
-        { data: 'date' },
-        { data: 'score', render: function(data) { return data + '%'; } },
+        { data: 'assessment_type' },
+        { data: 'assessment_date' },
+        { data: 'score' },
+        { data: 'max_score' },
         { data: 'status', render: function(data) {
             var badge = 'secondary';
-            if (data === 'Passed') badge = 'success';
-            if (data === 'Pending Review') badge = 'warning';
-            if (data === 'Failed') badge = 'danger';
-            return '<span class="badge badge-' + badge + '">' + data + '</span>';
+            if (data === 'completed') badge = 'success';
+            if (data === 'pending') badge = 'warning';
+            if (data === 'failed') badge = 'danger';
+            return '<span class="badge badge-' + badge + '">' + data.charAt(0).toUpperCase() + data.slice(1) + '</span>';
           }
         },
         { data: null, orderable: false, searchable: false, render: function(data, type, row) {
