@@ -51,28 +51,15 @@ try {
             $page = (int)($_POST['page'] ?? 1);
             $perPage = (int)($_POST['per_page'] ?? 10);
             $search = sanitizeInput($_POST['search'] ?? '');
-            $status = sanitizeInput($_POST['status'] ?? '');
-            $center_id = (int)($_POST['center_id'] ?? 0);
 
             $where = [];
             $params = [];
 
-            // Only use columns that exist in the students table
             if (!empty($search)) {
                 $searchFields = ['enrollment_no', 'first_name', 'last_name', 'email', 'mobile', 'address'];
                 $searchResult = buildSearchQuery($searchFields, $search);
                 $where[] = "(" . $searchResult['conditions'] . ")";
                 $params = array_merge($params, $searchResult['params']);
-            }
-
-            // If you have a status or center_id column, keep these filters, else remove
-            if (!empty($status) && in_array('status', array_map('strtolower', array_keys($pdo->query('DESCRIBE students')->fetchAll(PDO::FETCH_ASSOC))))) {
-                $where[] = "s.status = ?";
-                $params[] = $status;
-            }
-            if ($center_id > 0 && in_array('center_id', array_map('strtolower', array_keys($pdo->query('DESCRIBE students')->fetchAll(PDO::FETCH_ASSOC))))) {
-                $where[] = "s.center_id = ?";
-                $params[] = $center_id;
             }
 
             $whereClause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
