@@ -78,8 +78,6 @@ try {
                   <th>Date of Birth</th>
                   <th>Gender</th>
                   <th>Address</th>
-                  <th>Created At</th>
-                  <th>Updated At</th>
                   <th class="text-center" style="width:110px; white-space:nowrap;">Actions</th>
                 </tr>
               </thead>
@@ -248,8 +246,6 @@ try {
         <div class="mb-2"><strong>Date of Birth:</strong> <span id="viewDOB"></span></div>
         <div class="mb-2"><strong>Gender:</strong> <span id="viewGender"></span></div>
         <div class="mb-2"><strong>Address:</strong> <span id="viewAddress"></span></div>
-        <div class="mb-2"><strong>Created At:</strong> <span id="viewCreatedAt"></span></div>
-        <div class="mb-2"><strong>Updated At:</strong> <span id="viewUpdatedAt"></span></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -279,8 +275,6 @@ $(function () {
       { data: 'date_of_birth' },
       { data: 'gender', render: function(data) { return data ? data.charAt(0).toUpperCase() + data.slice(1) : ''; } },
       { data: 'address' },
-      { data: 'created_at' },
-      { data: 'updated_at' },
       { data: null, orderable: false, searchable: false, className: 'text-center', render: function(data, type, row) {
           return '<div class="btn-group btn-group-sm">' +
             '<button class="btn btn-info view-student-btn" data-student-id="' + row.student_id + '" title="View"><i class="fas fa-eye"></i></button>' +
@@ -412,8 +406,6 @@ $(function () {
         $('#viewDOB').text(s.date_of_birth);
         $('#viewGender').text(s.gender);
         $('#viewAddress').text(s.address);
-        $('#viewCreatedAt').text(s.created_at);
-        $('#viewUpdatedAt').text(s.updated_at);
         $('#viewStudentModal').modal('show');
       } else {
         showAlert('error', 'Could not fetch student details.');
