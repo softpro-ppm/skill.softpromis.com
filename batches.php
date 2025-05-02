@@ -271,42 +271,8 @@ $(function () {
     e.preventDefault();
     $('#addBatchModal').modal('show');
   });
-
-  var table = $('#batchesTable').DataTable({
-    processing: true,
-    serverSide: false,
-    ajax: {
-      url: 'inc/ajax/batches_ajax.php',
-      type: 'GET',
-      data: function (d) { d.action = 'list'; },
-      dataSrc: function (json) {
-        if (!json || !json.data) {
-          toastr.error('No data returned from server.');
-          return [];
-        }
-        return json.data;
-      }
-    },
-    columns: [
-      { data: 'batch_code' },
-      { data: 'course_name', defaultContent: '-' },
-      { data: 'center_name', defaultContent: '-' },
-      { data: 'start_date' },
-      { data: 'end_date' },
-      { data: 'capacity' },
-      { data: 'status', render: function(data) { return '<span class="badge badge-' + (data === 'completed' ? 'success' : (data === 'ongoing' ? 'primary' : (data === 'upcoming' ? 'info' : 'secondary'))) + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
-      { data: null, orderable: false, searchable: false, render: function (data, type, row) {
-        return '<div class="btn-group btn-group-sm">' +
-          '<button type="button" class="btn btn-primary edit-batch-btn" data-batch-id="' + row.batch_id + '"><i class="fas fa-edit"></i></button>' +
-          '<button type="button" class="btn btn-danger delete-batch-btn" data-batch-id="' + row.batch_id + '"><i class="fas fa-trash"></i></button>' +
-          '</div>';
-      } }
-    ],
-    responsive: true,
-    lengthChange: true,
-    autoWidth: false,
-    order: [[1, 'desc']]
-  });
+  // Remove DataTables initialization for static table
+  // All add/edit/delete logic remains unchanged
 
   // --- ADD ---
   $('#addBatchForm').on('submit', function(e) {
@@ -334,7 +300,7 @@ $(function () {
           $form[0].reset();
           $form.find('.is-invalid').removeClass('is-invalid');
           $('#addBatchModal').one('hidden.bs.modal', function() {
-            table.ajax.reload(null, true);
+            location.reload();
           });
         } else {
           toastr.error(response.message || 'Error adding batch');
@@ -398,7 +364,7 @@ $(function () {
           $form[0].reset();
           $form.find('.is-invalid').removeClass('is-invalid');
           $('#editBatchModal').one('hidden.bs.modal', function() {
-            table.ajax.reload(null, true);
+            location.reload();
           });
         } else {
           toastr.error(response.message || 'Error updating batch');
@@ -422,7 +388,7 @@ $(function () {
         success: function(response) {
           if(response.success) {
             toastr.success(response.message || 'Batch deleted successfully');
-            table.ajax.reload(null, true);
+            location.reload();
           } else {
             toastr.error(response.message || 'Error deleting batch');
           }
