@@ -57,19 +57,20 @@ try {
             $where = [];
             $params = [];
 
+            // Only use columns that exist in the students table
             if (!empty($search)) {
-                $searchFields = ['name', 'email', 'phone', 'address', 'city', 'state'];
+                $searchFields = ['enrollment_no', 'first_name', 'last_name', 'email', 'mobile', 'address'];
                 $searchResult = buildSearchQuery($searchFields, $search);
                 $where[] = "(" . $searchResult['conditions'] . ")";
                 $params = array_merge($params, $searchResult['params']);
             }
 
-            if (!empty($status)) {
+            // If you have a status or center_id column, keep these filters, else remove
+            if (!empty($status) && in_array('status', array_map('strtolower', array_keys($pdo->query('DESCRIBE students')->fetchAll(PDO::FETCH_ASSOC))))) {
                 $where[] = "s.status = ?";
                 $params[] = $status;
             }
-
-            if ($center_id > 0) {
+            if ($center_id > 0 && in_array('center_id', array_map('strtolower', array_keys($pdo->query('DESCRIBE students')->fetchAll(PDO::FETCH_ASSOC))))) {
                 $where[] = "s.center_id = ?";
                 $params[] = $center_id;
             }
@@ -88,12 +89,9 @@ try {
             // Get pagination info
             $pagination = getPagination($page, $total, $perPage);
 
-            // Get data with related info
+            // Get data
             $stmt = $pdo->prepare("
-                SELECT s.*, tc.name as center_name,
-                       (SELECT COUNT(*) FROM batch_students WHERE student_id = s.id) as batch_count
-                FROM students s
-                LEFT JOIN training_centers tc ON s.center_id = tc.id
+                SELECT * FROM students s
                 $whereClause
                 ORDER BY s.created_at DESC
                 LIMIT ? OFFSET ?
@@ -188,7 +186,7 @@ try {
         case 'list':
             $stmt = $pdo->query('SELECT student_id, enrollment_no, first_name, last_name, gender, mobile, email, date_of_birth, address FROM students ORDER BY created_at DESC');
             $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo json_encode([ 'data' => $students ]);
+            echo json_encode([ 'status' => 'success', 'data' => $students ]);
             exit;
 
         default:
@@ -197,4 +195,16 @@ try {
 } catch (PDOException $e) {
     logError("Students error: " . $e->getMessage());
     sendJSONResponse(false, 'An error occurred. Please try again later.');
+}
+
+function sendJSONResponse($success, $message, $data = null) {
+    $response = [
+        'status' => $success ? 'success' : 'error',
+        'message' => $message
+    ];
+    if ($data !== null) {
+        $response['data'] = $data;
+    }
+    echo json_encode($response);
+    exit;
 }
