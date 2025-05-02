@@ -51,23 +51,25 @@ require_once 'includes/sidebar.php';
             </div>
           </div>
           <div class="card-body">
-            <table id="batchesTable" class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>Batch Code</th>
-                  <th>Course</th>
-                  <th>Training Center</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Capacity</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Dynamic rows will be loaded here by DataTables -->
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table id="batchesTable" class="table table-bordered table-striped table-hover table-sm align-middle">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Batch Code</th>
+                    <th>Course</th>
+                    <th>Training Center</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Capacity</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Dynamic rows will be loaded here by DataTables -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
