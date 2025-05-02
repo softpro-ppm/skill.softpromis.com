@@ -309,20 +309,12 @@
                   <small class="form-text text-muted">Auto-generated</small>
                 </div>
                 <div class="form-group">
-                  <label for="student">Student</label>
-                  <select class="form-control select2" id="student" required>
-                    <option value="">Select Student</option>
-                    <option value="1">Rahul Sharma (ENR001)</option>
-                    <option value="2">Priya Patel (ENR002)</option>
+                  <label for="enrollmentId">Enrollment ID</label>
+                  <select class="form-control select2" id="enrollmentId" required>
+                    <option value="">Select Enrollment</option>
+                    <option value="1">ENR001 - Rahul Sharma</option>
+                    <option value="2">ENR002 - Priya Patel</option>
                   </select>
-                </div>
-                <div class="form-group">
-                  <label for="course">Course</label>
-                  <input type="text" class="form-control" id="course" readonly>
-                </div>
-                <div class="form-group">
-                  <label for="totalFee">Total Course Fee</label>
-                  <input type="text" class="form-control" id="totalFee" readonly>
                 </div>
               </div>
               <div class="col-md-6">
@@ -378,8 +370,7 @@
           <div class="row">
             <div class="col-md-6">
               <p><strong>Receipt No:</strong> <span id="viewReceiptNo"></span></p>
-              <p><strong>Student:</strong> <span id="viewStudent"></span></p>
-              <p><strong>Course:</strong> <span id="viewCourse"></span></p>
+              <p><strong>Enrollment ID:</strong> <span id="viewEnrollmentId"></span></p>
               <p><strong>Total Fee:</strong> <span id="viewTotalFee"></span></p>
             </div>
             <div class="col-md-6">
@@ -435,8 +426,52 @@
         </div>
         <div class="modal-body">
           <form id="editPaymentForm">
-            <!-- Same form fields as Add Payment Modal -->
-            <!-- Pre-populated with existing data -->
+            <input type="hidden" id="feeId">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editReceiptNo">Receipt Number</label>
+                  <input type="text" class="form-control" id="editReceiptNo" readonly>
+                  <small class="form-text text-muted">Auto-generated</small>
+                </div>
+                <div class="form-group">
+                  <label for="editEnrollmentId">Enrollment ID</label>
+                  <select class="form-control select2" id="editEnrollmentId" required>
+                    <option value="">Select Enrollment</option>
+                    <option value="1">ENR001 - Rahul Sharma</option>
+                    <option value="2">ENR002 - Priya Patel</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="editAmount">Payment Amount</label>
+                  <input type="number" class="form-control" id="editAmount" required>
+                </div>
+                <div class="form-group">
+                  <label for="editPaymentDate">Payment Date</label>
+                  <div class="input-group date" id="editPaymentDate" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#editPaymentDate" required>
+                    <div class="input-group-append" data-target="#editPaymentDate" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="editPaymentMode">Payment Mode</label>
+                  <select class="form-control" id="editPaymentMode" required>
+                    <option value="">Select Payment Mode</option>
+                    <option value="cash">Cash</option>
+                    <option value="online">Online</option>
+                    <option value="cheque">Cheque</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="editRemarks">Remarks</label>
+                  <textarea class="form-control" id="editRemarks" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
         <div class="modal-footer">
@@ -540,17 +575,25 @@
     });
 
     // Initialize date picker
-    $('#paymentDate').datetimepicker({
+    $('#paymentDate, #editPaymentDate').datetimepicker({
       format: 'L'
     });
 
-    // Load course and fee details when student is selected
-    $('#student').on('change', function() {
-      const studentId = $(this).val();
-      if (studentId) {
-        // Load course and fee details
-        $('#course').val('Web Development');
-        $('#totalFee').val('₹25,000');
+    // Load course and fee details when enrollment ID is selected
+    $('#enrollmentId, #editEnrollmentId').on('change', function() {
+      const enrollmentId = $(this).val();
+      if (enrollmentId) {
+        // Fetch course and fee details based on enrollment ID
+        $.ajax({
+          url: 'inc/ajax/fees_ajax.php',
+          type: 'POST',
+          data: { action: 'getDetails', enrollment_id: enrollmentId },
+          success: function(response) {
+            const data = JSON.parse(response);
+            $('#course').val(data.course_name);
+            $('#totalFee').val('₹' + data.total_fee);
+          }
+        });
       } else {
         $('#course').val('');
         $('#totalFee').val('');
@@ -559,4 +602,4 @@
   });
 </script>
 </body>
-</html> 
+</html>

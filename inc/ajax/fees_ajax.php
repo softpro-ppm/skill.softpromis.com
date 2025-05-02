@@ -15,8 +15,7 @@ try {
 
     switch ($action) {
         case 'create':
-            $student_id = (int)($_POST['student_id'] ?? 0);
-            $batch_id = (int)($_POST['batch_id'] ?? 0);
+            $enrollment_id = (int)($_POST['enrollment_id'] ?? 0);
             $amount = (float)($_POST['amount'] ?? 0);
             $payment_date = sanitizeInput($_POST['payment_date'] ?? '');
             $payment_method = sanitizeInput($_POST['payment_method'] ?? '');
@@ -24,48 +23,30 @@ try {
             $status = sanitizeInput($_POST['status'] ?? 'pending');
             $notes = sanitizeInput($_POST['notes'] ?? '');
 
-            if (empty($student_id) || empty($batch_id) || $amount <= 0) {
+            if (empty($enrollment_id) || $amount <= 0) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
-            // Validate student
-            $stmt = $pdo->prepare("SELECT id FROM students WHERE id = ?");
-            $stmt->execute([$student_id]);
+            // Validate enrollment
+            $stmt = $pdo->prepare("SELECT id FROM enrollments WHERE id = ?");
+            $stmt->execute([$enrollment_id]);
             if (!$stmt->fetch()) {
-                sendJSONResponse(false, 'Invalid student');
-            }
-
-            // Validate batch
-            $stmt = $pdo->prepare("SELECT id FROM batches WHERE id = ?");
-            $stmt->execute([$batch_id]);
-            if (!$stmt->fetch()) {
-                sendJSONResponse(false, 'Invalid batch');
-            }
-
-            // Check if student is enrolled in the batch
-            $stmt = $pdo->prepare("
-                SELECT id FROM batch_students 
-                WHERE student_id = ? AND batch_id = ?
-            ");
-            $stmt->execute([$student_id, $batch_id]);
-            if (!$stmt->fetch()) {
-                sendJSONResponse(false, 'Student is not enrolled in this batch');
+                sendJSONResponse(false, 'Invalid enrollment');
             }
 
             $stmt = $pdo->prepare("
                 INSERT INTO fees (
-                    student_id, batch_id, amount, payment_date, payment_method,
+                    enrollment_id, amount, payment_date, payment_method,
                     transaction_id, status, notes, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
             ");
             $stmt->execute([
-                $student_id, $batch_id, $amount, $payment_date, $payment_method,
+                $enrollment_id, $amount, $payment_date, $payment_method,
                 $transaction_id, $status, $notes
             ]);
 
             logAudit($_SESSION['user']['id'], 'create_fee', [
-                'student_id' => $student_id,
-                'batch_id' => $batch_id,
+                'enrollment_id' => $enrollment_id,
                 'amount' => $amount
             ]);
 
@@ -79,8 +60,7 @@ try {
             $perPage = (int)($_POST['per_page'] ?? 10);
             $search = sanitizeInput($_POST['search'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? '');
-            $student_id = (int)($_POST['student_id'] ?? 0);
-            $batch_id = (int)($_POST['batch_id'] ?? 0);
+            $enrollment_id = (int)($_POST['enrollment_id'] ?? 0);
 
             $where = [];
             $params = [];
@@ -97,14 +77,9 @@ try {
                 $params[] = $status;
             }
 
-            if ($student_id > 0) {
-                $where[] = "f.student_id = ?";
-                $params[] = $student_id;
-            }
-
-            if ($batch_id > 0) {
-                $where[] = "f.batch_id = ?";
-                $params[] = $batch_id;
+            if ($enrollment_id > 0) {
+                $where[] = "f.enrollment_id = ?";
+                $params[] = $enrollment_id;
             }
 
             $whereClause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
@@ -123,11 +98,12 @@ try {
 
             // Get data with related info
             $stmt = $pdo->prepare("
-                SELECT f.*, s.name as student_name, b.name as batch_name,
+                SELECT f.*, e.student_id, e.batch_id, s.name as student_name, b.name as batch_name,
                        c.name as course_name, tc.name as center_name
                 FROM fees f
-                JOIN students s ON f.student_id = s.id
-                JOIN batches b ON f.batch_id = b.id
+                JOIN enrollments e ON f.enrollment_id = e.id
+                JOIN students s ON e.student_id = s.id
+                JOIN batches b ON e.batch_id = b.id
                 LEFT JOIN courses c ON b.course_id = c.id
                 LEFT JOIN training_centers tc ON b.center_id = tc.id
                 $whereClause
@@ -185,10 +161,11 @@ try {
 
             // Get fee info for audit log
             $stmt = $pdo->prepare("
-                SELECT f.amount, f.status, s.name as student_name, b.name as batch_name
+                SELECT f.amount, f.status, e.student_id, e.batch_id, s.name as student_name, b.name as batch_name
                 FROM fees f
-                JOIN students s ON f.student_id = s.id
-                JOIN batches b ON f.batch_id = b.id
+                JOIN enrollments e ON f.enrollment_id = e.id
+                JOIN students s ON e.student_id = s.id
+                JOIN batches b ON e.batch_id = b.id
                 WHERE f.id = ?
             ");
             $stmt->execute([$id]);
@@ -220,11 +197,12 @@ try {
             }
 
             $stmt = $pdo->prepare("
-                SELECT f.*, s.name as student_name, b.name as batch_name,
+                SELECT f.*, e.student_id, e.batch_id, s.name as student_name, b.name as batch_name,
                        c.name as course_name, tc.name as center_name
                 FROM fees f
-                JOIN students s ON f.student_id = s.id
-                JOIN batches b ON f.batch_id = b.id
+                JOIN enrollments e ON f.enrollment_id = e.id
+                JOIN students s ON e.student_id = s.id
+                JOIN batches b ON e.batch_id = b.id
                 LEFT JOIN courses c ON b.course_id = c.id
                 LEFT JOIN training_centers tc ON b.center_id = tc.id
                 WHERE f.id = ?
@@ -239,55 +217,40 @@ try {
             }
             break;
 
-        case 'get_student_fees':
-            $student_id = (int)($_POST['student_id'] ?? 0);
+        case 'getDetails':
+            $enrollment_id = (int)($_POST['enrollment_id'] ?? 0);
 
-            if (empty($student_id)) {
-                sendJSONResponse(false, 'Student ID is required');
+            if (empty($enrollment_id)) {
+                sendJSONResponse(false, 'Enrollment ID is required');
             }
 
             $stmt = $pdo->prepare("
-                SELECT f.*, b.name as batch_name, c.name as course_name,
-                       tc.name as center_name
-                FROM fees f
-                JOIN batches b ON f.batch_id = b.id
+                SELECT e.*, s.name as student_name, b.name as batch_name,
+                       c.name as course_name, tc.name as center_name
+                FROM enrollments e
+                JOIN students s ON e.student_id = s.id
+                JOIN batches b ON e.batch_id = b.id
                 LEFT JOIN courses c ON b.course_id = c.id
                 LEFT JOIN training_centers tc ON b.center_id = tc.id
-                WHERE f.student_id = ?
-                ORDER BY f.payment_date DESC
+                WHERE e.id = ?
             ");
-            $stmt->execute([$student_id]);
-            $fees = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->execute([$enrollment_id]);
+            $details = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            sendJSONResponse(true, 'Student fee payments retrieved successfully', $fees);
-            break;
-
-        case 'get_batch_fees':
-            $batch_id = (int)($_POST['batch_id'] ?? 0);
-
-            if (empty($batch_id)) {
-                sendJSONResponse(false, 'Batch ID is required');
+            if ($details) {
+                sendJSONResponse(true, 'Enrollment details retrieved successfully', $details);
+            } else {
+                sendJSONResponse(false, 'Enrollment not found');
             }
-
-            $stmt = $pdo->prepare("
-                SELECT f.*, s.name as student_name
-                FROM fees f
-                JOIN students s ON f.student_id = s.id
-                WHERE f.batch_id = ?
-                ORDER BY f.payment_date DESC
-            ");
-            $stmt->execute([$batch_id]);
-            $fees = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            sendJSONResponse(true, 'Batch fee payments retrieved successfully', $fees);
             break;
 
         case 'list':
             $stmt = $pdo->query('
-                SELECT f.id, f.receipt_no, s.first_name AS student_name, c.name AS course_name, f.amount, f.payment_date, f.payment_method, f.status
+                SELECT f.id, f.receipt_no, e.student_id, e.batch_id, s.first_name AS student_name, c.name AS course_name, f.amount, f.payment_date, f.payment_method, f.status
                 FROM fees f
-                JOIN students s ON f.student_id = s.student_id
-                LEFT JOIN batches b ON f.batch_id = b.batch_id
+                JOIN enrollments e ON f.enrollment_id = e.id
+                JOIN students s ON e.student_id = s.id
+                LEFT JOIN batches b ON e.batch_id = b.id
                 LEFT JOIN courses c ON b.course_id = c.course_id
                 ORDER BY f.created_at DESC
             ');
