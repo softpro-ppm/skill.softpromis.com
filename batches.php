@@ -55,6 +55,7 @@ require_once 'includes/sidebar.php';
               <table id="batchesTable" class="table table-bordered table-striped table-hover table-sm align-middle">
                 <thead class="thead-dark">
                   <tr>
+                    <th>Sr. No.</th>
                     <th>Batch Code</th>
                     <th>Course</th>
                     <th>Training Center</th>
@@ -241,6 +242,7 @@ $(function () {
       }
     },
     columns: [
+      { data: null, render: function (data, type, row, meta) { return meta.row + 1; }, orderable: false, searchable: false },
       { data: 'batch_code' },
       { data: 'course_name', defaultContent: '-' },
       { data: 'center_name', defaultContent: '-' },
@@ -258,7 +260,7 @@ $(function () {
     responsive: true,
     lengthChange: true,
     autoWidth: false,
-    order: [[0, 'desc']]
+    order: [[1, 'desc']]
   });
 
   // --- ADD ---
