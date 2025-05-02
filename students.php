@@ -188,6 +188,105 @@ try {
     </div>
   </div>
 
+  <!-- Edit Student Modal (Bootstrap 5) -->
+  <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="editStudentForm">
+          <input type="hidden" id="editStudentId" name="student_id">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="editFirstName" class="form-label">First Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="editFirstName" name="first_name" required placeholder="Enter first name">
+            </div>
+            <div class="mb-3">
+              <label for="editLastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="editLastName" name="last_name" required placeholder="Enter last name">
+            </div>
+            <div class="mb-3">
+              <label for="editEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="editEmail" name="email" placeholder="Enter email">
+            </div>
+            <div class="mb-3">
+              <label for="editMobile" class="form-label">Mobile</label>
+              <input type="text" class="form-control" id="editMobile" name="mobile" placeholder="Enter mobile number">
+            </div>
+            <div class="mb-3">
+              <label for="editDOB" class="form-label">Date of Birth</label>
+              <input type="date" class="form-control" id="editDOB" name="date_of_birth">
+            </div>
+            <div class="mb-3">
+              <label for="editGender" class="form-label">Gender</label>
+              <select class="form-select" id="editGender" name="gender">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editAddress" class="form-label">Address</label>
+              <textarea class="form-control" id="editAddress" name="address" placeholder="Enter address"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="btnEditStudent">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Student Modal (Bootstrap 5) -->
+  <div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteStudentModalLabel">Delete Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="deleteStudentId" name="student_id">
+          <p>Are you sure you want to delete this student? This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteStudent">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Student Modal (Bootstrap 5) -->
+  <div class="modal fade" id="viewStudentModal" tabindex="-1" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viewStudentModalLabel">View Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2"><strong>Enrollment No:</strong> <span id="viewEnrollmentNo"></span></div>
+          <div class="mb-2"><strong>First Name:</strong> <span id="viewFirstName"></span></div>
+          <div class="mb-2"><strong>Last Name:</strong> <span id="viewLastName"></span></div>
+          <div class="mb-2"><strong>Gender:</strong> <span id="viewGender"></span></div>
+          <div class="mb-2"><strong>Mobile:</strong> <span id="viewMobile"></span></div>
+          <div class="mb-2"><strong>Email:</strong> <span id="viewEmail"></span></div>
+          <div class="mb-2"><strong>Date of Birth:</strong> <span id="viewDOB"></span></div>
+          <div class="mb-2"><strong>Address:</strong> <span id="viewAddress"></span></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <?php include 'includes/js.php'; ?>
 
 <script>
