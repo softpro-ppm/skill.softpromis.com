@@ -142,15 +142,16 @@ function formatDate($date, $format = 'Y-m-d H:i:s') {
 
 // Pagination
 function getPagination($page, $total, $perPage) {
-    $totalPages = ceil($total / $perPage);
-    $page = max(1, min($page, $totalPages));
-    
+    $page = max(1, (int)$page);
+    $perPage = max(1, (int)$perPage);
+    $offset = ($page - 1) * $perPage;
+    $totalPages = $perPage > 0 ? ceil($total / $perPage) : 1;
     return [
-        'current_page' => $page,
-        'total_pages' => $totalPages,
+        'page' => $page,
         'per_page' => $perPage,
+        'offset' => $offset,
         'total' => $total,
-        'offset' => ($page - 1) * $perPage
+        'total_pages' => $totalPages
     ];
 }
 
@@ -210,4 +211,4 @@ function logAudit($userId, $action, $details) {
         logError("Audit log error: " . $e->getMessage());
         return false;
     }
-} 
+}
