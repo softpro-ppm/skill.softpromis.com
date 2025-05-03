@@ -250,6 +250,7 @@ try {
                 ORDER BY f.created_at DESC
             ');
             $fees = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log('List Action Result: ' . json_encode($fees));
             echo json_encode([ 'data' => $fees ]);
             exit;
 
