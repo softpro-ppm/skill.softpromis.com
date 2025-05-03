@@ -42,3 +42,29 @@ $(document).on('show.bs.modal', '#addAssessmentModal', function () {
     },
   });
 });
+
+$(document).on('submit', '#addAssessmentForm', function (e) {
+  e.preventDefault(); // Prevent default form submission
+
+  const formData = $(this).serialize();
+
+  $.ajax({
+    url: 'inc/ajax/assessments_ajax.php',
+    type: 'POST',
+    data: { action: 'create', ...formData },
+    dataType: 'json',
+    success: function (response) {
+      if (response.success) {
+        toastr.success('Assessment added successfully!');
+        $('#addAssessmentModal').modal('hide');
+        $('#assessmentsTable').DataTable().ajax.reload();
+      } else {
+        toastr.error(response.message || 'Failed to add assessment.');
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error('AJAX Error:', status, error);
+      toastr.error('An error occurred while adding the assessment.');
+    },
+  });
+});
