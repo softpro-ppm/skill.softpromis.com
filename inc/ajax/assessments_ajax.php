@@ -25,8 +25,14 @@ try {
 
             error_log('Create Action: enrollment_id=' . $enrollment_id . ', assessment_type=' . $assessment_type . ', assessment_date=' . $assessment_date);
 
-            if (empty($enrollment_id) || empty($assessment_type) || empty($assessment_date)) {
-                sendJSONResponse(false, 'Required fields are missing');
+            // Validate required fields
+            if (empty($enrollment_id) || empty($assessment_type) || empty($assessment_date) || $score < 0 || $max_score <= 0 || empty($status)) {
+                sendJSONResponse(false, 'Required fields are missing or invalid');
+            }
+
+            // Validate score and max_score
+            if ($score > $max_score) {
+                sendJSONResponse(false, 'Score cannot exceed Max Score');
             }
 
             // Validate enrollment
