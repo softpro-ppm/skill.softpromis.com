@@ -56,6 +56,18 @@ try {
                 sendJSONResponse(false, 'Invalid enrollment');
             }
 
+            // Validate enrollment_id exists in student_batch_enrollment
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM student_batch_enrollment WHERE enrollment_id = ?");
+            $stmt->execute([$enrollment_id]);
+            if ($stmt->fetchColumn() == 0) {
+                sendJSONResponse(false, 'Invalid enrollment ID');
+            }
+
+            // Validate assessment_date is not in the future
+            if ($assessment_date > date('Y-m-d')) {
+                sendJSONResponse(false, 'Assessment date cannot be in the future');
+            }
+
             $stmt = $pdo->prepare("
                 INSERT INTO assessments (
                     enrollment_id, assessment_type, assessment_date, score, max_score, remarks, status, created_at
