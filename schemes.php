@@ -264,7 +264,7 @@ $(function () {
         var $modal = $('#viewSchemeModal');
         $modal.find('.modal-body .alert').remove();
         $modal.find('[data-field]').text('');
-        $modal.modal({ backdrop: 'static', keyboard: false, show: true });
+        $modal.modal('show'); // Force show modal for debug
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'GET',
