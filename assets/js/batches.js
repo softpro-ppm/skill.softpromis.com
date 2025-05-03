@@ -9,6 +9,8 @@ $(document).ready(function() {
             }
         },
         columns: [
+            { data: 'batch_id' },
+            { data: 'batch_name' },
             { data: 'batch_code' },
             { data: 'course_name' },
             { data: 'center_name' },
