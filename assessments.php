@@ -417,7 +417,59 @@ require_once 'includes/sidebar.php';
         $('#batch').val('');
       }
     });
+
+    // Add Toastr success messages for create, update, and delete operations
+    $(document).on('submit', '#addAssessmentForm', function(e) {
+      e.preventDefault();
+      const formData = $(this).serialize();
+      $.post('inc/ajax/assessments_ajax.php', { action: 'create', ...formData }, function(response) {
+        if (response.success) {
+          toastr.success('Assessment added successfully!');
+          $('#addAssessmentModal').modal('hide');
+          $('#assessmentsTable').DataTable().ajax.reload();
+        } else {
+          toastr.error(response.message || 'Failed to add assessment.');
+        }
+      }, 'json');
+    });
+
+    $(document).on('submit', '#editAssessmentForm', function(e) {
+      e.preventDefault();
+      const formData = $(this).serialize();
+      $.post('inc/ajax/assessments_ajax.php', { action: 'update', ...formData }, function(response) {
+        if (response.success) {
+          toastr.success('Assessment updated successfully!');
+          $('#editAssessmentModal').modal('hide');
+          $('#assessmentsTable').DataTable().ajax.reload();
+        } else {
+          toastr.error(response.message || 'Failed to update assessment.');
+        }
+      }, 'json');
+    });
+
+    $(document).on('click', '.delete-assessment-btn', function() {
+      const assessmentId = $(this).data('id');
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'This action cannot be undone!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.post('inc/ajax/assessments_ajax.php', { action: 'delete', assessment_id: assessmentId }, function(response) {
+            if (response.success) {
+              toastr.success('Assessment deleted successfully!');
+              $('#assessmentsTable').DataTable().ajax.reload();
+            } else {
+              toastr.error(response.message || 'Failed to delete assessment.');
+            }
+          }, 'json');
+        }
+      });
+    });
   });
 </script>
 </body>
-</html> 
+</html>
