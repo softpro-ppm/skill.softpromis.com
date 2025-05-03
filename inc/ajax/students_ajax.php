@@ -69,6 +69,7 @@ try {
 
         case 'delete':
             $student_id = (int)($_POST['student_id'] ?? 0);
+            error_log('Delete Action: student_id=' . $student_id);
             if (empty($student_id)) {
                 sendJSONResponse(false, 'Student ID is required');
             }
