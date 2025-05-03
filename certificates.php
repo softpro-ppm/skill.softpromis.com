@@ -126,7 +126,7 @@ require_once 'includes/sidebar.php';
   <!-- /.content-wrapper -->
 </div><!-- ./wrapper -->
 
-<!-- Enhanced Add/Edit Certificate Modal -->
+<!-- Improved Modal Design -->
 <div class="modal fade" id="certificateModal" tabindex="-1" role="dialog" aria-labelledby="certificateModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
