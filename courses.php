@@ -48,7 +48,7 @@ $schemes = Scheme::getAll();
           <div class="card-header">
             <h3 class="card-title">Courses List</h3>
             <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCourseModal">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
                 <i class="fas fa-plus"></i> Add New Course
               </button>
             </div>
@@ -88,7 +88,7 @@ $schemes = Scheme::getAll();
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Add New Course</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -155,7 +155,7 @@ $schemes = Scheme::getAll();
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Save Course</button>
           </div>
         </form>
@@ -169,7 +169,7 @@ $schemes = Scheme::getAll();
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">View Course: <span id="viewCourseTitle"></span></h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -200,7 +200,7 @@ $schemes = Scheme::getAll();
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -212,7 +212,7 @@ $schemes = Scheme::getAll();
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Edit Course</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -279,7 +279,7 @@ $schemes = Scheme::getAll();
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Update Course</button>
           </div>
         </form>
@@ -293,7 +293,7 @@ $schemes = Scheme::getAll();
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Delete Course</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -304,7 +304,7 @@ $schemes = Scheme::getAll();
           <p><strong>Students:</strong> 45</p>
         </div>
         <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-danger">Delete Course</button>
         </div>
       </div>
