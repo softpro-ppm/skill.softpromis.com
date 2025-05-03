@@ -103,6 +103,9 @@ require_once 'includes/sidebar.php';
               <button type="button" class="btn btn-success" id="exportButton">
                 <i class="fas fa-file-export"></i> Export Data
               </button>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAssessmentModal">
+                <i class="fas fa-plus"></i> Add Assessments
+              </button>
             </div>
           </div>
           <div class="card-body">
