@@ -81,7 +81,7 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Add New Scheme</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -118,7 +118,7 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="viewSchemeModalLabel">View Scheme Details</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -155,7 +155,7 @@ require_once 'includes/sidebar.php';
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
