@@ -36,6 +36,16 @@ try {
             $stable = sanitizeInput($_POST['stable'] ?? '');
 
             if (empty($batch_name) || empty($batch_code) || empty($course_id) || empty($center_id) || empty($start_date) || empty($end_date) || $capacity <= 0 || empty($stable)) {
+                error_log('Validation failed: ' . json_encode([
+                    'batch_name' => $batch_name,
+                    'batch_code' => $batch_code,
+                    'course_id' => $course_id,
+                    'center_id' => $center_id,
+                    'start_date' => $start_date,
+                    'end_date' => $end_date,
+                    'capacity' => $capacity,
+                    'stable' => $stable
+                ]));
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
