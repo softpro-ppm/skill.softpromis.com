@@ -56,6 +56,8 @@ try {
             $stmt = $pdo->prepare("INSERT INTO batches (batch_name, center_id, course_id, batch_code, start_date, end_date, capacity, status, stable, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
             $result = $stmt->execute([$batch_name, $center_id, $course_id, $batch_code, $start_date, $end_date, $capacity, $status, $stable]);
 
+            error_log('Add Batch Response: ' . json_encode(['success' => $result, 'message' => $result ? 'Batch added successfully' : 'Failed to add batch']));
+
             if ($result) {
                 sendJSONResponse(true, 'Batch added successfully');
             } else {
