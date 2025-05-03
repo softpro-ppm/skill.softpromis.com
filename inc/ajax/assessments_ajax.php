@@ -23,6 +23,8 @@ try {
             $remarks = sanitizeInput($_POST['remarks'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'pending');
 
+            error_log('Create Action: enrollment_id=' . $enrollment_id . ', assessment_type=' . $assessment_type . ', assessment_date=' . $assessment_date);
+
             if (empty($enrollment_id) || empty($assessment_type) || empty($assessment_date)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
