@@ -127,6 +127,7 @@ require_once 'includes/sidebar.php';
   </div>
   <!-- /.content-wrapper -->
 
+  <!-- Enhanced Modals -->
   <!-- Add Assessment Modal -->
   <div class="modal fade" id="addAssessmentModal" tabindex="-1" role="dialog" aria-labelledby="addAssessmentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -220,35 +221,9 @@ require_once 'includes/sidebar.php';
               <p><strong>Status:</strong> <span id="viewStatus"></span></p>
             </div>
           </div>
-          <div class="row mt-4">
-            <div class="col-md-12">
-              <h6>Assessment History</h6>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Assessment ID</th>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Score</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>ASS001</td>
-                    <td>01/01/2024</td>
-                    <td>Practical</td>
-                    <td>85%</td>
-                    <td><span class="badge badge-success">Passed</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="window.print()">Print Assessment</button>
         </div>
       </div>
     </div>
