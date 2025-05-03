@@ -484,16 +484,19 @@ $(function () {
   // Delete Course: open modal
   $(document).on('click', '.delete-course-btn', function () {
     var id = $(this).data('id');
-    $('#deleteCourseModal').data('id', id);
-    $('#deleteCourseModal').modal('show');
+    if (!id) {
+        toastr.error('Course ID is missing.');
+        return;
+    }
+    $('#deleteCourseModal').data('id', id).modal('show');
   });
 
   // Delete Course: confirm
   $('#deleteCourseModal .btn-danger').on('click', function () {
     var id = $('#deleteCourseModal').data('id');
     if (!id) {
-      toastr.error('Course ID is missing.');
-      return;
+        toastr.error('Course ID is missing.');
+        return;
     }
     $.ajax({
       url: 'inc/ajax/courses_ajax.php',
