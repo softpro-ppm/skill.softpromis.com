@@ -104,6 +104,23 @@ try {
             echo json_encode(['success' => true, 'data' => $students]);
             exit;
 
+        case 'getEnrollments':
+            try {
+                $stmt = $pdo->query('SELECT enrollment_id, enrollment_no, CONCAT(first_name, " ", last_name) AS student_name FROM students ORDER BY first_name ASC');
+                $enrollments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                echo json_encode([
+                    'success' => true,
+                    'data' => $enrollments
+                ]);
+            } catch (Exception $e) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Failed to fetch enrollments: ' . $e->getMessage()
+                ]);
+            }
+            exit;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }
