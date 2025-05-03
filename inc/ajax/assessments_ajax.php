@@ -30,7 +30,7 @@ try {
             }
 
             // Validate enrollment
-            $stmt = $pdo->prepare("SELECT enrollment_id FROM student_batch_enrollment WHERE enrollment_id = ?");
+            $stmt = $pdo->prepare("SELECT student_id FROM students WHERE student_id = ?");
             $stmt->execute([$enrollment_id]);
             if (!$stmt->fetch()) {
                 sendJSONResponse(false, 'Invalid enrollment');
