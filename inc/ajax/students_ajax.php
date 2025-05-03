@@ -9,6 +9,7 @@ checkPermission('admin');
 header('Content-Type: application/json');
 
 $action = $_POST['action'] ?? '';
+error_log('Action received: ' . $action);
 
 try {
     $pdo = getDBConnection();
