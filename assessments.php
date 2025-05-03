@@ -460,6 +460,10 @@ require_once 'includes/sidebar.php';
         $('#addAssessmentModal').modal('show');
       });
     });
+
+    $(document).on('click', '#addAssessmentModal', function() {
+      $('#addAssessmentModal').modal('show');
+    });
   });
 </script>
 </body>
