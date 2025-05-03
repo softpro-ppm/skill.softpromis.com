@@ -155,7 +155,7 @@ $(function () {
             { data: 'start_date' },
             { data: 'end_date' },
             { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'secondary') + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
-            { data: 'stable' },
+            { data: 'stable', defaultContent: 'N/A' },
             { data: null, orderable: false, searchable: false, render: function (data, type, row) {
                 return '<div class="btn-group btn-group-sm">' +
                     '<button type="button" class="btn btn-info view-batch-btn" data-id="' + row.batch_id + '"><i class="fas fa-eye"></i></button>' +
@@ -168,6 +168,11 @@ $(function () {
         lengthChange: true,
         autoWidth: false,
         order: [[0, 'asc']]
+    });
+
+    // Add error handling for DataTable
+    $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+        toastr.error('Error loading data: ' + thrownError);
     });
 
     // Add Batch
