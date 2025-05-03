@@ -61,8 +61,8 @@ require_once 'includes/sidebar.php';
                                 <thead>
                                     <tr>
                                         <th>Batch ID</th>
-                                        <th>Center ID</th>
-                                        <th>Course ID</th>
+                                        <th>Center Name</th>
+                                        <th>Course Name</th>
                                         <th>Batch Code</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
@@ -136,6 +136,32 @@ require_once 'includes/sidebar.php';
     </div>
 </div>
 
+<!-- View Batch Modal -->
+<div class="modal fade" id="viewBatchModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Batch Details</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Batch Name:</strong> <span id="batchName"></span></p>
+                <p><strong>Center Name:</strong> <span id="centerName"></span></p>
+                <p><strong>Course Name:</strong> <span id="courseName"></span></p>
+                <p><strong>Start Date:</strong> <span id="startDate"></span></p>
+                <p><strong>End Date:</strong> <span id="endDate"></span></p>
+                <p><strong>Capacity:</strong> <span id="capacity"></span></p>
+                <p><strong>Status:</strong> <span id="status"></span></p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php include 'includes/js.php'; ?>
 <script>
 $(function () {
@@ -151,8 +177,8 @@ $(function () {
         },
         columns: [
             { data: 'batch_id' },
-            { data: 'center_id' },
-            { data: 'course_id' },
+            { data: 'center_name' },
+            { data: 'course_name' },
             { data: 'batch_code' },
             { data: 'start_date' },
             { data: 'end_date' },
@@ -270,6 +296,41 @@ $(function () {
                     $('#editBatchModal #status').val(batch.status);
                     $('#editBatchModal #stable').val(batch.stable);
                     $('#editBatchModal').modal('show');
+                } else {
+                    toastr.error('Failed to fetch batch details.');
+                }
+            },
+            error: function() {
+                toastr.error('Error fetching batch details.');
+            }
+        });
+    });
+
+    // View Batch: open modal and populate data
+    $(document).on('click', '.view-batch-btn', function() {
+        var batchId = $(this).data('id');
+        if (!batchId) {
+            toastr.error('Batch ID is missing.');
+            return;
+        }
+
+        // Fetch batch details
+        $.ajax({
+            url: 'inc/ajax/batches_ajax.php',
+            type: 'POST',
+            data: { action: 'get', batch_id: batchId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.data) {
+                    var batch = response.data;
+                    $('#viewBatchModal #batchName').text(batch.batch_name);
+                    $('#viewBatchModal #centerName').text(batch.center_name);
+                    $('#viewBatchModal #courseName').text(batch.course_name);
+                    $('#viewBatchModal #startDate').text(batch.start_date);
+                    $('#viewBatchModal #endDate').text(batch.end_date);
+                    $('#viewBatchModal #capacity').text(batch.capacity);
+                    $('#viewBatchModal #status').text(batch.status);
+                    $('#viewBatchModal').modal('show');
                 } else {
                     toastr.error('Failed to fetch batch details.');
                 }
