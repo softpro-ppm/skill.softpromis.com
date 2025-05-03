@@ -376,6 +376,7 @@ $(function () {
     // --- ADD ---
     $('#addSchemeForm').on('submit', function(e) {
         e.preventDefault();
+        console.log('Add form submitted'); // DEBUG
         var $form = $(this);
         var isValid = true;
         $form.find('[required]').each(function() {
@@ -396,6 +397,7 @@ $(function () {
             data: $form.serialize() + '&action=add',
             dataType: 'json',
             success: function(response) {
+                console.log('Add AJAX success:', response); // DEBUG
                 if(response.success) {
                     $('#addSchemeModal').modal('hide');
                     toastr.success(response.message || 'Scheme added successfully');
@@ -412,7 +414,8 @@ $(function () {
                     toastr.error(response.message || 'Error adding scheme');
                 }
             },
-            error: function() {
+            error: function(xhr, status, error) {
+                console.log('Add AJAX error:', status, error); // DEBUG
                 toastr.error('Error adding scheme');
             }
         });
