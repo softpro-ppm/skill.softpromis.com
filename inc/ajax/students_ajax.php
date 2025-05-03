@@ -73,9 +73,14 @@ try {
             if (empty($student_id)) {
                 sendJSONResponse(false, 'Student ID is required');
             }
-            $stmt = $pdo->prepare('DELETE FROM students WHERE student_id = ?');
-            $stmt->execute([$student_id]);
-            sendJSONResponse(true, 'Student deleted successfully');
+            try {
+                $stmt = $pdo->prepare('DELETE FROM students WHERE student_id = ?');
+                $stmt->execute([$student_id]);
+                sendJSONResponse(true, 'Student deleted successfully');
+            } catch (PDOException $e) {
+                error_log('Delete Error: ' . $e->getMessage());
+                sendJSONResponse(false, 'Failed to delete student');
+            }
             break;
 
         case 'get':
