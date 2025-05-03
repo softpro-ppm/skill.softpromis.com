@@ -61,12 +61,13 @@ require_once 'includes/sidebar.php';
                                 <thead>
                                     <tr>
                                         <th>Batch ID</th>
-                                        <th>Batch Name</th>
-                                        <th>Course</th>
+                                        <th>Center ID</th>
+                                        <th>Course ID</th>
+                                        <th>Batch Code</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
+                                        <th>Capacity</th>
                                         <th>Status</th>
-                                        <th>Stable</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -150,13 +151,16 @@ $(function () {
         },
         columns: [
             { data: 'batch_id' },
-            { data: 'batch_name' },
-            { data: 'course_name' },
+            { data: 'center_id' },
+            { data: 'course_id' },
+            { data: 'batch_code' },
             { data: 'start_date' },
             { data: 'end_date' },
-            { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'secondary') + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
-            { data: 'stable', defaultContent: 'N/A' },
-            { data: null, orderable: false, searchable: false, render: function (data, type, row) {
+            { data: 'capacity' },
+            { data: 'status', render: function(data) {
+                return '<span class="badge badge-' + (data === 'ongoing' ? 'success' : 'secondary') + '">' + data.charAt(0).toUpperCase() + data.slice(1) + '</span>';
+            } },
+            { data: null, orderable: false, searchable: false, render: function(data, type, row) {
                 return '<div class="btn-group btn-group-sm">' +
                     '<button type="button" class="btn btn-info view-batch-btn" data-id="' + row.batch_id + '"><i class="fas fa-eye"></i></button>' +
                     '<button type="button" class="btn btn-primary edit-batch-btn" data-id="' + row.batch_id + '"><i class="fas fa-edit"></i></button>' +
