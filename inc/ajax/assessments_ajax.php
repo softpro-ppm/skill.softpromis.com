@@ -23,6 +23,9 @@ try {
             $remarks = sanitizeInput($_POST['remarks'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'pending');
 
+            // Log received data for debugging
+            error_log('Received Data: ' . json_encode($_POST));
+
             error_log('Create Action: enrollment_id=' . $enrollment_id . ', assessment_type=' . $assessment_type . ', assessment_date=' . $assessment_date);
 
             // Validate required fields
