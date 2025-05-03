@@ -10,4 +10,31 @@ $(function() {
   
   // Initialize custom file input for consistent file upload experience
   bsCustomFileInput.init();
-}); 
+});
+
+$(document).on('show.bs.modal', '#addAssessmentModal', function () {
+  // Fetch enrollment data
+  $.ajax({
+    url: 'inc/ajax/students_ajax.php',
+    type: 'POST',
+    data: { action: 'getEnrollments' },
+    dataType: 'json',
+    success: function (response) {
+      if (response.success) {
+        const enrollmentDropdown = $('#addEnrollmentId');
+        enrollmentDropdown.empty();
+        enrollmentDropdown.append('<option value="">Select Enrollment</option>');
+        response.data.forEach(function (enrollment) {
+          enrollmentDropdown.append(
+            `<option value="${enrollment.enrollment_id}">${enrollment.enrollment_no} - ${enrollment.student_name}</option>`
+          );
+        });
+      } else {
+        toastr.error('Failed to load enrollments.');
+      }
+    },
+    error: function () {
+      toastr.error('An error occurred while fetching enrollments.');
+    },
+  });
+});
