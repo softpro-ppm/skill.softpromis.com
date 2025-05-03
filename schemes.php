@@ -245,7 +245,7 @@ $(function () {
             { data: null, orderable: false, searchable: false, render: function (data, type, row) {
                 return '<div class="btn-group btn-group-sm">' +
                     '<button type="button" class="btn btn-info view-scheme-btn" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-eye"></i></button>' +
-                    '<button type="button" class="btn btn-primary edit-scheme-btn" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-edit"></i></button>' +
+                    '<button type="button" class="btn btn-primary edit-scheme-btn" data-bs-toggle="modal" data-bs-target="#editSchemeModal" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-edit"></i></button>' +
                     '<button type="button" class="btn btn-danger delete-scheme-btn" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-trash"></i></button>' +
                     '</div>';
             } }
