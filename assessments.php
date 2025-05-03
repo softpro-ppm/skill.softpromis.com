@@ -469,6 +469,14 @@ require_once 'includes/sidebar.php';
         }
       });
     });
+
+    // Ensure the modal is properly initialized
+    $(document).ready(function() {
+      // Handle Add Assessment button click
+      $(document).on('click', '.btn-primary[data-target="#addAssessmentModal"]', function() {
+        $('#addAssessmentModal').modal('show');
+      });
+    });
   });
 </script>
 </body>
