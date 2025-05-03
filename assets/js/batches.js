@@ -56,10 +56,12 @@ $(document).ready(function() {
     // Form submission for new batch
     $('#addBatchForm').on('submit', function(e) {
         e.preventDefault();
+        var formData = $(this).serialize() + '&action=add';
+        console.log('Form Data:', formData); // Debugging log
         $.ajax({
             url: 'inc/ajax/batches_ajax.php',
             type: 'POST',
-            data: $(this).serialize() + '&action=add',
+            data: formData,
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
