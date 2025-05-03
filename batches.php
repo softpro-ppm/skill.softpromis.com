@@ -179,6 +179,28 @@ $(function () {
         toastr.error('Error loading data: ' + thrownError);
     });
 
+    // Load courses dynamically
+    $.ajax({
+        url: 'inc/ajax/courses_ajax.php',
+        type: 'POST',
+        data: { action: 'read' },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success && response.data) {
+                var courseSelect = $('#course');
+                courseSelect.empty().append('<option value="">Select Course</option>');
+                response.data.forEach(function(course) {
+                    courseSelect.append('<option value="' + course.course_id + '">' + course.course_name + '</option>');
+                });
+            } else {
+                toastr.error('Failed to load courses.');
+            }
+        },
+        error: function() {
+            toastr.error('Error loading courses.');
+        }
+    });
+
     // Add Batch
     $('#addBatchForm').on('submit', function(e) {
         e.preventDefault();
@@ -215,6 +237,40 @@ $(function () {
             },
             error: function() {
                 toastr.error('Error adding batch');
+            }
+        });
+    });
+
+    // Edit Batch: open modal and populate data
+    $(document).on('click', '.edit-batch-btn', function() {
+        var batchId = $(this).data('id');
+        if (!batchId) {
+            toastr.error('Batch ID is missing.');
+            return;
+        }
+
+        // Fetch batch details
+        $.ajax({
+            url: 'inc/ajax/batches_ajax.php',
+            type: 'POST',
+            data: { action: 'get', batch_id: batchId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.data) {
+                    var batch = response.data;
+                    $('#editBatchModal #batchName').val(batch.batch_name);
+                    $('#editBatchModal #course').val(batch.course_id).trigger('change');
+                    $('#editBatchModal #startDate').val(batch.start_date);
+                    $('#editBatchModal #endDate').val(batch.end_date);
+                    $('#editBatchModal #status').val(batch.status);
+                    $('#editBatchModal #stable').val(batch.stable);
+                    $('#editBatchModal').modal('show');
+                } else {
+                    toastr.error('Failed to fetch batch details.');
+                }
+            },
+            error: function() {
+                toastr.error('Error fetching batch details.');
             }
         });
     });
