@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    // Initialize DataTable
+    // Ensure all columns are displayed in the DataTable
     var batchesTable = $('#batchesTable').DataTable({
         ajax: {
             url: 'inc/ajax/batches_ajax.php',
