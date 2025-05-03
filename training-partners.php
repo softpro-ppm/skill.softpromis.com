@@ -45,6 +45,7 @@ if(isset($_POST['action'])) {
                 $address = mysqli_real_escape_string($conn, $_POST['address']);
                 $website = mysqli_real_escape_string($conn, $_POST['website']);
                 $status = mysqli_real_escape_string($conn, $_POST['status']);
+                $stable = mysqli_real_escape_string($conn, $_POST['stable']);
 
                 // Handle file uploads
                 $registration_doc = null;
@@ -74,16 +75,16 @@ if(isset($_POST['action'])) {
 
                 // Prepare the insert query
                 $query = "INSERT INTO training_partners (partner_name, contact_person, email, phone, address, website, 
-                         registration_doc, agreement_doc, status, created_at, updated_at) 
-                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                         registration_doc, agreement_doc, status, stable, created_at, updated_at) 
+                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
                 
                 $stmt = $conn->prepare($query);
                 if (!$stmt) {
                     throw new Exception("Prepare failed: " . $conn->error);
                 }
 
-                $stmt->bind_param("sssssssss", $partner_name, $contact_person, $email, $phone, $address, $website,
-                                $registration_doc, $agreement_doc, $status);
+                $stmt->bind_param("ssssssssss", $partner_name, $contact_person, $email, $phone, $address, $website,
+                                $registration_doc, $agreement_doc, $status, $stable);
                 
                 if($stmt->execute()) {
                     $response['status'] = true;
@@ -131,6 +132,7 @@ if(isset($_POST['action'])) {
                         "phone" => htmlspecialchars($row['phone']),
                         "center_count" => $row['center_count'],
                         "status" => $row['status'],
+                        "stable" => $row['stable'],
                         "actions" => '<button type="button" class="btn btn-primary btn-sm view-btn mr-1" data-id="' . $row['partner_id'] . '">
                                         <i class="fas fa-eye"></i>
                                     </button>
@@ -178,6 +180,7 @@ if(isset($_POST['action'])) {
                 $address = mysqli_real_escape_string($conn, $_POST['address']);
                     $website = mysqli_real_escape_string($conn, $_POST['website']);
                 $status = mysqli_real_escape_string($conn, $_POST['status']);
+                $stable = mysqli_real_escape_string($conn, $_POST['stable']);
 
                     // Get current document filenames
                     $current_docs_query = "SELECT registration_doc, agreement_doc FROM training_partners WHERE partner_id = ?";
@@ -233,12 +236,13 @@ if(isset($_POST['action'])) {
                              registration_doc = ?,
                              agreement_doc = ?,
                          status = ?, 
+                         stable = ?,
                          updated_at = CURRENT_TIMESTAMP 
                          WHERE partner_id = ?";
                 
                 $stmt = $conn->prepare($query);
-                    $stmt->bind_param("sssssssssi", $partner_name, $contact_person, $email, $phone, $address, 
-                                    $website, $registration_doc, $agreement_doc, $status, $partner_id);
+                    $stmt->bind_param("ssssssssssi", $partner_name, $contact_person, $email, $phone, $address, 
+                                    $website, $registration_doc, $agreement_doc, $status, $stable, $partner_id);
                 
                 if($stmt->execute()) {
                     $response['status'] = true;
@@ -375,6 +379,7 @@ require_once 'includes/sidebar.php';
                                         <th>Phone</th>
                                         <th>Centers</th>
                                         <th>Status</th>
+                                        <th>Stable</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -436,6 +441,10 @@ require_once 'includes/sidebar.php';
                                     <option value="inactive">Inactive</option>
                                     <option value="pending">Pending Approval</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="stable">Stable</label>
+                                <input type="text" class="form-control" id="stable" name="stable" required>
                             </div>
                         </div>
                     </div>
@@ -529,6 +538,10 @@ require_once 'includes/sidebar.php';
                         <div class="form-group">
                             <label>Status</label>
                             <p id="view_status" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Stable</label>
+                            <p id="view_stable" class="form-control-static"></p>
                         </div>
                         <div class="form-group">
                             <label>Training Centers</label>
@@ -639,6 +652,7 @@ $(function () {
                     return data;
                 }
             },
+            { "data": "stable", "defaultContent": "N/A" },
             { 
                 "data": "actions",
                 "orderable": false,
@@ -690,6 +704,11 @@ $(function () {
         }
     });
 
+    // Add error handling for DataTable
+    $(document).ajaxError(function(event, jqxhr, settings, thrownError) {
+        toastr.error('Error loading data: ' + thrownError);
+    });
+
     // Handle edit button click
     $(document).on('click', '.edit-btn', function() {
         var partnerId = $(this).data('id');
@@ -718,6 +737,7 @@ $(function () {
                     $('#address').val(data.address);
                     $('#website').val(data.website);
                     $('#status').val(data.status).trigger('change');
+                    $('#stable').val(data.stable);
                     
                     // Update modal title
                     $('.modal-title').text('Edit Training Partner');
@@ -778,7 +798,7 @@ $(function () {
         e.preventDefault();
         
         // Basic form validation
-        var requiredFields = ['partner_name', 'contact_person', 'email', 'phone', 'address', 'status'];
+        var requiredFields = ['partner_name', 'contact_person', 'email', 'phone', 'address', 'status', 'stable'];
         var isValid = true;
         
         requiredFields.forEach(function(field) {
@@ -887,6 +907,7 @@ $(function () {
                     $('#view_website').html(data.website ? '<a href="' + data.website + '" target="_blank">' + data.website + '</a>' : 'N/A');
                     $('#view_status').html('<span class="badge badge-' + (data.status === 'active' ? 'success' : 'danger') + '">' + 
                         data.status.charAt(0).toUpperCase() + data.status.slice(1) + '</span>');
+                    $('#view_stable').text(data.stable || 'N/A');
                     $('#view_centers').text(data.center_count || '0');
 
                     // Set document information
