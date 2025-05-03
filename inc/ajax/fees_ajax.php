@@ -134,24 +134,21 @@ try {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
-            $stmt = $pdo->prepare("
-                UPDATE fees 
-                SET amount = ?, payment_date = ?, payment_mode = ?,
-                    transaction_id = ?, status = ?, notes = ?, receipt_no = ?, updated_at = NOW()
-                WHERE fee_id = ?
-            ");
-            $stmt->execute([
-                $amount, $payment_date, $payment_mode,
-                $transaction_id, $status, $notes, $receipt_no, $fee_id
-            ]);
+            try {
+                $stmt = $pdo->prepare("UPDATE fees SET amount = ?, payment_date = ?, payment_mode = ?, transaction_id = ?, status = ?, notes = ?, receipt_no = ?, updated_at = NOW() WHERE fee_id = ?");
+                $stmt->execute([$amount, $payment_date, $payment_mode, $transaction_id, $status, $notes, $receipt_no, $fee_id]);
 
-            logAudit($_SESSION['user']['id'], 'update_fee', [
-                'fee_id' => $fee_id,
-                'amount' => $amount,
-                'status' => $status
-            ]);
+                logAudit($_SESSION['user']['id'], 'update_fee', [
+                    'fee_id' => $fee_id,
+                    'amount' => $amount,
+                    'status' => $status
+                ]);
 
-            sendJSONResponse(true, 'Fee payment updated successfully');
+                sendJSONResponse(true, 'Fee payment updated successfully');
+            } catch (PDOException $e) {
+                error_log('Update Error: ' . $e->getMessage());
+                sendJSONResponse(false, 'Failed to update fee payment');
+            }
             break;
 
         case 'delete':
@@ -161,34 +158,32 @@ try {
                 sendJSONResponse(false, 'ID is required');
             }
 
-            // Get fee info for audit log
-            $stmt = $pdo->prepare("
-                SELECT f.amount, f.status, e.student_id, e.batch_id, s.first_name as student_name, b.batch_code as batch_name
-                FROM fees f
-                JOIN student_batch_enrollment e ON f.enrollment_id = e.enrollment_id
-                JOIN students s ON e.student_id = s.student_id
-                JOIN batches b ON e.batch_id = b.batch_id
-                WHERE f.fee_id = ?
-            ");
-            $stmt->execute([$fee_id]);
-            $fee = $stmt->fetch(PDO::FETCH_ASSOC);
+            try {
+                // Get fee info for audit log
+                $stmt = $pdo->prepare("SELECT f.amount, f.status, e.student_id, e.batch_id, s.first_name as student_name, b.batch_code as batch_name FROM fees f JOIN student_batch_enrollment e ON f.enrollment_id = e.enrollment_id JOIN students s ON e.student_id = s.student_id JOIN batches b ON e.batch_id = b.batch_id WHERE f.fee_id = ?");
+                $stmt->execute([$fee_id]);
+                $fee = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$fee) {
-                sendJSONResponse(false, 'Fee payment not found');
+                if (!$fee) {
+                    sendJSONResponse(false, 'Fee payment not found');
+                }
+
+                $stmt = $pdo->prepare("DELETE FROM fees WHERE fee_id = ?");
+                $stmt->execute([$fee_id]);
+
+                logAudit($_SESSION['user']['id'], 'delete_fee', [
+                    'fee_id' => $fee_id,
+                    'amount' => $fee['amount'],
+                    'status' => $fee['status'],
+                    'student' => $fee['student_name'],
+                    'batch' => $fee['batch_name']
+                ]);
+
+                sendJSONResponse(true, 'Fee payment deleted successfully');
+            } catch (PDOException $e) {
+                error_log('Delete Error: ' . $e->getMessage());
+                sendJSONResponse(false, 'Failed to delete fee payment');
             }
-
-            $stmt = $pdo->prepare("DELETE FROM fees WHERE fee_id = ?");
-            $stmt->execute([$fee_id]);
-
-            logAudit($_SESSION['user']['id'], 'delete_fee', [
-                'fee_id' => $fee_id,
-                'amount' => $fee['amount'],
-                'status' => $fee['status'],
-                'student' => $fee['student_name'],
-                'batch' => $fee['batch_name']
-            ]);
-
-            sendJSONResponse(true, 'Fee payment deleted successfully');
             break;
 
         case 'get':
