@@ -16,7 +16,7 @@ $action = $_REQUEST['action'] ?? '';
 try {
     switch ($action) {
         case 'list':
-            $stmt = $pdo->query("SELECT b.batch_id, b.batch_code, b.start_date, b.end_date, b.capacity, b.status, c.course_name, tc.center_name
+            $stmt = $pdo->query("SELECT b.batch_id, b.batch_name, b.batch_code, b.start_date, b.end_date, b.capacity, b.status, c.course_name, tc.center_name
                 FROM batches b
                 LEFT JOIN courses c ON b.course_id = c.course_id
                 LEFT JOIN training_centers tc ON b.center_id = tc.center_id
