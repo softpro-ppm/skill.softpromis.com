@@ -99,6 +99,11 @@ require_once 'includes/sidebar.php';
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Assessment History</h3>
+            <div class="float-right">
+              <button type="button" class="btn btn-success" id="exportButton">
+                <i class="fas fa-file-export"></i> Export Data
+              </button>
+            </div>
           </div>
           <div class="card-body">
             <table id="assessmentsTable" class="table table-bordered table-striped">
