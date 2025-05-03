@@ -14,6 +14,7 @@ $(function() {
 
 $(document).on('show.bs.modal', '#addAssessmentModal', function () {
   console.log('Opening Add Assessment Modal');
+  console.log('Fetching enrollments...');
   // Fetch enrollment data
   $.ajax({
     url: 'inc/ajax/students_ajax.php',
@@ -21,7 +22,7 @@ $(document).on('show.bs.modal', '#addAssessmentModal', function () {
     data: { action: 'getEnrollments' },
     dataType: 'json',
     success: function (response) {
-      console.log('AJAX Response:', response);
+      console.log('Enrollments Response:', response);
       if (response.success) {
         const enrollmentDropdown = $('#addEnrollmentId');
         enrollmentDropdown.empty();
@@ -32,7 +33,7 @@ $(document).on('show.bs.modal', '#addAssessmentModal', function () {
           );
         });
       } else {
-        toastr.error('Failed to load enrollments.');
+        toastr.error('Failed to load enrollments: ' + response.message);
       }
     },
     error: function (xhr, status, error) {
