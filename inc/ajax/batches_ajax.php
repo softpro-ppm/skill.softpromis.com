@@ -93,7 +93,10 @@ try {
             if (empty($batch_id)) {
                 sendJSONResponse(false, 'Batch ID is required');
             }
-            $stmt = $pdo->prepare("SELECT * FROM batches WHERE batch_id = ?");
+            $stmt = $pdo->prepare("SELECT b.*, c.course_name, tc.center_name FROM batches b
+                                   LEFT JOIN courses c ON b.course_id = c.course_id
+                                   LEFT JOIN training_centers tc ON b.center_id = tc.center_id
+                                   WHERE b.batch_id = ?");
             $stmt->execute([$batch_id]);
             $batch = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($batch) {
