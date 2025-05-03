@@ -66,6 +66,7 @@ require_once 'includes/sidebar.php';
                                         <th>Start Date</th>
                                         <th>End Date</th>
                                         <th>Status</th>
+                                        <th>Stable</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -120,6 +121,10 @@ require_once 'includes/sidebar.php';
                             <option value="inactive">Inactive</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="stable">Stable</label>
+                        <input type="text" class="form-control" id="stable" name="stable" required>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
@@ -150,6 +155,7 @@ $(function () {
             { data: 'start_date' },
             { data: 'end_date' },
             { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'secondary') + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
+            { data: 'stable' },
             { data: null, orderable: false, searchable: false, render: function (data, type, row) {
                 return '<div class="btn-group btn-group-sm">' +
                     '<button type="button" class="btn btn-info view-batch-btn" data-id="' + row.batch_id + '"><i class="fas fa-eye"></i></button>' +
