@@ -52,7 +52,7 @@ try {
                         <div class="card-header">
                             <h3 class="card-title">Students List</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
                                     <i class="fas fa-plus"></i> Add New Student
                                 </button>
                             </div>
