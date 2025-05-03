@@ -135,7 +135,7 @@ $(document).ready(function() {
 
     // Delete batch
     $(document).on('click', '.delete-batch-btn', function() {
-        var batchId = $(this).data('batch-id');
+        var batchId = $(this).data('id'); // Updated to use data-id
         if (confirm('Are you sure you want to delete this batch?')) {
             $.ajax({
                 url: 'inc/ajax/batches_ajax.php',
