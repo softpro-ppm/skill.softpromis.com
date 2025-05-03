@@ -107,7 +107,7 @@ try {
 
         case 'getEnrollments':
             try {
-                $stmt = $pdo->query('SELECT enrollment_id, enrollment_no, CONCAT(first_name, " ", last_name) AS student_name FROM students ORDER BY first_name ASC');
+                $stmt = $pdo->query('SELECT student_id AS enrollment_id, enrollment_no, CONCAT(first_name, " ", last_name) AS student_name FROM students ORDER BY first_name ASC');
                 $enrollments = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 error_log('Enrollments fetched: ' . json_encode($enrollments));
 
