@@ -126,14 +126,14 @@ require_once 'includes/sidebar.php';
   <!-- /.content-wrapper -->
 </div><!-- ./wrapper -->
 
-<!-- Add/Edit Certificate Modal -->
+<!-- Enhanced Add/Edit Certificate Modal -->
 <div class="modal fade" id="certificateModal" tabindex="-1" role="dialog" aria-labelledby="certificateModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <form id="certificateForm">
-        <div class="modal-header">
+        <div class="modal-header bg-primary text-white">
           <h5 class="modal-title" id="certificateModalLabel">Add/Edit Certificate</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -145,7 +145,6 @@ require_once 'includes/sidebar.php';
                 <label for="enrollment_id">Enrollment</label>
                 <select class="form-control select2" id="enrollment_id" name="enrollment_id" required>
                   <option value="">Select Enrollment</option>
-                  <!-- Populate with AJAX -->
                 </select>
               </div>
               <div class="form-group">
@@ -194,13 +193,13 @@ require_once 'includes/sidebar.php';
   </div>
 </div>
 
-<!-- View Certificate Modal -->
+<!-- Enhanced View Certificate Modal -->
 <div class="modal fade" id="viewCertificateModal" tabindex="-1" role="dialog" aria-labelledby="viewCertificateModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-info text-white">
         <h5 class="modal-title" id="viewCertificateModalLabel">Certificate Details</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -214,13 +213,13 @@ require_once 'includes/sidebar.php';
   </div>
 </div>
 
-<!-- Delete Certificate Modal -->
+<!-- Enhanced Delete Certificate Modal -->
 <div class="modal fade" id="deleteCertificateModal" tabindex="-1" role="dialog" aria-labelledby="deleteCertificateModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-danger text-white">
         <h5 class="modal-title" id="deleteCertificateModalLabel">Delete Certificate</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -436,4 +435,4 @@ require_once 'includes/sidebar.php';
   });
 </script>
 </body>
-</html> 
+</html>
