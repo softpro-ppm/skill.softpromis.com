@@ -206,37 +206,42 @@ $(function () {
         e.preventDefault();
         var $form = $(this);
         var isValid = true;
+
+        // Validate required fields
         $form.find('[required]').each(function() {
             if (!$(this).val()) {
                 isValid = false;
                 $(this).addClass('is-invalid');
+                toastr.error($(this).prev('label').text() + ' is required.');
             } else {
                 $(this).removeClass('is-invalid');
             }
         });
-        if (!isValid) return false;
+
+        if (!isValid) {
+            return false;
+        }
+
+        // Submit form via AJAX
         $.ajax({
             url: 'inc/ajax/batches_ajax.php',
             type: 'POST',
             data: $form.serialize() + '&action=add',
             dataType: 'json',
             success: function(response) {
-                if(response.success) {
+                if (response.success) {
                     $('#addBatchModal').modal('hide');
                     toastr.success(response.message || 'Batch added successfully');
                     $('#addBatchModal').one('hidden.bs.modal', function() {
-                        table.ajax.reload(null, false);
+                        $('#batchesTable').DataTable().ajax.reload(null, false);
                     });
-                    setTimeout(function() {
-                        $form[0].reset();
-                        $form.find('.is-invalid').removeClass('is-invalid');
-                    }, 500);
+                    $form[0].reset();
                 } else {
                     toastr.error(response.message || 'Error adding batch');
                 }
             },
             error: function() {
-                toastr.error('Error adding batch');
+                toastr.error('An error occurred while adding the batch. Please try again.');
             }
         });
     });
