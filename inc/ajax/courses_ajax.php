@@ -159,6 +159,14 @@ try {
                     sendJSONResponse(false, 'Course not found');
                 }
 
+                // Check for dependencies in the batches table
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM batches WHERE course_id = ?");
+                $stmt->execute([$course_id]);
+                $batchCount = $stmt->fetchColumn();
+                if ($batchCount > 0) {
+                    sendJSONResponse(false, 'Cannot delete course. It is associated with existing batches.');
+                }
+
                 // Attempt to delete the course
                 $stmt = $pdo->prepare("DELETE FROM courses WHERE course_id = ?");
                 $stmt->execute([$course_id]);
