@@ -359,7 +359,7 @@ require_once 'includes/sidebar.php';
                         <div class="card-header">
                             <h3 class="card-title">Training Partners List</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#partnerModal">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#partnerModal">
                                     <i class="fas fa-plus"></i> Add New Partner
                                 </button>
                             </div>
