@@ -150,12 +150,28 @@ try {
             if (empty($course_id)) {
                 sendJSONResponse(false, 'Course ID is required');
             }
-            $stmt = $pdo->prepare("DELETE FROM courses WHERE course_id = ?");
-            $stmt->execute([$course_id]);
-            logAudit($_SESSION['user']['user_id'], 'delete_course', [
-                'course_id' => $course_id
-            ]);
-            sendJSONResponse(true, 'Course deleted successfully');
+
+            try {
+                // Check if the course exists
+                $stmt = $pdo->prepare("SELECT course_id FROM courses WHERE course_id = ?");
+                $stmt->execute([$course_id]);
+                if (!$stmt->fetch()) {
+                    sendJSONResponse(false, 'Course not found');
+                }
+
+                // Attempt to delete the course
+                $stmt = $pdo->prepare("DELETE FROM courses WHERE course_id = ?");
+                $stmt->execute([$course_id]);
+
+                logAudit($_SESSION['user']['user_id'], 'delete_course', [
+                    'course_id' => $course_id
+                ]);
+
+                sendJSONResponse(true, 'Course deleted successfully');
+            } catch (PDOException $e) {
+                logError("Delete course error: " . $e->getMessage());
+                sendJSONResponse(false, 'An error occurred while deleting the course. Please try again later.');
+            }
             break;
 
         case 'get':
