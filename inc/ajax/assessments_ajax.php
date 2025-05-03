@@ -33,15 +33,14 @@ try {
                 sendJSONResponse(false, 'Required fields are missing or invalid');
             }
 
-            // Validate assessment_date
-            $currentDate = date('Y-m-d');
-            if ($assessment_date < '2000-01-01' || $assessment_date > $currentDate) {
-                sendJSONResponse(false, 'Assessment Date is invalid');
+            // Validate assessment_date is within a reasonable range
+            if ($assessment_date < '2000-01-01' || $assessment_date > date('Y-m-d')) {
+                sendJSONResponse(false, 'Assessment date must be between 2000 and today');
             }
 
-            // Validate max_score
-            if ($max_score > 1000) {
-                sendJSONResponse(false, 'Max Score exceeds the allowable limit');
+            // Validate max_score upper limit
+            if ($max_score > 500) {
+                sendJSONResponse(false, 'Max Score cannot exceed 500');
             }
 
             // Validate score and max_score
