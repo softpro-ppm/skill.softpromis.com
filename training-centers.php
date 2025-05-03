@@ -289,7 +289,7 @@ require_once 'includes/sidebar.php';
           <div class="card-header">
             <h3 class="card-title">Training Centers List</h3>
             <div class="card-tools">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#centerModal">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#centerModal">
                 <i class="fas fa-plus"></i> Add New Center
               </button>
             </div>
@@ -885,4 +885,4 @@ $(function () {
 });
 </script>
 </body>
-</html> 
+</html>
