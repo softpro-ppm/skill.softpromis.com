@@ -55,6 +55,7 @@ try {
             break;
 
         case 'list':
+            error_log('List action triggered'); // Debugging log
             // For DataTable
             $stmt = $pdo->prepare("
                 SELECT a.*, s.first_name, s.last_name, c.course_name
@@ -67,6 +68,7 @@ try {
             ");
             $stmt->execute();
             $assessments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log('Assessments fetched: ' . json_encode($assessments)); // Debugging log
             $data = [];
             foreach ($assessments as $row) {
                 $row['student_name'] = $row['first_name'] . ' ' . $row['last_name'];
@@ -148,4 +150,4 @@ try {
 } catch (PDOException $e) {
     logError("Assessments error: " . $e->getMessage());
     sendJSONResponse(false, 'An error occurred. Please try again later.');
-} 
+}
