@@ -34,7 +34,7 @@ require_once 'includes/sidebar.php';
           </div>
           <div class="col-sm-6">
             <div class="float-sm-right">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAssessmentModal">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAssessmentModal">
                 <i class="fas fa-plus"></i> Add New Assessment
               </button>
             </div>
@@ -103,7 +103,7 @@ require_once 'includes/sidebar.php';
               <button type="button" class="btn btn-success" id="exportButton">
                 <i class="fas fa-file-export"></i> Export Data
               </button>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAssessmentModal">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAssessmentModal">
                 <i class="fas fa-plus"></i> Add Assessments
               </button>
             </div>
