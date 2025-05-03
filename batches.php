@@ -154,6 +154,7 @@ require_once 'includes/sidebar.php';
                 <p><strong>End Date:</strong> <span id="endDate"></span></p>
                 <p><strong>Capacity:</strong> <span id="capacity"></span></p>
                 <p><strong>Status:</strong> <span id="status"></span></p>
+                <p><strong>Stable:</strong> <span id="stable"></span></p>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
@@ -330,6 +331,7 @@ $(function () {
                     $('#viewBatchModal #endDate').text(batch.end_date);
                     $('#viewBatchModal #capacity').text(batch.capacity);
                     $('#viewBatchModal #status').text(batch.status);
+                    $('#viewBatchModal #stable').text(batch.stable);
                     $('#viewBatchModal').modal('show');
                 } else {
                     toastr.error('Failed to fetch batch details.');
