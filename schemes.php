@@ -260,6 +260,7 @@ $(function () {
     $(document).on('click', '.view-scheme-btn', function(e) {
         e.preventDefault();
         var schemeId = $(this).data('scheme-id');
+        console.log('View button clicked. schemeId:', schemeId); // DEBUG
         var $modal = $('#viewSchemeModal');
         $modal.find('.modal-body .alert').remove();
         $modal.find('[data-field]').text('');
@@ -270,6 +271,7 @@ $(function () {
             dataType: 'json',
             data: { action: 'get', scheme_id: schemeId },
             success: function(response) {
+                console.log('View AJAX success:', response); // DEBUG
                 var s = response.data || {};
                 $modal.find('[data-field="scheme_id"]').text(s.scheme_id || '');
                 $modal.find('[data-field="scheme_name"]').text(s.scheme_name || '');
@@ -278,7 +280,8 @@ $(function () {
                 $modal.find('[data-field="created_at"]').text(s.created_at || '');
                 $modal.find('[data-field="updated_at"]').text(s.updated_at || '');
             },
-            error: function() {
+            error: function(xhr, status, error) {
+                console.log('View AJAX error:', status, error); // DEBUG
                 $modal.find('[data-field]').text('');
             }
         });
@@ -288,6 +291,7 @@ $(function () {
     $(document).on('click', '.edit-scheme-btn', function(e) {
         e.preventDefault();
         var schemeId = $(this).data('scheme-id');
+        console.log('Edit button clicked. schemeId:', schemeId); // DEBUG
         var $modal = $('#editSchemeModal');
         $modal.find('form')[0].reset();
         $modal.find('.is-invalid').removeClass('is-invalid');
@@ -304,6 +308,7 @@ $(function () {
             dataType: 'json',
             data: { action: 'get', scheme_id: schemeId },
             success: function(response) {
+                console.log('Edit AJAX success:', response); // DEBUG
                 $('#edit-loading').remove();
                 var s = response.data || {};
                 $modal.find('#editSchemeId').val(s.scheme_id || '');
@@ -311,7 +316,8 @@ $(function () {
                 $modal.find('#editDescription').val(s.description || '');
                 $modal.find('#editStatus').val(s.status || 'active');
             },
-            error: function() {
+            error: function(xhr, status, error) {
+                console.log('Edit AJAX error:', status, error); // DEBUG
                 $('#edit-loading').remove();
                 $modal.find('#editSchemeId').val('');
                 $modal.find('#editSchemeName').val('');
