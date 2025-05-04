@@ -76,14 +76,38 @@ $(function () {
     $('#assessmentModal').modal('show');
   });
 
+  // On student or enrollment change, update course field
+  function updateCourseField(studentId, enrollmentId) {
+    if (!studentId || !enrollmentId) {
+      $('#course_name').val('');
+      return;
+    }
+    $.ajax({
+      url: 'inc/ajax/assessments_ajax.php',
+      type: 'POST',
+      data: { action: 'get_course_by_enrollment', student_id: studentId, enrollment_id: enrollmentId },
+      dataType: 'json',
+      success: function(res) {
+        if(res.success && res.data && res.data.course_name) {
+          $('#course_name').val(res.data.course_name);
+        } else {
+          $('#course_name').val('');
+        }
+      },
+      error: function() {
+        $('#course_name').val('');
+      }
+    });
+  }
+
   // On student change, load enrollments
   $(document).on('change', '#student_id', function() {
     var studentId = $(this).val();
+    $('#course_name').val('');
     if (!studentId) {
       $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
       $('#enrollment_id_hidden').val('');
       $('#enrollment_id_group').hide();
-      $('#course_name').val('');
       return;
     }
     $.ajax({
@@ -101,6 +125,7 @@ $(function () {
             enrollGroup.hide();
             enrollSel.append('<option value="' + res.data[0].enrollment_id + '">' + res.data[0].enrollment_id + '</option>');
             enrollSel.val(res.data[0].enrollment_id);
+            updateCourseField(studentId, res.data[0].enrollment_id);
           } else {
             enrollSel.append('<option value="">Select Enrollment</option>');
             $.each(res.data, function(i, e) {
@@ -117,7 +142,10 @@ $(function () {
   });
 
   $(document).on('change', '#enrollment_id', function() {
-    $('#enrollment_id_hidden').val($(this).val());
+    var studentId = $('#student_id').val();
+    var enrollmentId = $(this).val();
+    $('#enrollment_id_hidden').val(enrollmentId);
+    updateCourseField(studentId, enrollmentId);
   });
 
   // Edit Assessment Button
