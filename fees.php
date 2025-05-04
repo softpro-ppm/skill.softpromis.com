@@ -86,11 +86,11 @@ require_once 'includes/sidebar.php';
                     </div>
                     <div class="form-group" id="enrollment_id_group" style="display:none;">
                         <label for="enrollment_id">Enrollment</label>
-                        <select class="form-control" id="enrollment_id" name="enrollment_id" required>
+                        <select class="form-control" id="enrollment_id" name="enrollment_id">
                             <option value="">Select Enrollment</option>
                         </select>
                     </div>
-                    <input type="hidden" id="enrollment_id_hidden" name="enrollment_id">
+                    <input type="hidden" id="enrollment_id_hidden" name="enrollment_id" required>
                     <div class="form-group">
                         <label for="amount">Amount</label>
                         <input type="number" class="form-control" id="amount" name="amount" required>
