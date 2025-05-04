@@ -8,10 +8,8 @@ $(document).ready(function() {
         },
         columns: [
             { data: 'fee_id' },
-            { data: 'enrollment_id' },
-            { data: 'student_display', defaultContent: '', title: 'Student' },
             { data: 'amount' },
-            { data: 'payment_date' },
+            { data: 'student_display', defaultContent: '', title: 'Student' },
             { data: 'payment_mode' },
             { data: 'transaction_id' },
             { data: 'status', render: function(data) {
