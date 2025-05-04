@@ -27,17 +27,13 @@ require_once 'includes/sidebar.php';
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6 d-flex align-items-center">
-                    <h1 class="mb-0">Assessments</h1>
-                    <button type="button" class="btn btn-primary btn-sm ml-3" id="addAssessmentBtn">
+                <div class="col-sm-6">
+                    <h1>Assessments</h1>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <button type="button" class="btn btn-primary" id="addAssessmentBtn">
                         <i class="fas fa-plus"></i> Assessment
                     </button>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-                        <li class="breadcrumb-item active">Assessments</li>
-                    </ol>
                 </div>
             </div>
         </div>
