@@ -122,11 +122,14 @@ $(document).ready(function() {
                         var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
                         studentSel.append(`<option value="${s.student_id}">${label}</option>`);
                     });
-                    $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
                 }
+                // Always clear enrollments and hidden field on add
+                $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
+                $('#enrollment_id_hidden').val('');
+                $('#enrollment_id_group').hide();
             }
         });
-        var feeModal = new bootstrap.Modal(document.getElementById('feeModal'));
+        var feeModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('feeModal'));
         feeModal.show();
     });
 
