@@ -33,7 +33,7 @@ require_once 'includes/sidebar.php';
                 <div class="col-sm-6">
                     <div class="float-sm-right">
                         <button type="button" class="btn btn-primary" id="addAssessmentBtn">
-                            <i class="fas fa-plus"></i> Add New Assessment
+                            <i class="fas fa-plus"></i> Assessment
                         </button>
                     </div>
                 </div>
