@@ -20,7 +20,7 @@ function sendJSON($success, $message = '', $data = null) {
 try {
     switch ($action) {
         case 'list':
-            $stmt = $pdo->query("SELECT * FROM fees ORDER BY fee_id DESC");
+            $stmt = $pdo->query("SELECT fee_id, fee_name, amount, status FROM fees ORDER BY fee_id DESC");
             $fees = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['data' => $fees]);
             exit;
