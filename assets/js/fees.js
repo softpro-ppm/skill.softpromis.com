@@ -9,6 +9,7 @@ $(document).ready(function() {
         columns: [
             { data: 'fee_id' },
             { data: 'enrollment_id' },
+            { data: 'student_display', defaultContent: '', title: 'Student' },
             { data: 'amount' },
             { data: 'payment_date' },
             { data: 'payment_mode' },
