@@ -31,7 +31,7 @@ require_once 'includes/sidebar.php';
                     <h1>Assessments</h1>
                 </div>
                 <div class="col-sm-6 text-right">
-                    <button type="button" class="btn btn-primary" id="addAssessmentBtn">
+                    <button type="button" class="btn btn-primary" id="addAssessmentBtn" data-bs-toggle="modal" data-bs-target="#assessmentModal">
                         <i class="fas fa-plus"></i> Assessment
                     </button>
                 </div>
@@ -42,17 +42,11 @@ require_once 'includes/sidebar.php';
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-                    <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-sm-6">
-                            <h3 class="card-title">Assessment History</h3>
-                            </div>
-                            <div class="col-sm-6 text-right">
-                                <button type="button" class="btn btn-primary" id="addAssessmentBtn">
-                                    <i class="fas fa-plus"></i> Assessment
-                                </button>
-                            </div>
-                        </div>
+                    <h3 class="card-title">Assessment History</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-primary" id="addAssessmentBtn" data-bs-toggle="modal" data-bs-target="#assessmentModal">
+                            <i class="fas fa-plus"></i> Assessment
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -83,7 +77,7 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="assessmentModalTitle">Add New Assessment</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -148,7 +142,7 @@ require_once 'includes/sidebar.php';
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="saveAssessmentBtn">Save</button>
                 </div>
             </form>
