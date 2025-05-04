@@ -133,12 +133,13 @@ $(document).ready(function() {
                 success: function(res) {
                     if(res.success) {
                         batchesTable.ajax.reload();
+                        toastr.success(res.message || 'Batch deleted successfully');
                     } else {
-                        alert(res.message || 'Error deleting batch.');
+                        toastr.error(res.message || 'Error deleting batch.');
                     }
                 },
                 error: function() {
-                    alert('An error occurred.');
+                    toastr.error('An error occurred.');
                 }
             });
         }
