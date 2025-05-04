@@ -136,6 +136,59 @@ require_once 'includes/sidebar.php';
     </div>
 </div>
 
+<!-- Edit Batch Modal -->
+<div class="modal fade" id="editBatchModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Batch</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="editBatchForm">
+                <div class="modal-body">
+                    <input type="hidden" id="editBatchId" name="batch_id">
+                    <div class="form-group">
+                        <label for="editBatchName">Batch Name</label>
+                        <input type="text" class="form-control" id="editBatchName" name="batch_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCourse">Course</label>
+                        <select class="form-control" id="editCourse" name="course_id" required>
+                            <option value="">Select Course</option>
+                            <!-- Dynamic course options will be loaded here -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStartDate">Start Date</label>
+                        <input type="date" class="form-control" id="editStartDate" name="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEndDate">End Date</label>
+                        <input type="date" class="form-control" id="editEndDate" name="end_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStatus">Status</label>
+                        <select class="form-control" id="editStatus" name="status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editStable">Stable</label>
+                        <input type="text" class="form-control" id="editStable" name="stable" required>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- View Batch Modal -->
 <div class="modal fade" id="viewBatchModal">
     <div class="modal-dialog">
@@ -290,12 +343,13 @@ $(function () {
             success: function(response) {
                 if (response.success && response.data) {
                     var batch = response.data;
-                    $('#editBatchModal #batchName').val(batch.batch_name);
-                    $('#editBatchModal #course').val(batch.course_id).trigger('change');
-                    $('#editBatchModal #startDate').val(batch.start_date);
-                    $('#editBatchModal #endDate').val(batch.end_date);
-                    $('#editBatchModal #status').val(batch.status);
-                    $('#editBatchModal #stable').val(batch.stable);
+                    $('#editBatchModal #editBatchId').val(batch.batch_id);
+                    $('#editBatchModal #editBatchName').val(batch.batch_name);
+                    $('#editBatchModal #editCourse').val(batch.course_id).trigger('change');
+                    $('#editBatchModal #editStartDate').val(batch.start_date);
+                    $('#editBatchModal #editEndDate').val(batch.end_date);
+                    $('#editBatchModal #editStatus').val(batch.status);
+                    $('#editBatchModal #editStable').val(batch.stable);
                     $('#editBatchModal').modal('show');
                 } else {
                     toastr.error('Failed to fetch batch details.');
