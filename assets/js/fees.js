@@ -8,12 +8,17 @@ $(document).ready(function() {
         },
         columns: [
             { data: 'fee_id' },
-            { data: 'fee_name' },
+            { data: 'enrollment_id' },
             { data: 'amount' },
+            { data: 'payment_date' },
+            { data: 'payment_mode' },
+            { data: 'transaction_id' },
             { data: 'status', render: function(data) {
-                let badgeClass = data === 'active' ? 'badge-success' : 'badge-secondary';
+                let badgeClass = data === 'paid' ? 'badge-success' : (data === 'pending' ? 'badge-warning' : 'badge-secondary');
                 return `<span class="badge ${badgeClass}">${data}</span>`;
             }},
+            { data: 'receipt_no' },
+            { data: 'notes' },
             {
                 data: null,
                 orderable: false,
@@ -50,9 +55,14 @@ $(document).ready(function() {
                     var f = res.data;
                     $('#feeModalTitle').text('Edit Fee');
                     $('#fee_id').val(f.fee_id);
-                    $('#fee_name').val(f.fee_name);
+                    $('#enrollment_id').val(f.enrollment_id);
                     $('#amount').val(f.amount);
+                    $('#payment_date').val(f.payment_date);
+                    $('#payment_mode').val(f.payment_mode);
+                    $('#transaction_id').val(f.transaction_id);
                     $('#status').val(f.status);
+                    $('#receipt_no').val(f.receipt_no);
+                    $('#notes').val(f.notes);
                     $('#feeModal').modal('show');
                 } else {
                     toastr.error(res.message || 'Could not fetch fee details.');
