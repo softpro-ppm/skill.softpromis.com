@@ -115,16 +115,22 @@ $(function () {
       success: function (response) {
         if (response.success && response.data) {
           var d = response.data;
-          var html = '<p><strong>Student:</strong> ' + d.student_name + '</p>' +
-                     '<p><strong>Course:</strong> ' + d.course_name + '</p>' +
-                     '<p><strong>Type:</strong> ' + d.assessment_type + '</p>' +
-                     '<p><strong>Date:</strong> ' + d.assessment_date + '</p>' +
-                     '<p><strong>Score:</strong> ' + d.score + '</p>' +
-                     '<p><strong>Max Score:</strong> ' + d.max_score + '</p>' +
-                     '<p><strong>Status:</strong> ' + d.status + '</p>' +
-                     '<p><strong>Remarks:</strong> ' + (d.remarks || '') + '</p>';
-          // Show in a modal (implement a view modal if needed)
-          toastr.info(html, 'Assessment Details', {timeOut: 7000, extendedTimeOut: 2000});
+          var html = '<div class="row">' +
+            '<div class="col-md-6">' +
+            '<p><strong>Student:</strong> ' + d.student_name + '</p>' +
+            '<p><strong>Course:</strong> ' + d.course_name + '</p>' +
+            '<p><strong>Type:</strong> ' + d.assessment_type + '</p>' +
+            '<p><strong>Date:</strong> ' + d.assessment_date + '</p>' +
+            '<p><strong>Status:</strong> ' + d.status + '</p>' +
+            '</div>' +
+            '<div class="col-md-6">' +
+            '<p><strong>Score:</strong> ' + d.score + '</p>' +
+            '<p><strong>Max Score:</strong> ' + d.max_score + '</p>' +
+            '<p><strong>Remarks:</strong> ' + (d.remarks || '') + '</p>' +
+            '</div>' +
+            '</div>';
+          $('#viewAssessmentBody').html(html);
+          $('#viewAssessmentModal').modal('show');
         } else {
           toastr.error('Could not fetch assessment details.');
         }
