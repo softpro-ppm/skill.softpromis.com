@@ -87,7 +87,12 @@ try {
             if ($fee_id === 0) {
                 sendJSON(false, 'Fee ID is required.');
             }
-            $stmt = $pdo->prepare("SELECT * FROM fees WHERE fee_id = ?");
+            $stmt = $pdo->prepare("
+                SELECT f.*, e.student_id 
+                FROM fees f
+                LEFT JOIN student_batch_enrollment e ON f.enrollment_id = e.enrollment_id
+                WHERE f.fee_id = ?
+            ");
             $stmt->execute([$fee_id]);
             $fee = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($fee) {
