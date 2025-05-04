@@ -20,31 +20,41 @@ function sendJSON($success, $message = '', $data = null) {
 try {
     switch ($action) {
         case 'list':
-            $stmt = $pdo->query("SELECT fee_id, fee_name, amount, status FROM fees ORDER BY fee_id DESC");
+            $stmt = $pdo->query("SELECT fee_id, enrollment_id, amount, payment_date, payment_mode, transaction_id, status, receipt_no, notes FROM fees ORDER BY fee_id DESC");
             $fees = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['data' => $fees]);
             exit;
         case 'add':
-            $fee_name = trim($_POST['fee_name'] ?? '');
+            $enrollment_id = trim($_POST['enrollment_id'] ?? '');
             $amount = trim($_POST['amount'] ?? '');
-            $status = trim($_POST['status'] ?? 'active');
-            if ($fee_name === '' || $amount === '') {
-                sendJSON(false, 'Fee name and amount are required.');
+            $payment_date = trim($_POST['payment_date'] ?? '');
+            $payment_mode = trim($_POST['payment_mode'] ?? '');
+            $transaction_id = trim($_POST['transaction_id'] ?? '');
+            $status = trim($_POST['status'] ?? 'pending');
+            $receipt_no = trim($_POST['receipt_no'] ?? '');
+            $notes = trim($_POST['notes'] ?? '');
+            if ($enrollment_id === '' || $amount === '') {
+                sendJSON(false, 'Enrollment ID and amount are required.');
             }
-            $stmt = $pdo->prepare("INSERT INTO fees (fee_name, amount, status) VALUES (?, ?, ?)");
-            $result = $stmt->execute([$fee_name, $amount, $status]);
+            $stmt = $pdo->prepare("INSERT INTO fees (enrollment_id, amount, payment_date, payment_mode, transaction_id, status, receipt_no, notes, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+            $result = $stmt->execute([$enrollment_id, $amount, $payment_date, $payment_mode, $transaction_id, $status, $receipt_no, $notes]);
             sendJSON($result, $result ? 'Fee added successfully.' : 'Failed to add fee.');
             break;
         case 'edit':
             $fee_id = (int)($_POST['fee_id'] ?? 0);
-            $fee_name = trim($_POST['fee_name'] ?? '');
+            $enrollment_id = trim($_POST['enrollment_id'] ?? '');
             $amount = trim($_POST['amount'] ?? '');
-            $status = trim($_POST['status'] ?? 'active');
-            if ($fee_id === 0 || $fee_name === '' || $amount === '') {
-                sendJSON(false, 'Fee ID, name, and amount are required.');
+            $payment_date = trim($_POST['payment_date'] ?? '');
+            $payment_mode = trim($_POST['payment_mode'] ?? '');
+            $transaction_id = trim($_POST['transaction_id'] ?? '');
+            $status = trim($_POST['status'] ?? 'pending');
+            $receipt_no = trim($_POST['receipt_no'] ?? '');
+            $notes = trim($_POST['notes'] ?? '');
+            if ($fee_id === 0 || $enrollment_id === '' || $amount === '') {
+                sendJSON(false, 'Fee ID, Enrollment ID, and amount are required.');
             }
-            $stmt = $pdo->prepare("UPDATE fees SET fee_name = ?, amount = ?, status = ? WHERE fee_id = ?");
-            $result = $stmt->execute([$fee_name, $amount, $status, $fee_id]);
+            $stmt = $pdo->prepare("UPDATE fees SET enrollment_id = ?, amount = ?, payment_date = ?, payment_mode = ?, transaction_id = ?, status = ?, receipt_no = ?, notes = ?, updated_at = NOW() WHERE fee_id = ?");
+            $result = $stmt->execute([$enrollment_id, $amount, $payment_date, $payment_mode, $transaction_id, $status, $receipt_no, $notes, $fee_id]);
             sendJSON($result, $result ? 'Fee updated successfully.' : 'Failed to update fee.');
             break;
         case 'delete':
