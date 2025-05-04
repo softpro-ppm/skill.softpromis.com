@@ -178,6 +178,28 @@ try {
             sendJSONResponse(true, 'Assessment deleted successfully');
             break;
 
+        case 'get_course_by_enrollment':
+            $enrollment_id = (int)($_POST['enrollment_id'] ?? 0);
+            if (empty($enrollment_id)) {
+                echo json_encode(['success' => false, 'message' => 'Enrollment ID is required']);
+                exit;
+            }
+            $stmt = $pdo->prepare('
+                SELECT c.course_name
+                FROM student_batch_enrollment e
+                JOIN batches b ON e.batch_id = b.batch_id
+                JOIN courses c ON b.course_id = c.course_id
+                WHERE e.enrollment_id = ?
+            ');
+            $stmt->execute([$enrollment_id]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($row && isset($row['course_name'])) {
+                echo json_encode(['success' => true, 'data' => ['course_name' => $row['course_name']]]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Course not found']);
+            }
+            exit;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }
