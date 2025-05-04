@@ -101,8 +101,17 @@ require_once 'includes/sidebar.php';
                             </div>
                             <input type="hidden" id="enrollment_id_hidden" name="enrollment_id" required>
                             <div class="form-group">
-                                <label for="course_name">Course</label>
-                                <input type="text" class="form-control" id="course_name" name="course_name" readonly>
+                                <label for="course_id">Course <span class="text-danger">*</span></label>
+                                <select class="form-control select2" id="course_id" name="course_id" required>
+                                    <option value="">Select Course</option>
+                                    <?php 
+                                    $courses = Course::getAll();
+                                    foreach ($courses as $course): ?>
+                                        <option value="<?= htmlspecialchars($course['course_id']) ?>">
+                                            <?= htmlspecialchars($course['course_name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="assessment_type">Assessment Type <span class="text-danger">*</span></label>
