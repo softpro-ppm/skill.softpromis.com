@@ -42,12 +42,10 @@ require_once 'includes/sidebar.php';
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Assessment History</h3>
-
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Assessments</h1>
+                            <h3 class="card-title">Assessment History</h3>
                             </div>
                             <div class="col-sm-6 text-right">
                                 <button type="button" class="btn btn-primary" id="addAssessmentBtn">
