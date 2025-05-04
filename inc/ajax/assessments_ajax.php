@@ -196,6 +196,19 @@ try {
             if ($row && isset($row['course_name'])) {
                 echo json_encode(['success' => true, 'data' => ['course_name' => $row['course_name']]]);
             } else {
+                // fallback: try to get course from enrollment directly if batch join fails
+                $stmt2 = $pdo->prepare('SELECT course_id FROM student_batch_enrollment WHERE enrollment_id = ?');
+                $stmt2->execute([$enrollment_id]);
+                $enroll = $stmt2->fetch(PDO::FETCH_ASSOC);
+                if ($enroll && isset($enroll['course_id'])) {
+                    $stmt3 = $pdo->prepare('SELECT course_name FROM courses WHERE course_id = ?');
+                    $stmt3->execute([$enroll['course_id']]);
+                    $course = $stmt3->fetch(PDO::FETCH_ASSOC);
+                    if ($course && isset($course['course_name'])) {
+                        echo json_encode(['success' => true, 'data' => ['course_name' => $course['course_name']]]);
+                        exit;
+                    }
+                }
                 echo json_encode(['success' => false, 'message' => 'Course not found']);
             }
             exit;
