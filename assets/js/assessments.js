@@ -38,12 +38,35 @@ $(function () {
     order: [[0, 'desc']]
   });
 
+  // Helper to load all students into the dropdown
+  function loadAllStudents(selectedId) {
+    $.ajax({
+      url: 'inc/ajax/students_ajax.php',
+      type: 'POST',
+      data: { action: 'list' },
+      dataType: 'json',
+      success: function(res) {
+        var $student = $('#student_id');
+        $student.empty().append('<option value="">Select Student</option>');
+        if(res.success && res.data) {
+          $.each(res.data, function(i, s) {
+            var label = s.first_name + ' ' + s.last_name + (s.enrollment_no ? ' (' + s.enrollment_no + ')' : '');
+            $student.append('<option value="' + s.student_id + '">' + label + '</option>');
+          });
+        }
+        if(selectedId) {
+          $student.val(selectedId).trigger('change');
+        }
+      }
+    });
+  }
+
   // Add Assessment Button
   $('#addAssessmentBtn').on('click', function () {
     $('#assessmentForm')[0].reset();
     $('#assessment_id').val('');
     $('#assessmentModalTitle').text('Add New Assessment');
-    // TODO: Load students and enrollments via AJAX if needed
+    loadAllStudents();
     $('#assessmentModal').modal('show');
   });
 
@@ -59,12 +82,9 @@ $(function () {
         if (response.success && response.data) {
           var d = response.data;
           $('#assessment_id').val(d.assessment_id);
-          // Set enrollment first, then trigger change to load students
           $('#enrollment_id').val(d.enrollment_id).trigger('change');
-          // Wait for students to load, then set student_id
-          setTimeout(function() {
-            $('#student_id').val(d.student_id).trigger('change');
-          }, 300); // Adjust timeout if needed based on AJAX speed
+          // Load students and set selected
+          loadAllStudents(d.student_id);
           $('#course_name').val(d.course_name);
           $('#assessment_type').val(d.assessment_type);
           $('#assessment_date').val(d.assessment_date);
