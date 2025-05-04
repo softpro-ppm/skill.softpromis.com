@@ -310,6 +310,8 @@ $(function () {
             { data: 'date_of_birth' },
             { data: 'gender', render: function (data) { return data ? data.charAt(0).toUpperCase() + data.slice(1) : ''; } },
             { data: 'address' },
+            { data: 'course_name' },
+            { data: 'batch_code' },
             { data: null, orderable: false, searchable: false, render: function (data, type, row) {
                 return '<div class="btn-group btn-group-sm">' +
                     '<button type="button" class="btn btn-info view-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-eye"></i></button>' +
