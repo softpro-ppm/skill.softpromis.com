@@ -44,7 +44,7 @@ $(function () {
     $('#assessment_id').val('');
     $('#assessmentModalTitle').text('Add New Assessment');
     // Reset all fields to default
-    $('#student_id').val('').trigger('change');
+    $('#student_id').empty().append('<option value="">Select Student</option>');
     $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
     $('#enrollment_id_hidden').val('');
     $('#enrollment_id_group').hide();
@@ -70,7 +70,6 @@ $(function () {
             $student.append('<option value="' + s.student_id + '">' + label + '</option>');
           });
         }
-        $student.val('').trigger('change');
       }
     });
     $('#assessmentModal').modal('show');
@@ -100,16 +99,14 @@ $(function () {
     });
   }
 
-  // On student change, load enrollments
+  // On student change, load enrollments and clear course
   $(document).on('change', '#student_id', function() {
     var studentId = $(this).val();
     $('#course_name').val('');
-    if (!studentId) {
-      $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
-      $('#enrollment_id_hidden').val('');
-      $('#enrollment_id_group').hide();
-      return;
-    }
+    $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
+    $('#enrollment_id_hidden').val('');
+    $('#enrollment_id_group').hide();
+    if (!studentId) return;
     $.ajax({
       url: 'inc/ajax/students_ajax.php',
       type: 'POST',
@@ -141,6 +138,7 @@ $(function () {
     });
   });
 
+  // On enrollment change, update course
   $(document).on('change', '#enrollment_id', function() {
     var studentId = $('#student_id').val();
     var enrollmentId = $(this).val();
