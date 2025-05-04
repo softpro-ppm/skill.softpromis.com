@@ -170,16 +170,22 @@ try {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group"><label>Enrollment No</label><p data-field="enrollment_no"></p></div>
-                <div class="form-group"><label>First Name</label><p data-field="first_name"></p></div>
-                <div class="form-group"><label>Last Name</label><p data-field="last_name"></p></div>
-                <div class="form-group"><label>Email</label><p data-field="email"></p></div>
-                <div class="form-group"><label>Mobile</label><p data-field="mobile"></p></div>
-                <div class="form-group"><label>Date of Birth</label><p data-field="date_of_birth"></p></div>
-                <div class="form-group"><label>Gender</label><p data-field="gender"></p></div>
-                <div class="form-group"><label>Address</label><p data-field="address"></p></div>
-                <div class="form-group"><label>Course</label><p data-field="course_name"></p></div>
-                <div class="form-group"><label>Batch</label><p data-field="batch_code"></p></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group"><label>Enrollment No</label><p data-field="enrollment_no"></p></div>
+                        <div class="form-group"><label>First Name</label><p data-field="first_name"></p></div>
+                        <div class="form-group"><label>Last Name</label><p data-field="last_name"></p></div>
+                        <div class="form-group"><label>Email</label><p data-field="email"></p></div>
+                        <div class="form-group"><label>Mobile</label><p data-field="mobile"></p></div>
+                        <div class="form-group"><label>Date of Birth</label><p data-field="date_of_birth"></p></div>
+                        <div class="form-group"><label>Gender</label><p data-field="gender"></p></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group"><label>Course</label><p data-field="course_name"></p></div>
+                        <div class="form-group"><label>Batch</label><p data-field="batch_code"></p></div>
+                        <div class="form-group"><label>Address</label><p data-field="address"></p></div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
