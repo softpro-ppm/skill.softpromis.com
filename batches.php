@@ -343,6 +343,38 @@ $(function () {
         });
     });
 
+    // Delete Batch: handle delete button click
+    $(document).on('click', '.delete-batch-btn', function() {
+        var batchId = $(this).data('id');
+        if (!batchId) {
+            toastr.error('Batch ID is missing.');
+            return;
+        }
+
+        if (!confirm('Are you sure you want to delete this batch?')) {
+            return;
+        }
+
+        // Send AJAX request to delete the batch
+        $.ajax({
+            url: 'inc/ajax/batches_ajax.php',
+            type: 'POST',
+            data: { action: 'delete', batch_id: batchId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message || 'Batch deleted successfully');
+                    $('#batchesTable').DataTable().ajax.reload(null, false);
+                } else {
+                    toastr.error(response.message || 'Failed to delete batch');
+                }
+            },
+            error: function() {
+                toastr.error('An error occurred while deleting the batch. Please try again.');
+            }
+        });
+    });
+
     // Reset forms on modal close
     $('#addBatchModal').on('hidden.bs.modal', function () {
         var $form = $(this).find('form');
