@@ -107,7 +107,8 @@ try {
                 $row['student_name'] = $row['first_name'] . ' ' . $row['last_name'];
                 $data[] = $row;
             }
-            sendJSONResponse(true, 'Assessments retrieved successfully', [ 'data' => $data ]);
+            echo json_encode(['data' => $data]);
+            exit;
             break;
 
         case 'get':
