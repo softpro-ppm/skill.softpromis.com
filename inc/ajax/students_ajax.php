@@ -123,6 +123,17 @@ try {
             }
             exit;
 
+        case 'get_enrollments_by_student':
+            $student_id = (int)($_POST['student_id'] ?? 0);
+            if (empty($student_id)) {
+                sendJSONResponse(false, 'Student ID is required');
+            }
+            $stmt = $pdo->prepare('SELECT enrollment_id FROM student_batch_enrollment WHERE student_id = ?');
+            $stmt->execute([$student_id]);
+            $enrollments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Enrollments fetched', $enrollments);
+            break;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }

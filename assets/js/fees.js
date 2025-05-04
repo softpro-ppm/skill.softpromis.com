@@ -34,11 +34,62 @@ $(document).ready(function() {
         order: [[0, 'desc']]
     });
 
+    // Helper: Load all students for dropdown
+    function loadStudents(selectedStudentId, selectedEnrollmentId) {
+        $.ajax({
+            url: 'inc/ajax/students_ajax.php',
+            type: 'POST',
+            data: { action: 'list' },
+            dataType: 'json',
+            success: function(res) {
+                if(res.success) {
+                    var studentSel = $('#student_id');
+                    studentSel.empty().append('<option value="">Select Student</option>');
+                    $.each(res.data, function(i, s) {
+                        var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
+                        studentSel.append(`<option value="${s.student_id}"${selectedStudentId==s.student_id?' selected':''}>${label}</option>`);
+                    });
+                    if(selectedStudentId) {
+                        loadEnrollments(selectedStudentId, selectedEnrollmentId);
+                    } else {
+                        $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
+                    }
+                }
+            }
+        });
+    }
+
+    // Helper: Load enrollments for a student
+    function loadEnrollments(studentId, selectedEnrollmentId) {
+        $.ajax({
+            url: 'inc/ajax/students_ajax.php',
+            type: 'POST',
+            data: { action: 'get_enrollments_by_student', student_id: studentId },
+            dataType: 'json',
+            success: function(res) {
+                var enrollSel = $('#enrollment_id');
+                enrollSel.empty().append('<option value="">Select Enrollment</option>');
+                if(res.success && res.data.length) {
+                    $.each(res.data, function(i, e) {
+                        enrollSel.append(`<option value="${e.enrollment_id}"${selectedEnrollmentId==e.enrollment_id?' selected':''}>${e.enrollment_id}</option>`);
+                    });
+                }
+            }
+        });
+    }
+
+    // On student change, load enrollments
+    $(document).on('change', '#student_id', function() {
+        var studentId = $(this).val();
+        loadEnrollments(studentId);
+    });
+
     // Open modal for add
     $('#addFeeBtn').on('click', function() {
         $('#feeModalTitle').text('Add New Fee');
         $('#feeForm')[0].reset();
         $('#fee_id').val('');
+        loadStudents();
         $('#feeModal').modal('show');
     });
 
@@ -55,7 +106,6 @@ $(document).ready(function() {
                     var f = res.data;
                     $('#feeModalTitle').text('Edit Fee');
                     $('#fee_id').val(f.fee_id);
-                    $('#enrollment_id').val(f.enrollment_id);
                     $('#amount').val(f.amount);
                     $('#payment_date').val(f.payment_date);
                     $('#payment_mode').val(f.payment_mode);
@@ -63,6 +113,30 @@ $(document).ready(function() {
                     $('#status').val(f.status);
                     $('#receipt_no').val(f.receipt_no);
                     $('#notes').val(f.notes);
+                    // Load students and enrollments, pre-selecting
+                    $.ajax({
+                        url: 'inc/ajax/students_ajax.php',
+                        type: 'POST',
+                        data: { action: 'list' },
+                        dataType: 'json',
+                        success: function(stuRes) {
+                            if(stuRes.success) {
+                                var studentSel = $('#student_id');
+                                studentSel.empty().append('<option value="">Select Student</option>');
+                                var foundStudent = null;
+                                $.each(stuRes.data, function(i, s) {
+                                    var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
+                                    studentSel.append(`<option value="${s.student_id}"${s.student_id==f.student_id?' selected':''}>${label}</option>`);
+                                    if(s.student_id==f.student_id) foundStudent = s.student_id;
+                                });
+                                if(foundStudent) {
+                                    loadEnrollments(foundStudent, f.enrollment_id);
+                                } else {
+                                    $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
+                                }
+                            }
+                        }
+                    });
                     $('#feeModal').modal('show');
                 } else {
                     toastr.error(res.message || 'Could not fetch fee details.');
