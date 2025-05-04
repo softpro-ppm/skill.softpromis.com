@@ -91,7 +91,8 @@ $(document).ready(function() {
         $('#feeForm')[0].reset();
         $('#fee_id').val('');
         loadStudents();
-        $('#feeModal').modal('show');
+        var feeModal = new bootstrap.Modal(document.getElementById('feeModal'));
+        feeModal.show();
     });
 
     // Open modal for edit
@@ -138,7 +139,8 @@ $(document).ready(function() {
                             }
                         }
                     });
-                    $('#feeModal').modal('show');
+                    var feeModal = new bootstrap.Modal(document.getElementById('feeModal'));
+                    feeModal.show();
                 } else {
                     toastr.error(res.message || 'Could not fetch fee details.');
                 }

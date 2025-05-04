@@ -45,6 +45,7 @@ require_once 'includes/sidebar.php';
                                     <tr>
                                         <th>ID</th>
                                         <th>Enrollment ID</th>
+                                        <th>Student</th>
                                         <th>Amount</th>
                                         <th>Payment Date</th>
                                         <th>Payment Mode</th>
