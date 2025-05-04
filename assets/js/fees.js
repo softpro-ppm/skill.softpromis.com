@@ -146,6 +146,8 @@ $(document).ready(function() {
                                 } else {
                                     $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
                                 }
+                                // Force the select to update (for some browsers/UI)
+                                $('#student_id').val(f.student_id).trigger('change');
                             }
                         }
                     });
