@@ -92,13 +92,12 @@ $(document).ready(function() {
                 if (response.success) {
                     var b = response.data;
                     $('#editBatchId').val(b.batch_id);
-                    $('#editBatchCode').val(b.batch_code);
+                    $('#editBatchName').val(b.batch_name);
                     $('#editCourse').val(b.course_id).trigger('change');
-                    $('#editCenter').val(b.center_id).trigger('change');
                     $('#editStartDate').val(b.start_date);
                     $('#editEndDate').val(b.end_date);
-                    $('#editCapacity').val(b.capacity);
                     $('#editStatus').val(b.status);
+                    $('#editStable').val(b.stable);
                     $('#editBatchModal').modal('show');
                 } else {
                     toastr.error(response.message || 'Could not fetch batch details.');

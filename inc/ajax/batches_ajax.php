@@ -66,21 +66,24 @@ try {
             break;
         case 'edit':
             $batch_id = (int)($_POST['batch_id'] ?? 0);
-            $batch_code = sanitizeInput($_POST['batch_code'] ?? '');
+            $batch_name = sanitizeInput($_POST['batch_name'] ?? '');
             $course_id = (int)($_POST['course_id'] ?? 0);
-            $center_id = (int)($_POST['center_id'] ?? 0);
             $start_date = sanitizeInput($_POST['start_date'] ?? '');
             $end_date = sanitizeInput($_POST['end_date'] ?? '');
-            $capacity = (int)($_POST['capacity'] ?? 0);
-            $status = sanitizeInput($_POST['status'] ?? 'upcoming');
-            if (empty($batch_id) || empty($batch_code) || empty($course_id) || empty($center_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
+            $status = sanitizeInput($_POST['status'] ?? '');
+            $stable = sanitizeInput($_POST['stable'] ?? '');
+
+            if (empty($batch_id) || empty($batch_name) || empty($course_id) || empty($start_date) || empty($end_date) || empty($status) || empty($stable)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
+
             if (strtotime($end_date) < strtotime($start_date)) {
                 sendJSONResponse(false, 'End date cannot be before start date');
             }
-            $stmt = $pdo->prepare("UPDATE batches SET center_id = ?, course_id = ?, batch_code = ?, start_date = ?, end_date = ?, capacity = ?, status = ?, updated_at = NOW() WHERE batch_id = ?");
-            $result = $stmt->execute([$center_id, $course_id, $batch_code, $start_date, $end_date, $capacity, $status, $batch_id]);
+
+            $stmt = $pdo->prepare("UPDATE batches SET batch_name = ?, course_id = ?, start_date = ?, end_date = ?, status = ?, stable = ?, updated_at = NOW() WHERE batch_id = ?");
+            $result = $stmt->execute([$batch_name, $course_id, $start_date, $end_date, $status, $stable, $batch_id]);
+
             if ($result) {
                 sendJSONResponse(true, 'Batch updated successfully');
             } else {
