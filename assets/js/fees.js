@@ -46,50 +46,18 @@ $(document).ready(function() {
                     studentSel.empty().append('<option value="">Select Student</option>');
                     $.each(res.data, function(i, s) {
                         var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
-                        studentSel.append(`<option value="${s.student_id}"${selectedStudentId==s.student_id?' selected':''}>${label}</option>`);
+                        studentSel.append(`<option value="${s.student_id}" data-enrollment-no="${s.enrollment_no}"${selectedStudentId==s.student_id?' selected':''}>${label}</option>`);
                     });
                 }
             }
         });
     }
 
-    // Helper: Load enrollments for a student from student_batch_enrollment
-    function loadEnrollments(studentId, selectedEnrollmentId) {
-        $.ajax({
-            url: 'inc/ajax/students_ajax.php',
-            type: 'POST',
-            data: { action: 'get_enrollments_by_student', student_id: studentId },
-            dataType: 'json',
-            success: function(res) {
-                var enrollSel = $('#enrollment_id');
-                enrollSel.empty().append('<option value="">Select Enrollment</option>');
-                if(res.success && res.data.length) {
-                    $.each(res.data, function(i, e) {
-                        enrollSel.append(`<option value="${e.enrollment_id}"${selectedEnrollmentId==e.enrollment_id?' selected':''}>${e.enrollment_id}</option>`);
-                    });
-                }
-            }
-        });
-    }
-
-    // On student change, set enrollment_id hidden field
+    // On student change, set enrollment_id hidden field to student's enrollment_no
     $(document).on('change', '#student_id', function() {
-        var studentId = $(this).val();
-        if (studentId) {
-            $.ajax({
-                url: 'inc/ajax/students_ajax.php',
-                type: 'POST',
-                data: { action: 'get_enrollments_by_student', student_id: studentId },
-                dataType: 'json',
-                success: function(res) {
-                    if (res.success && res.data.length) {
-                        // Set the first enrollment_id found
-                        $('#enrollment_id').val(res.data[0].enrollment_id);
-                    } else {
-                        $('#enrollment_id').val('');
-                    }
-                }
-            });
+        var enrollmentNo = $(this).find('option:selected').data('enrollment-no');
+        if (enrollmentNo) {
+            $('#enrollment_id').val(enrollmentNo);
         } else {
             $('#enrollment_id').val('');
         }
@@ -100,8 +68,24 @@ $(document).ready(function() {
         $('#feeModalTitle').text('Add New Fee');
         $('#feeForm')[0].reset();
         $('#fee_id').val('');
-        loadStudents();
-        $('#enrollment_id').val('');
+        // Load students and set enrollment_id on first student if needed
+        $.ajax({
+            url: 'inc/ajax/students_ajax.php',
+            type: 'POST',
+            data: { action: 'list' },
+            dataType: 'json',
+            success: function(res) {
+                if(res.success) {
+                    var studentSel = $('#student_id');
+                    studentSel.empty().append('<option value="">Select Student</option>');
+                    $.each(res.data, function(i, s) {
+                        var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
+                        studentSel.append(`<option value="${s.student_id}" data-enrollment-no="${s.enrollment_no}">${label}</option>`);
+                    });
+                    $('#enrollment_id').val('');
+                }
+            }
+        });
         var feeModal = new bootstrap.Modal(document.getElementById('feeModal'));
         feeModal.show();
     });
@@ -126,7 +110,7 @@ $(document).ready(function() {
                     $('#status').val(f.status);
                     $('#receipt_no').val(f.receipt_no);
                     $('#notes').val(f.notes);
-                    // Load students, set student, then set enrollment_id hidden field
+                    // Load students and set selected, then set enrollment_id to enrollment_no
                     $.ajax({
                         url: 'inc/ajax/students_ajax.php',
                         type: 'POST',
@@ -139,30 +123,11 @@ $(document).ready(function() {
                                 var foundStudent = null;
                                 $.each(stuRes.data, function(i, s) {
                                     var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
-                                    studentSel.append(`<option value="${s.student_id}"${s.student_id==f.student_id?' selected':''}>${label}</option>`);
-                                    if(s.student_id==f.student_id) foundStudent = s.student_id;
+                                    studentSel.append(`<option value="${s.student_id}" data-enrollment-no="${s.enrollment_no}"${s.enrollment_no==f.enrollment_id?' selected':''}>${label}</option>`);
+                                    if(s.enrollment_no==f.enrollment_id) foundStudent = s;
                                 });
                                 if(foundStudent) {
-                                    // Now load enrollments for this student and set the correct enrollment_id
-                                    $.ajax({
-                                        url: 'inc/ajax/students_ajax.php',
-                                        type: 'POST',
-                                        data: { action: 'get_enrollments_by_student', student_id: foundStudent },
-                                        dataType: 'json',
-                                        success: function(res2) {
-                                            if(res2.success && res2.data.length) {
-                                                // Set the correct enrollment_id
-                                                var found = res2.data.find(e => e.enrollment_id == f.enrollment_id);
-                                                if(found) {
-                                                    $('#enrollment_id').val(found.enrollment_id);
-                                                } else {
-                                                    $('#enrollment_id').val(res2.data[0].enrollment_id);
-                                                }
-                                            } else {
-                                                $('#enrollment_id').val('');
-                                            }
-                                        }
-                                    });
+                                    $('#enrollment_id').val(foundStudent.enrollment_no);
                                 } else {
                                     $('#enrollment_id').val('');
                                 }
