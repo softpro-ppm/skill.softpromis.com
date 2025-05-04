@@ -122,11 +122,21 @@ $(document).ready(function() {
                         var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
                         studentSel.append(`<option value="${s.student_id}">${label}</option>`);
                     });
+                    // Force the select to update (for some browsers/UI)
+                    studentSel.val('').trigger('change');
                 }
                 // Always clear enrollments and hidden field on add
                 $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
                 $('#enrollment_id_hidden').val('');
                 $('#enrollment_id_group').hide();
+                // Clear all other fields
+                $('#amount').val('');
+                $('#payment_date').val('');
+                $('#payment_mode').val('');
+                $('#transaction_id').val('');
+                $('#status').val('pending');
+                $('#receipt_no').val('');
+                $('#notes').val('');
             }
         });
         var feeModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('feeModal'));
