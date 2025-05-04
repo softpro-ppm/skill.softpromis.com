@@ -124,6 +124,19 @@ try {
                 sendJSONResponse(false, 'Batch not found');
             }
             break;
+        case 'get_centers_courses':
+            // Fetch active centers
+            $centersStmt = $pdo->query("SELECT center_id, center_name FROM training_centers WHERE status = 'active' ORDER BY center_name ASC");
+            $centers = $centersStmt->fetchAll(PDO::FETCH_ASSOC);
+            // Fetch active courses
+            $coursesStmt = $pdo->query("SELECT course_id, course_name FROM courses WHERE status = 'active' ORDER BY course_name ASC");
+            $courses = $coursesStmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode([
+                'success' => true,
+                'centers' => $centers,
+                'courses' => $courses
+            ]);
+            exit;
         default:
             sendJSONResponse(false, 'Invalid action');
     }
