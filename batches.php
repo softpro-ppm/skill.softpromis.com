@@ -135,6 +135,10 @@ require_once 'includes/sidebar.php';
                     <div class="form-group">
                         <label for="status">Status</label>
                         <select class="form-control" id="status" name="status">
+                            <option value="upcoming">Upcoming</option>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
