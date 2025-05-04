@@ -344,15 +344,15 @@ $(function () {
                 if (response.success && response.data) {
                     var batch = response.data;
                     $('#editBatchModal #editBatchId').val(batch.batch_id);
-                    $('#editBatchModal #editBatchName').val(batch.batch_name);
-                    $('#editBatchModal #editCourse').val(batch.course_id).trigger('change');
-                    $('#editBatchModal #editStartDate').val(batch.start_date);
-                    $('#editBatchModal #editEndDate').val(batch.end_date);
-                    $('#editBatchModal #editStatus').val(batch.status);
-                    $('#editBatchModal #editStable').val(batch.stable);
+                    $('#editBatchModal #editBatchName').val(batch.batch_name || '');
+                    $('#editBatchModal #editCourse').val(batch.course_id || '').trigger('change');
+                    $('#editBatchModal #editStartDate').val(batch.start_date || '');
+                    $('#editBatchModal #editEndDate').val(batch.end_date || '');
+                    $('#editBatchModal #editStatus').val(batch.status || '');
+                    $('#editBatchModal #editStable').val(batch.stable || '');
                     $('#editBatchModal').modal('show');
                 } else {
-                    toastr.error('Failed to fetch batch details.');
+                    toastr.error(response.message || 'Failed to fetch batch details.');
                 }
             },
             error: function() {
