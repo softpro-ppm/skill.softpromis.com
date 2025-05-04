@@ -30,6 +30,8 @@ try {
     } else {
         $nextEnrollmentNo = 'ENR001';
     }
+    $courses = $pdo->query("SELECT course_id, course_name FROM courses WHERE status = 'active' ORDER BY course_name ASC")->fetchAll(PDO::FETCH_ASSOC);
+    $batches = $pdo->query("SELECT batch_id, batch_code FROM batches ORDER BY batch_code ASC")->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
     echo '<div class="alert alert-danger">Could not fetch students: ' . htmlspecialchars($e->getMessage()) . '</div>';
 }
@@ -70,6 +72,8 @@ try {
                                         <th>Date of Birth</th>
                                         <th>Gender</th>
                                         <th>Address</th>
+                                        <th>Course</th>
+                                        <th>Batch</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -130,6 +134,24 @@ try {
                         <label for="addAddress">Address</label>
                         <textarea class="form-control" id="addAddress" name="address"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="addCourseId">Course</label>
+                        <select class="form-control" id="addCourseId" name="course_id">
+                            <option value="">Select Course</option>
+                            <?php foreach ($courses as $course): ?>
+                                <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="addBatchId">Batch</label>
+                        <select class="form-control" id="addBatchId" name="batch_id">
+                            <option value="">Select Batch</option>
+                            <?php foreach ($batches as $batch): ?>
+                                <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_code']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
@@ -156,6 +178,8 @@ try {
                 <div class="form-group"><label>Date of Birth</label><p data-field="date_of_birth"></p></div>
                 <div class="form-group"><label>Gender</label><p data-field="gender"></p></div>
                 <div class="form-group"><label>Address</label><p data-field="address"></p></div>
+                <div class="form-group"><label>Course</label><p data-field="course_name"></p></div>
+                <div class="form-group"><label>Batch</label><p data-field="batch_code"></p></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
@@ -211,6 +235,24 @@ try {
                     <div class="form-group">
                         <label for="editAddress">Address</label>
                         <textarea class="form-control" id="editAddress" name="address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCourseId">Course</label>
+                        <select class="form-control" id="editCourseId" name="course_id">
+                            <option value="">Select Course</option>
+                            <?php foreach ($courses as $course): ?>
+                                <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBatchId">Batch</label>
+                        <select class="form-control" id="editBatchId" name="batch_id">
+                            <option value="">Select Batch</option>
+                            <?php foreach ($batches as $batch): ?>
+                                <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_code']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">

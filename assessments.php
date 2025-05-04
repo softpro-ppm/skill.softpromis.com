@@ -102,7 +102,7 @@ require_once 'includes/sidebar.php';
                             <input type="hidden" id="enrollment_id_hidden" name="enrollment_id" required>
                             <div class="form-group">
                                 <label for="course_id">Course <span class="text-danger">*</span></label>
-                                <select class="form-control select2" id="course_id" name="course_id" required>
+                                <select class="form-control" id="course_id" name="course_id" required>
                                     <option value="">Select Course</option>
                                     <?php 
                                     $courses = Course::getAll();
