@@ -22,6 +22,10 @@ try {
                 LEFT JOIN training_centers tc ON b.center_id = tc.center_id
                 ORDER BY b.batch_id DESC");
             $batches = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Debugging log to inspect the data being returned
+            error_log('Batches List Response: ' . json_encode($batches));
+
             echo json_encode(['status' => 'success', 'data' => $batches]);
             exit;
         case 'add':
