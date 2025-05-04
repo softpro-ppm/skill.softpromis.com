@@ -62,11 +62,32 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(res) {
                 var enrollSel = $('#enrollment_id');
-                enrollSel.empty().append('<option value="">Select Enrollment</option>');
+                var enrollGroup = $('#enrollment_id_group');
+                enrollSel.empty();
                 if(res.success && res.data.length) {
-                    $.each(res.data, function(i, e) {
-                        enrollSel.append(`<option value="${e.enrollment_id}"${selectedEnrollmentId==e.enrollment_id?' selected':''}>${e.enrollment_id}</option>`);
-                    });
+                    if(res.data.length === 1) {
+                        $('#enrollment_id_hidden').val(res.data[0].enrollment_id);
+                        enrollGroup.hide();
+                    } else {
+                        enrollSel.append('<option value="">Select Enrollment</option>');
+                        $.each(res.data, function(i, e) {
+                            var label = e.enrollment_id;
+                            if(e.batch_id) label += ' (Batch: ' + e.batch_id + ')';
+                            enrollSel.append(`<option value="${e.enrollment_id}"${selectedEnrollmentId==e.enrollment_id?' selected':''}>${label}</option>`);
+                        });
+                        enrollGroup.show();
+                        // Set hidden field to selected or first enrollment
+                        if(selectedEnrollmentId) {
+                            $('#enrollment_id_hidden').val(selectedEnrollmentId);
+                            enrollSel.val(selectedEnrollmentId);
+                        } else {
+                            $('#enrollment_id_hidden').val(res.data[0].enrollment_id);
+                            enrollSel.val(res.data[0].enrollment_id);
+                        }
+                    }
+                } else {
+                    enrollGroup.hide();
+                    $('#enrollment_id_hidden').val('');
                 }
             }
         });
@@ -76,6 +97,10 @@ $(document).ready(function() {
     $(document).on('change', '#student_id', function() {
         var studentId = $(this).val();
         loadEnrollments(studentId);
+    });
+
+    $(document).on('change', '#enrollment_id', function() {
+        $('#enrollment_id_hidden').val($(this).val());
     });
 
     // Open modal for add
