@@ -110,12 +110,13 @@ $(document).ready(function() {
                 if(res.success) {
                     $('#batchModal').modal('hide');
                     batchesTable.ajax.reload();
+                    toastr.success(res.message || (isEdit ? 'Batch updated successfully' : 'Batch added successfully'));
                 } else {
-                    alert(res.message || 'Error saving batch.');
+                    toastr.error(res.message || 'Error saving batch.');
                 }
             },
             error: function() {
-                alert('An error occurred.');
+                toastr.error('An error occurred.');
             }
         });
     });
