@@ -44,9 +44,14 @@ require_once 'includes/sidebar.php';
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Fee Name</th>
+                                        <th>Enrollment ID</th>
                                         <th>Amount</th>
+                                        <th>Payment Date</th>
+                                        <th>Payment Mode</th>
+                                        <th>Transaction ID</th>
                                         <th>Status</th>
+                                        <th>Receipt No</th>
+                                        <th>Notes</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -75,19 +80,40 @@ require_once 'includes/sidebar.php';
                 <div class="modal-body">
                     <input type="hidden" id="fee_id" name="fee_id">
                     <div class="form-group">
-                        <label for="fee_name">Fee Name</label>
-                        <input type="text" class="form-control" id="fee_name" name="fee_name" required>
+                        <label for="enrollment_id">Enrollment ID</label>
+                        <input type="number" class="form-control" id="enrollment_id" name="enrollment_id" required>
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
                         <input type="number" class="form-control" id="amount" name="amount" required>
                     </div>
                     <div class="form-group">
+                        <label for="payment_date">Payment Date</label>
+                        <input type="date" class="form-control" id="payment_date" name="payment_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="payment_mode">Payment Mode</label>
+                        <input type="text" class="form-control" id="payment_mode" name="payment_mode">
+                    </div>
+                    <div class="form-group">
+                        <label for="transaction_id">Transaction ID</label>
+                        <input type="text" class="form-control" id="transaction_id" name="transaction_id">
+                    </div>
+                    <div class="form-group">
                         <label for="status">Status</label>
                         <select class="form-control" id="status" name="status">
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
+                            <option value="pending">Pending</option>
+                            <option value="paid">Paid</option>
+                            <option value="failed">Failed</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="receipt_no">Receipt No</label>
+                        <input type="text" class="form-control" id="receipt_no" name="receipt_no">
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea class="form-control" id="notes" name="notes"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
