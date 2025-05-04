@@ -53,14 +53,29 @@ $(document).ready(function() {
         });
     }
 
-    // On student change, set enrollment_id hidden field to student's enrollment_no
+    // Helper: Load enrollments for a student from student_batch_enrollment
+    function loadEnrollments(studentId, selectedEnrollmentId) {
+        $.ajax({
+            url: 'inc/ajax/students_ajax.php',
+            type: 'POST',
+            data: { action: 'get_enrollments_by_student', student_id: studentId },
+            dataType: 'json',
+            success: function(res) {
+                var enrollSel = $('#enrollment_id');
+                enrollSel.empty().append('<option value="">Select Enrollment</option>');
+                if(res.success && res.data.length) {
+                    $.each(res.data, function(i, e) {
+                        enrollSel.append(`<option value="${e.enrollment_id}"${selectedEnrollmentId==e.enrollment_id?' selected':''}>${e.enrollment_id}</option>`);
+                    });
+                }
+            }
+        });
+    }
+
+    // On student change, load enrollments
     $(document).on('change', '#student_id', function() {
-        var enrollmentNo = $(this).find('option:selected').data('enrollment-no');
-        if (enrollmentNo) {
-            $('#enrollment_id').val(enrollmentNo);
-        } else {
-            $('#enrollment_id').val('');
-        }
+        var studentId = $(this).val();
+        loadEnrollments(studentId);
     });
 
     // Open modal for add
@@ -68,7 +83,7 @@ $(document).ready(function() {
         $('#feeModalTitle').text('Add New Fee');
         $('#feeForm')[0].reset();
         $('#fee_id').val('');
-        // Load students and set enrollment_id on first student if needed
+        // Load students and clear enrollments
         $.ajax({
             url: 'inc/ajax/students_ajax.php',
             type: 'POST',
@@ -80,9 +95,9 @@ $(document).ready(function() {
                     studentSel.empty().append('<option value="">Select Student</option>');
                     $.each(res.data, function(i, s) {
                         var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
-                        studentSel.append(`<option value="${s.student_id}" data-enrollment-no="${s.enrollment_no}">${label}</option>`);
+                        studentSel.append(`<option value="${s.student_id}">${label}</option>`);
                     });
-                    $('#enrollment_id').val('');
+                    $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
                 }
             }
         });
@@ -110,7 +125,7 @@ $(document).ready(function() {
                     $('#status').val(f.status);
                     $('#receipt_no').val(f.receipt_no);
                     $('#notes').val(f.notes);
-                    // Load students and set selected, then set enrollment_id to enrollment_no
+                    // Load students and set selected, then load enrollments and set selected
                     $.ajax({
                         url: 'inc/ajax/students_ajax.php',
                         type: 'POST',
@@ -123,13 +138,13 @@ $(document).ready(function() {
                                 var foundStudent = null;
                                 $.each(stuRes.data, function(i, s) {
                                     var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
-                                    studentSel.append(`<option value="${s.student_id}" data-enrollment-no="${s.enrollment_no}"${s.enrollment_no==f.enrollment_id?' selected':''}>${label}</option>`);
-                                    if(s.enrollment_no==f.enrollment_id) foundStudent = s;
+                                    studentSel.append(`<option value="${s.student_id}"${s.student_id==f.student_id?' selected':''}>${label}</option>`);
+                                    if(s.student_id==f.student_id) foundStudent = s.student_id;
                                 });
                                 if(foundStudent) {
-                                    $('#enrollment_id').val(foundStudent.enrollment_no);
+                                    loadEnrollments(foundStudent, f.enrollment_id);
                                 } else {
-                                    $('#enrollment_id').val('');
+                                    $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
                                 }
                             }
                         }
