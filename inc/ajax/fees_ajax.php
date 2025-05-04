@@ -20,7 +20,23 @@ function sendJSON($success, $message = '', $data = null) {
 try {
     switch ($action) {
         case 'list':
-            $stmt = $pdo->query("SELECT fee_id, enrollment_id, amount, payment_date, payment_mode, transaction_id, status, receipt_no, notes FROM fees ORDER BY fee_id DESC");
+            $stmt = $pdo->query("
+                SELECT 
+                    f.fee_id, 
+                    f.enrollment_id, 
+                    CONCAT(s.first_name, ' ', s.last_name, ' (', s.enrollment_no, ')') AS student_display,
+                    f.amount, 
+                    f.payment_date, 
+                    f.payment_mode, 
+                    f.transaction_id, 
+                    f.status, 
+                    f.receipt_no, 
+                    f.notes
+                FROM fees f
+                LEFT JOIN student_batch_enrollment e ON f.enrollment_id = e.enrollment_id
+                LEFT JOIN students s ON e.student_id = s.student_id
+                ORDER BY f.fee_id DESC
+            ");
             $fees = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['data' => $fees]);
             exit;
