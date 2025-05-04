@@ -294,9 +294,26 @@ $(function () {
   // Save (Add/Edit) Assessment
   $('#assessmentForm').on('submit', function (e) {
     e.preventDefault();
-    var formData = $(this).serialize();
+    var form = $(this);
+    var formData = form.serialize();
     var action = $('#assessment_id').val() ? 'update' : 'create';
     formData += '&action=' + action;
+    $('#assessmentFormError').addClass('d-none').text('');
+    // Basic client-side validation
+    var requiredFields = ['#student_id', '#assessment_type', '#assessment_date', '#score', '#max_score', '#status'];
+    var hasError = false;
+    requiredFields.forEach(function(sel) {
+      if (!$(sel).val()) {
+        hasError = true;
+        $(sel).addClass('is-invalid');
+      } else {
+        $(sel).removeClass('is-invalid');
+      }
+    });
+    if (hasError) {
+      $('#assessmentFormError').removeClass('d-none').text('Please fill all required fields.');
+      return;
+    }
     $.ajax({
       url: 'inc/ajax/assessments_ajax.php',
       type: 'POST',
@@ -309,10 +326,12 @@ $(function () {
           $('#assessmentForm')[0].reset();
           table.ajax.reload();
         } else {
+          $('#assessmentFormError').removeClass('d-none').text(response.message || 'Error saving assessment');
           toastr.error(response.message || 'Error saving assessment');
         }
       },
       error: function () {
+        $('#assessmentFormError').removeClass('d-none').text('An error occurred. Please try again.');
         toastr.error('An error occurred. Please try again.');
       }
     });
@@ -323,6 +342,8 @@ $(function () {
     $('#assessmentForm')[0].reset();
     $('#assessment_id').val('');
     $('#assessmentModalTitle').text('Add New Assessment');
+    $('#assessmentFormError').addClass('d-none').text('');
+    $('#assessmentForm .is-invalid').removeClass('is-invalid');
   });
 
   // Toastr options

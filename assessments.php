@@ -83,17 +83,18 @@ require_once 'includes/sidebar.php';
             </div>
             <form id="assessmentForm">
                 <div class="modal-body">
+                    <div id="assessmentFormError" class="alert alert-danger d-none"></div>
                     <input type="hidden" id="assessment_id" name="assessment_id">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="student_id">Student</label>
+                                <label for="student_id">Student <span class="text-danger">*</span></label>
                                 <select class="form-control" id="student_id" name="student_id" required>
                                     <option value="">Select Student</option>
                                 </select>
                             </div>
                             <div class="form-group" id="enrollment_id_group" style="display:none;">
-                                <label for="enrollment_id">Enrollment</label>
+                                <label for="enrollment_id">Enrollment <span class="text-danger">*</span></label>
                                 <select class="form-control" id="enrollment_id" name="enrollment_id">
                                     <option value="">Select Enrollment</option>
                                 </select>
@@ -104,7 +105,7 @@ require_once 'includes/sidebar.php';
                                 <input type="text" class="form-control" id="course_name" name="course_name" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="assessment_type">Assessment Type</label>
+                                <label for="assessment_type">Assessment Type <span class="text-danger">*</span></label>
                                 <select class="form-control" id="assessment_type" name="assessment_type" required>
                                     <option value="">Select Type</option>
                                     <option value="theory">Theory</option>
@@ -113,21 +114,21 @@ require_once 'includes/sidebar.php';
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="assessment_date">Assessment Date</label>
+                                <label for="assessment_date">Assessment Date <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="assessment_date" name="assessment_date" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="score">Score</label>
+                                <label for="score">Score <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" id="score" name="score" min="0" max="100" required>
                             </div>
                             <div class="form-group">
-                                <label for="max_score">Max Score</label>
+                                <label for="max_score">Max Score <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" id="max_score" name="max_score" value="100" min="1" max="1000" required>
                             </div>
                             <div class="form-group">
-                                <label for="status">Status</label>
+                                <label for="status">Status <span class="text-danger">*</span></label>
                                 <select class="form-control" id="status" name="status" required>
                                     <option value="pending">Pending</option>
                                     <option value="completed">Completed</option>
