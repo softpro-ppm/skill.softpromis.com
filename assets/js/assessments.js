@@ -38,8 +38,24 @@ $(function () {
     order: [[0, 'desc']]
   });
 
-  // Helper to load all students into the dropdown
-  function loadAllStudents(selectedId) {
+  // Add Assessment Button
+  $('#addAssessmentBtn').on('click', function () {
+    $('#assessmentForm')[0].reset();
+    $('#assessment_id').val('');
+    $('#assessmentModalTitle').text('Add New Assessment');
+    // Reset all fields to default
+    $('#student_id').val('').trigger('change');
+    $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
+    $('#enrollment_id_hidden').val('');
+    $('#enrollment_id_group').hide();
+    $('#course_name').val('');
+    $('#assessment_type').val('');
+    $('#assessment_date').val('');
+    $('#score').val('');
+    $('#max_score').val('100');
+    $('#status').val('pending');
+    $('#remarks').val('');
+    // Load students
     $.ajax({
       url: 'inc/ajax/students_ajax.php',
       type: 'POST',
@@ -54,20 +70,54 @@ $(function () {
             $student.append('<option value="' + s.student_id + '">' + label + '</option>');
           });
         }
-        if(selectedId) {
-          $student.val(selectedId).trigger('change');
+        $student.val('').trigger('change');
+      }
+    });
+    $('#assessmentModal').modal('show');
+  });
+
+  // On student change, load enrollments
+  $(document).on('change', '#student_id', function() {
+    var studentId = $(this).val();
+    if (!studentId) {
+      $('#enrollment_id').empty().append('<option value="">Select Enrollment</option>');
+      $('#enrollment_id_hidden').val('');
+      $('#enrollment_id_group').hide();
+      $('#course_name').val('');
+      return;
+    }
+    $.ajax({
+      url: 'inc/ajax/students_ajax.php',
+      type: 'POST',
+      data: { action: 'get_enrollments_by_student', student_id: studentId },
+      dataType: 'json',
+      success: function(res) {
+        var enrollSel = $('#enrollment_id');
+        var enrollGroup = $('#enrollment_id_group');
+        enrollSel.empty();
+        if(res.success && res.data.length) {
+          if(res.data.length === 1) {
+            $('#enrollment_id_hidden').val(res.data[0].enrollment_id);
+            enrollGroup.hide();
+            enrollSel.append('<option value="' + res.data[0].enrollment_id + '">' + res.data[0].enrollment_id + '</option>');
+            enrollSel.val(res.data[0].enrollment_id);
+          } else {
+            enrollSel.append('<option value="">Select Enrollment</option>');
+            $.each(res.data, function(i, e) {
+              enrollSel.append('<option value="' + e.enrollment_id + '">' + e.enrollment_id + '</option>');
+            });
+            enrollGroup.show();
+          }
+        } else {
+          enrollGroup.hide();
+          $('#enrollment_id_hidden').val('');
         }
       }
     });
-  }
+  });
 
-  // Add Assessment Button
-  $('#addAssessmentBtn').on('click', function () {
-    $('#assessmentForm')[0].reset();
-    $('#assessment_id').val('');
-    $('#assessmentModalTitle').text('Add New Assessment');
-    loadAllStudents();
-    $('#assessmentModal').modal('show');
+  $(document).on('change', '#enrollment_id', function() {
+    $('#enrollment_id_hidden').val($(this).val());
   });
 
   // Edit Assessment Button
@@ -82,12 +132,59 @@ $(function () {
         if (response.success && response.data) {
           var d = response.data;
           $('#assessment_id').val(d.assessment_id);
-          // Load students and set selected, then trigger change after loading
-          loadAllStudents(d.student_id);
-          setTimeout(function() {
-            $('#student_id').val(d.student_id).trigger('change');
-          }, 300);
-          $('#enrollment_id').val(d.enrollment_id).trigger('change');
+          $('#assessmentModalTitle').text('Edit Assessment');
+          // Load students and set selected, then load enrollments and set selected
+          $.ajax({
+            url: 'inc/ajax/students_ajax.php',
+            type: 'POST',
+            data: { action: 'list' },
+            dataType: 'json',
+            success: function(res) {
+              var $student = $('#student_id');
+              $student.empty().append('<option value="">Select Student</option>');
+              var foundStudent = null;
+              if(res.success && res.data) {
+                $.each(res.data, function(i, s) {
+                  var label = s.first_name + ' ' + s.last_name + (s.enrollment_no ? ' (' + s.enrollment_no + ')' : '');
+                  $student.append('<option value="' + s.student_id + '"' + (s.student_id==d.student_id?' selected':'') + '>' + label + '</option>');
+                  if(s.student_id==d.student_id) foundStudent = s.student_id;
+                });
+              }
+              if(foundStudent) {
+                // Load enrollments for this student and set selected
+                $.ajax({
+                  url: 'inc/ajax/students_ajax.php',
+                  type: 'POST',
+                  data: { action: 'get_enrollments_by_student', student_id: foundStudent },
+                  dataType: 'json',
+                  success: function(res2) {
+                    var enrollSel = $('#enrollment_id');
+                    var enrollGroup = $('#enrollment_id_group');
+                    enrollSel.empty();
+                    if(res2.success && res2.data.length) {
+                      if(res2.data.length === 1) {
+                        $('#enrollment_id_hidden').val(res2.data[0].enrollment_id);
+                        enrollGroup.hide();
+                        enrollSel.append('<option value="' + res2.data[0].enrollment_id + '">' + res2.data[0].enrollment_id + '</option>');
+                        enrollSel.val(res2.data[0].enrollment_id);
+                      } else {
+                        enrollSel.append('<option value="">Select Enrollment</option>');
+                        $.each(res2.data, function(i, e) {
+                          enrollSel.append('<option value="' + e.enrollment_id + '"' + (e.enrollment_id==d.enrollment_id?' selected':'') + '>' + e.enrollment_id + '</option>');
+                        });
+                        enrollGroup.show();
+                        enrollSel.val(d.enrollment_id);
+                      }
+                    } else {
+                      enrollGroup.hide();
+                      $('#enrollment_id_hidden').val('');
+                    }
+                  }
+                });
+              }
+              $student.val(d.student_id).trigger('change');
+            }
+          });
           $('#course_name').val(d.course_name);
           $('#assessment_type').val(d.assessment_type);
           $('#assessment_date').val(d.assessment_date);
@@ -95,7 +192,6 @@ $(function () {
           $('#max_score').val(d.max_score);
           $('#status').val(d.status);
           $('#remarks').val(d.remarks);
-          $('#assessmentModalTitle').text('Edit Assessment');
           $('#assessmentModal').modal('show');
         } else {
           toastr.error('Could not fetch assessment details.');
