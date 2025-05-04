@@ -88,7 +88,7 @@ require_once 'includes/sidebar.php';
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="student_id">Student</label>
-                                <select class="form-control" id="student_id" name="student_id" required>
+                                <select class="form-control select2" id="student_id" name="student_id" required>
                                     <option value="">Select Student</option>
                                 </select>
                             </div>

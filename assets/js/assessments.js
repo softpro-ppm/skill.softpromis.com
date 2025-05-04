@@ -82,9 +82,12 @@ $(function () {
         if (response.success && response.data) {
           var d = response.data;
           $('#assessment_id').val(d.assessment_id);
-          $('#enrollment_id').val(d.enrollment_id).trigger('change');
-          // Load students and set selected
+          // Load students and set selected, then trigger change after loading
           loadAllStudents(d.student_id);
+          setTimeout(function() {
+            $('#student_id').val(d.student_id).trigger('change');
+          }, 300);
+          $('#enrollment_id').val(d.enrollment_id).trigger('change');
           $('#course_name').val(d.course_name);
           $('#assessment_type').val(d.assessment_type);
           $('#assessment_date').val(d.assessment_date);
