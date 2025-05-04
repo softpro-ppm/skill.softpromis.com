@@ -78,11 +78,16 @@ require_once 'includes/sidebar.php';
             <form id="feeForm">
                 <div class="modal-body">
                     <input type="hidden" id="fee_id" name="fee_id">
-                    <input type="hidden" id="enrollment_id" name="enrollment_id">
                     <div class="form-group">
                         <label for="student_id">Student</label>
                         <select class="form-control" id="student_id" name="student_id" required>
                             <option value="">Select Student</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="enrollment_id">Enrollment ID</label>
+                        <select class="form-control" id="enrollment_id" name="enrollment_id" required>
+                            <option value="">Select Enrollment</option>
                         </select>
                     </div>
                     <div class="form-group">
