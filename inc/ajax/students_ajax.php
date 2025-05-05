@@ -24,6 +24,8 @@ try {
             $date_of_birth = sanitizeInput($_POST['date_of_birth'] ?? '');
             $gender = sanitizeInput($_POST['gender'] ?? '');
             $address = sanitizeInput($_POST['address'] ?? '');
+            $course_id = isset($_POST['course_id']) ? (int)$_POST['course_id'] : null;
+            $batch_id = isset($_POST['batch_id']) ? (int)$_POST['batch_id'] : null;
 
             if (empty($enrollment_no) || empty($first_name) || empty($last_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
@@ -40,8 +42,8 @@ try {
             if ($stmt->fetchColumn() > 0) {
                 sendJSONResponse(false, 'Enrollment number already exists');
             }
-            $stmt = $pdo->prepare("INSERT INTO students (enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
-            $stmt->execute([$enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address]);
+            $stmt = $pdo->prepare("INSERT INTO students (enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, course_id, batch_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+            $stmt->execute([$enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id]);
             sendJSONResponse(true, 'Student created successfully', ['student_id' => $pdo->lastInsertId()]);
             break;
 
@@ -54,6 +56,9 @@ try {
             $date_of_birth = sanitizeInput($_POST['date_of_birth'] ?? '');
             $gender = sanitizeInput($_POST['gender'] ?? '');
             $address = sanitizeInput($_POST['address'] ?? '');
+            $course_id = isset($_POST['course_id']) ? (int)$_POST['course_id'] : null;
+            $batch_id = isset($_POST['batch_id']) ? (int)$_POST['batch_id'] : null;
+
             if (empty($student_id) || empty($first_name) || empty($last_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
@@ -63,8 +68,8 @@ try {
             if (!empty($mobile) && !validatePhone($mobile)) {
                 sendJSONResponse(false, 'Invalid mobile format');
             }
-            $stmt = $pdo->prepare("UPDATE students SET first_name = ?, last_name = ?, email = ?, mobile = ?, date_of_birth = ?, gender = ?, address = ?, updated_at = NOW() WHERE student_id = ?");
-            $stmt->execute([$first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $student_id]);
+            $stmt = $pdo->prepare("UPDATE students SET first_name = ?, last_name = ?, email = ?, mobile = ?, date_of_birth = ?, gender = ?, address = ?, course_id = ?, batch_id = ?, updated_at = NOW() WHERE student_id = ?");
+            $stmt->execute([$first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id, $student_id]);
             sendJSONResponse(true, 'Student updated successfully');
             break;
 
@@ -89,7 +94,7 @@ try {
             if (empty($student_id)) {
                 sendJSONResponse(false, 'Student ID is required');
             }
-            $stmt = $pdo->prepare('SELECT * FROM students WHERE student_id = ?');
+            $stmt = $pdo->prepare('SELECT s.*, c.course_name, b.batch_code FROM students s LEFT JOIN courses c ON s.course_id = c.course_id LEFT JOIN batches b ON s.batch_id = b.batch_id WHERE s.student_id = ?');
             $stmt->execute([$student_id]);
             $student = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($student) {
@@ -100,7 +105,12 @@ try {
             break;
 
         case 'list':
-            $stmt = $pdo->query('SELECT student_id, enrollment_no, first_name, last_name, gender, mobile, email, date_of_birth, address FROM students ORDER BY created_at DESC');
+            $stmt = $pdo->query('SELECT s.student_id, s.enrollment_no, s.first_name, s.last_name, s.gender, s.mobile, s.email, s.date_of_birth, s.address, 
+                c.course_name, b.batch_code
+                FROM students s
+                LEFT JOIN courses c ON s.course_id = c.course_id
+                LEFT JOIN batches b ON s.batch_id = b.batch_id
+                ORDER BY s.created_at DESC');
             $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['success' => true, 'data' => $students]);
             exit;
