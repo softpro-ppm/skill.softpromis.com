@@ -94,7 +94,7 @@ try {
             if (empty($student_id)) {
                 sendJSONResponse(false, 'Student ID is required');
             }
-            $stmt = $pdo->prepare('SELECT s.*, c.course_name, CONCAT(b.batch_code, " - ", b.batch_name) AS batch_code FROM students s LEFT JOIN courses c ON s.course_id = c.course_id LEFT JOIN batches b ON s.batch_id = b.batch_id WHERE s.student_id = ?');
+            $stmt = $pdo->prepare('SELECT s.*, c.course_name, b.batch_code FROM students s LEFT JOIN courses c ON s.course_id = c.course_id LEFT JOIN batches b ON s.batch_id = b.batch_id WHERE s.student_id = ?');
             $stmt->execute([$student_id]);
             $student = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($student) {
@@ -106,7 +106,7 @@ try {
 
         case 'list':
             $stmt = $pdo->query('SELECT s.student_id, s.enrollment_no, s.first_name, s.last_name, s.gender, s.mobile, s.email, s.date_of_birth, s.address, 
-                c.course_name, CONCAT(b.batch_code, " - ", b.batch_name) AS batch_code
+                c.course_name, b.batch_code
                 FROM students s
                 LEFT JOIN courses c ON s.course_id = c.course_id
                 LEFT JOIN batches b ON s.batch_id = b.batch_id
