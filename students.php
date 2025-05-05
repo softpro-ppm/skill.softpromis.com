@@ -31,7 +31,7 @@ try {
         $nextEnrollmentNo = 'ENR001';
     }
     $courses = $pdo->query("SELECT course_id, course_name FROM courses WHERE status = 'active' ORDER BY course_name ASC")->fetchAll(PDO::FETCH_ASSOC);
-    $batches = $pdo->query("SELECT batch_id, batch_code FROM batches ORDER BY batch_code ASC")->fetchAll(PDO::FETCH_ASSOC);
+    $batches = $pdo->query("SELECT batch_id, CONCAT(batch_code, ' - ', batch_name) AS batch_label FROM batches ORDER BY batch_code ASC")->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
     echo '<div class="alert alert-danger">Could not fetch students: ' . htmlspecialchars($e->getMessage()) . '</div>';
 }
@@ -148,7 +148,7 @@ try {
                         <select class="form-control" id="addBatchId" name="batch_id">
                             <option value="">Select Batch</option>
                             <?php foreach ($batches as $batch): ?>
-                                <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_code']) ?></option>
+                                <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -256,7 +256,7 @@ try {
                         <select class="form-control" id="editBatchId" name="batch_id">
                             <option value="">Select Batch</option>
                             <?php foreach ($batches as $batch): ?>
-                                <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_code']) ?></option>
+                                <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
