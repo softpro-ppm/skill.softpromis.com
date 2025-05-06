@@ -9,404 +9,336 @@ require_once 'crud_functions.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user'])) {
-    header('Location: login.php');
+    header('Location: index.php');
     exit;
 }
-
-// Get user role
-$userRole = $_SESSION['user']['role'] ?? '';
 
 // Set page title
 $pageTitle = 'Dashboard';
 
 // Include header
-include 'includes/header.php';
-include 'includes/sidebar.php';
+require_once 'includes/header.php';
+
+// Include sidebar
+require_once 'includes/sidebar.php';
 ?>
 
-<!-- Content Wrapper -->
-<div id="content-wrapper" class="d-flex flex-column">
-    <!-- Main Content -->
-    <div id="content">
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-            <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="refreshDashboard">
-                    <i class="fas fa-sync-alt fa-sm text-white-50"></i> Refresh
-                </a>
-            </div>
-
-            <!-- Content Row -->
-            <div class="row">
-                <?php if ($userRole === 'admin'): ?>
-                    <!-- Admin Dashboard -->
-                    <!-- Total Training Partners -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2" id="totalPartners">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Training Partners</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-building fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Training Centers -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2" id="totalCenters">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Training Centers</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-school fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Students -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-info shadow h-100 py-2" id="totalStudents">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                            Students</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-users fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Courses -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-warning shadow h-100 py-2" id="totalCourses">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                            Courses</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-book fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                <?php elseif ($userRole === 'training_partner'): ?>
-                    <!-- Training Partner Dashboard -->
-                    <!-- Total Centers -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2" id="totalCenters">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Training Centers</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-school fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Students -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2" id="totalStudents">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Students</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-users fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Courses -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-info shadow h-100 py-2" id="totalCourses">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                            Courses</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-book fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Batches -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-warning shadow h-100 py-2" id="totalBatches">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                            Batches</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-layer-group fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                <?php elseif ($userRole === 'training_center'): ?>
-                    <!-- Training Center Dashboard -->
-                    <!-- Total Students -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-primary shadow h-100 py-2" id="totalStudents">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                            Students</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-users fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Courses -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-success shadow h-100 py-2" id="totalCourses">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                            Courses</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-book fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Total Batches -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-info shadow h-100 py-2" id="totalBatches">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                            Batches</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-layer-group fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Completed Courses -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-warning shadow h-100 py-2" id="completedCourses">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                            Completed Courses</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800 stat-value">0</div>
-                                        <div class="text-xs text-muted stat-change">0%</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-check-circle fa-2x text-gray-300"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
-
-            <!-- Content Row -->
-            <div class="row">
-                <?php if ($userRole === 'admin' || $userRole === 'training_partner'): ?>
-                    <!-- Enrollment Chart -->
-                    <div class="col-xl-8 col-lg-7">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Student Enrollment Overview</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-area">
-                                    <canvas id="enrollmentChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Course Distribution Chart -->
-                    <div class="col-xl-4 col-lg-5">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Course Distribution</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-pie pt-4 pb-2">
-                                    <canvas id="courseDistributionChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ($userRole === 'training_partner'): ?>
-                    <!-- Center Performance Chart -->
-                    <div class="col-xl-12">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Center Performance</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-bar">
-                                    <canvas id="centerPerformanceChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if ($userRole === 'training_center'): ?>
-                    <!-- Active Batches Table -->
-                    <div class="col-xl-12">
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">Active Batches</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="batchesTable" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Batch Code</th>
-                                                <th>Course</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Students</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Data will be populated by JavaScript -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
-
-            <!-- Content Row -->
-            <div class="row">
-                <!-- Recent Activities -->
-                <div class="col-xl-12">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Recent Activities</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="activitiesTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Description</th>
-                                            <th>User</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Data will be populated by JavaScript -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </div>
         </div>
-        <!-- /.container-fluid -->
+      </div>
     </div>
-    <!-- End of Main Content -->
+    <!-- /.content-header -->
 
-    <!-- Footer -->
-    <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-            <div class="copyright text-center my-auto">
-                <span>Copyright &copy; Your Website 2024</span>
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Role-based Dashboard Selection -->
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary active" data-role="admin">Admin View</button>
+              <button type="button" class="btn btn-info" data-role="reception">Reception View</button>
+              <button type="button" class="btn btn-success" data-role="tc">Training Center View</button>
             </div>
+          </div>
         </div>
-    </footer>
-    <!-- End of Footer -->
-</div>
-<!-- End of Content Wrapper -->
 
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
+        <!-- Admin Dashboard -->
+        <div class="dashboard-view" id="admin-dashboard">
+          <!-- Info boxes -->
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+              <div class="info-box">
+                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Total Students</span>
+                  <span class="info-box-number">1,600</span>
+                  <span class="info-box-text">+15% from last month</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+              <div class="info-box">
+                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-money-bill-wave"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Total Payments</span>
+                  <span class="info-box-number">₹25,00,000</span>
+                  <span class="info-box-text">+20% from last month</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+              <div class="info-box">
+                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-clock"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Pending Payments</span>
+                  <span class="info-box-number">₹5,00,000</span>
+                  <span class="info-box-text">-5% from last month</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-3">
+              <div class="info-box">
+                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-certificate"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">Certificates Issued</span>
+                  <span class="info-box-number">850</span>
+                  <span class="info-box-text">+25% from last month</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-<!-- Include required scripts -->
-<script src="assets/vendor/chart.js/Chart.min.js"></script>
-<script src="assets/js/dashboard.js"></script>
+          <!-- Charts Row -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Monthly Fee Collection</h3>
+                </div>
+                <div class="card-body">
+                  <canvas id="feeCollectionChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Students by Scheme</h3>
+                </div>
+                <div class="card-body">
+                  <canvas id="schemeDistributionChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
 
-<?php include 'includes/footer.php'; ?> 
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Course Popularity</h3>
+                </div>
+                <div class="card-body">
+                  <canvas id="coursePopularityChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Govt vs Paid Students</h3>
+                </div>
+                <div class="card-body">
+                  <canvas id="studentTypeChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notifications Section -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Recent Notifications</h3>
+                </div>
+                <div class="card-body p-0">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <i class="fas fa-exclamation-circle text-warning"></i>
+                      <span class="ml-2">5 pending batch approvals</span>
+                      <a href="#" class="float-right">View</a>
+                    </li>
+                    <li class="list-group-item">
+                      <i class="fas fa-money-bill-wave text-danger"></i>
+                      <span class="ml-2">10 students with pending fees</span>
+                      <a href="#" class="float-right">View</a>
+                    </li>
+                    <li class="list-group-item">
+                      <i class="fas fa-clock text-info"></i>
+                      <span class="ml-2">3 batches starting next week</span>
+                      <a href="#" class="float-right">View</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reception Dashboard -->
+        <div class="dashboard-view" id="reception-dashboard" style="display: none;">
+          <!-- Reception specific content -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Assigned Training Center Students</h3>
+                </div>
+                <div class="card-body">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Batch</th>
+                        <th>Fee Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Sample data -->
+                      <tr>
+                        <td>ST001</td>
+                        <td>John Doe</td>
+                        <td>Web Development</td>
+                        <td>Batch 2024-01</td>
+                        <td><span class="badge badge-success">Paid</span></td>
+                        <td>
+                          <button class="btn btn-sm btn-info">View</button>
+                          <button class="btn btn-sm btn-primary">Edit</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Training Center Dashboard -->
+        <div class="dashboard-view" id="tc-dashboard" style="display: none;">
+          <!-- Training Center specific content -->
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">Assigned Batches</h3>
+                </div>
+                <div class="card-body">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Batch ID</th>
+                        <th>Course</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Students</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Sample data -->
+                      <tr>
+                        <td>B001</td>
+                        <td>Web Development</td>
+                        <td>2024-01-01</td>
+                        <td>2024-03-31</td>
+                        <td>25</td>
+                        <td>
+                          <button class="btn btn-sm btn-info">View</button>
+                          <button class="btn btn-sm btn-success">Upload Results</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /.content-wrapper -->
+</div><!-- ./wrapper -->
+
+<?php include 'includes/js.php'; ?>
+
+<script>
+// Dashboard View Switching
+$(document).ready(function() {
+  $('.btn-group button').click(function() {
+    $('.btn-group button').removeClass('active');
+    $(this).addClass('active');
+    
+    const role = $(this).data('role');
+    $('.dashboard-view').hide();
+    $(`#${role}-dashboard`).show();
+  });
+
+  // Initialize Charts
+  // Monthly Fee Collection Chart
+  const feeCollectionCtx = document.getElementById('feeCollectionChart').getContext('2d');
+  new Chart(feeCollectionCtx, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Fee Collection',
+        data: [1200000, 1500000, 1800000, 1600000, 2000000, 2500000],
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1
+      }]
+    }
+  });
+
+  // Scheme Distribution Chart
+  const schemeDistributionCtx = document.getElementById('schemeDistributionChart').getContext('2d');
+  new Chart(schemeDistributionCtx, {
+    type: 'pie',
+    data: {
+      labels: ['PMKVY', 'DDU-GKY', 'NSDC', 'Others'],
+      datasets: [{
+        data: [40, 30, 20, 10],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+      }]
+    }
+  });
+
+  // Course Popularity Chart
+  const coursePopularityCtx = document.getElementById('coursePopularityChart').getContext('2d');
+  new Chart(coursePopularityCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Web Dev', 'Data Science', 'Digital Marketing', 'UI/UX', 'Mobile Dev'],
+      datasets: [{
+        label: 'Students Enrolled',
+        data: [300, 250, 200, 150, 100],
+        backgroundColor: 'rgba(54, 162, 235, 0.5)'
+      }]
+    }
+  });
+
+  // Student Type Chart
+  const studentTypeCtx = document.getElementById('studentTypeChart').getContext('2d');
+  new Chart(studentTypeCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Government', 'Paid'],
+      datasets: [{
+        data: [60, 40],
+        backgroundColor: ['#FF6384', '#36A2EB']
+      }]
+    }
+  });
+});
+</script>
+</body>
+</html> 
