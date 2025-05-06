@@ -394,7 +394,7 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Add New Training Partner</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -470,7 +470,6 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Confirm Delete</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -480,7 +479,7 @@ require_once 'includes/sidebar.php';
                 <p><strong>Associated Centers:</strong> <span id="delete_partner_centers"></span></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
             </div>
         </div>
@@ -493,7 +492,7 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Partner Details</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -746,33 +745,6 @@ $(function () {
         $('#confirmDelete').data('id', partnerId);
     });
 
-    // Handle delete confirmation
-    $('#confirmDelete').on('click', function() {
-        var partnerId = $(this).data('id');
-        
-        $.ajax({
-            url: 'training-partners.php',
-            type: 'POST',
-            data: {
-                action: 'delete',
-                partner_id: partnerId
-            },
-            dataType: 'json',
-            success: function(response) {
-                $('#deleteModal').modal('hide');
-                if(response.status) {
-                    table.ajax.reload();
-                    toastr.success(response.message);
-                } else {
-                    toastr.error(response.message || 'Error deleting partner');
-                }
-            },
-            error: function() {
-                toastr.error('Error deleting partner');
-            }
-        });
-    });
-
     // Handle form submission
     $('#partnerForm').on('submit', function(e) {
         e.preventDefault();
@@ -815,7 +787,8 @@ $(function () {
             processData: false,
             success: function(response) {
                 if(response.status) {
-                    $('#partnerModal').modal('hide');
+                    var partnerModal = bootstrap.Modal.getInstance(document.getElementById('partnerModal'));
+                    partnerModal.hide();
                     table.ajax.reload();
                     toastr.success(response.message);
                     
@@ -838,12 +811,6 @@ $(function () {
         });
     });
 
-    // Update filename on file selection
-    $('.custom-file-input').on('change', function() {
-        var fileName = $(this).val().split('\\').pop();
-        $(this).next('.custom-file-label').html(fileName || 'Choose file');
-    });
-
     // Reset form when modal is hidden
     $('#partnerModal').on('hidden.bs.modal', function() {
         $('#partnerForm')[0].reset();
@@ -851,6 +818,34 @@ $(function () {
         $('.modal-title').text('Add New Training Partner');
         // Remove any validation classes
         $('.is-invalid').removeClass('is-invalid');
+    });
+
+    // Handle delete confirmation
+    $('#confirmDelete').on('click', function() {
+        var partnerId = $(this).data('id');
+        
+        $.ajax({
+            url: 'training-partners.php',
+            type: 'POST',
+            data: {
+                action: 'delete',
+                partner_id: partnerId
+            },
+            dataType: 'json',
+            success: function(response) {
+                var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                deleteModal.hide();
+                if(response.status) {
+                    table.ajax.reload();
+                    toastr.success(response.message);
+                } else {
+                    toastr.error(response.message || 'Error deleting partner');
+                }
+            },
+            error: function() {
+                toastr.error('Error deleting partner');
+            }
+        });
     });
 
     // Initialize Select2
