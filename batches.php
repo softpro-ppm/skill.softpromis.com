@@ -106,7 +106,7 @@ require_once 'includes/sidebar.php';
                     </div>
                     <div class="form-group">
                         <label for="stable">Stable</label>
-                        <input type="text" class="form-control" id="stable" name="stable" required>
+                        <input type="text" class="form-control" id="stable" name="stable" style="display:none" disabled>
                     </div>
                     <div class="form-group">
                         <label for="center_id">Center</label>
