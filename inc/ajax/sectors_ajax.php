@@ -73,6 +73,34 @@ try {
                 sendJSONResponse(false, 'Sector not found');
             }
             break;
+        case 'assign_sector':
+            $sector_id = (int)($_POST['sector_id'] ?? 0);
+            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            $center_id = (int)($_POST['center_id'] ?? 0);
+            if (!$sector_id || !$scheme_id || !$center_id) {
+                sendJSONResponse(false, 'Sector, Scheme, and Training Center are required');
+            }
+            // Check if already assigned
+            $stmt = $pdo->prepare("SELECT id FROM assigned_sectors WHERE sector_id = ? AND scheme_id = ? AND center_id = ?");
+            $stmt->execute([$sector_id, $scheme_id, $center_id]);
+            if ($stmt->fetch()) {
+                sendJSONResponse(false, 'This sector is already assigned to the selected scheme and center');
+            }
+            // Insert assignment
+            $stmt = $pdo->prepare("INSERT INTO assigned_sectors (sector_id, scheme_id, center_id, assigned_at) VALUES (?, ?, ?, NOW())");
+            $stmt->execute([$sector_id, $scheme_id, $center_id]);
+            sendJSONResponse(true, 'Sector assigned to scheme and training center successfully');
+            break;
+        case 'get_assigned_schemes_centers':
+            $sector_id = (int)($_GET['sector_id'] ?? 0);
+            if (!$sector_id) {
+                sendJSONResponse(false, 'Sector ID is required');
+            }
+            $stmt = $pdo->prepare("SELECT a.scheme_id, a.center_id, s.scheme_name, c.center_name FROM assigned_sectors a JOIN schemes s ON a.scheme_id = s.scheme_id JOIN training_centers c ON a.center_id = c.center_id WHERE a.sector_id = ?");
+            $stmt->execute([$sector_id]);
+            $assignments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Assignments fetched', $assignments);
+            break;
         default:
             sendJSONResponse(false, 'Invalid action');
     }

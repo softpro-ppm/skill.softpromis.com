@@ -416,6 +416,28 @@ CREATE TABLE `assigned_schemes` (
   CONSTRAINT `assigned_schemes_ibfk_2` FOREIGN KEY (`center_id`) REFERENCES `training_centers` (`center_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assigned_sectors`
+--
+
+CREATE TABLE `assigned_sectors` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sector_id` int(11) NOT NULL,
+  `scheme_id` int(11) NOT NULL,
+  `center_id` int(11) NOT NULL,
+  `assigned_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_assignment` (`sector_id`, `scheme_id`, `center_id`),
+  KEY `sector_id` (`sector_id`),
+  KEY `scheme_id` (`scheme_id`),
+  KEY `center_id` (`center_id`),
+  CONSTRAINT `assigned_sectors_ibfk_1` FOREIGN KEY (`sector_id`) REFERENCES `sectors` (`sector_id`) ON DELETE CASCADE,
+  CONSTRAINT `assigned_sectors_ibfk_2` FOREIGN KEY (`scheme_id`) REFERENCES `schemes` (`scheme_id`) ON DELETE CASCADE,
+  CONSTRAINT `assigned_sectors_ibfk_3` FOREIGN KEY (`center_id`) REFERENCES `training_centers` (`center_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Indexes for dumped tables
 --
