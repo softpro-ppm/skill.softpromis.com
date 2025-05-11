@@ -150,7 +150,90 @@ require_once 'includes/sidebar.php';
     </div>
 </div>
 
+<!-- Add Candidate to Batch Modal -->
+<div class="modal fade" id="addCandidateModal" tabindex="-1" aria-labelledby="addCandidateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="addCandidateModalLabel">Add Candidate to Batch</h4>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="addCandidateForm">
+        <div class="modal-body">
+          <input type="hidden" id="candidate_batch_id" name="batch_id">
+          <div class="form-group">
+            <label for="candidate_student_id">Select Candidate</label>
+            <select class="form-control" id="candidate_student_id" name="student_id" required>
+              <option value="">Select Candidate</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="candidate_enrollment_date">Enrollment Date</label>
+            <input type="date" class="form-control" id="candidate_enrollment_date" name="enrollment_date" value="<?= date('Y-m-d') ?>" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Add to Batch</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <?php include 'includes/js.php'; ?>
 <script src="assets/js/batches.js"></script>
+<script>
+$(function() {
+  // Open Add Candidate Modal
+  $(document).on('click', '.add-candidate-btn', function() {
+    var batchId = $(this).data('batch-id');
+    $('#candidate_batch_id').val(batchId);
+    // Load students not already in this batch
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'POST',
+      data: { action: 'get_available_students', batch_id: batchId },
+      dataType: 'json',
+      success: function(res) {
+        var $sel = $('#candidate_student_id');
+        $sel.empty().append('<option value="">Select Candidate</option>');
+        if(res.success && res.data) {
+          $.each(res.data, function(i, s) {
+            $sel.append('<option value="'+s.student_id+'">'+s.first_name+' '+s.last_name+' ('+s.enrollment_no+')</option>');
+          });
+        }
+      }
+    });
+    $('#addCandidateModal').modal('show');
+  });
+
+  // Submit Add Candidate Form
+  $('#addCandidateForm').on('submit', function(e) {
+    e.preventDefault();
+    var formData = $(this).serialize() + '&action=add_candidate_to_batch';
+    $.ajax({
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'POST',
+      data: formData,
+      dataType: 'json',
+      success: function(res) {
+        if(res.success) {
+          toastr.success(res.message || 'Candidate added to batch');
+          $('#addCandidateModal').modal('hide');
+          // Optionally reload batch table or enrolled list
+        } else {
+          toastr.error(res.message || 'Error adding candidate');
+        }
+      },
+      error: function() {
+        toastr.error('Error adding candidate');
+      }
+    });
+  });
+});
+</script>
 </body>
 </html>

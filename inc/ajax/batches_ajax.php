@@ -137,6 +137,30 @@ try {
                 'courses' => $courses
             ]);
             exit;
+        case 'get_available_students':
+            $batch_id = (int)($_POST['batch_id'] ?? 0);
+            $stmt = $pdo->prepare('SELECT s.student_id, s.first_name, s.last_name, s.enrollment_no FROM students s WHERE s.student_id NOT IN (SELECT student_id FROM student_batch_enrollment WHERE batch_id = ?)');
+            $stmt->execute([$batch_id]);
+            $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Available students fetched', $students);
+            break;
+        case 'add_candidate_to_batch':
+            $batch_id = (int)($_POST['batch_id'] ?? 0);
+            $student_id = (int)($_POST['student_id'] ?? 0);
+            $enrollment_date = $_POST['enrollment_date'] ?? date('Y-m-d');
+            if (!$batch_id || !$student_id) {
+                sendJSONResponse(false, 'Batch and student are required');
+            }
+            // Prevent duplicate
+            $stmt = $pdo->prepare('SELECT enrollment_id FROM student_batch_enrollment WHERE batch_id = ? AND student_id = ?');
+            $stmt->execute([$batch_id, $student_id]);
+            if ($stmt->fetch()) {
+                sendJSONResponse(false, 'Candidate already in batch');
+            }
+            $stmt = $pdo->prepare('INSERT INTO student_batch_enrollment (student_id, batch_id, enrollment_date, status, created_at, updated_at) VALUES (?, ?, ?, "active", NOW(), NOW())');
+            $stmt->execute([$student_id, $batch_id, $enrollment_date]);
+            sendJSONResponse(true, 'Candidate added to batch');
+            break;
         default:
             sendJSONResponse(false, 'Invalid action');
     }
