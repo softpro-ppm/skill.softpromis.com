@@ -203,6 +203,35 @@ try {
             }
             break;
 
+        case 'assign_course':
+            $course_id = (int)($_POST['course_id'] ?? 0);
+            $sector_id = (int)($_POST['sector_id'] ?? 0);
+            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            $center_id = (int)($_POST['center_id'] ?? 0);
+            if (!$course_id || !$sector_id || !$scheme_id || !$center_id) {
+                sendJSONResponse(false, 'All fields are required');
+            }
+            $stmt = $pdo->prepare("SELECT id FROM assigned_courses WHERE course_id = ? AND sector_id = ? AND scheme_id = ? AND center_id = ?");
+            $stmt->execute([$course_id, $sector_id, $scheme_id, $center_id]);
+            if ($stmt->fetch()) {
+                sendJSONResponse(false, 'This course is already assigned to the selected sector, scheme, and center');
+            }
+            $stmt = $pdo->prepare("INSERT INTO assigned_courses (course_id, sector_id, scheme_id, center_id, assigned_at) VALUES (?, ?, ?, ?, NOW())");
+            $stmt->execute([$course_id, $sector_id, $scheme_id, $center_id]);
+            sendJSONResponse(true, 'Course assigned successfully');
+            break;
+
+        case 'get_assigned_courses':
+            $course_id = (int)($_POST['course_id'] ?? 0);
+            if (!$course_id) {
+                sendJSONResponse(false, 'Course ID is required');
+            }
+            $stmt = $pdo->prepare("SELECT ac.sector_id, ac.scheme_id, ac.center_id, s.sector_name, sc.scheme_name, tc.center_name FROM assigned_courses ac JOIN sectors s ON ac.sector_id = s.sector_id JOIN schemes sc ON ac.scheme_id = sc.scheme_id JOIN training_centers tc ON ac.center_id = tc.center_id WHERE ac.course_id = ?");
+            $stmt->execute([$course_id]);
+            $assignments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Assignments fetched', $assignments);
+            break;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }

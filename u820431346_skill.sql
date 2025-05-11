@@ -438,6 +438,31 @@ CREATE TABLE `assigned_sectors` (
   CONSTRAINT `assigned_sectors_ibfk_3` FOREIGN KEY (`center_id`) REFERENCES `training_centers` (`center_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assigned_courses`
+--
+
+CREATE TABLE `assigned_courses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `course_id` int(11) NOT NULL,
+  `sector_id` int(11) NOT NULL,
+  `scheme_id` int(11) NOT NULL,
+  `center_id` int(11) NOT NULL,
+  `assigned_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_assignment` (`course_id`, `sector_id`, `scheme_id`, `center_id`),
+  KEY `course_id` (`course_id`),
+  KEY `sector_id` (`sector_id`),
+  KEY `scheme_id` (`scheme_id`),
+  KEY `center_id` (`center_id`),
+  CONSTRAINT `assigned_courses_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE,
+  CONSTRAINT `assigned_courses_ibfk_2` FOREIGN KEY (`sector_id`) REFERENCES `sectors` (`sector_id`) ON DELETE CASCADE,
+  CONSTRAINT `assigned_courses_ibfk_3` FOREIGN KEY (`scheme_id`) REFERENCES `schemes` (`scheme_id`) ON DELETE CASCADE,
+  CONSTRAINT `assigned_courses_ibfk_4` FOREIGN KEY (`center_id`) REFERENCES `training_centers` (`center_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Indexes for dumped tables
 --
