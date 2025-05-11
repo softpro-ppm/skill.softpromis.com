@@ -165,6 +165,17 @@ try {
             sendJSONResponse(true, 'Scheme assigned to training center successfully');
             break;
 
+        case 'get_assigned_centers':
+            $scheme_id = (int)($_GET['scheme_id'] ?? 0);
+            if (!$scheme_id) {
+                sendJSONResponse(false, 'Scheme ID is required');
+            }
+            $stmt = $pdo->prepare("SELECT ac.center_id, tc.center_name FROM assigned_schemes ac JOIN training_centers tc ON ac.center_id = tc.center_id WHERE ac.scheme_id = ?");
+            $stmt->execute([$scheme_id]);
+            $centers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Assigned centers fetched', $centers);
+            break;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }
