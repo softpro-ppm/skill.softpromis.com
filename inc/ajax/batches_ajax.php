@@ -37,7 +37,6 @@ try {
             $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'upcoming');
-            $stable = sanitizeInput($_POST['stable'] ?? '');
 
             if (empty($batch_name) || empty($batch_code) || empty($course_id) || empty($center_id) || empty($start_date) || empty($end_date) || $capacity <= 0 || empty($stable)) {
                 error_log('Validation failed: ' . json_encode([
@@ -47,8 +46,7 @@ try {
                     'center_id' => $center_id,
                     'start_date' => $start_date,
                     'end_date' => $end_date,
-                    'capacity' => $capacity,
-                    'stable' => $stable
+                    'capacity' => $capacity
                 ]));
                 sendJSONResponse(false, 'Required fields are missing');
             }
