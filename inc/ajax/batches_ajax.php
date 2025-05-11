@@ -38,7 +38,7 @@ try {
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'upcoming');
 
-            if (empty($batch_name) || empty($batch_code) || empty($course_id) || empty($center_id) || empty($start_date) || empty($end_date) || $capacity <= 0 || empty($stable)) {
+            if (empty($batch_name) || empty($batch_code) || empty($course_id) || empty($center_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
                 error_log('Validation failed: ' . json_encode([
                     'batch_name' => $batch_name,
                     'batch_code' => $batch_code,
@@ -55,8 +55,8 @@ try {
                 sendJSONResponse(false, 'End date cannot be before start date');
             }
 
-            $stmt = $pdo->prepare("INSERT INTO batches (batch_name, center_id, course_id, batch_code, start_date, end_date, capacity, status, stable, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
-            $result = $stmt->execute([$batch_name, $center_id, $course_id, $batch_code, $start_date, $end_date, $capacity, $status, $stable]);
+            $stmt = $pdo->prepare("INSERT INTO batches (batch_name, center_id, course_id, batch_code, start_date, end_date, capacity, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+            $result = $stmt->execute([$batch_name, $center_id, $course_id, $batch_code, $start_date, $end_date, $capacity, $status]);
 
             error_log('Add Batch Response: ' . json_encode(['success' => $result, 'message' => $result ? 'Batch added successfully' : 'Failed to add batch']));
 
