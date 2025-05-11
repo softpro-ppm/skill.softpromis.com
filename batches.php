@@ -233,6 +233,18 @@ $(function() {
       }
     });
   });
+
+  // Add 'Add Candidate' button to each row
+  $('#batchesTable').on('draw.dt', function() {
+    $('#batchesTable tbody tr').each(function() {
+      var row = $(this);
+      var data = $('#batchesTable').DataTable().row(row).data();
+      if (data && row.find('.add-candidate-btn').length === 0) {
+        var btn = $('<button type="button" class="btn btn-sm btn-success add-candidate-btn" title="Add Candidate" data-batch-id="'+data.batch_id+'"><i class="fas fa-user-plus"></i></button>');
+        row.find('td:last-child .edit-batch-btn').after(btn);
+      }
+    });
+  });
 });
 </script>
 </body>
