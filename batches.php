@@ -104,7 +104,10 @@ require_once 'includes/sidebar.php';
                         <label for="batch_code">Batch Code</label>
                         <input type="text" class="form-control" id="batch_code" name="batch_code" required>
                     </div>
-                    
+                    <div class="form-group">
+                        <label for="stable">Stable</label>
+                        <input type="text" class="form-control" id="stable" name="stable" required>
+                    </div>
                     <div class="form-group">
                         <label for="center_id">Center</label>
                         <select class="form-control" id="center_id" name="center_id" required>
