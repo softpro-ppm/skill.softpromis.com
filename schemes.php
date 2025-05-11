@@ -48,6 +48,9 @@ require_once 'includes/sidebar.php';
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSchemeModal">
                 <i class="fas fa-plus"></i> Add New Scheme
               </button>
+              <button type="button" class="btn btn-success ml-2" id="openAssignSchemeModal">
+                <i class="fas fa-link"></i> Assign Scheme to Center
+              </button>
             </div>
           </div>
           <div class="card-body">
@@ -217,6 +220,46 @@ require_once 'includes/sidebar.php';
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-danger" id="confirmDeleteScheme">Delete Scheme</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assign Scheme to Training Center Modal -->
+  <div class="modal fade" id="assignSchemeModal" tabindex="-1" role="dialog" aria-labelledby="assignSchemeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="assignSchemeModalLabel">Assign Scheme to Training Center</h4>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form id="assignSchemeForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="assign_scheme_id">Scheme</label>
+              <select class="form-control" id="assign_scheme_id" name="scheme_id" required>
+                <option value="">Select Scheme</option>
+                <?php foreach (Scheme::getAll() as $scheme): ?>
+                  <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="assign_center_id">Training Center</label>
+              <select class="form-control" id="assign_center_id" name="center_id" required>
+                <option value="">Select Training Center</option>
+                <?php foreach (TrainingCenter::getAll() as $center): ?>
+                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success">Assign</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -450,8 +493,35 @@ $(function () {
         });
     });
 
+    // --- Assign Scheme to Training Center ---
+    $(document).on('click', '#openAssignSchemeModal', function() {
+        $('#assignSchemeForm')[0].reset();
+        $('#assignSchemeModal').modal('show');
+    });
+    $('#assignSchemeForm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize() + '&action=assign_scheme';
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message || 'Scheme assigned successfully');
+                    $('#assignSchemeModal').modal('hide');
+                } else {
+                    toastr.error(response.message || 'Error assigning scheme');
+                }
+            },
+            error: function() {
+                toastr.error('Error assigning scheme');
+            }
+        });
+    });
+
     // --- Reset forms on modal close ---
-    $('#addSchemeModal, #editSchemeModal').on('hidden.bs.modal', function () {
+    $('#addSchemeModal, #editSchemeModal, #assignSchemeModal').on('hidden.bs.modal', function () {
         var $form = $(this).find('form');
         if ($form.length) {
             $form[0].reset();

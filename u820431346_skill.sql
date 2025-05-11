@@ -397,6 +397,25 @@ INSERT INTO `users` (`user_id`, `role_id`, `username`, `password`, `email`, `ful
 (6, 3, 'assessor1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'assessor@softpro.com', 'Jane Assessor', '9876543212', 'active', '2025-04-24 07:12:13', '2025-04-24 07:12:13', NULL, NULL),
 (7, 1, 'admin', '$2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C', 'admin@softpro.com', 'Administrator', '', 'active', '2025-04-24 07:16:39', '2025-05-01 08:53:43', '4a9964f3c0f81d851b0e0a8738291090c2dc934025791e052332c036a1e08c28', '2025-05-01 08:53:43');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assigned_schemes`
+--
+
+CREATE TABLE `assigned_schemes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `scheme_id` int(11) NOT NULL,
+  `center_id` int(11) NOT NULL,
+  `assigned_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_assignment` (`scheme_id`, `center_id`),
+  KEY `scheme_id` (`scheme_id`),
+  KEY `center_id` (`center_id`),
+  CONSTRAINT `assigned_schemes_ibfk_1` FOREIGN KEY (`scheme_id`) REFERENCES `schemes` (`scheme_id`) ON DELETE CASCADE,
+  CONSTRAINT `assigned_schemes_ibfk_2` FOREIGN KEY (`center_id`) REFERENCES `training_centers` (`center_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Indexes for dumped tables
 --

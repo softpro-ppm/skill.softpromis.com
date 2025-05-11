@@ -147,6 +147,24 @@ try {
             }
             break;
 
+        case 'assign_scheme':
+            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            $center_id = (int)($_POST['center_id'] ?? 0);
+            if (!$scheme_id || !$center_id) {
+                sendJSONResponse(false, 'Scheme and Training Center are required');
+            }
+            // Check if already assigned
+            $stmt = $pdo->prepare("SELECT id FROM assigned_schemes WHERE scheme_id = ? AND center_id = ?");
+            $stmt->execute([$scheme_id, $center_id]);
+            if ($stmt->fetch()) {
+                sendJSONResponse(false, 'This scheme is already assigned to the selected center');
+            }
+            // Insert assignment
+            $stmt = $pdo->prepare("INSERT INTO assigned_schemes (scheme_id, center_id, assigned_at) VALUES (?, ?, NOW())");
+            $stmt->execute([$scheme_id, $center_id]);
+            sendJSONResponse(true, 'Scheme assigned to training center successfully');
+            break;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }
