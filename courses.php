@@ -1,6 +1,10 @@
 <?php
 // courses.php - Courses Management Page
 // --------------------------------------------------
+// Hide PHP notices/warnings for session_start
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+ini_set('display_errors', 0);
+
 // Initialization & Session
 require_once 'config.php';
 require_once 'crud_functions.php';
