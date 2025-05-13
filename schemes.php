@@ -1,9 +1,10 @@
 <?php
-// Define BASEPATH constant
-define('BASEPATH', true);
-
-// Start session and include required files
-session_start();
+if (!defined('BASEPATH')) {
+    define('BASEPATH', true);
+}
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once 'config.php';
 require_once 'crud_functions.php';
 
@@ -63,73 +64,6 @@ require_once 'includes/sidebar.php';
                   <th>Training Center</th>
                   <th>Status</th>
                   <th>Created At</th>
-                  <th>Actions</th>
-                </tr>
-<?php
-// Define BASEPATH constant
-define('BASEPATH', true);
-
-// Start session and include required files
-session_start();
-require_once 'config.php';
-require_once 'crud_functions.php';
-
-// Check if user is logged in
-if (!isset($_SESSION['user'])) {
-    header('Location: index.php');
-    exit;
-}
-
-// Set page title
-$pageTitle = 'Schemes';
-
-// Include header
-require_once 'includes/header.php';
-
-// Include sidebar
-require_once 'includes/sidebar.php';
-?>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Schemes</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Schemes List -->
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Schemes List</h3>
-            <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSchemeModal">
-                <i class="fas fa-plus"></i> Add New Scheme
-              </button>
-              <button type="button" class="btn btn-success ml-2" id="openAssignSchemeModal">
-                <i class="fas fa-link"></i> Assign Scheme to Center
-              </button>
-            </div>
-          </div>
-          <div class="card-body">
-            <table id="schemesTable" class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Scheme Name</th>
-                  <th>Description</th>
-                  <th>Status</th>
-                  <th>Created At</th>
-                  <th>Updated At</th>
                   <th>Actions</th>
                 </tr>
               </thead>
