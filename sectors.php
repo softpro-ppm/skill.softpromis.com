@@ -98,21 +98,6 @@ require_once 'includes/sidebar.php';
             <form id="addSectorForm">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="sectorName">Sector Name</label>
-                        <input type="text" class="form-control" id="sectorName" name="sector_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">Status</label>
-                        <select class="form-control" id="status" name="status">
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <label for="center_id">Training Center</label>
                         <select class="form-control" id="center_id" name="center_id" required>
                             <option value="">Select Training Center</option>
@@ -128,6 +113,21 @@ require_once 'includes/sidebar.php';
                             <?php foreach (Scheme::getAll() as $scheme): ?>
                                 <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
                             <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sectorName">Sector Name</label>
+                        <input type="text" class="form-control" id="sectorName" name="sector_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
                         </select>
                     </div>
                 </div>
