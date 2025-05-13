@@ -78,7 +78,7 @@ require_once 'includes/sidebar.php';
           <div class="row g-3 mb-3">
             <div class="col-md-4">
               <label for="center_id" class="form-label fw-bold">Training Center</label>
-              <select class="form-select" id="center_id" name="center_id" required>
+              <select class="form-select form-control" id="center_id" name="center_id" required>
                 <option value="">Select Training Center</option>
                 <?php foreach ($centers as $center): ?>
                   <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -87,7 +87,7 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="col-md-4">
               <label for="scheme_id" class="form-label fw-bold">Scheme</label>
-              <select class="form-select" id="scheme_id" name="scheme_id">
+              <select class="form-select form-control" id="scheme_id" name="scheme_id">
                 <option value="">Select Scheme</option>
                 <?php foreach ($schemes as $scheme): ?>
                   <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -96,7 +96,7 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="col-md-4">
               <label for="sector_id" class="form-label fw-bold">Sector</label>
-              <select class="form-select" id="sector_id" name="sector_id" required>
+              <select class="form-select form-control" id="sector_id" name="sector_id" required>
                 <option value="">Select Sector</option>
                 <?php foreach ($sectors as $sector): ?>
                   <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
