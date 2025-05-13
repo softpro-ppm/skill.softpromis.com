@@ -112,6 +112,24 @@ require_once 'includes/sidebar.php';
                             <option value="inactive">Inactive</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="center_id">Training Center</label>
+                        <select class="form-control" id="center_id" name="center_id" required>
+                            <option value="">Select Training Center</option>
+                            <?php foreach (TrainingCenter::getAll() as $center): ?>
+                                <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheme_id">Scheme</label>
+                        <select class="form-control" id="scheme_id" name="scheme_id" required>
+                            <option value="">Select Scheme</option>
+                            <?php foreach (Scheme::getAll() as $scheme): ?>
+                                <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
