@@ -440,7 +440,13 @@ $(function () {
             dataType: 'json',
             success: function(response) {
                 if(response.success) {
-                    $modal.modal('hide');
+                    // Use Bootstrap 5 API to hide modal and clean up backdrop
+                    var bsModal = bootstrap.Modal.getInstance($modal[0]);
+                    if (bsModal) bsModal.hide();
+                    setTimeout(function() {
+                        $('.modal-backdrop').remove();
+                        $('body').removeClass('modal-open');
+                    }, 300);
                     toastr.success(response.message || 'Scheme updated successfully');
                     setTimeout(function() {
                         table.ajax.reload(null, false);
@@ -466,6 +472,7 @@ $(function () {
         e.preventDefault();
         console.log('Add form submitted'); // DEBUG
         var $form = $(this);
+        var $modal = $('#addSchemeModal');
         var isValid = true;
         $form.find('[required]').each(function() {
             if (!$(this).val()) {
@@ -487,7 +494,13 @@ $(function () {
             success: function(response) {
                 console.log('Add AJAX success:', response); // DEBUG
                 if(response.success) {
-                    $('#addSchemeModal').modal('hide');
+                    // Use Bootstrap 5 API to hide modal and clean up backdrop
+                    var bsModal = bootstrap.Modal.getInstance($modal[0]);
+                    if (bsModal) bsModal.hide();
+                    setTimeout(function() {
+                        $('.modal-backdrop').remove();
+                        $('body').removeClass('modal-open');
+                    }, 300);
                     toastr.success(response.message || 'Scheme added successfully');
                     setTimeout(function() {
                         table.ajax.reload(null, false);
