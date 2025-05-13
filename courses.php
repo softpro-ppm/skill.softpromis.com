@@ -91,7 +91,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="center_id" class="fw-bold">Training Center</label>
-                <select class="form-control select2-single" id="center_id" name="center_id" multiple required>
+                <select class="form-control select2-single" id="center_id" name="center_id" required>
                   <option value="">Select Training Center</option>
                   <?php foreach ($centers as $center): ?>
                     <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -102,7 +102,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="scheme_id" class="fw-bold">Scheme</label>
-                <select class="form-control select2-single" id="scheme_id" name="scheme_id" multiple>
+                <select class="form-control select2-single" id="scheme_id" name="scheme_id">
                   <option value="">Select Scheme</option>
                   <?php foreach ($schemes as $scheme): ?>
                     <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -113,7 +113,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="sector_id" class="fw-bold">Sector</label>
-                <select class="form-control select2-single" id="sector_id" name="sector_id" multiple required>
+                <select class="form-control select2-single" id="sector_id" name="sector_id" required>
                   <option value="">Select Sector</option>
                   <?php foreach ($sectors as $sector): ?>
                     <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -232,7 +232,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="edit_center_id" class="fw-bold">Training Center</label>
-                <select class="form-control select2-single" id="edit_center_id" name="center_id" multiple required>
+                <select class="form-control select2-single" id="edit_center_id" name="center_id" required>
                   <option value="">Select Training Center</option>
                   <?php foreach ($centers as $center): ?>
                     <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -243,7 +243,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="edit_scheme_id" class="fw-bold">Scheme</label>
-                <select class="form-control select2-single" id="edit_scheme_id" name="scheme_id" multiple>
+                <select class="form-control select2-single" id="edit_scheme_id" name="scheme_id">
                   <option value="">Select Scheme</option>
                   <?php foreach ($schemes as $scheme): ?>
                     <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -254,7 +254,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="edit_sector_id" class="fw-bold">Sector</label>
-                <select class="form-control select2-single" id="edit_sector_id" name="sector_id" multiple required>
+                <select class="form-control select2-single" id="edit_sector_id" name="sector_id" required>
                   <option value="">Select Sector</option>
                   <?php foreach ($sectors as $sector): ?>
                     <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -437,18 +437,16 @@ $(function () {
 
   // --- Select2 Initialization ---
   function initCourseSelect2() {
-    $('#center_id, #scheme_id, #sector_id, #edit_center_id, #edit_scheme_id, #edit_sector_id').select2({
-      theme: 'bootstrap4',
-      width: '100%',
-      minimumResultsForSearch: 0,
-      dropdownParent: function() {
-        if ($(this).closest('.modal').length) {
-          return $(this).closest('.modal');
-        }
-        return $(document.body);
-      },
-      allowClear: true,
-      maximumSelectionLength: 1
+    $('#center_id, #scheme_id, #sector_id, #edit_center_id, #edit_scheme_id, #edit_sector_id').each(function() {
+      $(this).select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        minimumResultsForSearch: 0,
+        dropdownParent: $(this).closest('.modal').length ? $(this).closest('.modal') : $(document.body),
+        allowClear: true,
+        maximumSelectionLength: 1
+      });
+      $(this).prop('multiple', false);
     });
   }
   initCourseSelect2();
