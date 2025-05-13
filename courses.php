@@ -96,9 +96,9 @@ $centers = TrainingCenter::getAll();
         </div>
         <form>
           <div class="modal-body">
-            <div class="row mb-3">
+            <div class="row mb-3 align-items-end g-3">
               <div class="col-md-4">
-                <div class="form-group mb-2">
+                <div class="form-group mb-0">
                   <label for="center_id" class="fw-bold">Training Center</label>
                   <select class="form-control select2-single" id="center_id" name="center_id" required>
                     <option value="">Select Training Center</option>
@@ -109,7 +109,7 @@ $centers = TrainingCenter::getAll();
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group mb-2">
+                <div class="form-group mb-0">
                   <label for="scheme_id" class="fw-bold">Scheme</label>
                   <select class="form-control select2-single" id="scheme_id" name="scheme_id">
                     <option value="">Select Scheme</option>
@@ -120,7 +120,7 @@ $centers = TrainingCenter::getAll();
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group mb-2">
+                <div class="form-group mb-0">
                   <label for="sector_id" class="fw-bold">Sector</label>
                   <select class="form-control select2-single" id="sector_id" name="sector_id" required>
                     <option value="">Select Sector</option>
@@ -237,9 +237,9 @@ $centers = TrainingCenter::getAll();
         </div>
         <form>
           <div class="modal-body">
-            <div class="row mb-3">
+            <div class="row mb-3 align-items-end g-3">
               <div class="col-md-4">
-                <div class="form-group mb-2">
+                <div class="form-group mb-0">
                   <label for="edit_center_id" class="fw-bold">Training Center</label>
                   <select class="form-control select2-single" id="edit_center_id" name="center_id" required>
                     <option value="">Select Training Center</option>
@@ -250,7 +250,7 @@ $centers = TrainingCenter::getAll();
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group mb-2">
+                <div class="form-group mb-0">
                   <label for="edit_scheme_id" class="fw-bold">Scheme</label>
                   <select class="form-control select2-single" id="edit_scheme_id" name="scheme_id">
                     <option value="">Select Scheme</option>
@@ -261,7 +261,7 @@ $centers = TrainingCenter::getAll();
                 </div>
               </div>
               <div class="col-md-4">
-                <div class="form-group mb-2">
+                <div class="form-group mb-0">
                   <label for="edit_sector_id" class="fw-bold">Sector</label>
                   <select class="form-control select2-single" id="edit_sector_id" name="sector_id" required>
                     <option value="">Select Sector</option>
