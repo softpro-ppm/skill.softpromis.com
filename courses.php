@@ -100,7 +100,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="center_id" class="fw-bold">Training Center</label>
-                  <select class="form-control select2-multi" id="center_id" name="center_id"  required>
+                  <select class="form-control select2-multi" id="center_id" name="center_id[]" multiple required>
                     <option value="">Select Training Center</option>
                     <?php foreach ($centers as $center): ?>
                       <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -111,7 +111,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="scheme_id" class="fw-bold">Scheme</label>
-                  <select class="form-control select2-multi" id="scheme_id" name="scheme_id" >
+                  <select class="form-control select2-multi" id="scheme_id" name="scheme_id[]" multiple>
                     <option value="">Select Scheme</option>
                     <?php foreach ($schemes as $scheme): ?>
                       <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -122,7 +122,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="sector_id" class="fw-bold">Sector</label>
-                  <select class="form-control select2-multi" id="sector_id" name="sector_id"  required>
+                  <select class="form-control select2-multi" id="sector_id" name="sector_id[]" multiple required>
                     <option value="">Select Sector</option>
                     <?php foreach ($sectors as $sector): ?>
                       <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -241,7 +241,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="center_id" class="fw-bold">Training Center</label>
-                  <select class="form-control select2-multi" id="edit_center_id" name="center_id"  required>
+                  <select class="form-control select2-multi" id="edit_center_id" name="center_id[]" multiple required>
                     <option value="">Select Training Center</option>
                     <?php foreach ($centers as $center): ?>
                       <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -252,7 +252,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="edit_scheme_id" class="fw-bold">Scheme</label>
-                  <select class="form-control select2-multi" id="edit_scheme_id" name="scheme_id" >
+                  <select class="form-control select2-multi" id="edit_scheme_id" name="scheme_id[]" multiple>
                     <option value="">Select Scheme</option>
                     <?php foreach ($schemes as $scheme): ?>
                       <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -263,7 +263,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="edit_sector_id" class="fw-bold">Sector</label>
-                  <select class="form-control select2-multi" id="edit_sector_id" name="sector_id"  required>
+                  <select class="form-control select2-multi" id="edit_sector_id" name="sector_id[]" multiple required>
                     <option value="">Select Sector</option>
                     <?php foreach ($sectors as $sector): ?>
                       <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -446,43 +446,27 @@ $(function () {
 
   bsCustomFileInput.init();
 
-  // Initialize Select2 for multi-select fields
-  function initSelect2Multi() {
-    $('.select2-multi').select2({
+  // Use multi-select with search for select2 fields in course modals
+  function initCourseSelect2() {
+    $('#center_id, #scheme_id, #sector_id, #edit_center_id, #edit_scheme_id, #edit_sector_id').select2({
+      theme: 'bootstrap4',
       width: '100%',
-      minimumResultsForSearch: 0,
-      placeholder: function(){
-        return $(this).find('option:first').text();
-      },
-      allowClear: true
+      minimumResultsForSearch: 0, // always show search box
+      dropdownParent: function() {
+        // Ensure dropdown is inside the modal
+        if ($(this).closest('.modal').length) {
+          return $(this).closest('.modal');
+        }
+        return $(document.body);
+      }
     });
   }
-
-  // Initialize Select2 for Add and Edit modals
+  // Initialize on page load
+  initCourseSelect2();
+  // Re-initialize when modals are shown (fixes search/select issues)
   $('#addCourseModal, #editCourseModal').on('shown.bs.modal', function () {
-    initSelect2Multi();
+    initCourseSelect2();
   });
-
-  // Ensure Select2 is destroyed and re-initialized to fix modal issues
-  $('#addCourseModal, #editCourseModal').on('hide.bs.modal', function () {
-    $('.select2-multi').select2('destroy');
-  });
-
-  // Populate Edit modal with selected values (multi-select)
-  function populateEditModal(data) {
-    $('#edit_center_id').val(data.center_id).trigger('change');
-    $('#edit_scheme_id').val(data.scheme_id).trigger('change');
-    $('#edit_sector_id').val(data.sector_id).trigger('change');
-  }
-
-  // Collect form data for Add/Edit (multi-select)
-  function getFormData(modalSelector) {
-    var formData = {};
-    formData.center_id = $(modalSelector + ' #center_id, ' + modalSelector + ' #edit_center_id').val();
-    formData.scheme_id = $(modalSelector + ' #scheme_id, ' + modalSelector + ' #edit_scheme_id').val();
-    formData.sector_id = $(modalSelector + ' #sector_id, ' + modalSelector + ' #edit_sector_id').val();
-    return formData;
-  }
 
   // Add Course
   $('#addCourseModal form').on('submit', function (e) {
