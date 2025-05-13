@@ -60,7 +60,7 @@ try {
             if ($result) {
                 sendJSONResponse(true, 'Batch added successfully');
             } else {
-                sendJSONResponse(false, 'Failed to add batch');
+                sendJSONResponse(false, 'Failed to add batch. ' . implode(' | ', $stmt->errorInfo()));
             }
             break;
         case 'edit':
@@ -87,7 +87,7 @@ try {
             if ($result) {
                 sendJSONResponse(true, 'Batch updated successfully');
             } else {
-                sendJSONResponse(false, 'Failed to update batch');
+                sendJSONResponse(false, 'Failed to update batch. ' . implode(' | ', $stmt->errorInfo()));
             }
             break;
         case 'delete':
