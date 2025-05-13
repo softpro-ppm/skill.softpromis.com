@@ -231,7 +231,7 @@ require_once 'includes/sidebar.php';
           <p>Are you sure you want to delete this scheme? This action cannot be undone.</p>
         </div>
         <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-danger" id="confirmDeleteScheme">Delete Scheme</button>
         </div>
       </div>
