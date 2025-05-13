@@ -1,34 +1,23 @@
 <?php
 // courses.php - Courses Management Page
 // --------------------------------------------------
-// Hide PHP notices/warnings for session_start
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 ini_set('display_errors', 0);
-
-// Initialization & Session
 require_once 'config.php';
 require_once 'crud_functions.php';
 define('BASEPATH', true);
-//session_start();
 if (!isset($_SESSION['user'])) {
     header('Location: index.php');
     exit;
 }
 $pageTitle = 'Courses';
-
-// Fetch data for dropdowns
 $sectors = Sector::getAll();
 $schemes = Scheme::getAll();
 $centers = TrainingCenter::getAll();
-
-// Include header and sidebar
 require_once 'includes/header.php';
 require_once 'includes/sidebar.php';
 ?>
-
-<!-- Content Wrapper -->
 <div class="content-wrapper">
-  <!-- Page Header -->
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -38,10 +27,8 @@ require_once 'includes/sidebar.php';
       </div>
     </div>
   </div>
-  <!-- Main Content -->
   <section class="content">
     <div class="container-fluid">
-      <!-- Courses List Card -->
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h3 class="card-title">Courses List</h3>
@@ -327,9 +314,9 @@ require_once 'includes/sidebar.php';
       </div>
       <div class="modal-body">
         <p>Are you sure you want to delete this course? This action cannot be undone.</p>
-        <p><strong>Course:</strong> Web Development</p>
-        <p><strong>Active Batches:</strong> 2</p>
-        <p><strong>Students:</strong> 45</p>
+        <p><strong>Course:</strong> <span id="deleteCourseName">Web Development</span></p>
+        <p><strong>Active Batches:</strong> <span id="deleteActiveBatches">2</span></p>
+        <p><strong>Students:</strong> <span id="deleteStudents">45</span></p>
       </div>
       <div class="modal-footer justify-content-between">
         <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
@@ -340,10 +327,9 @@ require_once 'includes/sidebar.php';
 </div>
 
 <?php include 'includes/js.php'; ?>
-
 <script>
 $(function () {
-  // --- DataTable Initialization ---
+  // DataTable
   var coursesTable = $('#coursesTable').DataTable({
     processing: true,
     serverSide: false,
@@ -378,24 +364,22 @@ $(function () {
     order: [[0, 'asc']]
   });
 
-  // --- Select2 Initialization ---
+  // Select2 Initialization
   function initCourseSelect2() {
-    // All single-select dropdowns in Add/Edit Course modals
     $('#addCourseModal .js-example-basic-single, #editCourseModal .js-example-basic-single').each(function() {
       $(this).select2({
         theme: 'bootstrap-5',
         width: '100%',
-        minimumResultsForSearch: 0, // always show search
+        minimumResultsForSearch: 0,
         allowClear: true,
         dropdownParent: $(this).closest('.modal')
       });
     });
   }
-  // Initialize on page load and when modals are shown
   initCourseSelect2();
   $('#addCourseModal, #editCourseModal').on('shown.bs.modal', function () { initCourseSelect2(); });
 
-  // --- Add Course ---
+  // Add Course
   $('#addCourseModal form').on('submit', function (e) {
     e.preventDefault();
     var $form = $(this);
@@ -447,7 +431,7 @@ $(function () {
     });
   });
 
-  // --- Edit Course ---
+  // Edit Course
   $(document).on('click', '.edit-course-btn', function () {
     var id = $(this).data('id');
     $.ajax({
@@ -524,7 +508,7 @@ $(function () {
     });
   });
 
-  // --- Delete Course ---
+  // Delete Course
   $(document).on('click', '.delete-course-btn', function () {
     var id = $(this).data('id');
     if (!id) {
@@ -560,7 +544,7 @@ $(function () {
     });
   });
 
-  // --- View Course ---
+  // View Course
   $(document).on('click', '.view-course-btn', function () {
     var id = $(this).data('id');
     $.ajax({
@@ -589,32 +573,11 @@ $(function () {
         } else {
           toastr.error('Could not fetch course details.');
         }
-        if (response.success && response.data) {
-          var c = response.data;
-          $('#viewCourseTitle').text(c.course_name);
-          $('#viewCourseModal [data-field="course_code"]').text(c.course_code);
-          $('#viewCourseModal [data-field="course_name"]').text(c.course_name);
-          $('#viewCourseModal [data-field="center_name"]').text(c.center_name);
-          $('#viewCourseModal [data-field="scheme_name"]').text(c.scheme_name);
-          $('#viewCourseModal [data-field="sector_name"]').text(c.sector_name);
-          $('#viewCourseModal [data-field="duration_hours"]').text(c.duration_hours);
-          $('#viewCourseModal [data-field="fee"]').text(c.fee);
-          $('#viewCourseModal [data-field="description"]').text(c.description);
-          $('#viewCourseModal [data-field="prerequisites"]').text(c.prerequisites);
-          $('#viewCourseModal [data-field="syllabus"]').text(c.syllabus);
-          $('#viewCourseModal [data-field="status"]').html('<span class="badge badge-' + (c.status === 'active' ? 'success' : 'secondary') + '">' + (c.status ? c.status.charAt(0).toUpperCase() + c.status.slice(1) : '') + '</span>');
-          $('#viewCourseModal [data-field="created_at"]').text(c.created_at || '');
-          $('#viewCourseModal [data-field="updated_at"]').text(c.updated_at || '');
-          $('#viewCourseModal').modal('show');
-        } else {
-          toastr.error('Could not fetch course details.');
-        }
       },
       error: function() {
         toastr.error('Could not fetch course details.');
       }
     });
-
     $.ajax({
       url: 'inc/ajax/courses_ajax.php',
       type: 'POST',
@@ -634,7 +597,7 @@ $(function () {
     });
   });
 
-  // --- Reset forms on modal close ---
+  // Reset forms on modal close
   $('#addCourseModal, #editCourseModal').on('hidden.bs.modal', function () {
     var $form = $(this).find('form');
     if ($form.length) {
