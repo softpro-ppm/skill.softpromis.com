@@ -110,7 +110,7 @@ require_once 'includes/sidebar.php';
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="course_id">Course</label>
+                        <label for="course_id"><strong>Course</strong></label>
                         <select class="form-control" id="course_id" name="course_id" required>
                             <option value="">Select Course</option>
                         </select>
