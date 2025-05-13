@@ -150,6 +150,8 @@ require_once 'includes/sidebar.php';
             <div class="modal-body">
                 <div class="form-group"><label>Sector ID</label><p data-field="sector_id"></p></div>
                 <div class="form-group"><label>Sector Name</label><p data-field="sector_name"></p></div>
+                <div class="form-group"><label>Training Center</label><p data-field="center_name"></p></div>
+                <div class="form-group"><label>Scheme</label><p data-field="scheme_name"></p></div>
                 <div class="form-group"><label>Description</label><p data-field="description"></p></div>
                 <div class="form-group"><label>Status</label><p data-field="status"></p></div>
                 <div class="form-group"><label>Created At</label><p data-field="created_at"></p></div>
@@ -332,6 +334,8 @@ $(function () {
                 var s = response.data || {};
                 $modal.find('[data-field="sector_id"]').text(s.sector_id || '');
                 $modal.find('[data-field="sector_name"]').text(s.sector_name || '');
+                $modal.find('[data-field="center_name"]').text(s.center_name || '');
+                $modal.find('[data-field="scheme_name"]').text(s.scheme_name || '');
                 $modal.find('[data-field="description"]').text(s.description || '');
                 $modal.find('[data-field="status"]').html(s.status ? '<span class="badge badge-' + (s.status === 'active' ? 'success' : 'secondary') + '">' + (s.status.charAt(0).toUpperCase() + s.status.slice(1)) + '</span>' : '');
                 $modal.find('[data-field="created_at"]').text(s.created_at || '');
