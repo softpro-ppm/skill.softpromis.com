@@ -84,9 +84,7 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Add New Scheme</h4>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="addSchemeForm">
           <div class="modal-body">
@@ -121,9 +119,7 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="viewSchemeModalLabel">View Scheme Details</h4>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -174,9 +170,7 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Edit Scheme</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="editSchemeForm">
           <input type="hidden" id="editSchemeId" name="scheme_id">
@@ -212,9 +206,7 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Delete Scheme</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <input type="hidden" id="deleteSchemeId">
@@ -234,9 +226,7 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="assignSchemeModalLabel">Assign Scheme to Training Center</h4>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="assignSchemeForm">
           <div class="modal-body">

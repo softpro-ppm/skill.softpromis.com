@@ -324,9 +324,7 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Add New Training Center</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
             <form id="centerForm">
                 <input type="hidden" id="center_id" name="center_id">
@@ -398,16 +396,14 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
                 <h4 class="modal-title">Confirm Delete</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
                 <p>Are you sure you want to delete this training center?</p>
                 <p><strong>Center:</strong> <span id="delete_center_name"></span></p>
         </div>
         <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
             </div>
       </div>
@@ -420,9 +416,7 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="viewCenterModalLabel">Training Center Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">

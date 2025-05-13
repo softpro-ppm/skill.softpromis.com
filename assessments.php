@@ -77,9 +77,7 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="assessmentModalTitle">Add New Assessment</h4>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="assessmentForm">
                 <div class="modal-body">
@@ -166,9 +164,7 @@ require_once 'includes/sidebar.php';
     <div class="modal-content">
       <div class="modal-header bg-info text-white">
         <h5 class="modal-title" id="viewAssessmentModalLabel">Assessment Details</h5>
-        <button type="button" class="close text-white" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="viewAssessmentBody">
         <!-- Populated by JS -->
