@@ -145,6 +145,10 @@ require_once 'includes/sidebar.php';
                 <label class="font-weight-bold">Description:</label>
                 <p data-field="description"></p>
               </div>
+              <div class="form-group">
+                <label class="font-weight-bold">Training Center:</label>
+                <p data-field="center_id"></p>
+              </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
@@ -334,6 +338,12 @@ $(function () {
                 $modal.find('[data-field="status"]').html(s.status ? '<span class="badge badge-' + (s.status === 'active' ? 'success' : 'danger') + '">' + (s.status.charAt(0).toUpperCase() + s.status.slice(1)) + '</span>' : '');
                 $modal.find('[data-field="created_at"]').text(s.created_at || '');
                 $modal.find('[data-field="updated_at"]').text(s.updated_at || '');
+                // Show Training Center
+                var centerName = '';
+                if (s.center_id) {
+                    centerName = $('#center_id option[value="' + s.center_id + '"]').text();
+                }
+                $modal.find('[data-field="center_id"]').text(centerName || '');
                 // Fetch assigned centers
                 $.ajax({
                     url: 'inc/ajax/schemes_ajax.php',
@@ -389,7 +399,7 @@ $(function () {
                 $modal.find('#editSchemeName').val(s.scheme_name || '');
                 $modal.find('#editDescription').val(s.description || '');
                 $modal.find('#editStatus').val(s.status || 'active');
-                $modal.find('#edit_center_id').val(s.center_id || '');
+                $modal.find('#edit_center_id').val(s.center_id || '').trigger('change');
             },
             error: function(xhr, status, error) {
                 console.log('Edit AJAX error:', status, error); // DEBUG

@@ -44,6 +44,7 @@ try {
             $scheme_name = sanitizeInput($_POST['scheme_name'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
+            $center_id = (int)($_POST['center_id'] ?? 0);
 
             if (empty($scheme_name)) {
                 sendJSONResponse(false, 'Scheme name is required');
@@ -51,11 +52,11 @@ try {
 
             $stmt = $pdo->prepare("
                 INSERT INTO schemes (
-                    scheme_name, description, status, created_at, updated_at
-                ) VALUES (?, ?, ?, NOW(), NOW())
+                    scheme_name, description, status, created_at, updated_at, center_id
+                ) VALUES (?, ?, ?, NOW(), NOW(), ?)
             ");
             $stmt->execute([
-                $scheme_name, $description, $status
+                $scheme_name, $description, $status, $center_id
             ]);
 
             logAudit($_SESSION['user']['user_id'], 'create_scheme', [
@@ -70,6 +71,7 @@ try {
             $scheme_name = sanitizeInput($_POST['scheme_name'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
+            $center_id = (int)($_POST['center_id'] ?? 0);
 
             if (empty($scheme_id) || empty($scheme_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
@@ -77,11 +79,11 @@ try {
 
             $stmt = $pdo->prepare("
                 UPDATE schemes 
-                SET scheme_name = ?, description = ?, status = ?, updated_at = NOW()
+                SET scheme_name = ?, description = ?, status = ?, updated_at = NOW(), center_id = ?
                 WHERE scheme_id = ?
             ");
             $stmt->execute([
-                $scheme_name, $description, $status, $scheme_id
+                $scheme_name, $description, $status, $center_id, $scheme_id
             ]);
 
             logAudit($_SESSION['user']['user_id'], 'update_scheme', [
@@ -132,6 +134,7 @@ try {
                     scheme_name,
                     description,
                     status,
+                    center_id,
                     DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at,
                     DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at
                 FROM schemes 

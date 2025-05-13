@@ -201,18 +201,19 @@ CREATE TABLE `schemes` (
   `description` text DEFAULT NULL,
   `status` enum('active','inactive') DEFAULT 'active',
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `center_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `schemes`
 --
 
-INSERT INTO `schemes` (`scheme_id`, `scheme_name`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'PMKVY', 'Pradhan Mantri Kaushal Vikas Yojana', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(2, 'DDU-GKY', 'Deen Dayal Upadhyaya Grameen Kaushalya Yojana', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(3, 'Regular', 'Regular Training Programs', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(4, 'Abel Noel', 'Excepturi esse dolo', 'inactive', '2025-04-30 01:11:27', '2025-04-30 01:11:27');
+INSERT INTO `schemes` (`scheme_id`, `scheme_name`, `description`, `status`, `created_at`, `updated_at`, `center_id`) VALUES
+(1, 'PMKVY', 'Pradhan Mantri Kaushal Vikas Yojana', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL),
+(2, 'DDU-GKY', 'Deen Dayal Upadhyaya Grameen Kaushalya Yojana', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL),
+(3, 'Regular', 'Regular Training Programs', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL),
+(4, 'Abel Noel', 'Excepturi esse dolo', 'inactive', '2025-04-30 01:11:27', '2025-04-30 01:11:27', NULL);
 
 -- --------------------------------------------------------
 
