@@ -123,7 +123,7 @@ try {
             break;
 
         case 'get':
-            $scheme_id = (int)($_GET['scheme_id'] ?? 0);
+            $scheme_id = (int)($_GET['scheme_id'] ?? $_POST['scheme_id'] ?? 0);
 
             if (empty($scheme_id)) {
                 sendJSONResponse(false, 'Scheme ID is required');
@@ -131,15 +131,13 @@ try {
 
             $stmt = $pdo->prepare("
                 SELECT 
-                    scheme_id,
-                    scheme_name,
-                    description,
-                    status,
-                    center_id,
-                    DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at,
-                    DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at
-                FROM schemes 
-                WHERE scheme_id = ?
+                    s.*, 
+                    tc.center_name, 
+                    DATE_FORMAT(s.created_at, '%Y-%m-%d %H:%i:%s') as created_at, 
+                    DATE_FORMAT(s.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at
+                FROM schemes s
+                LEFT JOIN training_centers tc ON s.center_id = tc.center_id
+                WHERE s.scheme_id = ?
             ");
             $stmt->execute([$scheme_id]);
             $scheme = $stmt->fetch(PDO::FETCH_ASSOC);
