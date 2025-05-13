@@ -62,12 +62,10 @@ require_once 'includes/sidebar.php';
                                         <th>No.</th>
                                         <th>Sector ID</th>
                                         <th>Name</th>
-                                        <th>Description</th>
                                         <th>Training Center</th>
                                         <th>Scheme</th>
                                         <th>Status</th>
                                         <th>Created At</th>
-                                        <th>Updated At</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -266,12 +264,10 @@ $(function () {
             { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
             { data: 'sector_id' },
             { data: 'sector_name' },
-            { data: 'description' },
             { data: 'center_name' },
             { data: 'scheme_name' },
             { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'secondary') + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
             { data: 'created_at' },
-            { data: 'updated_at' },
             { data: null, orderable: false, searchable: false, render: function (data, type, row) {
                 return '<div class="btn-group btn-group-sm">' +
                     '<button type="button" class="btn btn-info view-sector-btn" data-sector-id="' + row.sector_id + '"><i class="fas fa-eye"></i></button>' +
