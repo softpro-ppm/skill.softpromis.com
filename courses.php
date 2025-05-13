@@ -79,7 +79,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="center_id" class="fw-bold">Training Center</label>
-                <select class="form-select js-example-basic-single" id="center_id" name="center_id" required>
+                <select class="form-select" id="center_id" name="center_id" required>
                   <option value="">Select Training Center</option>
                   <?php foreach ($centers as $center): ?>
                     <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -90,7 +90,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="scheme_id" class="fw-bold">Scheme</label>
-                <select class="form-select js-example-basic-single" id="scheme_id" name="scheme_id">
+                <select class="form-select" id="scheme_id" name="scheme_id">
                   <option value="">Select Scheme</option>
                   <?php foreach ($schemes as $scheme): ?>
                     <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -101,7 +101,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="sector_id" class="fw-bold">Sector</label>
-                <select class="form-select js-example-basic-single" id="sector_id" name="sector_id" required>
+                <select class="form-select" id="sector_id" name="sector_id" required>
                   <option value="">Select Sector</option>
                   <?php foreach ($sectors as $sector): ?>
                     <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -144,7 +144,7 @@ require_once 'includes/sidebar.php';
               </div>
               <div class="form-group mb-2">
                 <label for="status" class="fw-bold">Status</label>
-                <select class="form-select js-example-basic-single" id="status" name="status" required>
+                <select class="form-select" id="status" name="status" required>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>
@@ -220,7 +220,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="edit_center_id" class="fw-bold">Training Center</label>
-                <select class="form-select js-example-basic-single" id="edit_center_id" name="center_id" required>
+                <select class="form-select" id="edit_center_id" name="center_id" required>
                   <option value="">Select Training Center</option>
                   <?php foreach ($centers as $center): ?>
                     <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -231,7 +231,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="edit_scheme_id" class="fw-bold">Scheme</label>
-                <select class="form-select js-example-basic-single" id="edit_scheme_id" name="scheme_id">
+                <select class="form-select" id="edit_scheme_id" name="scheme_id">
                   <option value="">Select Scheme</option>
                   <?php foreach ($schemes as $scheme): ?>
                     <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -242,7 +242,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="edit_sector_id" class="fw-bold">Sector</label>
-                <select class="form-select js-example-basic-single" id="edit_sector_id" name="sector_id" required>
+                <select class="form-select" id="edit_sector_id" name="sector_id" required>
                   <option value="">Select Sector</option>
                   <?php foreach ($sectors as $sector): ?>
                     <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -285,7 +285,7 @@ require_once 'includes/sidebar.php';
               </div>
               <div class="form-group mb-2">
                 <label for="edit_status" class="fw-bold">Status</label>
-                <select class="form-select js-example-basic-single" id="edit_status" name="status" required>
+                <select class="form-select" id="edit_status" name="status" required>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>
@@ -364,21 +364,6 @@ $(function () {
     order: [[0, 'asc']]
   });
 
-  // Select2 Initialization
-  function initCourseSelect2() {
-    $('#addCourseModal .js-example-basic-single, #editCourseModal .js-example-basic-single').each(function() {
-      $(this).select2({
-        theme: 'bootstrap-5',
-        width: '100%',
-        minimumResultsForSearch: 0,
-        allowClear: true,
-        dropdownParent: $(this).closest('.modal')
-      });
-    });
-  }
-  initCourseSelect2();
-  $('#addCourseModal, #editCourseModal').on('shown.bs.modal', function () { initCourseSelect2(); });
-
   // Add Course
   $('#addCourseModal form').on('submit', function (e) {
     e.preventDefault();
@@ -444,9 +429,9 @@ $(function () {
           var c = response.data;
           $('#edit_course_code').val(c.course_code);
           $('#edit_course_name').val(c.course_name);
-          $('#edit_center_id').val(c.center_id).trigger('change');
-          $('#edit_sector_id').val(c.sector_id).trigger('change');
-          $('#edit_scheme_id').val(c.scheme_id).trigger('change');
+          $('#edit_center_id').val(c.center_id);
+          $('#edit_sector_id').val(c.sector_id);
+          $('#edit_scheme_id').val(c.scheme_id);
           $('#edit_duration_hours').val(c.duration_hours);
           $('#edit_fee').val(c.fee);
           $('#edit_description').val(c.description);
