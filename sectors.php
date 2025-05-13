@@ -53,9 +53,6 @@ require_once 'includes/sidebar.php';
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSectorModal">
                                     <i class="fas fa-plus"></i> Add New Sector
                                 </button>
-                                <button type="button" class="btn btn-success ml-2" id="openAssignSectorModal">
-                                    <i class="fas fa-link"></i> Assign Sector
-                                </button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -249,55 +246,6 @@ require_once 'includes/sidebar.php';
             </div>
         </div>
     </div>
-</div>
-
-<!-- Assign Sector Modal -->
-<div class="modal fade" id="assignSectorModal" tabindex="-1" role="dialog" aria-labelledby="assignSectorModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="assignSectorModalLabel">Assign Sector to Scheme & Training Center</h4>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form id="assignSectorForm">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="assign_center_id">Training Center</label>
-            <select class="form-control" id="assign_center_id" name="center_id" required>
-              <option value="">Select Training Center</option>
-              <?php foreach (TrainingCenter::getAll() as $center): ?>
-                <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="assign_scheme_id">Scheme</label>
-            <select class="form-control" id="assign_scheme_id" name="scheme_id" required>
-              <option value="">Select Scheme</option>
-              <?php foreach (Scheme::getAll() as $scheme): ?>
-                <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="assign_sector_id">Sector</label>
-            <select class="form-control" id="assign_sector_id" name="sector_id" required>
-              <option value="">Select Sector</option>
-              <?php foreach (Sector::getAll() as $sector): ?>
-                <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-success">Assign Sector</button>
-        </div>
-      </form>
-    </div>
-  </div>
 </div>
 
 <?php include 'includes/js.php'; ?>
@@ -518,33 +466,6 @@ $(function () {
             $form[0].reset();
             $form.find('.is-invalid').removeClass('is-invalid');
         }
-    });
-
-    // --- ASSIGN SECTOR ---
-    $(document).on('click', '#openAssignSectorModal', function() {
-        $('#assignSectorForm')[0].reset();
-        $('#assignSectorModal').modal('show');
-    });
-    $('#assignSectorForm').on('submit', function(e) {
-        e.preventDefault();
-        var formData = $(this).serialize() + '&action=assign_sector';
-        $.ajax({
-            url: 'inc/ajax/sectors_ajax.php',
-            type: 'POST',
-            data: formData,
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    toastr.success(response.message || 'Sector assigned successfully');
-                    $('#assignSectorModal').modal('hide');
-                } else {
-                    toastr.error(response.message || 'Error assigning sector');
-                }
-            },
-            error: function() {
-                toastr.error('Error assigning sector');
-            }
-        });
     });
 });
 </script>
