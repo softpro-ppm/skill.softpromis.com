@@ -399,7 +399,10 @@ $(function () {
                 $modal.find('#editSchemeName').val(s.scheme_name || '');
                 $modal.find('#editDescription').val(s.description || '');
                 $modal.find('#editStatus').val(s.status || 'active');
-                $modal.find('#edit_center_id').val(s.center_id || '').trigger('change');
+                // Set Training Center dropdown after ensuring options are loaded
+                setTimeout(function() {
+                    $modal.find('#edit_center_id').val(s.center_id || '').trigger('change');
+                }, 100);
             },
             error: function(xhr, status, error) {
                 console.log('Edit AJAX error:', status, error); // DEBUG
@@ -569,9 +572,8 @@ $(function () {
         if ($form.length) {
             $form[0].reset();
             $form.find('.is-invalid').removeClass('is-invalid');
-            // Explicitly clear all input, textarea, and select fields
+            // Do NOT forcibly reset selects here, let AJAX set them
             $form.find('input[type="text"], input[type="hidden"], textarea').val('');
-            $form.find('select').prop('selectedIndex', 0);
         }
     });
 });
