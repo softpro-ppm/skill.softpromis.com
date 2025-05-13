@@ -1,415 +1,406 @@
 <?php
-// Define BASEPATH constant
-define('BASEPATH', true);
-
-// Start session and include required files
-session_start();
+// courses.php - Courses Management Page
+// --------------------------------------------------
+// Initialization & Session
 require_once 'config.php';
 require_once 'crud_functions.php';
-
-// Check if user is logged in
+define('BASEPATH', true);
+session_start();
 if (!isset($_SESSION['user'])) {
     header('Location: index.php');
     exit;
 }
-
-// Set page title
 $pageTitle = 'Courses';
 
-// Include header
-require_once 'includes/header.php';
-
-// Include sidebar
-require_once 'includes/sidebar.php';
-
+// Fetch data for dropdowns
 $sectors = Sector::getAll();
 $schemes = Scheme::getAll();
 $centers = TrainingCenter::getAll();
+
+// Include header and sidebar
+require_once 'includes/header.php';
+require_once 'includes/sidebar.php';
 ?>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Courses</h1>
-          </div>
+<!-- Content Wrapper -->
+<div class="content-wrapper">
+  <!-- Page Header -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Courses</h1>
         </div>
-      </div>
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Courses List -->
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Courses List</h3>
-            <div class="card-tools">
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
-                <i class="fas fa-plus"></i> Add New Course
-              </button>
-              <button type="button" class="btn btn-success ml-2" id="openAssignCourseModal">
-                <i class="fas fa-link"></i> Assign Course
-              </button>
-            </div>
-          </div>
-          <div class="card-body">
-            <table id="coursesTable" class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>Course Code</th>
-                  <th>Course Name</th>
-                  <th>Sector</th>
-                  <th>Scheme</th>
-                  <th>Duration (hours)</th>
-                  <th>Fee</th>
-                  <th>Description</th>
-                  <th>Prerequisites</th>
-                  <th>Syllabus</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="coursesTableBody">
-                <!-- Dynamic rows will be loaded here by AJAX -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- /.content -->
-  </div><!-- /.content-wrapper -->
-</div><!-- ./wrapper -->
-
-  <!-- Add Course Modal -->
-  <div class="modal fade" id="addCourseModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h4 class="modal-title">Add New Course</h4>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form>
-          <div class="modal-body">
-            <div class="row mb-3 align-items-end g-3">
-              <div class="col-md-4">
-                <div class="form-group mb-0">
-                  <label for="center_id" class="fw-bold">Training Center</label>
-                  <select class="form-control select2-single" id="center_id" name="center_id" multiple required>
-                    <option value="">Select Training Center</option>
-                    <?php foreach ($centers as $center): ?>
-                      <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group mb-0">
-                  <label for="scheme_id" class="fw-bold">Scheme</label>
-                  <select class="form-control select2-single" id="scheme_id" name="scheme_id" multiple>
-                    <option value="">Select Scheme</option>
-                    <?php foreach ($schemes as $scheme): ?>
-                      <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group mb-0">
-                  <label for="sector_id" class="fw-bold">Sector</label>
-                  <select class="form-control select2-single" id="sector_id" name="sector_id" multiple required>
-                    <option value="">Select Sector</option>
-                    <?php foreach ($sectors as $sector): ?>
-                      <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group mb-2">
-                  <label for="course_code" class="fw-bold">Course Code</label>
-                  <input type="text" class="form-control" id="course_code" name="course_code" required>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="course_name" class="fw-bold">Course Name</label>
-                  <input type="text" class="form-control" id="course_name" name="course_name" required>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="duration_hours" class="fw-bold">Duration (hours)</label>
-                  <input type="number" class="form-control" id="duration_hours" name="duration_hours" required>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="fee" class="fw-bold">Fee</label>
-                  <input type="number" step="0.01" class="form-control" id="fee" name="fee">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-2">
-                  <label for="description" class="fw-bold">Description</label>
-                  <textarea class="form-control" id="description" name="description" rows="2"></textarea>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="prerequisites" class="fw-bold">Prerequisites</label>
-                  <textarea class="form-control" id="prerequisites" name="prerequisites" rows="2"></textarea>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="syllabus" class="fw-bold">Syllabus</label>
-                  <textarea class="form-control" id="syllabus" name="syllabus" rows="2"></textarea>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="status" class="fw-bold">Status</label>
-                  <select class="form-control" id="status" name="status" required>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Course</button>
-          </div>
-        </form>
       </div>
     </div>
   </div>
-
-  <!-- View Course Modal -->
-  <div class="modal fade" id="viewCourseModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h4 class="modal-title">View Course: <span id="viewCourseTitle"></span></h4>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+  <!-- Main Content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Courses List Card -->
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="card-title">Courses List</h3>
+          <div class="card-tools">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+              <i class="fas fa-plus"></i> Add New Course
+            </button>
+            <button type="button" class="btn btn-success ml-2" id="openAssignCourseModal">
+              <i class="fas fa-link"></i> Assign Course
+            </button>
+          </div>
         </div>
+        <div class="card-body">
+          <table id="coursesTable" class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Sector</th>
+                <th>Scheme</th>
+                <th>Duration (hours)</th>
+                <th>Fee</th>
+                <th>Description</th>
+                <th>Prerequisites</th>
+                <th>Syllabus</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="coursesTableBody">
+              <!-- Dynamic rows loaded by AJAX -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Add Course Modal -->
+<div class="modal fade" id="addCourseModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h4 class="modal-title">Add New Course</h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form>
         <div class="modal-body">
-          <div class="container-fluid">
-            <div class="row mb-2">
-              <div class="col-md-6">
-                <div class="mb-2"><strong>Training Center:</strong> <span data-field="center_name"></span></div>
-                <div class="mb-2"><strong>Scheme:</strong> <span data-field="scheme_name"></span></div>
-                <div class="mb-2"><strong>Sector:</strong> <span data-field="sector_name"></span></div>
-                <div class="mb-2"><strong>Course Code:</strong> <span data-field="course_code"></span></div>
-                <div class="mb-2"><strong>Course Name:</strong> <span data-field="course_name"></span></div>
-                <div class="mb-2"><strong>Fee:</strong> <span data-field="fee"></span></div>
-              </div>
-              <div class="col-md-6">
-                <div class="mb-2"><strong>Duration (hours):</strong> <span data-field="duration_hours"></span></div>
-                <div class="mb-2"><strong>Status:</strong> <span data-field="status"></span></div>
-                <div class="mb-2"><strong>Created At:</strong> <span data-field="created_at"></span></div>
-                <div class="mb-2"><strong>Updated At:</strong> <span data-field="updated_at"></span></div>
+          <div class="row mb-3 align-items-end g-3">
+            <div class="col-md-4">
+              <div class="form-group mb-0">
+                <label for="center_id" class="fw-bold">Training Center</label>
+                <select class="form-control select2-single" id="center_id" name="center_id" multiple required>
+                  <option value="">Select Training Center</option>
+                  <?php foreach ($centers as $center): ?>
+                    <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                  <?php endforeach; ?>
+                </select>
               </div>
             </div>
-            <div class="row mb-2">
-              <div class="col-md-12">
-                <div class="mb-2"><strong>Description:</strong><br><span data-field="description"></span></div>
-                <div class="mb-2"><strong>Prerequisites:</strong><br><span data-field="prerequisites"></span></div>
-                <div class="mb-2"><strong>Syllabus:</strong><br><span data-field="syllabus"></span></div>
-                <div class="mb-2"><strong>Assigned To (Sector / Scheme / Center):</strong>
-                  <ul id="assigned-courses-list" style="padding-left:18px;"></ul>
-                </div>
+            <div class="col-md-4">
+              <div class="form-group mb-0">
+                <label for="scheme_id" class="fw-bold">Scheme</label>
+                <select class="form-control select2-single" id="scheme_id" name="scheme_id" multiple>
+                  <option value="">Select Scheme</option>
+                  <?php foreach ($schemes as $scheme): ?>
+                    <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                  <?php endforeach; ?>
+                </select>
               </div>
             </div>
+            <div class="col-md-4">
+              <div class="form-group mb-0">
+                <label for="sector_id" class="fw-bold">Sector</label>
+                <select class="form-control select2-single" id="sector_id" name="sector_id" multiple required>
+                  <option value="">Select Sector</option>
+                  <?php foreach ($sectors as $sector): ?>
+                    <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-2">
+                <label for="course_code" class="fw-bold">Course Code</label>
+                <input type="text" class="form-control" id="course_code" name="course_code" required>
+              </div>
+              <div class="form-group mb-2">
+                <label for="course_name" class="fw-bold">Course Name</label>
+                <input type="text" class="form-control" id="course_name" name="course_name" required>
+              </div>
+              <div class="form-group mb-2">
+                <label for="duration_hours" class="fw-bold">Duration (hours)</label>
+                <input type="number" class="form-control" id="duration_hours" name="duration_hours" required>
+              </div>
+              <div class="form-group mb-2">
+                <label for="fee" class="fw-bold">Fee</label>
+                <input type="number" step="0.01" class="form-control" id="fee" name="fee">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-2">
+                <label for="description" class="fw-bold">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="2"></textarea>
+              </div>
+              <div class="form-group mb-2">
+                <label for="prerequisites" class="fw-bold">Prerequisites</label>
+                <textarea class="form-control" id="prerequisites" name="prerequisites" rows="2"></textarea>
+              </div>
+              <div class="form-group mb-2">
+                <label for="syllabus" class="fw-bold">Syllabus</label>
+                <textarea class="form-control" id="syllabus" name="syllabus" rows="2"></textarea>
+              </div>
+              <div class="form-group mb-2">
+                <label for="status" class="fw-bold">Status</label>
+                <select class="form-control" id="status" name="status" required>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- View Course Modal -->
+<div class="modal fade" id="viewCourseModal" tabindex="-1" aria-labelledby="viewCourseModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h4 class="modal-title" id="viewCourseModalLabel">View Course: <span id="viewCourseTitle"></span></h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-md-6">
+              <div class="mb-2"><strong>Training Center:</strong> <span data-field="center_name"></span></div>
+              <div class="mb-2"><strong>Scheme:</strong> <span data-field="scheme_name"></span></div>
+              <div class="mb-2"><strong>Sector:</strong> <span data-field="sector_name"></span></div>
+              <div class="mb-2"><strong>Course Code:</strong> <span data-field="course_code"></span></div>
+              <div class="mb-2"><strong>Course Name:</strong> <span data-field="course_name"></span></div>
+              <div class="mb-2"><strong>Fee:</strong> <span data-field="fee"></span></div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-2"><strong>Duration (hours):</strong> <span data-field="duration_hours"></span></div>
+              <div class="mb-2"><strong>Status:</strong> <span data-field="status"></span></div>
+              <div class="mb-2"><strong>Created At:</strong> <span data-field="created_at"></span></div>
+              <div class="mb-2"><strong>Updated At:</strong> <span data-field="updated_at"></span></div>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-md-12">
+              <div class="mb-2"><strong>Description:</strong><br><span data-field="description"></span></div>
+              <div class="mb-2"><strong>Prerequisites:</strong><br><span data-field="prerequisites"></span></div>
+              <div class="mb-2"><strong>Syllabus:</strong><br><span data-field="syllabus"></span></div>
+              <div class="mb-2"><strong>Assigned To (Sector / Scheme / Center):</strong>
+                <ul id="assigned-courses-list" class="ps-3 mb-0"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Course Modal -->
+<div class="modal fade" id="editCourseModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h4 class="modal-title">Edit Course</h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="row mb-3 align-items-end g-3">
+            <div class="col-md-4">
+              <div class="form-group mb-0">
+                <label for="edit_center_id" class="fw-bold">Training Center</label>
+                <select class="form-control select2-single" id="edit_center_id" name="center_id" multiple required>
+                  <option value="">Select Training Center</option>
+                  <?php foreach ($centers as $center): ?>
+                    <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mb-0">
+                <label for="edit_scheme_id" class="fw-bold">Scheme</label>
+                <select class="form-control select2-single" id="edit_scheme_id" name="scheme_id" multiple>
+                  <option value="">Select Scheme</option>
+                  <?php foreach ($schemes as $scheme): ?>
+                    <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group mb-0">
+                <label for="edit_sector_id" class="fw-bold">Sector</label>
+                <select class="form-control select2-single" id="edit_sector_id" name="sector_id" multiple required>
+                  <option value="">Select Sector</option>
+                  <?php foreach ($sectors as $sector): ?>
+                    <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-2">
+                <label for="edit_course_code" class="fw-bold">Course Code</label>
+                <input type="text" class="form-control" id="edit_course_code" name="course_code" required>
+              </div>
+              <div class="form-group mb-2">
+                <label for="edit_course_name" class="fw-bold">Course Name</label>
+                <input type="text" class="form-control" id="edit_course_name" name="course_name" required>
+              </div>
+              <div class="form-group mb-2">
+                <label for="edit_fee" class="fw-bold">Fee</label>
+                <input type="number" step="0.01" class="form-control" id="edit_fee" name="fee">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-2">
+                <label for="edit_duration_hours" class="fw-bold">Duration (hours)</label>
+                <input type="number" class="form-control" id="edit_duration_hours" name="duration_hours" required>
+              </div>
+              <div class="form-group mb-2">
+                <label for="edit_description" class="fw-bold">Description</label>
+                <textarea class="form-control" id="edit_description" name="description" rows="2"></textarea>
+              </div>
+              <div class="form-group mb-2">
+                <label for="edit_prerequisites" class="fw-bold">Prerequisites</label>
+                <textarea class="form-control" id="edit_prerequisites" name="prerequisites" rows="2"></textarea>
+              </div>
+              <div class="form-group mb-2">
+                <label for="edit_syllabus" class="fw-bold">Syllabus</label>
+                <textarea class="form-control" id="edit_syllabus" name="syllabus" rows="2"></textarea>
+              </div>
+              <div class="form-group mb-2">
+                <label for="edit_status" class="fw-bold">Status</label>
+                <select class="form-control" id="edit_status" name="status" required>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Update Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Course Modal -->
+<div class="modal fade" id="deleteCourseModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Course</h4>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this course? This action cannot be undone.</p>
+        <p><strong>Course:</strong> Web Development</p>
+        <p><strong>Active Batches:</strong> 2</p>
+        <p><strong>Students:</strong> 45</p>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger">Delete Course</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Assign Course Modal -->
+<div class="modal fade" id="assignCourseModal" tabindex="-1" role="dialog" aria-labelledby="assignCourseModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="assignCourseModalLabel">Assign Course to Sector, Scheme & Training Center</h4>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="assignCourseForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="assign_course_id">Course</label>
+            <select class="form-control" id="assign_course_id" name="course_id" required>
+              <option value="">Select Course</option>
+              <?php foreach (Course::getAll() as $course): ?>
+                <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="assign_center_id">Training Center</label>
+            <select class="form-control" id="assign_center_id" name="center_id" required>
+              <option value="">Select Training Center</option>
+              <?php foreach (TrainingCenter::getAll() as $center): ?>
+                <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="assign_scheme_id">Scheme</label>
+            <select class="form-control" id="assign_scheme_id" name="scheme_id" required>
+              <option value="">Select Scheme</option>
+              <?php foreach (Scheme::getAll() as $scheme): ?>
+                <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="assign_sector_id">Sector</label>
+            <select class="form-control" id="assign_sector_id" name="sector_id" required>
+              <option value="">Select Sector</option>
+              <?php foreach (Sector::getAll() as $sector): ?>
+                <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
+              <?php endforeach; ?>
+            </select>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Edit Course Modal -->
-  <div class="modal fade" id="editCourseModal">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h4 class="modal-title">Edit Course</h4>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form>
-          <div class="modal-body">
-            <div class="row mb-3 align-items-end g-3">
-              <div class="col-md-4">
-                <div class="form-group mb-0">
-                  <label for="edit_center_id" class="fw-bold">Training Center</label>
-                  <select class="form-control select2-single" id="edit_center_id" name="center_id" multiple required>
-                    <option value="">Select Training Center</option>
-                    <?php foreach ($centers as $center): ?>
-                      <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group mb-0">
-                  <label for="edit_scheme_id" class="fw-bold">Scheme</label>
-                  <select class="form-control select2-single" id="edit_scheme_id" name="scheme_id" multiple>
-                    <option value="">Select Scheme</option>
-                    <?php foreach ($schemes as $scheme): ?>
-                      <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group mb-0">
-                  <label for="edit_sector_id" class="fw-bold">Sector</label>
-                  <select class="form-control select2-single" id="edit_sector_id" name="sector_id" multiple required>
-                    <option value="">Select Sector</option>
-                    <?php foreach ($sectors as $sector): ?>
-                      <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group mb-2">
-                  <label for="edit_course_code" class="fw-bold">Course Code</label>
-                  <input type="text" class="form-control" id="edit_course_code" name="course_code" required>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="edit_course_name" class="fw-bold">Course Name</label>
-                  <input type="text" class="form-control" id="edit_course_name" name="course_name" required>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="edit_fee" class="fw-bold">Fee</label>
-                  <input type="number" step="0.01" class="form-control" id="edit_fee" name="fee">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group mb-2">
-                  <label for="edit_duration_hours" class="fw-bold">Duration (hours)</label>
-                  <input type="number" class="form-control" id="edit_duration_hours" name="duration_hours" required>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="edit_description" class="fw-bold">Description</label>
-                  <textarea class="form-control" id="edit_description" name="description" rows="2"></textarea>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="edit_prerequisites" class="fw-bold">Prerequisites</label>
-                  <textarea class="form-control" id="edit_prerequisites" name="prerequisites" rows="2"></textarea>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="edit_syllabus" class="fw-bold">Syllabus</label>
-                  <textarea class="form-control" id="edit_syllabus" name="syllabus" rows="2"></textarea>
-                </div>
-                <div class="form-group mb-2">
-                  <label for="edit_status" class="fw-bold">Status</label>
-                  <select class="form-control" id="edit_status" name="status" required>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Update Course</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Delete Course Modal -->
-  <div class="modal fade" id="deleteCourseModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Delete Course</h4>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete this course? This action cannot be undone.</p>
-          <p><strong>Course:</strong> Web Development</p>
-          <p><strong>Active Batches:</strong> 2</p>
-          <p><strong>Students:</strong> 45</p>
-        </div>
-        <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete Course</button>
+          <button type="submit" class="btn btn-success">Assign Course</button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
-
-  <!-- Assign Course Modal -->
-  <div class="modal fade" id="assignCourseModal" tabindex="-1" role="dialog" aria-labelledby="assignCourseModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="assignCourseModalLabel">Assign Course to Sector, Scheme & Training Center</h4>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form id="assignCourseForm">
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="assign_course_id">Course</label>
-              <select class="form-control" id="assign_course_id" name="course_id" required>
-                <option value="">Select Course</option>
-                <?php foreach (Course::getAll() as $course): ?>
-                  <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="assign_center_id">Training Center</label>
-              <select class="form-control" id="assign_center_id" name="center_id" required>
-                <option value="">Select Training Center</option>
-                <?php foreach (TrainingCenter::getAll() as $center): ?>
-                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="assign_scheme_id">Scheme</label>
-              <select class="form-control" id="assign_scheme_id" name="scheme_id" required>
-                <option value="">Select Scheme</option>
-                <?php foreach (Scheme::getAll() as $scheme): ?>
-                  <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="assign_sector_id">Sector</label>
-              <select class="form-control" id="assign_sector_id" name="sector_id" required>
-                <option value="">Select Sector</option>
-                <?php foreach (Sector::getAll() as $sector): ?>
-                  <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success">Assign Course</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+</div>
 
 <?php include 'includes/js.php'; ?>
 
 <script>
 $(function () {
-  // Initialize DataTable
+  // --- DataTable Initialization ---
   var coursesTable = $('#coursesTable').DataTable({
     processing: true,
     serverSide: false,
@@ -444,33 +435,26 @@ $(function () {
     order: [[0, 'asc']]
   });
 
-  bsCustomFileInput.init();
-
-  // Use single-select with search for select2 fields in course modals
+  // --- Select2 Initialization ---
   function initCourseSelect2() {
     $('#center_id, #scheme_id, #sector_id, #edit_center_id, #edit_scheme_id, #edit_sector_id').select2({
       theme: 'bootstrap4',
       width: '100%',
-      minimumResultsForSearch: 0, // always show search box
+      minimumResultsForSearch: 0,
       dropdownParent: function() {
-        // Ensure dropdown is inside the modal
         if ($(this).closest('.modal').length) {
           return $(this).closest('.modal');
         }
         return $(document.body);
       },
       allowClear: true,
-      maximumSelectionLength: 1 // Only allow one selection even though multiple is set
+      maximumSelectionLength: 1
     });
   }
-  // Initialize on page load
   initCourseSelect2();
-  // Re-initialize when modals are shown (fixes search/select issues)
-  $('#addCourseModal, #editCourseModal').on('shown.bs.modal', function () {
-    initCourseSelect2();
-  });
+  $('#addCourseModal, #editCourseModal').on('shown.bs.modal', function () { initCourseSelect2(); });
 
-  // Add Course
+  // --- Add Course ---
   $('#addCourseModal form').on('submit', function (e) {
     e.preventDefault();
     var $form = $(this);
@@ -522,7 +506,7 @@ $(function () {
     });
   });
 
-  // Edit Course: open modal and fill data
+  // --- Edit Course ---
   $(document).on('click', '.edit-course-btn', function () {
     var id = $(this).data('id');
     $.ajax({
@@ -554,8 +538,6 @@ $(function () {
       }
     });
   });
-
-  // Edit Course: submit
   $('#editCourseModal form').on('submit', function (e) {
     e.preventDefault();
     var $form = $(this);
@@ -601,7 +583,7 @@ $(function () {
     });
   });
 
-  // Delete Course: open modal
+  // --- Delete Course ---
   $(document).on('click', '.delete-course-btn', function () {
     var id = $(this).data('id');
     if (!id) {
@@ -610,8 +592,6 @@ $(function () {
     }
     $('#deleteCourseModal').data('id', id).modal('show');
   });
-
-  // Delete Course: confirm
   $('#deleteCourseModal .btn-danger').on('click', function () {
     var id = $('#deleteCourseModal').data('id');
     if (!id) {
@@ -639,7 +619,7 @@ $(function () {
     });
   });
 
-  // View Course: open modal and fill data
+  // --- View Course ---
   $(document).on('click', '.view-course-btn', function () {
     var id = $(this).data('id');
     $.ajax({
@@ -648,6 +628,26 @@ $(function () {
       data: { action: 'get', course_id: id },
       dataType: 'json',
       success: function (response) {
+        if (response.success && response.data) {
+          var c = response.data;
+          $('#viewCourseTitle').text(c.course_name);
+          $('#viewCourseModal [data-field="course_code"]').text(c.course_code);
+          $('#viewCourseModal [data-field="course_name"]').text(c.course_name);
+          $('#viewCourseModal [data-field="center_name"]').text(c.center_name);
+          $('#viewCourseModal [data-field="scheme_name"]').text(c.scheme_name);
+          $('#viewCourseModal [data-field="sector_name"]').text(c.sector_name);
+          $('#viewCourseModal [data-field="duration_hours"]').text(c.duration_hours);
+          $('#viewCourseModal [data-field="fee"]').text(c.fee);
+          $('#viewCourseModal [data-field="description"]').text(c.description);
+          $('#viewCourseModal [data-field="prerequisites"]').text(c.prerequisites);
+          $('#viewCourseModal [data-field="syllabus"]').text(c.syllabus);
+          $('#viewCourseModal [data-field="status"]').html('<span class="badge badge-' + (c.status === 'active' ? 'success' : 'secondary') + '">' + (c.status ? c.status.charAt(0).toUpperCase() + c.status.slice(1) : '') + '</span>');
+          $('#viewCourseModal [data-field="created_at"]').text(c.created_at || '');
+          $('#viewCourseModal [data-field="updated_at"]').text(c.updated_at || '');
+          $('#viewCourseModal').modal('show');
+        } else {
+          toastr.error('Could not fetch course details.');
+        }
         if (response.success && response.data) {
           var c = response.data;
           $('#viewCourseTitle').text(c.course_name);
