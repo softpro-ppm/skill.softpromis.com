@@ -29,14 +29,14 @@ try {
             exit;
         case 'add':
             $batch_name = sanitizeInput($_POST['batch_name'] ?? '');
-            $batch_code = sanitizeInput($_POST['batch_code'] ?? '');
+            $batch_code = isset($_POST['batch_code']) ? sanitizeInput($_POST['batch_code']) : null;
             $course_id = (int)($_POST['course_id'] ?? 0);
             $start_date = sanitizeInput($_POST['start_date'] ?? '');
             $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'upcoming');
 
-            if (empty($batch_name) || empty($batch_code) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
+            if (empty($batch_name) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
                 error_log('Validation failed: ' . json_encode([
                     'batch_name' => $batch_name,
                     'batch_code' => $batch_code,
@@ -66,14 +66,14 @@ try {
         case 'edit':
             $batch_id = (int)($_POST['batch_id'] ?? 0);
             $batch_name = sanitizeInput($_POST['batch_name'] ?? '');
-            $batch_code = sanitizeInput($_POST['batch_code'] ?? '');
+            $batch_code = isset($_POST['batch_code']) ? sanitizeInput($_POST['batch_code']) : null;
             $course_id = (int)($_POST['course_id'] ?? 0);
             $start_date = sanitizeInput($_POST['start_date'] ?? '');
             $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'upcoming');
 
-            if (empty($batch_id) || empty($batch_name) || empty($batch_code) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
+            if (empty($batch_id) || empty($batch_name) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
