@@ -44,6 +44,7 @@ require_once 'includes/sidebar.php';
               <tr>
                 <th>Course Code</th>
                 <th>Course Name</th>
+                <th>Training Center</th>
                 <th>Sector</th>
                 <th>Scheme</th>
                 <th>Duration (hours)</th>
@@ -326,6 +327,7 @@ $(function () {
     columns: [
       { data: 'course_code' },
       { data: 'course_name' },
+      { data: 'center_name' },
       { data: 'sector_name' },
       { data: 'scheme_name' },
       { data: 'duration_hours' },
