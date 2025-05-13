@@ -110,22 +110,22 @@ $centers = TrainingCenter::getAll();
               </div>
               <div class="col-md-4">
                 <div class="form-group mb-2">
-                  <label for="sector_id" class="fw-bold">Sector</label>
-                  <select class="form-control select2" id="sector_id" name="sector_id" required>
-                    <option value="">Select Sector</option>
-                    <?php foreach ($sectors as $sector): ?>
-                      <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
+                  <label for="scheme_id" class="fw-bold">Scheme</label>
+                  <select class="form-control select2" id="scheme_id" name="scheme_id">
+                    <option value="">Select Scheme</option>
+                    <?php foreach ($schemes as $scheme): ?>
+                      <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
                     <?php endforeach; ?>
                   </select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group mb-2">
-                  <label for="scheme_id" class="fw-bold">Scheme</label>
-                  <select class="form-control select2" id="scheme_id" name="scheme_id">
-                    <option value="">Select Scheme</option>
-                    <?php foreach ($schemes as $scheme): ?>
-                      <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                  <label for="sector_id" class="fw-bold">Sector</label>
+                  <select class="form-control select2" id="sector_id" name="sector_id" required>
+                    <option value="">Select Sector</option>
+                    <?php foreach ($sectors as $sector): ?>
+                      <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
                     <?php endforeach; ?>
                   </select>
                 </div>
@@ -194,11 +194,11 @@ $centers = TrainingCenter::getAll();
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col-md-6">
+                <div class="mb-2"><strong>Training Center:</strong> <span data-field="center_name"></span></div>
+                <div class="mb-2"><strong>Scheme:</strong> <span data-field="scheme_name"></span></div>
+                <div class="mb-2"><strong>Sector:</strong> <span data-field="sector_name"></span></div>
                 <div class="mb-2"><strong>Course Code:</strong> <span data-field="course_code"></span></div>
                 <div class="mb-2"><strong>Course Name:</strong> <span data-field="course_name"></span></div>
-                <div class="mb-2"><strong>Training Center:</strong> <span data-field="center_name"></span></div>
-                <div class="mb-2"><strong>Sector:</strong> <span data-field="sector_name"></span></div>
-                <div class="mb-2"><strong>Scheme:</strong> <span data-field="scheme_name"></span></div>
                 <div class="mb-2"><strong>Fee:</strong> <span data-field="fee"></span></div>
               </div>
               <div class="col-md-6">
@@ -237,8 +237,8 @@ $centers = TrainingCenter::getAll();
         </div>
         <form>
           <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
+            <div class="row mb-3">
+              <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="center_id" class="fw-bold">Training Center</label>
                   <select class="form-control select2" id="center_id" name="center_id" required>
@@ -248,14 +248,19 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
+              </div>
+              <div class="col-md-4">
                 <div class="form-group mb-2">
-                  <label for="edit_course_code" class="fw-bold">Course Code</label>
-                  <input type="text" class="form-control" id="edit_course_code" name="course_code" required>
+                  <label for="edit_scheme_id" class="fw-bold">Scheme</label>
+                  <select class="form-control select2" id="edit_scheme_id" name="scheme_id">
+                    <option value="">Select Scheme</option>
+                    <?php foreach ($schemes as $scheme): ?>
+                      <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                    <?php endforeach; ?>
+                  </select>
                 </div>
-                <div class="form-group mb-2">
-                  <label for="edit_course_name" class="fw-bold">Course Name</label>
-                  <input type="text" class="form-control" id="edit_course_name" name="course_name" required>
-                </div>
+              </div>
+              <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="edit_sector_id" class="fw-bold">Sector</label>
                   <select class="form-control select2" id="edit_sector_id" name="sector_id" required>
@@ -265,14 +270,17 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
                 <div class="form-group mb-2">
-                  <label for="edit_scheme_id" class="fw-bold">Scheme</label>
-                  <select class="form-control select2" id="edit_scheme_id" name="scheme_id">
-                    <option value="">Select Scheme</option>
-                    <?php foreach ($schemes as $scheme): ?>
-                      <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
-                    <?php endforeach; ?>
-                  </select>
+                  <label for="edit_course_code" class="fw-bold">Course Code</label>
+                  <input type="text" class="form-control" id="edit_course_code" name="course_code" required>
+                </div>
+                <div class="form-group mb-2">
+                  <label for="edit_course_name" class="fw-bold">Course Name</label>
+                  <input type="text" class="form-control" id="edit_course_name" name="course_name" required>
                 </div>
                 <div class="form-group mb-2">
                   <label for="edit_fee" class="fw-bold">Fee</label>
@@ -361,11 +369,11 @@ $centers = TrainingCenter::getAll();
               </select>
             </div>
             <div class="form-group">
-              <label for="assign_sector_id">Sector</label>
-              <select class="form-control" id="assign_sector_id" name="sector_id" required>
-                <option value="">Select Sector</option>
-                <?php foreach (Sector::getAll() as $sector): ?>
-                  <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
+              <label for="assign_center_id">Training Center</label>
+              <select class="form-control" id="assign_center_id" name="center_id" required>
+                <option value="">Select Training Center</option>
+                <?php foreach (TrainingCenter::getAll() as $center): ?>
+                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
                 <?php endforeach; ?>
               </select>
             </div>
@@ -379,11 +387,11 @@ $centers = TrainingCenter::getAll();
               </select>
             </div>
             <div class="form-group">
-              <label for="assign_center_id">Training Center</label>
-              <select class="form-control" id="assign_center_id" name="center_id" required>
-                <option value="">Select Training Center</option>
-                <?php foreach (TrainingCenter::getAll() as $center): ?>
-                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+              <label for="assign_sector_id">Sector</label>
+              <select class="form-control" id="assign_sector_id" name="sector_id" required>
+                <option value="">Select Sector</option>
+                <?php foreach (Sector::getAll() as $sector): ?>
+                  <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
                 <?php endforeach; ?>
               </select>
             </div>
@@ -619,8 +627,9 @@ $(function () {
           $('#viewCourseTitle').text(c.course_name);
           $('#viewCourseModal [data-field="course_code"]').text(c.course_code);
           $('#viewCourseModal [data-field="course_name"]').text(c.course_name);
-          $('#viewCourseModal [data-field="sector_name"]').text(c.sector_name);
+          $('#viewCourseModal [data-field="center_name"]').text(c.center_name);
           $('#viewCourseModal [data-field="scheme_name"]').text(c.scheme_name);
+          $('#viewCourseModal [data-field="sector_name"]').text(c.sector_name);
           $('#viewCourseModal [data-field="duration_hours"]').text(c.duration_hours);
           $('#viewCourseModal [data-field="fee"]').text(c.fee);
           $('#viewCourseModal [data-field="description"]').text(c.description);
