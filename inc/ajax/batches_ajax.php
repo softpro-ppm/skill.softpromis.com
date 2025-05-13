@@ -29,20 +29,25 @@ try {
             exit;
         case 'add':
             $batch_name = sanitizeInput($_POST['batch_name'] ?? '');
-            $batch_code = sanitizeInput($_POST['batch_code'] ?? ''); // batch_code is required and NOT NULL in DB
             $course_id = (int)($_POST['course_id'] ?? 0);
             $start_date = sanitizeInput($_POST['start_date'] ?? '');
             $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'upcoming');
 
-            if (empty($batch_name) || empty($batch_code) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
+            if (empty($batch_name) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
             if (strtotime($end_date) < strtotime($start_date)) {
                 sendJSONResponse(false, 'End date cannot be before start date');
             }
+
+            // Generate batch_code automatically: e.g., 'B' + (max_id+1) padded
+            $maxIdStmt = $pdo->query("SELECT MAX(batch_id) as max_id FROM batches");
+            $maxIdRow = $maxIdStmt->fetch(PDO::FETCH_ASSOC);
+            $nextId = (int)($maxIdRow['max_id'] ?? 0) + 1;
+            $batch_code = 'B' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
 
             $stmt = $pdo->prepare("INSERT INTO batches (batch_name, course_id, batch_code, start_date, end_date, capacity, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
             $result = $stmt->execute([$batch_name, $course_id, $batch_code, $start_date, $end_date, $capacity, $status]);
@@ -56,14 +61,14 @@ try {
         case 'edit':
             $batch_id = (int)($_POST['batch_id'] ?? 0);
             $batch_name = sanitizeInput($_POST['batch_name'] ?? '');
-            $batch_code = sanitizeInput($_POST['batch_code'] ?? ''); // batch_code is required and NOT NULL in DB
             $course_id = (int)($_POST['course_id'] ?? 0);
             $start_date = sanitizeInput($_POST['start_date'] ?? '');
             $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'upcoming');
+            $batch_code = null; // Do not update batch_code on edit
 
-            if (empty($batch_id) || empty($batch_name) || empty($batch_code) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
+            if (empty($batch_id) || empty($batch_name) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
@@ -71,8 +76,8 @@ try {
                 sendJSONResponse(false, 'End date cannot be before start date');
             }
 
-            $stmt = $pdo->prepare("UPDATE batches SET batch_name = ?, course_id = ?, batch_code = ?, start_date = ?, end_date = ?, capacity = ?, status = ?, updated_at = NOW() WHERE batch_id = ?");
-            $result = $stmt->execute([$batch_name, $course_id, $batch_code, $start_date, $end_date, $capacity, $status, $batch_id]);
+            $stmt = $pdo->prepare("UPDATE batches SET batch_name = ?, course_id = ?, start_date = ?, end_date = ?, capacity = ?, status = ?, updated_at = NOW() WHERE batch_id = ?");
+            $result = $stmt->execute([$batch_name, $course_id, $start_date, $end_date, $capacity, $status, $batch_id]);
 
             if ($result) {
                 sendJSONResponse(true, 'Batch updated successfully');
