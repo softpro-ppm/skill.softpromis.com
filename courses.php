@@ -88,7 +88,7 @@ require_once 'includes/sidebar.php';
       </div>
       <form>
         <div class="modal-body">
-          <div class="row mb-3 align-items-end g-3">
+          <div class="row mb-3 g-3">
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="center_id" class="fw-bold">Training Center</label>
