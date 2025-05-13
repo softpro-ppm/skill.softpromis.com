@@ -154,10 +154,6 @@ require_once 'includes/sidebar.php';
                 <div class="form-group"><label>Status</label><p data-field="status"></p></div>
                 <div class="form-group"><label>Created At</label><p data-field="created_at"></p></div>
                 <div class="form-group"><label>Updated At</label><p data-field="updated_at"></p></div>
-                <div class="form-group">
-                    <label>Assigned To (Scheme + Center):</label>
-                    <ul id="assigned-schemes-centers-list" style="padding-left:18px;"></ul>
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
@@ -340,23 +336,6 @@ $(function () {
                 $modal.find('[data-field="status"]').html(s.status ? '<span class="badge badge-' + (s.status === 'active' ? 'success' : 'secondary') + '">' + (s.status.charAt(0).toUpperCase() + s.status.slice(1)) + '</span>' : '');
                 $modal.find('[data-field="created_at"]').text(s.created_at || '');
                 $modal.find('[data-field="updated_at"]').text(s.updated_at || '');
-                $.ajax({
-                    url: 'inc/ajax/sectors_ajax.php',
-                    type: 'GET',
-                    data: { action: 'get_assigned_schemes_centers', sector_id: sectorId },
-                    dataType: 'json',
-                    success: function(res) {
-                        var $list = $('#assigned-schemes-centers-list');
-                        $list.empty();
-                        if (res.success && res.data && res.data.length) {
-                            res.data.forEach(function(item) {
-                                $list.append('<li>' + item.scheme_name + ' / ' + item.center_name + '</li>');
-                            });
-                        } else {
-                            $list.append('<li><em>No assignments</em></li>');
-                        }
-                    }
-                });
                 $modal.modal('show');
             }
         });
