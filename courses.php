@@ -327,7 +327,10 @@ $(function () {
     columns: [
       { data: 'course_code' },
       { data: 'course_name' },
-      { data: 'center_name' },
+      { data: 'center_id', render: function(data, type, row) {
+        // Show center_name if available, else blank
+        return row.center_name ? row.center_name : '';
+      } },
       { data: 'sector_name' },
       { data: 'scheme_name' },
       { data: 'duration_hours' },
