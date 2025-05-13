@@ -228,7 +228,7 @@ require_once 'includes/sidebar.php';
       </div>
       <form>
         <div class="modal-body">
-          <div class="row mb-3 align-items-end g-3">
+          <div class="row mb-3 g-3">
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="edit_center_id" class="fw-bold">Training Center</label>
@@ -263,25 +263,25 @@ require_once 'includes/sidebar.php';
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row g-3">
             <div class="col-md-6">
               <div class="form-group mb-2">
                 <label for="edit_course_code" class="fw-bold">Course Code</label>
-                <input type="text" class="form-control" id="edit_course_code" name="course_code" required>
+                <input type="text" class="form-control" id="edit_course_code" name="course_code" required autocomplete="off">
               </div>
               <div class="form-group mb-2">
                 <label for="edit_course_name" class="fw-bold">Course Name</label>
-                <input type="text" class="form-control" id="edit_course_name" name="course_name" required>
+                <input type="text" class="form-control" id="edit_course_name" name="course_name" required autocomplete="off">
               </div>
               <div class="form-group mb-2">
                 <label for="edit_fee" class="fw-bold">Fee</label>
-                <input type="number" step="0.01" class="form-control" id="edit_fee" name="fee">
+                <input type="number" step="0.01" class="form-control" id="edit_fee" name="fee" autocomplete="off">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group mb-2">
                 <label for="edit_duration_hours" class="fw-bold">Duration (hours)</label>
-                <input type="number" class="form-control" id="edit_duration_hours" name="duration_hours" required>
+                <input type="number" class="form-control" id="edit_duration_hours" name="duration_hours" required autocomplete="off">
               </div>
               <div class="form-group mb-2">
                 <label for="edit_description" class="fw-bold">Description</label>
