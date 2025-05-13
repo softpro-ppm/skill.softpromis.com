@@ -103,6 +103,15 @@ require_once 'includes/sidebar.php';
                 <option value="inactive">Inactive</option>
               </select>
             </div>
+            <div class="form-group">
+              <label for="center_id">Training Center</label>
+              <select class="form-control" id="center_id" name="center_id" required>
+                <option value="">Select Training Center</option>
+                <?php foreach (TrainingCenter::getAll() as $center): ?>
+                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -188,6 +197,15 @@ require_once 'includes/sidebar.php';
               <select class="form-control" id="editStatus" name="status">
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edit_center_id">Training Center</label>
+              <select class="form-control" id="edit_center_id" name="center_id" required>
+                <option value="">Select Training Center</option>
+                <?php foreach (TrainingCenter::getAll() as $center): ?>
+                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
           </div>
@@ -355,6 +373,7 @@ $(function () {
         $modal.find('#editSchemeName').val('');
         $modal.find('#editDescription').val('');
         $modal.find('#editStatus').val('active');
+        $modal.find('#edit_center_id').val('');
         $modal.find('.modal-body').append('<div class="text-center py-2" id="edit-loading"><i class="fas fa-spinner fa-spin fa-2x"></i></div>');
         $modal.modal({ backdrop: 'static', keyboard: false, show: true });
         $.ajax({
@@ -370,6 +389,7 @@ $(function () {
                 $modal.find('#editSchemeName').val(s.scheme_name || '');
                 $modal.find('#editDescription').val(s.description || '');
                 $modal.find('#editStatus').val(s.status || 'active');
+                $modal.find('#edit_center_id').val(s.center_id || '');
             },
             error: function(xhr, status, error) {
                 console.log('Edit AJAX error:', status, error); // DEBUG
@@ -378,6 +398,7 @@ $(function () {
                 $modal.find('#editSchemeName').val('');
                 $modal.find('#editDescription').val('');
                 $modal.find('#editStatus').val('active');
+                $modal.find('#edit_center_id').val('');
             }
         });
     });
