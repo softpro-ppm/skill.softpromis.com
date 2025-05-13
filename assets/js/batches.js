@@ -8,7 +8,6 @@ $(document).ready(function() {
         },
         columns: [
             { data: 'batch_id' },
-            { data: 'center_name' },
             { data: 'course_name' },
             { data: 'batch_name' },
             { data: 'start_date' },
@@ -33,22 +32,17 @@ $(document).ready(function() {
         order: [[0, 'desc']]
     });
 
-    // Load centers and courses for modal selects
-    function loadCentersAndCourses(centerId, courseId) {
+    // Load courses for modal select
+    function loadCourses(courseId) {
         $.ajax({
             url: 'inc/ajax/batches_ajax.php',
             type: 'POST',
-            data: { action: 'get_centers_courses' },
+            data: { action: 'get_courses' },
             dataType: 'json',
             success: function(res) {
                 if(res.success) {
-                    var centerSel = $('#center_id');
                     var courseSel = $('#course_id');
-                    centerSel.empty().append('<option value="">Select Center</option>');
                     courseSel.empty().append('<option value="">Select Course</option>');
-                    $.each(res.centers, function(i, c) {
-                        centerSel.append(`<option value="${c.center_id}"${centerId==c.center_id?' selected':''}>${c.center_name}</option>`);
-                    });
                     $.each(res.courses, function(i, c) {
                         courseSel.append(`<option value="${c.course_id}"${courseId==c.course_id?' selected':''}>${c.course_name}</option>`);
                     });
@@ -62,7 +56,7 @@ $(document).ready(function() {
         $('#batchModalTitle').text('Add New Batch');
         $('#batchForm')[0].reset();
         $('#batch_id').val('');
-        loadCentersAndCourses();
+        loadCourses();
         $('#batchModal').modal('show');
     });
 
@@ -85,7 +79,7 @@ $(document).ready(function() {
                     $('#end_date').val(b.end_date);
                     $('#capacity').val(b.capacity);
                     $('#status').val(b.status);
-                    loadCentersAndCourses(b.center_id, b.course_id);
+                    loadCourses(b.course_id);
                     $('#batchModal').modal('show');
                 } else {
                     alert(res.message || 'Could not fetch batch details.');
@@ -147,6 +141,6 @@ $(document).ready(function() {
     // Reset modal on close
     $('#batchModal').on('hidden.bs.modal', function() {
         $('#batchForm')[0].reset();
-        $('#center_id, #course_id').empty().append('<option value="">Select</option>');
+        $('#course_id').empty().append('<option value="">Select Course</option>');
     });
 });

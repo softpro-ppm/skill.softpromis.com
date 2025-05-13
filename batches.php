@@ -61,7 +61,6 @@ require_once 'includes/sidebar.php';
                                 <thead>
                                     <tr>
                                         <th>Batch ID</th>
-                                        <th>Center Name</th>
                                         <th>Course Name</th>
                                         <th>Batch Name</th>
                                         <th>Start Date</th>
@@ -103,12 +102,6 @@ require_once 'includes/sidebar.php';
                         <input type="text" class="form-control" id="batch_code" name="batch_code" required>
                     </div>
                 
-                    <div class="form-group">
-                        <label for="center_id">Center</label>
-                        <select class="form-control" id="center_id" name="center_id" required>
-                            <option value="">Select Center</option>
-                        </select>
-                    </div>
                     <div class="form-group">
                         <label for="course_id"><strong>Course</strong></label>
                         <select class="form-control" id="course_id" name="course_id" required>

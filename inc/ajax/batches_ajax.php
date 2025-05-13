@@ -16,10 +16,9 @@ $action = $_REQUEST['action'] ?? '';
 try {
     switch ($action) {
         case 'list':
-            $stmt = $pdo->query("SELECT b.batch_id, b.batch_name, b.batch_code, b.start_date, b.end_date, b.capacity, b.status, c.course_name, tc.center_name
+            $stmt = $pdo->query("SELECT b.batch_id, b.batch_name, b.batch_code, b.start_date, b.end_date, b.capacity, b.status, c.course_name
                 FROM batches b
                 LEFT JOIN courses c ON b.course_id = c.course_id
-                LEFT JOIN training_centers tc ON b.center_id = tc.center_id
                 ORDER BY b.batch_id DESC");
             $batches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -32,18 +31,16 @@ try {
             $batch_name = sanitizeInput($_POST['batch_name'] ?? '');
             $batch_code = sanitizeInput($_POST['batch_code'] ?? '');
             $course_id = (int)($_POST['course_id'] ?? 0);
-            $center_id = (int)($_POST['center_id'] ?? 0);
             $start_date = sanitizeInput($_POST['start_date'] ?? '');
             $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'upcoming');
 
-            if (empty($batch_name) || empty($batch_code) || empty($course_id) || empty($center_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
+            if (empty($batch_name) || empty($batch_code) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
                 error_log('Validation failed: ' . json_encode([
                     'batch_name' => $batch_name,
                     'batch_code' => $batch_code,
                     'course_id' => $course_id,
-                    'center_id' => $center_id,
                     'start_date' => $start_date,
                     'end_date' => $end_date,
                     'capacity' => $capacity
@@ -55,8 +52,8 @@ try {
                 sendJSONResponse(false, 'End date cannot be before start date');
             }
 
-            $stmt = $pdo->prepare("INSERT INTO batches (batch_name, center_id, course_id, batch_code, start_date, end_date, capacity, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
-            $result = $stmt->execute([$batch_name, $center_id, $course_id, $batch_code, $start_date, $end_date, $capacity, $status]);
+            $stmt = $pdo->prepare("INSERT INTO batches (batch_name, course_id, batch_code, start_date, end_date, capacity, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+            $result = $stmt->execute([$batch_name, $course_id, $batch_code, $start_date, $end_date, $capacity, $status]);
 
             error_log('Add Batch Response: ' . json_encode(['success' => $result, 'message' => $result ? 'Batch added successfully' : 'Failed to add batch']));
 
@@ -71,13 +68,12 @@ try {
             $batch_name = sanitizeInput($_POST['batch_name'] ?? '');
             $batch_code = sanitizeInput($_POST['batch_code'] ?? '');
             $course_id = (int)($_POST['course_id'] ?? 0);
-            $center_id = (int)($_POST['center_id'] ?? 0);
             $start_date = sanitizeInput($_POST['start_date'] ?? '');
             $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'upcoming');
 
-            if (empty($batch_id) || empty($batch_name) || empty($batch_code) || empty($course_id) || empty($center_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
+            if (empty($batch_id) || empty($batch_name) || empty($batch_code) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
@@ -85,8 +81,8 @@ try {
                 sendJSONResponse(false, 'End date cannot be before start date');
             }
 
-            $stmt = $pdo->prepare("UPDATE batches SET batch_name = ?, center_id = ?, course_id = ?, batch_code = ?, start_date = ?, end_date = ?, capacity = ?, status = ?, updated_at = NOW() WHERE batch_id = ?");
-            $result = $stmt->execute([$batch_name, $center_id, $course_id, $batch_code, $start_date, $end_date, $capacity, $status, $batch_id]);
+            $stmt = $pdo->prepare("UPDATE batches SET batch_name = ?, course_id = ?, batch_code = ?, start_date = ?, end_date = ?, capacity = ?, status = ?, updated_at = NOW() WHERE batch_id = ?");
+            $result = $stmt->execute([$batch_name, $course_id, $batch_code, $start_date, $end_date, $capacity, $status, $batch_id]);
 
             if ($result) {
                 sendJSONResponse(true, 'Batch updated successfully');
@@ -112,9 +108,8 @@ try {
             if (empty($batch_id)) {
                 sendJSONResponse(false, 'Batch ID is required');
             }
-            $stmt = $pdo->prepare("SELECT b.*, c.course_name, tc.center_name FROM batches b
+            $stmt = $pdo->prepare("SELECT b.*, c.course_name FROM batches b
                                    LEFT JOIN courses c ON b.course_id = c.course_id
-                                   LEFT JOIN training_centers tc ON b.center_id = tc.center_id
                                    WHERE b.batch_id = ?");
             $stmt->execute([$batch_id]);
             $batch = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -125,15 +120,11 @@ try {
             }
             break;
         case 'get_centers_courses':
-            // Fetch active centers
-            $centersStmt = $pdo->query("SELECT center_id, center_name FROM training_centers WHERE status = 'active' ORDER BY center_name ASC");
-            $centers = $centersStmt->fetchAll(PDO::FETCH_ASSOC);
             // Fetch active courses
             $coursesStmt = $pdo->query("SELECT course_id, course_name FROM courses WHERE status = 'active' ORDER BY course_name ASC");
             $courses = $coursesStmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode([
                 'success' => true,
-                'centers' => $centers,
                 'courses' => $courses
             ]);
             exit;
