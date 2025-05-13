@@ -96,8 +96,8 @@ $centers = TrainingCenter::getAll();
         </div>
         <form>
           <div class="modal-body">
-            <div class="row">
-              <div class="col-md-6">
+            <div class="row mb-3">
+              <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="center_id" class="fw-bold">Training Center</label>
                   <select class="form-control select2" id="center_id" name="center_id" required>
@@ -107,6 +107,8 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
+              </div>
+              <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="sector_id" class="fw-bold">Sector</label>
                   <select class="form-control select2" id="sector_id" name="sector_id" required>
@@ -116,6 +118,8 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
+              </div>
+              <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="scheme_id" class="fw-bold">Scheme</label>
                   <select class="form-control select2" id="scheme_id" name="scheme_id">
@@ -125,6 +129,10 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
                 <div class="form-group mb-2">
                   <label for="course_code" class="fw-bold">Course Code</label>
                   <input type="text" class="form-control" id="course_code" name="course_code" required>
