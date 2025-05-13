@@ -284,6 +284,12 @@ require_once 'includes/sidebar.php';
 <?php include 'includes/js.php'; ?>
 
 <script>
+// Map center_id to center_name for DataTable rendering
+var centerMap = {};
+<?php foreach (TrainingCenter::getAll() as $center): ?>
+centerMap['<?= htmlspecialchars($center['center_id']) ?>'] = '<?= htmlspecialchars($center['center_name']) ?>';
+<?php endforeach; ?>
+
 $(function () {
     // DataTable initialization
     var table = $('#schemesTable').DataTable({
@@ -299,6 +305,9 @@ $(function () {
             { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
             { data: 'scheme_name' },
             { data: 'description' },
+            { data: 'center_id', render: function(data, type, row) {
+                return centerMap[data] || '';
+            }},
             { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'danger') + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
             { data: 'created_at' },
             { data: 'updated_at' },
