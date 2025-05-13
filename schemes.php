@@ -140,19 +140,13 @@ require_once 'includes/sidebar.php';
                 <p data-field="scheme_name"></p>
               </div>
               <div class="form-group">
+                <label class="font-weight-bold">Training Center:</label>
+                <p data-field="center_name"></p>
+              </div>
+              <div class="form-group">
                 <label class="font-weight-bold">Description:</label>
                 <p data-field="description"></p>
               </div>
-              <div class="form-group">
-                <label class="font-weight-bold">Training Center:</label>
-                <p data-field="center_id"></p>
-              </div>
-              <div class="form-group">
-                <label>Training Center</label>
-                <p data-field="center_name"></p>
-              </div>
-            </div>
-            <div class="col-md-6">
               <div class="form-group">
                 <label class="font-weight-bold">Status:</label>
                 <p data-field="status"></p>
@@ -311,8 +305,7 @@ $(function () {
                 if (s.center_id) {
                     centerName = $('#center_id option[value="' + s.center_id + '"]').text();
                 }
-                $modal.find('[data-field="center_id"]').text(centerName || '');
-                $modal.find('[data-field="center_name"]').text(s.center_name || '');
+                $modal.find('[data-field="center_name"]').text(centerName || '');
             },
             error: function(xhr, status, error) {
                 console.log('View AJAX error:', status, error); // DEBUG
