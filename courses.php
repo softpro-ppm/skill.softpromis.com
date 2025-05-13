@@ -24,6 +24,7 @@ require_once 'includes/sidebar.php';
 
 $sectors = Sector::getAll();
 $schemes = Scheme::getAll();
+$centers = TrainingCenter::getAll();
 ?>
 
   <!-- Content Wrapper. Contains page content -->
@@ -99,6 +100,15 @@ $schemes = Scheme::getAll();
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
+                <div class="form-group">
+                  <label for="center_id">Training Center</label>
+                  <select class="form-control select2" id="center_id" name="center_id" required>
+                    <option value="">Select Training Center</option>
+                    <?php foreach ($centers as $center): ?>
+                      <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
                 <div class="form-group">
                   <label for="course_code">Course Code</label>
                   <input type="text" class="form-control" id="course_code" name="course_code" required>
@@ -226,6 +236,15 @@ $schemes = Scheme::getAll();
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
+                <div class="form-group">
+                  <label for="center_id">Training Center</label>
+                  <select class="form-control select2" id="center_id" name="center_id" required>
+                    <option value="">Select Training Center</option>
+                    <?php foreach ($centers as $center): ?>
+                      <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
                 <div class="form-group">
                   <label for="edit_course_code">Course Code</label>
                   <input type="text" class="form-control" id="edit_course_code" name="course_code" required>

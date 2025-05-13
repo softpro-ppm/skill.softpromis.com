@@ -183,6 +183,24 @@ require_once 'includes/sidebar.php';
                 <input type="hidden" id="editSectorId" name="sector_id">
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="edit_center_id">Training Center</label>
+                        <select class="form-control" id="edit_center_id" name="center_id" required>
+                            <option value="">Select Training Center</option>
+                            <?php foreach (TrainingCenter::getAll() as $center): ?>
+                                <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_scheme_id">Scheme</label>
+                        <select class="form-control" id="edit_scheme_id" name="scheme_id" required>
+                            <option value="">Select Scheme</option>
+                            <?php foreach (Scheme::getAll() as $scheme): ?>
+                                <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="editSectorName">Sector Name</label>
                         <input type="text" class="form-control" id="editSectorName" name="sector_name" required>
                     </div>
@@ -413,6 +431,8 @@ $(function () {
                 $modal.find('#editSectorName').val(s.sector_name || '');
                 $modal.find('#editDescription').val(s.description || '');
                 $modal.find('#editStatus').val(s.status || 'active');
+                $modal.find('#edit_center_id').val(s.center_id || '');
+                $modal.find('#edit_scheme_id').val(s.scheme_id || '');
                 $modal.modal('show');
             }
         });
