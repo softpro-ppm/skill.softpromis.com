@@ -123,51 +123,32 @@ require_once 'includes/sidebar.php';
   <!-- View Scheme Modal -->
   <div class="modal fade" id="viewSchemeModal" tabindex="-1" role="dialog" aria-labelledby="viewSchemeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="viewSchemeModalLabel">View Scheme Details</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="font-weight-bold">Scheme ID:</label>
-                <p data-field="scheme_id"></p>
-              </div>
-              <div class="form-group">
-                <label class="font-weight-bold">Scheme Name:</label>
-                <p data-field="scheme_name"></p>
-              </div>
-              <div class="form-group">
-                <label class="font-weight-bold">Training Center:</label>
-                <p data-field="center_name"></p>
-              </div>
-              <div class="form-group">
-                <label class="font-weight-bold">Description:</label>
-                <p data-field="description"></p>
-              </div>
-              <div class="form-group">
-                <label class="font-weight-bold">Status:</label>
-                <p data-field="status"></p>
-              </div>
-              <div class="form-group">
-                <label class="font-weight-bold">Created At:</label>
-                <p data-field="created_at"></p>
-              </div>
-              <div class="form-group">
-                <label class="font-weight-bold">Updated At:</label>
-                <p data-field="updated_at"></p>
-              </div>
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h4 class="modal-title" id="viewSchemeModalLabel">View Scheme Details</h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-2"><label class="fw-bold">Scheme ID:</label><p data-field="scheme_id" class="mb-1"></p></div>
+                        <div class="form-group mb-2"><label class="fw-bold">Scheme Name:</label><p data-field="scheme_name" class="mb-1"></p></div>
+                        <div class="form-group mb-2"><label class="fw-bold">Training Center:</label><p data-field="center_name" class="mb-1"></p></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-2"><label class="fw-bold">Status:</label><p data-field="status" class="mb-1"></p></div>
+                        <div class="form-group mb-2"><label class="fw-bold">Created At:</label><p data-field="created_at" class="mb-1"></p></div>
+                        <div class="form-group mb-2"><label class="fw-bold">Updated At:</label><p data-field="updated_at" class="mb-1"></p></div>
+                    </div>
+                </div>
+                <div class="form-group mt-2"><label class="fw-bold">Description:</label><p data-field="description" class="mb-1"></p></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
   <!-- Edit Scheme Modal -->
   <div class="modal fade" id="editSchemeModal" tabindex="-1" aria-labelledby="editSchemeModalLabel" aria-hidden="true">
