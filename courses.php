@@ -9,7 +9,7 @@ ini_set('display_errors', 0);
 require_once 'config.php';
 require_once 'crud_functions.php';
 define('BASEPATH', true);
-session_start();
+//session_start();
 if (!isset($_SESSION['user'])) {
     header('Location: index.php');
     exit;
