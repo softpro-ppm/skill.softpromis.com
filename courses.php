@@ -75,80 +75,72 @@ require_once 'includes/sidebar.php';
       </div>
       <form>
         <div class="modal-body">
-          <div class="row mb-3 g-3">
+          <div class="row g-3 mb-3">
             <div class="col-md-4">
-              <div class="form-group mb-0">
-                <label for="center_id" class="fw-bold">Training Center</label>
-                <select class="form-select" id="center_id" name="center_id" required>
-                  <option value="">Select Training Center</option>
-                  <?php foreach ($centers as $center): ?>
-                    <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
+              <label for="center_id" class="form-label fw-bold">Training Center</label>
+              <select class="form-select" id="center_id" name="center_id" required>
+                <option value="">Select Training Center</option>
+                <?php foreach ($centers as $center): ?>
+                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
             </div>
             <div class="col-md-4">
-              <div class="form-group mb-0">
-                <label for="scheme_id" class="fw-bold">Scheme</label>
-                <select class="form-select" id="scheme_id" name="scheme_id">
-                  <option value="">Select Scheme</option>
-                  <?php foreach ($schemes as $scheme): ?>
-                    <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
+              <label for="scheme_id" class="form-label fw-bold">Scheme</label>
+              <select class="form-select" id="scheme_id" name="scheme_id">
+                <option value="">Select Scheme</option>
+                <?php foreach ($schemes as $scheme): ?>
+                  <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
             </div>
             <div class="col-md-4">
-              <div class="form-group mb-0">
-                <label for="sector_id" class="fw-bold">Sector</label>
-                <select class="form-select" id="sector_id" name="sector_id" required>
-                  <option value="">Select Sector</option>
-                  <?php foreach ($sectors as $sector): ?>
-                    <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
+              <label for="sector_id" class="form-label fw-bold">Sector</label>
+              <select class="form-select" id="sector_id" name="sector_id" required>
+                <option value="">Select Sector</option>
+                <?php foreach ($sectors as $sector): ?>
+                  <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
             </div>
           </div>
-          <div class="row">
+          <div class="row g-3 mb-3">
             <div class="col-md-6">
-              <div class="form-group mb-2">
-                <label for="course_code" class="fw-bold">Course Code</label>
-                <input type="text" class="form-control" id="course_code" name="course_code" required>
-              </div>
-              <div class="form-group mb-2">
-                <label for="course_name" class="fw-bold">Course Name</label>
-                <input type="text" class="form-control" id="course_name" name="course_name" required>
-              </div>
-              <div class="form-group mb-2">
-                <label for="duration_hours" class="fw-bold">Duration (hours)</label>
-                <input type="number" class="form-control" id="duration_hours" name="duration_hours" required>
-              </div>
-              <div class="form-group mb-2">
-                <label for="fee" class="fw-bold">Fee</label>
-                <input type="number" step="0.01" class="form-control" id="fee" name="fee">
-              </div>
+              <label for="course_code" class="form-label fw-bold">Course Code</label>
+              <input type="text" class="form-control mb-2" id="course_code" name="course_code" required>
             </div>
             <div class="col-md-6">
-              <div class="form-group mb-2">
-                <label for="description" class="fw-bold">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="2"></textarea>
-              </div>
-              <div class="form-group mb-2">
-                <label for="prerequisites" class="fw-bold">Prerequisites</label>
-                <textarea class="form-control" id="prerequisites" name="prerequisites" rows="2"></textarea>
-              </div>
-              <div class="form-group mb-2">
-                <label for="syllabus" class="fw-bold">Syllabus</label>
-                <textarea class="form-control" id="syllabus" name="syllabus" rows="2"></textarea>
-              </div>
-              <div class="form-group mb-2">
-                <label for="status" class="fw-bold">Status</label>
-                <select class="form-select" id="status" name="status" required>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
+              <label for="course_name" class="form-label fw-bold">Course Name</label>
+              <input type="text" class="form-control mb-2" id="course_name" name="course_name" required>
+            </div>
+            <div class="col-md-6">
+              <label for="duration_hours" class="form-label fw-bold">Duration (hours)</label>
+              <input type="number" class="form-control mb-2" id="duration_hours" name="duration_hours" required>
+            </div>
+            <div class="col-md-6">
+              <label for="fee" class="form-label fw-bold">Fee</label>
+              <input type="number" step="0.01" class="form-control mb-2" id="fee" name="fee">
+            </div>
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="description" class="form-label fw-bold">Description</label>
+              <textarea class="form-control mb-2" id="description" name="description" rows="2"></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="prerequisites" class="form-label fw-bold">Prerequisites</label>
+              <textarea class="form-control mb-2" id="prerequisites" name="prerequisites" rows="2"></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="syllabus" class="form-label fw-bold">Syllabus</label>
+              <textarea class="form-control mb-2" id="syllabus" name="syllabus" rows="2"></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="status" class="form-label fw-bold">Status</label>
+              <select class="form-select mb-2" id="status" name="status" required>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
             </div>
           </div>
         </div>
@@ -216,80 +208,72 @@ require_once 'includes/sidebar.php';
       </div>
       <form>
         <div class="modal-body">
-          <div class="row mb-3 g-3">
+          <div class="row g-3 mb-3">
             <div class="col-md-4">
-              <div class="form-group mb-0">
-                <label for="edit_center_id" class="fw-bold">Training Center</label>
-                <select class="form-select" id="edit_center_id" name="center_id" required>
-                  <option value="">Select Training Center</option>
-                  <?php foreach ($centers as $center): ?>
-                    <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
+              <label for="edit_center_id" class="form-label fw-bold">Training Center</label>
+              <select class="form-select" id="edit_center_id" name="center_id" required>
+                <option value="">Select Training Center</option>
+                <?php foreach ($centers as $center): ?>
+                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
             </div>
             <div class="col-md-4">
-              <div class="form-group mb-0">
-                <label for="edit_scheme_id" class="fw-bold">Scheme</label>
-                <select class="form-select" id="edit_scheme_id" name="scheme_id">
-                  <option value="">Select Scheme</option>
-                  <?php foreach ($schemes as $scheme): ?>
-                    <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
+              <label for="edit_scheme_id" class="form-label fw-bold">Scheme</label>
+              <select class="form-select" id="edit_scheme_id" name="scheme_id">
+                <option value="">Select Scheme</option>
+                <?php foreach ($schemes as $scheme): ?>
+                  <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
             </div>
             <div class="col-md-4">
-              <div class="form-group mb-0">
-                <label for="edit_sector_id" class="fw-bold">Sector</label>
-                <select class="form-select" id="edit_sector_id" name="sector_id" required>
-                  <option value="">Select Sector</option>
-                  <?php foreach ($sectors as $sector): ?>
-                    <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
-                  <?php endforeach; ?>
-                </select>
-              </div>
+              <label for="edit_sector_id" class="form-label fw-bold">Sector</label>
+              <select class="form-select" id="edit_sector_id" name="sector_id" required>
+                <option value="">Select Sector</option>
+                <?php foreach ($sectors as $sector): ?>
+                  <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
             </div>
           </div>
-          <div class="row g-3">
+          <div class="row g-3 mb-3">
             <div class="col-md-6">
-              <div class="form-group mb-2">
-                <label for="edit_course_code" class="fw-bold">Course Code</label>
-                <input type="text" class="form-control" id="edit_course_code" name="course_code" required autocomplete="off">
-              </div>
-              <div class="form-group mb-2">
-                <label for="edit_course_name" class="fw-bold">Course Name</label>
-                <input type="text" class="form-control" id="edit_course_name" name="course_name" required autocomplete="off">
-              </div>
-              <div class="form-group mb-2">
-                <label for="edit_fee" class="fw-bold">Fee</label>
-                <input type="number" step="0.01" class="form-control" id="edit_fee" name="fee" autocomplete="off">
-              </div>
+              <label for="edit_course_code" class="form-label fw-bold">Course Code</label>
+              <input type="text" class="form-control mb-2" id="edit_course_code" name="course_code" required autocomplete="off">
             </div>
             <div class="col-md-6">
-              <div class="form-group mb-2">
-                <label for="edit_duration_hours" class="fw-bold">Duration (hours)</label>
-                <input type="number" class="form-control" id="edit_duration_hours" name="duration_hours" required autocomplete="off">
-              </div>
-              <div class="form-group mb-2">
-                <label for="edit_description" class="fw-bold">Description</label>
-                <textarea class="form-control" id="edit_description" name="description" rows="2"></textarea>
-              </div>
-              <div class="form-group mb-2">
-                <label for="edit_prerequisites" class="fw-bold">Prerequisites</label>
-                <textarea class="form-control" id="edit_prerequisites" name="prerequisites" rows="2"></textarea>
-              </div>
-              <div class="form-group mb-2">
-                <label for="edit_syllabus" class="fw-bold">Syllabus</label>
-                <textarea class="form-control" id="edit_syllabus" name="syllabus" rows="2"></textarea>
-              </div>
-              <div class="form-group mb-2">
-                <label for="edit_status" class="fw-bold">Status</label>
-                <select class="form-select" id="edit_status" name="status" required>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
+              <label for="edit_course_name" class="form-label fw-bold">Course Name</label>
+              <input type="text" class="form-control mb-2" id="edit_course_name" name="course_name" required autocomplete="off">
+            </div>
+            <div class="col-md-6">
+              <label for="edit_duration_hours" class="form-label fw-bold">Duration (hours)</label>
+              <input type="number" class="form-control mb-2" id="edit_duration_hours" name="duration_hours" required autocomplete="off">
+            </div>
+            <div class="col-md-6">
+              <label for="edit_fee" class="form-label fw-bold">Fee</label>
+              <input type="number" step="0.01" class="form-control mb-2" id="edit_fee" name="fee" autocomplete="off">
+            </div>
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label for="edit_description" class="form-label fw-bold">Description</label>
+              <textarea class="form-control mb-2" id="edit_description" name="description" rows="2"></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="edit_prerequisites" class="form-label fw-bold">Prerequisites</label>
+              <textarea class="form-control mb-2" id="edit_prerequisites" name="prerequisites" rows="2"></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="edit_syllabus" class="form-label fw-bold">Syllabus</label>
+              <textarea class="form-control mb-2" id="edit_syllabus" name="syllabus" rows="2"></textarea>
+            </div>
+            <div class="col-md-6">
+              <label for="edit_status" class="form-label fw-bold">Status</label>
+              <select class="form-select mb-2" id="edit_status" name="status" required>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
             </div>
           </div>
         </div>
