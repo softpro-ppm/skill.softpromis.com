@@ -164,10 +164,6 @@ require_once 'includes/sidebar.php';
                 <label class="font-weight-bold">Updated At:</label>
                 <p data-field="updated_at"></p>
               </div>
-              <div class="form-group">
-                <label class="font-weight-bold">Assigned Centers:</label>
-                <ul id="assigned-centers-list" style="padding-left:18px;"></ul>
-              </div>
             </div>
           </div>
         </div>
@@ -353,24 +349,6 @@ $(function () {
                     centerName = $('#center_id option[value="' + s.center_id + '"]').text();
                 }
                 $modal.find('[data-field="center_id"]').text(centerName || '');
-                // Fetch assigned centers
-                $.ajax({
-                    url: 'inc/ajax/schemes_ajax.php',
-                    type: 'GET',
-                    dataType: 'json',
-                    data: { action: 'get_assigned_centers', scheme_id: schemeId },
-                    success: function(res) {
-                        var $list = $('#assigned-centers-list');
-                        $list.empty();
-                        if (res.success && res.data && res.data.length) {
-                            res.data.forEach(function(center) {
-                                $list.append('<li>' + center.center_name + '</li>');
-                            });
-                        } else {
-                            $list.append('<li><em>No centers assigned</em></li>');
-                        }
-                    }
-                });
             },
             error: function(xhr, status, error) {
                 console.log('View AJAX error:', status, error); // DEBUG
