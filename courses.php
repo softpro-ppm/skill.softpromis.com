@@ -241,7 +241,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="center_id" class="fw-bold">Training Center</label>
-                  <select class="form-control select2" id="center_id" name="center_id" required>
+                  <select class="form-control select2-single" id="center_id" name="center_id" required>
                     <option value="">Select Training Center</option>
                     <?php foreach ($centers as $center): ?>
                       <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -252,7 +252,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="edit_scheme_id" class="fw-bold">Scheme</label>
-                  <select class="form-control select2" id="edit_scheme_id" name="scheme_id">
+                  <select class="form-control select2-single" id="edit_scheme_id" name="scheme_id">
                     <option value="">Select Scheme</option>
                     <?php foreach ($schemes as $scheme): ?>
                       <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -263,7 +263,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-2">
                   <label for="edit_sector_id" class="fw-bold">Sector</label>
-                  <select class="form-control select2" id="edit_sector_id" name="sector_id" required>
+                  <select class="form-control select2-single" id="edit_sector_id" name="sector_id" required>
                     <option value="">Select Sector</option>
                     <?php foreach ($sectors as $sector): ?>
                       <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -446,6 +446,13 @@ $(function () {
 
   $('.select2').select2({ theme: 'bootstrap4' });
   bsCustomFileInput.init();
+
+  // Use single select with search for select2 fields in course modals
+  $('.select2-single').select2({
+    theme: 'bootstrap4',
+    width: '100%',
+    minimumResultsForSearch: 5 // always show search box
+  });
 
   // Add Course
   $('#addCourseModal form').on('submit', function (e) {
