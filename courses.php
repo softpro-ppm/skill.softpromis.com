@@ -90,18 +90,16 @@ $centers = TrainingCenter::getAll();
   <div class="modal fade" id="addCourseModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-primary text-white">
           <h4 class="modal-title">Add New Course</h4>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form>
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="center_id">Training Center</label>
+                <div class="form-group mb-2">
+                  <label for="center_id" class="fw-bold">Training Center</label>
                   <select class="form-control select2" id="center_id" name="center_id" required>
                     <option value="">Select Training Center</option>
                     <?php foreach ($centers as $center): ?>
@@ -109,16 +107,8 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="course_code">Course Code</label>
-                  <input type="text" class="form-control" id="course_code" name="course_code" required>
-                </div>
-                <div class="form-group">
-                  <label for="course_name">Course Name</label>
-                  <input type="text" class="form-control" id="course_name" name="course_name" required>
-                </div>
-                <div class="form-group">
-                  <label for="sector_id">Sector</label>
+                <div class="form-group mb-2">
+                  <label for="sector_id" class="fw-bold">Sector</label>
                   <select class="form-control select2" id="sector_id" name="sector_id" required>
                     <option value="">Select Sector</option>
                     <?php foreach ($sectors as $sector): ?>
@@ -126,8 +116,8 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="scheme_id">Scheme</label>
+                <div class="form-group mb-2">
+                  <label for="scheme_id" class="fw-bold">Scheme</label>
                   <select class="form-control select2" id="scheme_id" name="scheme_id">
                     <option value="">Select Scheme</option>
                     <?php foreach ($schemes as $scheme): ?>
@@ -135,30 +125,38 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="fee">Fee</label>
+                <div class="form-group mb-2">
+                  <label for="course_code" class="fw-bold">Course Code</label>
+                  <input type="text" class="form-control" id="course_code" name="course_code" required>
+                </div>
+                <div class="form-group mb-2">
+                  <label for="course_name" class="fw-bold">Course Name</label>
+                  <input type="text" class="form-control" id="course_name" name="course_name" required>
+                </div>
+                <div class="form-group mb-2">
+                  <label for="duration_hours" class="fw-bold">Duration (hours)</label>
+                  <input type="number" class="form-control" id="duration_hours" name="duration_hours" required>
+                </div>
+                <div class="form-group mb-2">
+                  <label for="fee" class="fw-bold">Fee</label>
                   <input type="number" step="0.01" class="form-control" id="fee" name="fee">
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="duration_hours">Duration (hours)</label>
-                  <input type="number" class="form-control" id="duration_hours" name="duration_hours" required>
-                </div>
-                <div class="form-group">
-                  <label for="description">Description</label>
+                <div class="form-group mb-2">
+                  <label for="description" class="fw-bold">Description</label>
                   <textarea class="form-control" id="description" name="description" rows="2"></textarea>
                 </div>
-                <div class="form-group">
-                  <label for="prerequisites">Prerequisites</label>
+                <div class="form-group mb-2">
+                  <label for="prerequisites" class="fw-bold">Prerequisites</label>
                   <textarea class="form-control" id="prerequisites" name="prerequisites" rows="2"></textarea>
                 </div>
-                <div class="form-group">
-                  <label for="syllabus">Syllabus</label>
+                <div class="form-group mb-2">
+                  <label for="syllabus" class="fw-bold">Syllabus</label>
                   <textarea class="form-control" id="syllabus" name="syllabus" rows="2"></textarea>
                 </div>
-                <div class="form-group">
-                  <label for="status">Status</label>
+                <div class="form-group mb-2">
+                  <label for="status" class="fw-bold">Status</label>
                   <select class="form-control" id="status" name="status" required>
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
@@ -180,11 +178,9 @@ $centers = TrainingCenter::getAll();
   <div class="modal fade" id="viewCourseModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-primary text-white">
           <h4 class="modal-title">View Course: <span id="viewCourseTitle"></span></h4>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="container-fluid">
@@ -192,6 +188,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-6">
                 <div class="mb-2"><strong>Course Code:</strong> <span data-field="course_code"></span></div>
                 <div class="mb-2"><strong>Course Name:</strong> <span data-field="course_name"></span></div>
+                <div class="mb-2"><strong>Training Center:</strong> <span data-field="center_name"></span></div>
                 <div class="mb-2"><strong>Sector:</strong> <span data-field="sector_name"></span></div>
                 <div class="mb-2"><strong>Scheme:</strong> <span data-field="scheme_name"></span></div>
                 <div class="mb-2"><strong>Fee:</strong> <span data-field="fee"></span></div>
@@ -203,7 +200,7 @@ $centers = TrainingCenter::getAll();
                 <div class="mb-2"><strong>Updated At:</strong> <span data-field="updated_at"></span></div>
               </div>
             </div>
-            <div class="row">
+            <div class="row mb-2">
               <div class="col-md-12">
                 <div class="mb-2"><strong>Description:</strong><br><span data-field="description"></span></div>
                 <div class="mb-2"><strong>Prerequisites:</strong><br><span data-field="prerequisites"></span></div>
@@ -226,18 +223,16 @@ $centers = TrainingCenter::getAll();
   <div class="modal fade" id="editCourseModal">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-primary text-white">
           <h4 class="modal-title">Edit Course</h4>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form>
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="center_id">Training Center</label>
+                <div class="form-group mb-2">
+                  <label for="center_id" class="fw-bold">Training Center</label>
                   <select class="form-control select2" id="center_id" name="center_id" required>
                     <option value="">Select Training Center</option>
                     <?php foreach ($centers as $center): ?>
@@ -245,16 +240,16 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="edit_course_code">Course Code</label>
+                <div class="form-group mb-2">
+                  <label for="edit_course_code" class="fw-bold">Course Code</label>
                   <input type="text" class="form-control" id="edit_course_code" name="course_code" required>
                 </div>
-                <div class="form-group">
-                  <label for="edit_course_name">Course Name</label>
+                <div class="form-group mb-2">
+                  <label for="edit_course_name" class="fw-bold">Course Name</label>
                   <input type="text" class="form-control" id="edit_course_name" name="course_name" required>
                 </div>
-                <div class="form-group">
-                  <label for="edit_sector_id">Sector</label>
+                <div class="form-group mb-2">
+                  <label for="edit_sector_id" class="fw-bold">Sector</label>
                   <select class="form-control select2" id="edit_sector_id" name="sector_id" required>
                     <option value="">Select Sector</option>
                     <?php foreach ($sectors as $sector): ?>
@@ -262,8 +257,8 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="edit_scheme_id">Scheme</label>
+                <div class="form-group mb-2">
+                  <label for="edit_scheme_id" class="fw-bold">Scheme</label>
                   <select class="form-control select2" id="edit_scheme_id" name="scheme_id">
                     <option value="">Select Scheme</option>
                     <?php foreach ($schemes as $scheme): ?>
@@ -271,30 +266,30 @@ $centers = TrainingCenter::getAll();
                     <?php endforeach; ?>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="edit_fee">Fee</label>
+                <div class="form-group mb-2">
+                  <label for="edit_fee" class="fw-bold">Fee</label>
                   <input type="number" step="0.01" class="form-control" id="edit_fee" name="fee">
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="edit_duration_hours">Duration (hours)</label>
+                <div class="form-group mb-2">
+                  <label for="edit_duration_hours" class="fw-bold">Duration (hours)</label>
                   <input type="number" class="form-control" id="edit_duration_hours" name="duration_hours" required>
                 </div>
-                <div class="form-group">
-                  <label for="edit_description">Description</label>
+                <div class="form-group mb-2">
+                  <label for="edit_description" class="fw-bold">Description</label>
                   <textarea class="form-control" id="edit_description" name="description" rows="2"></textarea>
                 </div>
-                <div class="form-group">
-                  <label for="edit_prerequisites">Prerequisites</label>
+                <div class="form-group mb-2">
+                  <label for="edit_prerequisites" class="fw-bold">Prerequisites</label>
                   <textarea class="form-control" id="edit_prerequisites" name="prerequisites" rows="2"></textarea>
                 </div>
-                <div class="form-group">
-                  <label for="edit_syllabus">Syllabus</label>
+                <div class="form-group mb-2">
+                  <label for="edit_syllabus" class="fw-bold">Syllabus</label>
                   <textarea class="form-control" id="edit_syllabus" name="syllabus" rows="2"></textarea>
                 </div>
-                <div class="form-group">
-                  <label for="edit_status">Status</label>
+                <div class="form-group mb-2">
+                  <label for="edit_status" class="fw-bold">Status</label>
                   <select class="form-control" id="edit_status" name="status" required>
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
