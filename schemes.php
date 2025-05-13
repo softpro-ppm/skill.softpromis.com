@@ -310,7 +310,6 @@ $(function () {
             }},
             { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'danger') + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
             { data: 'created_at' },
-            { data: 'updated_at' },
             { data: null, orderable: false, searchable: false, render: function (data, type, row) {
                 return '<div class="btn-group btn-group-sm">' +
                     '<button type="button" class="btn btn-info view-scheme-btn" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-eye"></i></button>' +

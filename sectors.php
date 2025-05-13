@@ -91,7 +91,9 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Add New Sector</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <form id="addSectorForm">
                 <div class="modal-body">
@@ -126,7 +128,9 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">View Sector Details</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="form-group"><label>Sector ID</label><p data-field="sector_id"></p></div>
@@ -153,7 +157,9 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Edit Sector</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <form id="editSectorForm">
                 <input type="hidden" id="editSectorId" name="sector_id">
@@ -189,7 +195,9 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Delete Sector</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="deleteSectorId">
@@ -209,7 +217,9 @@ require_once 'includes/sidebar.php';
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="assignSectorModalLabel">Assign Sector to Scheme & Training Center</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <form id="assignSectorForm">
         <div class="modal-body">
