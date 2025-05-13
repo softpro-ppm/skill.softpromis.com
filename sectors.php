@@ -141,21 +141,27 @@ require_once 'includes/sidebar.php';
 <div class="modal fade" id="viewSectorModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-primary text-white">
                 <h4 class="modal-title">View Sector Details</h4>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close text-white" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group"><label>Sector ID</label><p data-field="sector_id"></p></div>
-                <div class="form-group"><label>Sector Name</label><p data-field="sector_name"></p></div>
-                <div class="form-group"><label>Training Center</label><p data-field="center_name"></p></div>
-                <div class="form-group"><label>Scheme</label><p data-field="scheme_name"></p></div>
-                <div class="form-group"><label>Description</label><p data-field="description"></p></div>
-                <div class="form-group"><label>Status</label><p data-field="status"></p></div>
-                <div class="form-group"><label>Created At</label><p data-field="created_at"></p></div>
-                <div class="form-group"><label>Updated At</label><p data-field="updated_at"></p></div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-2"><label>Sector ID</label><p data-field="sector_id"></p></div>
+                        <div class="form-group mb-2"><label>Sector Name</label><p data-field="sector_name"></p></div>
+                        <div class="form-group mb-2"><label>Training Center</label><p data-field="center_name"></p></div>
+                        <div class="form-group mb-2"><label>Scheme</label><p data-field="scheme_name"></p></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-2"><label>Status</label><p data-field="status"></p></div>
+                        <div class="form-group mb-2"><label>Created At</label><p data-field="created_at"></p></div>
+                        <div class="form-group mb-2"><label>Updated At</label><p data-field="updated_at"></p></div>
+                    </div>
+                </div>
+                <div class="form-group mt-2"><label>Description</label><p data-field="description"></p></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
