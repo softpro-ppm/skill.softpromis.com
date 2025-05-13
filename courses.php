@@ -137,7 +137,7 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="col-md-6">
               <label for="status" class="form-label fw-bold">Status</label>
-              <select class="form-select mb-2" id="status" name="status" required>
+              <select class="form-select form-control mb-2" id="status" name="status" required>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
@@ -270,7 +270,7 @@ require_once 'includes/sidebar.php';
             </div>
             <div class="col-md-6">
               <label for="edit_status" class="form-label fw-bold">Status</label>
-              <select class="form-select mb-2" id="edit_status" name="status" required>
+              <select class="form-select form-control mb-2" id="edit_status" name="status" required>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
