@@ -63,6 +63,8 @@ require_once 'includes/sidebar.php';
                                         <th>Sector ID</th>
                                         <th>Name</th>
                                         <th>Description</th>
+                                        <th>Training Center</th>
+                                        <th>Scheme</th>
                                         <th>Status</th>
                                         <th>Created At</th>
                                         <th>Updated At</th>
@@ -265,6 +267,8 @@ $(function () {
             { data: 'sector_id' },
             { data: 'sector_name' },
             { data: 'description' },
+            { data: 'center_name' },
+            { data: 'scheme_name' },
             { data: 'status', render: function (data) { return '<span class="badge badge-' + (data === 'active' ? 'success' : 'secondary') + '">' + (data.charAt(0).toUpperCase() + data.slice(1)) + '</span>'; } },
             { data: 'created_at' },
             { data: 'updated_at' },

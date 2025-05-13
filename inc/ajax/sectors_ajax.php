@@ -14,7 +14,14 @@ try {
     $pdo = getDBConnection();
     switch ($action) {
         case 'list':
-            $stmt = $pdo->query("SELECT sector_id, sector_name, description, status, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at FROM sectors ORDER BY created_at DESC");
+            $stmt = $pdo->query("SELECT s.sector_id, s.sector_name, s.description, s.status, s.center_id, s.scheme_id, 
+                tc.center_name, sch.scheme_name, 
+                DATE_FORMAT(s.created_at, '%Y-%m-%d %H:%i:%s') as created_at, 
+                DATE_FORMAT(s.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at 
+                FROM sectors s 
+                LEFT JOIN training_centers tc ON s.center_id = tc.center_id 
+                LEFT JOIN schemes sch ON s.scheme_id = sch.scheme_id 
+                ORDER BY s.created_at DESC");
             $sectors = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['status' => 'success', 'data' => $sectors]);
             exit;
