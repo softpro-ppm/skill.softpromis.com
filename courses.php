@@ -58,24 +58,6 @@ require_once 'includes/sidebar.php';
             </thead>
             <tbody id="coursesTableBody">
               <!-- Dynamic rows loaded by AJAX -->
-              <tr>
-                <td><?= htmlspecialchars($course['course_code']) ?></td>
-                <td><?= htmlspecialchars($course['course_name']) ?></td>
-                <td><?= htmlspecialchars($course['center_name']) ?></td>
-                <td><?= htmlspecialchars($course['sector_name']) ?></td>
-                <td><?= htmlspecialchars($course['scheme_name']) ?></td>
-                <td><?= htmlspecialchars($course['duration_hours']) ?></td>
-                <td><?= htmlspecialchars($course['fee']) ?></td>
-                <td><?= htmlspecialchars($course['description']) ?></td>
-                <td><?= htmlspecialchars($course['prerequisites']) ?></td>
-                <td><?= htmlspecialchars($course['syllabus']) ?></td>
-                <td><?= htmlspecialchars($course['status']) ?></td>
-                <td>
-                  <button class="btn btn-info">View</button>
-                  <button class="btn btn-primary">Edit</button>
-                  <button class="btn btn-danger">Delete</button>
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>
