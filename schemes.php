@@ -178,17 +178,17 @@ require_once 'includes/sidebar.php';
   </div>
 
   <!-- Edit Scheme Modal -->
-  <div class="modal fade" id="editSchemeModal">
+  <div class="modal fade" id="editSchemeModal" tabindex="-1" aria-labelledby="editSchemeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit Scheme</h4>
+          <h4 class="modal-title" id="editSchemeModalLabel">Edit Scheme</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="editSchemeForm">
+        <form id="editSchemeForm" autocomplete="off">
           <input type="hidden" id="editSchemeId" name="scheme_id">
           <div class="modal-body">
-            <div class="form-group">
+            <div class="form-group mb-3">
               <label for="edit_center_id">Training Center</label>
               <select class="form-control" id="edit_center_id" name="center_id" required>
                 <option value="">Select Training Center</option>
@@ -197,15 +197,15 @@ require_once 'includes/sidebar.php';
                 <?php endforeach; ?>
               </select>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
               <label for="editSchemeName">Scheme Name</label>
               <input type="text" class="form-control" id="editSchemeName" name="scheme_name" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
               <label for="editDescription">Description</label>
               <textarea class="form-control" id="editDescription" name="description" rows="3"></textarea>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
               <label for="editStatus">Status</label>
               <select class="form-control" id="editStatus" name="status">
                 <option value="active">Active</option>
@@ -214,7 +214,7 @@ require_once 'includes/sidebar.php';
             </div>
           </div>
           <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Update Scheme</button>
           </div>
         </form>
@@ -374,44 +374,43 @@ $(function () {
     $(document).on('click', '.edit-scheme-btn', function(e) {
         e.preventDefault();
         var schemeId = $(this).data('scheme-id');
-        console.log('Edit button clicked. schemeId:', schemeId); // DEBUG
         var $modal = $('#editSchemeModal');
-        $modal.find('form')[0].reset();
-        $modal.find('.is-invalid').removeClass('is-invalid');
+        var $form = $modal.find('form');
+        $form[0].reset();
+        $form.find('.is-invalid').removeClass('is-invalid');
         $modal.find('.modal-body .alert').remove();
-        $modal.find('#editSchemeId').val('');
-        $modal.find('#editSchemeName').val('');
-        $modal.find('#editDescription').val('');
-        $modal.find('#editStatus').val('active');
-        $modal.find('#edit_center_id').val('');
+        $form.find('#editSchemeId').val('');
+        $form.find('#editSchemeName').val('');
+        $form.find('#editDescription').val('');
+        $form.find('#editStatus').val('active');
+        $form.find('#edit_center_id').val('');
         $modal.find('.modal-body').append('<div class="text-center py-2" id="edit-loading"><i class="fas fa-spinner fa-spin fa-2x"></i></div>');
-        $modal.modal({ backdrop: 'static', keyboard: false, show: true });
+        var bsModal = new bootstrap.Modal($modal[0]);
+        bsModal.show();
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'GET',
             dataType: 'json',
             data: { action: 'get', scheme_id: schemeId },
             success: function(response) {
-                console.log('Edit AJAX success:', response); // DEBUG
                 $('#edit-loading').remove();
                 var s = response.data || {};
-                $modal.find('#editSchemeId').val(s.scheme_id || '');
-                $modal.find('#editSchemeName').val(s.scheme_name || '');
-                $modal.find('#editDescription').val(s.description || '');
-                $modal.find('#editStatus').val(s.status || 'active');
+                $form.find('#editSchemeId').val(s.scheme_id || '');
+                $form.find('#editSchemeName').val(s.scheme_name || '');
+                $form.find('#editDescription').val(s.description || '');
+                $form.find('#editStatus').val(s.status || 'active');
                 // Set Training Center dropdown after ensuring options are loaded
                 setTimeout(function() {
-                    $modal.find('#edit_center_id').val(s.center_id || '').trigger('change');
+                    $form.find('#edit_center_id').val(s.center_id || '').trigger('change');
                 }, 100);
             },
             error: function(xhr, status, error) {
-                console.log('Edit AJAX error:', status, error); // DEBUG
                 $('#edit-loading').remove();
-                $modal.find('#editSchemeId').val('');
-                $modal.find('#editSchemeName').val('');
-                $modal.find('#editDescription').val('');
-                $modal.find('#editStatus').val('active');
-                $modal.find('#edit_center_id').val('');
+                $form.find('#editSchemeId').val('');
+                $form.find('#editSchemeName').val('');
+                $form.find('#editDescription').val('');
+                $form.find('#editStatus').val('active');
+                $form.find('#edit_center_id').val('');
             }
         });
     });
