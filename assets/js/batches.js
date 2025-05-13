@@ -8,6 +8,9 @@ $(document).ready(function() {
         },
         columns: [
             { data: 'batch_id' },
+            { data: 'batch_code', render: function(data) {
+                return data ? data : '-';
+            } },
             { data: 'course_name', render: function(data) {
                 return data ? data : '-';
             } },
