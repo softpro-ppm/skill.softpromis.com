@@ -79,6 +79,7 @@ $(document).ready(function() {
                     $('#batchModalTitle').text('Edit Batch');
                     $('#batch_id').val(b.batch_id);
                     $('#batch_name').val(b.batch_name);
+                    $('#batch_code').val(b.batch_code); // set batch_code in edit modal
                     $('#start_date').val(b.start_date);
                     $('#end_date').val(b.end_date);
                     $('#capacity').val(b.capacity);
