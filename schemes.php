@@ -89,6 +89,15 @@ require_once 'includes/sidebar.php';
         <form id="addSchemeForm">
           <div class="modal-body">
             <div class="form-group">
+              <label for="center_id">Training Center</label>
+              <select class="form-control" id="center_id" name="center_id" required>
+                <option value="">Select Training Center</option>
+                <?php foreach (TrainingCenter::getAll() as $center): ?>
+                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="form-group">
               <label for="schemeName">Scheme Name</label>
               <input type="text" class="form-control" id="schemeName" name="scheme_name" placeholder="Enter scheme name" required>
             </div>
@@ -101,15 +110,6 @@ require_once 'includes/sidebar.php';
               <select class="form-control" id="status" name="status">
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="center_id">Training Center</label>
-              <select class="form-control" id="center_id" name="center_id" required>
-                <option value="">Select Training Center</option>
-                <?php foreach (TrainingCenter::getAll() as $center): ?>
-                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
-                <?php endforeach; ?>
               </select>
             </div>
           </div>
@@ -185,6 +185,15 @@ require_once 'includes/sidebar.php';
           <input type="hidden" id="editSchemeId" name="scheme_id">
           <div class="modal-body">
             <div class="form-group">
+              <label for="edit_center_id">Training Center</label>
+              <select class="form-control" id="edit_center_id" name="center_id" required>
+                <option value="">Select Training Center</option>
+                <?php foreach (TrainingCenter::getAll() as $center): ?>
+                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="form-group">
               <label for="editSchemeName">Scheme Name</label>
               <input type="text" class="form-control" id="editSchemeName" name="scheme_name" required>
             </div>
@@ -197,15 +206,6 @@ require_once 'includes/sidebar.php';
               <select class="form-control" id="editStatus" name="status">
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="edit_center_id">Training Center</label>
-              <select class="form-control" id="edit_center_id" name="center_id" required>
-                <option value="">Select Training Center</option>
-                <?php foreach (TrainingCenter::getAll() as $center): ?>
-                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
-                <?php endforeach; ?>
               </select>
             </div>
           </div>
