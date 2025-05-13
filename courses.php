@@ -92,7 +92,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="center_id" class="fw-bold">Training Center</label>
-                <select class="form-select select2-single" id="center_id" name="center_id" required>
+                <select class="form-select select2-single" id="center_id" name="center_id" multople required>
                   <option value="">Select Training Center</option>
                   <?php foreach ($centers as $center): ?>
                     <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
