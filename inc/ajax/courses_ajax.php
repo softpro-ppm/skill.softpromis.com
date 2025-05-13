@@ -25,8 +25,9 @@ try {
             $status = sanitizeInput($_POST['status'] ?? 'active');
             $sector_id = (int)($_POST['sector_id'] ?? 0);
             $scheme_id = isset($_POST['scheme_id']) && $_POST['scheme_id'] !== '' ? (int)$_POST['scheme_id'] : null;
+            $center_id = isset($_POST['center_id']) && $_POST['center_id'] !== '' ? (int)$_POST['center_id'] : null;
 
-            if (empty($course_name) || empty($course_code) || $duration_hours <= 0 || $sector_id <= 0) {
+            if (empty($course_name) || empty($course_code) || $duration_hours <= 0 || $sector_id <= 0 || empty($center_id)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
@@ -35,6 +36,13 @@ try {
             $stmt->execute([$sector_id]);
             if (!$stmt->fetch()) {
                 sendJSONResponse(false, 'Invalid sector');
+            }
+
+            // Validate center
+            $stmt = $pdo->prepare("SELECT center_id FROM training_centers WHERE center_id = ?");
+            $stmt->execute([$center_id]);
+            if (!$stmt->fetch()) {
+                sendJSONResponse(false, 'Invalid training center');
             }
 
             // Validate scheme if provided
@@ -48,17 +56,18 @@ try {
 
             $stmt = $pdo->prepare("
                 INSERT INTO courses (
-                    sector_id, scheme_id, course_code, course_name, duration_hours, fee, description, prerequisites, syllabus, status, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+                    sector_id, scheme_id, center_id, course_code, course_name, duration_hours, fee, description, prerequisites, syllabus, status, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
             ");
             $stmt->execute([
-                $sector_id, $scheme_id, $course_code, $course_name, $duration_hours, $fee, $description, $prerequisites, $syllabus, $status
+                $sector_id, $scheme_id, $center_id, $course_code, $course_name, $duration_hours, $fee, $description, $prerequisites, $syllabus, $status
             ]);
 
             logAudit($_SESSION['user']['user_id'], 'create_course', [
                 'course_name' => $course_name,
                 'sector_id' => $sector_id,
-                'scheme_id' => $scheme_id
+                'scheme_id' => $scheme_id,
+                'center_id' => $center_id
             ]);
 
             sendJSONResponse(true, 'Course created successfully', [
@@ -86,10 +95,11 @@ try {
             }
             $whereClause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
             $stmt = $pdo->prepare("
-                SELECT c.*, s.sector_name, sc.scheme_name
+                SELECT c.*, s.sector_name, sc.scheme_name, tc.center_name
                 FROM courses c
                 LEFT JOIN sectors s ON c.sector_id = s.sector_id
                 LEFT JOIN schemes sc ON c.scheme_id = sc.scheme_id
+                LEFT JOIN training_centers tc ON c.center_id = tc.center_id
                 $whereClause
                 ORDER BY c.course_id DESC
             ");
@@ -110,8 +120,9 @@ try {
             $status = sanitizeInput($_POST['status'] ?? 'active');
             $sector_id = (int)($_POST['sector_id'] ?? 0);
             $scheme_id = isset($_POST['scheme_id']) && $_POST['scheme_id'] !== '' ? (int)$_POST['scheme_id'] : null;
+            $center_id = isset($_POST['center_id']) && $_POST['center_id'] !== '' ? (int)$_POST['center_id'] : null;
 
-            if (empty($course_id) || empty($course_name) || empty($course_code) || $duration_hours <= 0 || $sector_id <= 0) {
+            if (empty($course_id) || empty($course_name) || empty($course_code) || $duration_hours <= 0 || $sector_id <= 0 || empty($center_id)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
@@ -120,6 +131,12 @@ try {
             $stmt->execute([$sector_id]);
             if (!$stmt->fetch()) {
                 sendJSONResponse(false, 'Invalid sector');
+            }
+            // Validate center
+            $stmt = $pdo->prepare("SELECT center_id FROM training_centers WHERE center_id = ?");
+            $stmt->execute([$center_id]);
+            if (!$stmt->fetch()) {
+                sendJSONResponse(false, 'Invalid training center');
             }
             // Validate scheme if provided
             if ($scheme_id !== null) {
@@ -130,17 +147,18 @@ try {
                 }
             }
             $stmt = $pdo->prepare("
-                UPDATE courses SET sector_id = ?, scheme_id = ?, course_code = ?, course_name = ?, duration_hours = ?, fee = ?, description = ?, prerequisites = ?, syllabus = ?, status = ?, updated_at = NOW()
+                UPDATE courses SET sector_id = ?, scheme_id = ?, center_id = ?, course_code = ?, course_name = ?, duration_hours = ?, fee = ?, description = ?, prerequisites = ?, syllabus = ?, status = ?, updated_at = NOW()
                 WHERE course_id = ?
             ");
             $stmt->execute([
-                $sector_id, $scheme_id, $course_code, $course_name, $duration_hours, $fee, $description, $prerequisites, $syllabus, $status, $course_id
+                $sector_id, $scheme_id, $center_id, $course_code, $course_name, $duration_hours, $fee, $description, $prerequisites, $syllabus, $status, $course_id
             ]);
             logAudit($_SESSION['user']['user_id'], 'update_course', [
                 'course_id' => $course_id,
                 'course_name' => $course_name,
                 'sector_id' => $sector_id,
-                'scheme_id' => $scheme_id
+                'scheme_id' => $scheme_id,
+                'center_id' => $center_id
             ]);
             sendJSONResponse(true, 'Course updated successfully');
             break;
@@ -188,10 +206,11 @@ try {
                 sendJSONResponse(false, 'Course ID is required');
             }
             $stmt = $pdo->prepare("
-                SELECT c.*, s.sector_name, sc.scheme_name
+                SELECT c.*, s.sector_name, sc.scheme_name, tc.center_name
                 FROM courses c
                 LEFT JOIN sectors s ON c.sector_id = s.sector_id
                 LEFT JOIN schemes sc ON c.scheme_id = sc.scheme_id
+                LEFT JOIN training_centers tc ON c.center_id = tc.center_id
                 WHERE c.course_id = ?
             ");
             $stmt->execute([$course_id]);
