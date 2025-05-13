@@ -437,16 +437,16 @@ $(function () {
 
   // --- Select2 Initialization ---
   function initCourseSelect2() {
+    // Remove 'multiple' attribute from selects to ensure single select
     $('#center_id, #scheme_id, #sector_id, #edit_center_id, #edit_scheme_id, #edit_sector_id').each(function() {
+      $(this).prop('multiple', false); // force single select
       $(this).select2({
         theme: 'bootstrap4',
-        width: '100%',
+        width: 'resolve', // use resolve for better width handling
         minimumResultsForSearch: 0,
         dropdownParent: $(this).closest('.modal').length ? $(this).closest('.modal') : $(document.body),
-        allowClear: true,
-        maximumSelectionLength: 1
+        allowClear: true
       });
-      $(this).prop('multiple', false);
     });
   }
   initCourseSelect2();
