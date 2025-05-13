@@ -61,6 +61,7 @@ require_once 'includes/sidebar.php';
                                 <thead>
                                     <tr>
                                         <th>Batch ID</th>
+                                        <th>Batch Code</th>
                                         <th>Course Name</th>
                                         <th>Batch Name</th>
                                         <th>Start Date</th>
