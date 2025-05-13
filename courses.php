@@ -413,9 +413,9 @@ $(function () {
           var c = response.data;
           $('#edit_course_code').val(c.course_code);
           $('#edit_course_name').val(c.course_name);
-          $('#edit_center_id').val(c.center_id);
-          $('#edit_sector_id').val(c.sector_id);
-          $('#edit_scheme_id').val(c.scheme_id);
+          $('#edit_center_id').val(c.center_id).trigger('change');
+          $('#edit_sector_id').val(c.sector_id).trigger('change');
+          $('#edit_scheme_id').val(c.scheme_id).trigger('change');
           $('#edit_duration_hours').val(c.duration_hours);
           $('#edit_fee').val(c.fee);
           $('#edit_description').val(c.description);
