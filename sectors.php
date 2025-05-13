@@ -187,7 +187,9 @@ require_once 'includes/sidebar.php';
                         <select class="form-control" id="edit_center_id" name="center_id" required>
                             <option value="">Select Training Center</option>
                             <?php foreach (TrainingCenter::getAll() as $center): ?>
-                                <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
+                                <option value="<?= htmlspecialchars($center['center_id']) ?>">
+                                    <?= htmlspecialchars($center['center_name']) ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -196,7 +198,9 @@ require_once 'includes/sidebar.php';
                         <select class="form-control" id="edit_scheme_id" name="scheme_id" required>
                             <option value="">Select Scheme</option>
                             <?php foreach (Scheme::getAll() as $scheme): ?>
-                                <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
+                                <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>">
+                                    <?= htmlspecialchars($scheme['scheme_name']) ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
