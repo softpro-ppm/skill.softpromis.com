@@ -92,7 +92,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="center_id" class="fw-bold">Training Center</label>
-                <select class="form-control" id="center_id" name="center_id" required>
+                <select class="form-select select2-single" id="center_id" name="center_id" required>
                   <option value="">Select Training Center</option>
                   <?php foreach ($centers as $center): ?>
                     <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -103,7 +103,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="scheme_id" class="fw-bold">Scheme</label>
-                <select class="form-control" id="scheme_id" name="scheme_id">
+                <select class="form-select select2-single" id="scheme_id" name="scheme_id">
                   <option value="">Select Scheme</option>
                   <?php foreach ($schemes as $scheme): ?>
                     <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -114,7 +114,7 @@ require_once 'includes/sidebar.php';
             <div class="col-md-4">
               <div class="form-group mb-0">
                 <label for="sector_id" class="fw-bold">Sector</label>
-                <select class="form-control" id="sector_id" name="sector_id" required>
+                <select class="form-select select2-single" id="sector_id" name="sector_id" required>
                   <option value="">Select Sector</option>
                   <?php foreach ($sectors as $sector): ?>
                     <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -157,7 +157,7 @@ require_once 'includes/sidebar.php';
               </div>
               <div class="form-group mb-2">
                 <label for="status" class="fw-bold">Status</label>
-                <select class="form-control" id="status" name="status" required>
+                <select class="form-select select2-single" id="status" name="status" required>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>
@@ -298,7 +298,7 @@ require_once 'includes/sidebar.php';
               </div>
               <div class="form-group mb-2">
                 <label for="edit_status" class="fw-bold">Status</label>
-                <select class="form-control" id="edit_status" name="status" required>
+                <select class="form-select select2-single" id="edit_status" name="status" required>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>
@@ -380,18 +380,18 @@ $(function () {
 
   // --- Select2 Initialization ---
   function initCourseSelect2() {
-    // Remove 'multiple' attribute from selects to ensure single select
-    $('#center_id, #scheme_id, #sector_id, #edit_center_id, #edit_scheme_id, #edit_sector_id').each(function() {
-      $(this).prop('multiple', false); // force single select
+    // All single-select dropdowns in Add/Edit Course modals
+    $('#addCourseModal .select2-single, #editCourseModal .select2-single').each(function() {
       $(this).select2({
-        theme: 'bootstrap4',
-        width: 'resolve', // use resolve for better width handling
-        minimumResultsForSearch: 0,
-        dropdownParent: $(this).closest('.modal').length ? $(this).closest('.modal') : $(document.body),
-        allowClear: true
+        theme: 'bootstrap-5',
+        width: '100%',
+        minimumResultsForSearch: 0, // always show search
+        allowClear: true,
+        dropdownParent: $(this).closest('.modal')
       });
     });
   }
+  // Initialize on page load and when modals are shown
   initCourseSelect2();
   $('#addCourseModal, #editCourseModal').on('shown.bs.modal', function () { initCourseSelect2(); });
 
