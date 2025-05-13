@@ -42,7 +42,7 @@ $(document).ready(function() {
         $.ajax({
             url: 'inc/ajax/batches_ajax.php',
             type: 'POST',
-            data: { action: 'get_courses' },
+            data: { action: 'get_centers_courses' }, // changed from 'get_courses'
             dataType: 'json',
             success: function(res) {
                 if(res.success) {
