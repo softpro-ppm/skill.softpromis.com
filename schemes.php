@@ -565,15 +565,11 @@ $(function () {
         });
     });
 
-    // --- Reset forms on modal close ---
-    $('#addSchemeModal, #editSchemeModal, #assignSchemeModal').on('hidden.bs.modal', function () {
-        var $form = $(this).find('form');
-        if ($form.length) {
-            $form[0].reset();
-            $form.find('.is-invalid').removeClass('is-invalid');
-            // Do NOT forcibly reset selects here, let AJAX set them
-            $form.find('input[type="text"], input[type="hidden"], textarea').val('');
-        }
+    // --- Reload DataTable when any modal is closed (Add/Edit/Delete) ---
+    $('#addSchemeModal, #editSchemeModal, #deleteSchemeModal').on('hidden.bs.modal', function () {
+        setTimeout(function() {
+            $('#schemesTable').DataTable().ajax.reload(null, false);
+        }, 200);
     });
 });
 </script>
