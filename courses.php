@@ -100,7 +100,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-0">
                   <label for="center_id" class="fw-bold">Training Center</label>
-                  <select class="form-control select2-single" id="center_id" name="center_id" required>
+                  <select class="form-control select2-single" id="center_id" name="center_id" multiple required>
                     <option value="">Select Training Center</option>
                     <?php foreach ($centers as $center): ?>
                       <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -111,7 +111,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-0">
                   <label for="scheme_id" class="fw-bold">Scheme</label>
-                  <select class="form-control select2-single" id="scheme_id" name="scheme_id">
+                  <select class="form-control select2-single" id="scheme_id" name="scheme_id" multiple>
                     <option value="">Select Scheme</option>
                     <?php foreach ($schemes as $scheme): ?>
                       <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -122,7 +122,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-0">
                   <label for="sector_id" class="fw-bold">Sector</label>
-                  <select class="form-control select2-single" id="sector_id" name="sector_id" required>
+                  <select class="form-control select2-single" id="sector_id" name="sector_id" multiple required>
                     <option value="">Select Sector</option>
                     <?php foreach ($sectors as $sector): ?>
                       <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -241,7 +241,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-0">
                   <label for="edit_center_id" class="fw-bold">Training Center</label>
-                  <select class="form-control select2-single" id="edit_center_id" name="center_id" required>
+                  <select class="form-control select2-single" id="edit_center_id" name="center_id" multiple required>
                     <option value="">Select Training Center</option>
                     <?php foreach ($centers as $center): ?>
                       <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
@@ -252,7 +252,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-0">
                   <label for="edit_scheme_id" class="fw-bold">Scheme</label>
-                  <select class="form-control select2-single" id="edit_scheme_id" name="scheme_id">
+                  <select class="form-control select2-single" id="edit_scheme_id" name="scheme_id" multiple>
                     <option value="">Select Scheme</option>
                     <?php foreach ($schemes as $scheme): ?>
                       <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
@@ -263,7 +263,7 @@ $centers = TrainingCenter::getAll();
               <div class="col-md-4">
                 <div class="form-group mb-0">
                   <label for="edit_sector_id" class="fw-bold">Sector</label>
-                  <select class="form-control select2-single" id="edit_sector_id" name="sector_id" required>
+                  <select class="form-control select2-single" id="edit_sector_id" name="sector_id" multiple required>
                     <option value="">Select Sector</option>
                     <?php foreach ($sectors as $sector): ?>
                       <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
@@ -459,7 +459,8 @@ $(function () {
         }
         return $(document.body);
       },
-      allowClear: true
+      allowClear: true,
+      maximumSelectionLength: 1 // Only allow one selection even though multiple is set
     });
   }
   // Initialize on page load
