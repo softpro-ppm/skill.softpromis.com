@@ -87,7 +87,7 @@ try {
             if (empty($sector_id)) {
                 sendJSONResponse(false, 'Sector ID is required');
             }
-            $stmt = $pdo->prepare("SELECT sector_id, sector_name, description, status, center_id, scheme_id, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at FROM sectors WHERE sector_id = ?");
+            $stmt = $pdo->prepare("SELECT s.*, tc.center_name, sch.scheme_name, DATE_FORMAT(s.created_at, '%Y-%m-%d %H:%i:%s') as created_at, DATE_FORMAT(s.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at FROM sectors s LEFT JOIN training_centers tc ON s.center_id = tc.center_id LEFT JOIN schemes sch ON s.scheme_id = sch.scheme_id WHERE s.sector_id = ?");
             $stmt->execute([$sector_id]);
             $sector = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($sector) {
