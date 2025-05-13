@@ -147,14 +147,27 @@ class Sector {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO sectors (sector_name, description, status, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
-        return $stmt->execute([$data['sector_name'], $data['description'], $data['status']]);
+        $stmt = $conn->prepare("INSERT INTO sectors (sector_name, description, status, center_id, scheme_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
+        return $stmt->execute([
+            $data['sector_name'],
+            $data['description'],
+            $data['status'],
+            $data['center_id'],
+            $data['scheme_id']
+        ]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("UPDATE sectors SET sector_name = ?, description = ?, status = ?, updated_at = NOW() WHERE sector_id = ?");
-        return $stmt->execute([$data['sector_name'], $data['description'], $data['status'], $id]);
+        $stmt = $conn->prepare("UPDATE sectors SET sector_name = ?, description = ?, status = ?, center_id = ?, scheme_id = ?, updated_at = NOW() WHERE sector_id = ?");
+        return $stmt->execute([
+            $data['sector_name'],
+            $data['description'],
+            $data['status'],
+            $data['center_id'],
+            $data['scheme_id'],
+            $id
+        ]);
     }
 
     public static function delete($id) {

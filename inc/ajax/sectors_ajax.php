@@ -22,11 +22,19 @@ try {
             $sector_name = sanitizeInput($_POST['sector_name'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
-            if (empty($sector_name)) {
-                sendJSONResponse(false, 'Sector name is required');
+            $center_id = (int)($_POST['center_id'] ?? 0);
+            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            if (empty($sector_name) || !$center_id || !$scheme_id) {
+                sendJSONResponse(false, 'Sector name, Training Center, and Scheme are required');
             }
-            $stmt = $pdo->prepare("INSERT INTO sectors (sector_name, description, status, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
-            $stmt->execute([$sector_name, $description, $status]);
+            require_once '../../crud_functions.php';
+            $result = Sector::create([
+                'sector_name' => $sector_name,
+                'description' => $description,
+                'status' => $status,
+                'center_id' => $center_id,
+                'scheme_id' => $scheme_id
+            ]);
             logAudit($_SESSION['user']['user_id'], 'create_sector', ['sector_name' => $sector_name]);
             sendJSONResponse(true, 'Sector added successfully');
             break;
@@ -35,11 +43,19 @@ try {
             $sector_name = sanitizeInput($_POST['sector_name'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
-            if (empty($sector_id) || empty($sector_name)) {
+            $center_id = (int)($_POST['center_id'] ?? 0);
+            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            if (empty($sector_id) || empty($sector_name) || !$center_id || !$scheme_id) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
-            $stmt = $pdo->prepare("UPDATE sectors SET sector_name = ?, description = ?, status = ?, updated_at = NOW() WHERE sector_id = ?");
-            $stmt->execute([$sector_name, $description, $status, $sector_id]);
+            require_once '../../crud_functions.php';
+            $result = Sector::update($sector_id, [
+                'sector_name' => $sector_name,
+                'description' => $description,
+                'status' => $status,
+                'center_id' => $center_id,
+                'scheme_id' => $scheme_id
+            ]);
             logAudit($_SESSION['user']['user_id'], 'update_sector', ['sector_id' => $sector_id, 'sector_name' => $sector_name]);
             sendJSONResponse(true, 'Sector updated successfully');
             break;
@@ -64,7 +80,7 @@ try {
             if (empty($sector_id)) {
                 sendJSONResponse(false, 'Sector ID is required');
             }
-            $stmt = $pdo->prepare("SELECT sector_id, sector_name, description, status, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at FROM sectors WHERE sector_id = ?");
+            $stmt = $pdo->prepare("SELECT sector_id, sector_name, description, status, center_id, scheme_id, DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as created_at, DATE_FORMAT(updated_at, '%Y-%m-%d %H:%i:%s') as updated_at FROM sectors WHERE sector_id = ?");
             $stmt->execute([$sector_id]);
             $sector = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($sector) {
