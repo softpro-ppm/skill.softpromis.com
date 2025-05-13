@@ -97,10 +97,6 @@ require_once 'includes/sidebar.php';
                         <label for="batch_name">Batch Name</label>
                         <input type="text" class="form-control" id="batch_name" name="batch_name" required>
                     </div>
-                    <div class="form-group">
-                        <label for="batch_code">Batch Code</label>
-                        <input type="text" class="form-control" id="batch_code" name="batch_code" required>
-                    </div>
                 
                     <div class="form-group">
                         <label for="course_id"><strong>Course</strong></label>
