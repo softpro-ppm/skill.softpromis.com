@@ -60,6 +60,7 @@ try {
                             </div>
                         </div>
                         <div class="card-body">
+                            <div id="studentError" class="alert alert-danger d-none"></div>
                             <table id="studentsTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
