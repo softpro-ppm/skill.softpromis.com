@@ -56,12 +56,17 @@ $(document).ready(function() {
                 email: formData.get('email'),
                 phone: formData.get('phone'),
                 address: formData.get('address'),
+<<<<<<< HEAD
+                website: formData.get('website'),
+=======
+>>>>>>> parent of d1081a0 (dfv)
                 status: formData.get('status')
             },
             success: function(response) {
                 if (response.success) {
                     $('#partnerModal').modal('hide');
                     $('#partnerForm')[0].reset();
+                    $('#status').val('active'); // Reset to default
                     partnersTable.ajax.reload();
                     toastr.success(response.message);
                 } else {
@@ -94,7 +99,12 @@ $(document).ready(function() {
                     $('#email').val(partner.email);
                     $('#phone').val(partner.phone);
                     $('#address').val(partner.address);
+<<<<<<< HEAD
+                    $('#website').val(partner.website);
+                    $('#status').val(partner.status); // Set current status
+=======
                     $('#status').val(partner.status);
+>>>>>>> parent of d1081a0 (dfv)
                     $('#partnerModal').modal('show');
                     $('.modal-title').text('Edit Training Partner');
                 } else {
@@ -144,7 +154,18 @@ $(document).ready(function() {
     $('#partnerModal').on('hidden.bs.modal', function() {
         $('#partnerForm')[0].reset();
         $('#partner_id').val('');
+        $('#status').val('active'); // Reset to default
         $('.modal-title').text('Add New Training Partner');
+    });
+
+    // Add input validation for status field
+    $('#status').on('input', function() {
+        const value = $(this).val().toLowerCase();
+        if (value === 'active' || value === 'inactive' || value === '') {
+            $(this).removeClass('is-invalid');
+        } else {
+            $(this).addClass('is-invalid');
+        }
     });
 
     // Configure Toastr

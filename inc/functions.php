@@ -2,10 +2,22 @@
 // Session management
 function startSecureSession() {
     if (session_status() === PHP_SESSION_NONE) {
+        // Set secure session parameters
         ini_set('session.cookie_httponly', 1);
         ini_set('session.use_only_cookies', 1);
         ini_set('session.cookie_secure', 1);
+        ini_set('session.cookie_samesite', 'Strict');
+        ini_set('session.gc_maxlifetime', 3600); // 1 hour
+        ini_set('session.use_strict_mode', 1);
+        
         session_start();
+        
+        // Regenerate session ID periodically
+        if (!isset($_SESSION['last_regeneration']) || 
+            time() - $_SESSION['last_regeneration'] > 300) { // 5 minutes
+            session_regenerate_id(true);
+            $_SESSION['last_regeneration'] = time();
+        }
     }
 }
 
