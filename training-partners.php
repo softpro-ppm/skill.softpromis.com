@@ -371,7 +371,7 @@ require_once 'includes/sidebar.php';
                                 <thead>
                                     <tr>
                                         <th>Sr. No.</th>
-                                        <th>Name</th>
+                                        <th>Training Partner</th>
                                         <th>SPOC</th>
                                         <th>Email</th>
                                         <th>Phone</th>
@@ -629,7 +629,10 @@ $(function () {
             { "data": "contact_person" },
             { "data": "email" },
             { "data": "phone" },
-            { "data": "center_count" },
+            { 
+                "data": "center_count",
+                "className": "text-center"
+            },
             { 
                 "data": "status",
                 "render": function(data, type, row) {
