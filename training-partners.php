@@ -396,7 +396,9 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Add New Training Partner</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <form id="partnerForm" enctype="multipart/form-data">
                 <input type="hidden" id="partner_id" name="partner_id" value="">
@@ -477,7 +479,9 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Confirm Delete</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to delete this training partner?</p>
@@ -498,7 +502,9 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Partner Details</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="row">
