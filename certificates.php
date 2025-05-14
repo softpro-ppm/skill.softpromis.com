@@ -101,9 +101,11 @@ require_once 'includes/sidebar.php';
             <h3 class="card-title">Certificate History</h3>
           </div>
           <div class="card-body">
+            <div id="certificateError" class="alert alert-danger d-none"></div>
             <table id="certificatesTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
+                  <th>Sr. No.</th>
                   <th>Certificate No</th>
                   <th>Student</th>
                   <th>Course</th>
@@ -113,9 +115,7 @@ require_once 'includes/sidebar.php';
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                <!-- DataTables will populate this -->
-              </tbody>
+              <tbody></tbody>
             </table>
           </div>
         </div>
@@ -232,29 +232,29 @@ require_once 'includes/sidebar.php';
 
 <script>
   $(function () {
-    $('#certificatesTable').DataTable({
+    var certTable = $('#certificatesTable').DataTable({
       processing: true,
       serverSide: false,
       ajax: {
         url: 'inc/ajax/certificates_ajax.php',
         type: 'POST',
         data: { action: 'list' },
-        dataSrc: function(json) {
-          return json.data || [];
-        }
+        dataSrc: function(json) { return json.data || []; }
       },
       columns: [
+        { data: null, render: function (data, type, row, meta) { return meta.row + 1; }, className: 'text-center' },
         { data: 'certificate_number' },
         { data: 'student_name' },
         { data: 'course_name' },
         { data: 'issue_date' },
         { data: 'valid_until' },
         { data: 'status', render: function(data) {
-            var badge = 'secondary';
-            if (data === 'Active') badge = 'success';
-            if (data === 'Pending') badge = 'warning';
-            if (data === 'Expired') badge = 'danger';
-            return '<span class="badge badge-' + badge + '">' + data + '</span>';
+            var badge = 'secondary', label = data;
+            if (data === 'issued') { badge = 'success'; label = 'Issued'; }
+            else if (data === 'revoked') { badge = 'danger'; label = 'Revoked'; }
+            else if (data === 'pending') { badge = 'warning'; label = 'Pending'; }
+            else if (data === 'expired') { badge = 'dark'; label = 'Expired'; }
+            return '<span class="badge badge-' + badge + '">' + label + '</span>';
           }
         },
         { data: null, orderable: false, searchable: false, render: function(data, type, row) {
@@ -272,6 +272,13 @@ require_once 'includes/sidebar.php';
       autoWidth: false,
       responsive: true
     });
+
+    function showCertError(msg) {
+      $('#certificateError').removeClass('d-none').text(msg).show();
+    }
+    function hideCertError() {
+      $('#certificateError').addClass('d-none').text('').hide();
+    }
 
     // Initialize Select2
     $('.select2').select2({
@@ -314,6 +321,7 @@ require_once 'includes/sidebar.php';
     // Add/Edit Certificate
     $('#certificateForm').on('submit', function (e) {
       e.preventDefault();
+      hideCertError();
       var formData = $(this).serialize();
       var action = $('#certificate_id').val() ? 'update' : 'create';
       formData += '&action=' + action;
@@ -327,12 +335,14 @@ require_once 'includes/sidebar.php';
             toastr.success(response.message || 'Certificate saved successfully');
             $('#certificateModal').modal('hide');
             $('#certificateForm')[0].reset();
-            $('#certificatesTable').DataTable().ajax.reload();
+            certTable.ajax.reload();
           } else {
+            showCertError(response.message || 'Error saving certificate');
             toastr.error(response.message || 'Error saving certificate');
           }
         },
         error: function () {
+          showCertError('An error occurred. Please try again.');
           toastr.error('An error occurred. Please try again.');
         }
       });
@@ -340,6 +350,7 @@ require_once 'includes/sidebar.php';
 
     // Open Add Modal
     $(document).on('click', '#addCertificateBtn', function () {
+      hideCertError();
       $('#certificateForm')[0].reset();
       $('#certificate_id').val('');
       $('#certificateModalLabel').text('Add Certificate');
@@ -348,6 +359,7 @@ require_once 'includes/sidebar.php';
 
     // Open Edit Modal
     $(document).on('click', '.edit-certificate-btn', function () {
+      hideCertError();
       var id = $(this).data('id');
       $.ajax({
         url: 'inc/ajax/certificates_ajax.php',
@@ -368,8 +380,13 @@ require_once 'includes/sidebar.php';
             $('#certificateModalLabel').text('Edit Certificate');
             $('#certificateModal').modal('show');
           } else {
+            showCertError('Could not fetch certificate details.');
             toastr.error('Could not fetch certificate details.');
           }
+        },
+        error: function () {
+          showCertError('An error occurred. Please try again.');
+          toastr.error('An error occurred. Please try again.');
         }
       });
     });
@@ -394,8 +411,13 @@ require_once 'includes/sidebar.php';
             $('#viewCertificateBody').html(html);
             $('#viewCertificateModal').modal('show');
           } else {
+            showCertError('Could not fetch certificate details.');
             toastr.error('Could not fetch certificate details.');
           }
+        },
+        error: function () {
+          showCertError('An error occurred. Please try again.');
+          toastr.error('An error occurred. Please try again.');
         }
       });
     });
@@ -419,10 +441,15 @@ require_once 'includes/sidebar.php';
           if (response.success) {
             toastr.success(response.message || 'Certificate deleted successfully');
             $('#deleteCertificateModal').modal('hide');
-            $('#certificatesTable').DataTable().ajax.reload();
+            certTable.ajax.reload();
           } else {
+            showCertError(response.message || 'Error deleting certificate');
             toastr.error(response.message || 'Error deleting certificate');
           }
+        },
+        error: function () {
+          showCertError('An error occurred. Please try again.');
+          toastr.error('An error occurred. Please try again.');
         }
       });
     });
