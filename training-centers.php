@@ -42,28 +42,25 @@ if(isset($_POST['action'])) {
                 
                 $data = array();
                 while($row = $result->fetch_assoc()) {
-                    // Prepare the row data
                     $data[] = array(
-                        "center_id" => $row['center_id'],
-                        "partner_name" => htmlspecialchars($row['partner_name']),
+                        "center_id" => (int)$row['center_id'],
+                        "partner_name" => htmlspecialchars($row['partner_name'] ?? ''),
                         "center_name" => htmlspecialchars($row['center_name']),
                         "contact_person" => htmlspecialchars($row['contact_person']),
                         "email" => htmlspecialchars($row['email']),
                         "phone" => htmlspecialchars($row['phone']),
-                        "full_address" => htmlspecialchars($row['full_address']),
-                        "status" => $row['status'],
-                        "actions" => '<div class="btn-group btn-group-sm">' +
-                                    '<button type="button" class="btn btn-info view-btn" data-id="' + $row['center_id'] + '"><i class="fas fa-eye"></i></button>' +
-                                    '<button type="button" class="btn btn-primary edit-btn" data-id="' + $row['center_id'] + '"><i class="fas fa-edit"></i></button>' +
-                                    '<button type="button" class="btn btn-danger delete-btn" data-id="' + $row['center_id'] + '"><i class="fas fa-trash"></i></button>' +
-                                    '</div>'
+                        "address" => htmlspecialchars($row['address']),
+                        "city" => htmlspecialchars($row['city'] ?? ''),
+                        "state" => htmlspecialchars($row['state'] ?? ''),
+                        "pincode" => htmlspecialchars($row['pincode'] ?? ''),
+                        "status" => $row['status']
                     );
                 }
                 
                 echo json_encode(array(
                     "draw" => isset($_POST['draw']) ? intval($_POST['draw']) : 0,
-                    "recordsTotal" => $result->num_rows,
-                    "recordsFiltered" => $result->num_rows,
+                    "recordsTotal" => count($data),
+                    "recordsFiltered" => count($data),
                     "data" => $data
                 ));
             } catch (Exception $e) {
@@ -601,7 +598,7 @@ $(function () {
         "processing": true,
         "serverSide": false,
         "ajax": {
-            "url": "inc/ajax/training-centers.php",
+            "url": "training-centers.php",
             "type": "POST",
             "data": function(d) {
                 d.action = "list";
@@ -624,22 +621,15 @@ $(function () {
             { 
                 "data": null,
                 "render": function(data, type, row) {
-                    var address = [row.address];
-                    if (row.city) address.push(row.city);
-                    if (row.state) address.push(row.state);
-                    if (row.pincode) address.push(row.pincode);
-                    return address.filter(Boolean).join(', ');
+                    return [row.address, row.city, row.state, row.pincode].filter(Boolean).join(', ');
                 }
             },
             { 
                 "data": "status",
                 "render": function(data, type, row) {
-                    if (type === 'display') {
-                        var badgeClass = data === 'active' ? 'success' : 'danger';
-                        return '<span class="badge badge-' + badgeClass + '">' + 
-                               data.charAt(0).toUpperCase() + data.slice(1) + '</span>';
-                    }
-                    return data;
+                    var badgeClass = data === 'active' ? 'success' : 'danger';
+                    return '<span class="badge badge-' + badgeClass + '">' + 
+                           data.charAt(0).toUpperCase() + data.slice(1) + '</span>';
                 }
             },
             { 
@@ -648,7 +638,7 @@ $(function () {
                 "searchable": false,
                 "render": function(data, type, row) {
                     return '<div class="btn-group btn-group-sm">' +
-                           '<button type="button" class="btn btn-info view-center" data-id="' + row.center_id + '"><i class="fas fa-eye"></i></button>' +
+                           '<button type="button" class="btn btn-info view-btn" data-id="' + row.center_id + '"><i class="fas fa-eye"></i></button>' +
                            '<button type="button" class="btn btn-primary edit-btn" data-id="' + row.center_id + '"><i class="fas fa-edit"></i></button>' +
                            '<button type="button" class="btn btn-danger delete-btn" data-id="' + row.center_id + '" data-name="' + row.center_name + '"><i class="fas fa-trash"></i></button>' +
                            '</div>';
@@ -659,29 +649,6 @@ $(function () {
         "lengthChange": true,
         "autoWidth": false,
         "order": [[0, 'desc']],
-        "dom": 'Bfrtip',
-        "buttons": [
-            'copy', 
-            'csv', 
-            {
-                extend: 'excel',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
-            },
-            {
-                extend: 'pdf',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
-            },
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: ':not(:last-child)'
-                }
-            }
-        ],
         "pageLength": 10,
         "language": {
             "emptyTable": "No training centers found",
@@ -696,7 +663,7 @@ $(function () {
     $('#centersTable').on('click', '.view-btn', function() {
         var centerId = $(this).data('id');
         $.ajax({
-            url: 'inc/ajax/training-centers.php',
+            url: 'training-centers.php',
             type: 'POST',
             data: {
                 action: 'get_center',
@@ -748,9 +715,8 @@ $(function () {
         var submitBtn = $('#centerModal button[type="submit"]');
         submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
         
-        // Load center data
         $.ajax({
-            url: 'inc/ajax/training-centers.php',
+            url: 'training-centers.php',
             type: 'POST',
             data: {
                 action: 'get_center',
@@ -763,7 +729,7 @@ $(function () {
                     
                     // Load partners first
                     $.ajax({
-                        url: 'inc/ajax/training-centers.php',
+                        url: 'training-centers.php',
                         type: 'POST',
                         data: { action: 'get_partners' },
                         success: function(partnersResponse) {
@@ -832,8 +798,48 @@ $(function () {
         var originalText = submitBtn.text();
         submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Saving...');
         
+        // Validate required fields
+        var requiredFields = ['partner_id', 'center_name', 'contact_person', 'email', 'phone', 'address', 'city', 'state', 'pincode'];
+        var missingFields = [];
+        
+        requiredFields.forEach(function(field) {
+            if (!$('#' + field).val()) {
+                missingFields.push(field);
+            }
+        });
+        
+        if (missingFields.length > 0) {
+            toastr.error('Please fill in all required fields: ' + missingFields.join(', '));
+            submitBtn.prop('disabled', false).text(originalText);
+            return false;
+        }
+        
+        // Validate email format
+        var email = $('#email').val();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            toastr.error('Please enter a valid email address');
+            submitBtn.prop('disabled', false).text(originalText);
+            return false;
+        }
+        
+        // Validate phone format
+        var phone = $('#phone').val();
+        if (!/^[0-9+\-\s()]{10,15}$/.test(phone)) {
+            toastr.error('Please enter a valid phone number');
+            submitBtn.prop('disabled', false).text(originalText);
+            return false;
+        }
+        
+        // Validate pincode format
+        var pincode = $('#pincode').val();
+        if (!/^[0-9]{6}$/.test(pincode)) {
+            toastr.error('Please enter a valid 6-digit pincode');
+            submitBtn.prop('disabled', false).text(originalText);
+            return false;
+        }
+        
         $.ajax({
-            url: 'inc/ajax/training-centers.php',
+            url: 'training-centers.php',
             type: 'POST',
             data: formData + '&action=' + action,
             dataType: 'json',
@@ -841,13 +847,14 @@ $(function () {
                 if(response.status) {
                     toastr.success(response.message);
                     $('#centerModal').modal('hide');
-                    table.ajax.reload();
+                    table.ajax.reload(null, false); // Reload table without resetting paging
                 } else {
                     toastr.error(response.message || 'Error saving training center');
                 }
             },
-            error: function() {
-                toastr.error('Error saving training center');
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+                toastr.error('Error saving training center: ' + error);
             },
             complete: function() {
                 submitBtn.prop('disabled', false).text(originalText);
@@ -860,40 +867,36 @@ $(function () {
     
     $('#centersTable').on('click', '.delete-btn', function() {
         deleteCenterId = $(this).data('id');
-        $('#delete_center_name').text($(this).data('name'));
+        var centerName = $(this).data('name');
+        
+        $('#delete_center_name').text(centerName);
         $('#deleteModal').modal('show');
-    });
-    
-    $('#confirmDelete').on('click', function() {
-        if (!deleteCenterId) return;
         
-        var btn = $(this);
-        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Deleting...');
-        
-        $.ajax({
-            url: 'inc/ajax/training-centers.php',
-            type: 'POST',
-            data: {
-                action: 'delete',
-                center_id: deleteCenterId
-            },
-            dataType: 'json',
-            success: function(response) {
-                if(response.status) {
-                    toastr.success(response.message);
-                    $('#deleteModal').modal('hide');
-                    table.ajax.reload();
-                } else {
-                    toastr.error(response.message || 'Error deleting training center');
+        $('#confirmDelete').off('click').on('click', function() {
+            $.ajax({
+                url: 'training-centers.php',
+                type: 'POST',
+                data: {
+                    action: 'delete',
+                    center_id: deleteCenterId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if(response.status) {
+                        toastr.success(response.message);
+                        $('#deleteModal').modal('hide');
+                        table.ajax.reload();
+                    } else {
+                        toastr.error(response.message || 'Error deleting training center');
+                    }
+                },
+                error: function() {
+                    toastr.error('Error deleting training center');
+                },
+                complete: function() {
+                    deleteCenterId = null;
                 }
-            },
-            error: function() {
-                toastr.error('Error deleting training center');
-            },
-            complete: function() {
-                btn.prop('disabled', false).text('Delete');
-                deleteCenterId = null;
-            }
+            });
         });
     });
 
@@ -912,7 +915,7 @@ $(function () {
         if(!$('#center_id').val()) {
             Select2Handler.loadFromServer(
                 '#partner_id',
-                'inc/ajax/training-centers.php',
+                'training-centers.php',
                 { action: 'get_partners' },
                 { placeholder: 'Select Partner' }
             );
