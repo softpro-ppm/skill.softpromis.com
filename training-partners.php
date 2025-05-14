@@ -429,10 +429,7 @@ require_once 'includes/sidebar.php';
                             </div>
                             <div class="form-group">
                                 <label for="status">Status</label>
-                                <select class="form-control select2" id="status" name="status" required>
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                </select>
+                                <input type="text" class="form-control" id="status" name="status" value="active" readonly>
                             </div>
                         </div>
                     </div>

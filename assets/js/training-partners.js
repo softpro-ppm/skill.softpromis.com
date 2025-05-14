@@ -44,6 +44,10 @@ $(document).ready(function() {
         
         const formData = new FormData(this);
         formData.append('action', $('#partner_id').val() ? 'update' : 'add');
+        // Always set status to active for new partners
+        if (!$('#partner_id').val()) {
+            formData.set('status', 'active');
+        }
 
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
@@ -57,12 +61,13 @@ $(document).ready(function() {
                 phone: formData.get('phone'),
                 address: formData.get('address'),
                 website: formData.get('website'),
-                status: formData.get('status') || 'active'
+                status: formData.get('status')
             },
             success: function(response) {
                 if (response.success) {
                     $('#partnerModal').modal('hide');
                     $('#partnerForm')[0].reset();
+                    $('#status').val('active'); // Reset status to active
                     partnersTable.ajax.reload();
                     toastr.success(response.message);
                 } else {
@@ -96,7 +101,7 @@ $(document).ready(function() {
                     $('#phone').val(partner.phone);
                     $('#address').val(partner.address);
                     $('#website').val(partner.website);
-                    $('#status').val(partner.status || 'active');
+                    $('#status').val(partner.status); // Keep existing status
                     $('#partnerModal').modal('show');
                     $('.modal-title').text('Edit Training Partner');
                 } else {
@@ -146,6 +151,7 @@ $(document).ready(function() {
     $('#partnerModal').on('hidden.bs.modal', function() {
         $('#partnerForm')[0].reset();
         $('#partner_id').val('');
+        $('#status').val('active'); // Reset status to active
         $('.modal-title').text('Add New Training Partner');
     });
 
