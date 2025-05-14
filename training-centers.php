@@ -588,7 +588,6 @@ $(function () {
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
-        "order": [[0, 'desc']],
         "dom": 'Bfrtip',
         "buttons": [
             'copy', 
