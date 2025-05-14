@@ -2,451 +2,481 @@
 // Define BASEPATH constant
 define('BASEPATH', true);
 
-// Start session and include required files
 session_start();
 require_once 'config.php';
 require_once 'crud_functions.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['user'])) {
     header('Location: index.php');
     exit;
 }
 
-// Set page title
 $pageTitle = 'Students';
-
-// Include header
 require_once 'includes/header.php';
-
-// Include sidebar
 require_once 'includes/sidebar.php';
+
+$students = [];
+$nextEnrollmentNo = '';
+try {
+    $pdo = new PDO(
+        'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
+        DB_USER,
+        DB_PASS,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+    $last = $pdo->query("SELECT enrollment_no FROM students ORDER BY student_id DESC LIMIT 1")->fetchColumn();
+    if (preg_match('/ENR(\\d+)/', $last, $m)) {
+        $nextEnrollmentNo = 'ENR' . str_pad(((int)$m[1]) + 1, 3, '0', STR_PAD_LEFT);
+    } else {
+        $nextEnrollmentNo = 'ENR001';
+    }
+    $courses = $pdo->query("SELECT course_id, course_name FROM courses WHERE status = 'active' ORDER BY course_name ASC")->fetchAll(PDO::FETCH_ASSOC);
+    $batches = $pdo->query("SELECT batch_id, CONCAT(batch_code, ' - ', batch_name) AS batch_label FROM batches ORDER BY batch_code ASC")->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo '<div class="alert alert-danger">Could not fetch students: ' . htmlspecialchars($e->getMessage()) . '</div>';
+}
 ?>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Students</h1>
-          </div>
-          <div class="col-sm-6">
-            <div class="float-sm-right">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudentModal">
-                <i class="fas fa-plus"></i> Add New Student
-              </button>
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Students</h1>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card">
-          <div class="card-body">
-            <table id="studentsTable" class="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>Enrollment No</th>
-                  <th>Name</th>
-                  <th>Gender</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Course</th>
-                  <th>Batch</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>ENR001</td>
-                  <td>Rahul Sharma</td>
-                  <td>Male</td>
-                  <td>9876543210</td>
-                  <td>rahul@example.com</td>
-                  <td>Web Development</td>
-                  <td>B001</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewStudentModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editStudentModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteStudentModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>ENR002</td>
-                  <td>Priya Patel</td>
-                  <td>Female</td>
-                  <td>9876543211</td>
-                  <td>priya@example.com</td>
-                  <td>Digital Marketing</td>
-                  <td>B002</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewStudentModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editStudentModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteStudentModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
     </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
-  <!-- Add Student Modal -->
-  <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addStudentModalLabel">Add New Student</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="addStudentForm">
+    <section class="content">
+        <div class="container-fluid">
             <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="enrollmentNo">Enrollment Number</label>
-                  <input type="text" class="form-control" id="enrollmentNo" readonly>
-                  <small class="form-text text-muted">Auto-generated</small>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Students List</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                                    <i class="fas fa-plus"></i> Add New Student
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table id="studentsTable" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Enrollment No</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Date of Birth</th>
+                                        <th>Gender</th>
+                                        <th>Address</th>
+                                        <th>Course</th>
+                                        <th>Batch</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                  <label for="name">Full Name</label>
-                  <input type="text" class="form-control" id="name" required>
-                </div>
-                <div class="form-group">
-                  <label for="gender">Gender</label>
-                  <select class="form-control" id="gender" required>
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="phone">Phone Number</label>
-                  <input type="tel" class="form-control" id="phone" required>
-                </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" required>
-                </div>
-                <div class="form-group">
-                  <label for="aadhaar">Aadhaar Number</label>
-                  <input type="text" class="form-control" id="aadhaar" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="address">Full Address</label>
-                  <textarea class="form-control" id="address" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="trainingPartner">Training Partner</label>
-                  <select class="form-control select2" id="trainingPartner" required>
-                    <option value="">Select Training Partner</option>
-                    <option value="1">Softpro Skill Solutions</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="trainingCenter">Training Center</label>
-                  <select class="form-control select2" id="trainingCenter" required>
-                    <option value="">Select Training Center</option>
-                    <option value="1">Delhi Center</option>
-                    <option value="2">Mumbai Center</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="scheme">Scheme</label>
-                  <select class="form-control select2" id="scheme" required>
-                    <option value="">Select Scheme</option>
-                    <option value="1">PMKVY 4.0</option>
-                    <option value="2">DDU-GKY</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="course">Course</label>
-                  <select class="form-control select2" id="course" required>
-                    <option value="">Select Course</option>
-                    <option value="1">Web Development</option>
-                    <option value="2">Digital Marketing</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="batch">Batch</label>
-                  <select class="form-control select2" id="batch" required>
-                    <option value="">Select Batch</option>
-                    <option value="1">B001 - Web Development</option>
-                    <option value="2">B002 - Digital Marketing</option>
-                  </select>
-                </div>
-              </div>
             </div>
-            <div class="row mt-4">
-              <div class="col-md-12">
-                <h6>Documents</h6>
+        </div>
+    </section>
+</div>
+<!-- Add Student Modal -->
+<div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addStudentModalLabel">Add New Student</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addStudentForm" novalidate>
+                <div class="modal-body">
+                    <div id="addStudentError" class="alert alert-danger d-none"></div>
+                    <div class="form-group">
+                        <label for="addEnrollmentNo">Enrollment No <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="addFirstName">First Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="addFirstName" name="first_name" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="addLastName">Last Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="addLastName" name="last_name" required aria-required="true">
+                    </div>
+                    <div class="form-group">
+                        <label for="addEmail">Email</label>
+                        <input type="email" class="form-control" id="addEmail" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="addMobile">Mobile</label>
+                        <input type="tel" class="form-control" id="addMobile" name="mobile" pattern="^[0-9]{10,15}$">
+                    </div>
+                    <div class="form-group">
+                        <label for="addDOB">Date of Birth</label>
+                        <input type="date" class="form-control" id="addDOB" name="date_of_birth">
+                    </div>
+                    <div class="form-group">
+                        <label for="addGender">Gender</label>
+                        <select class="form-control" id="addGender" name="gender">
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="addAddress">Address</label>
+                        <textarea class="form-control" id="addAddress" name="address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="addCourseId">Course</label>
+                        <select class="form-control" id="addCourseId" name="course_id">
+                            <option value="">Select Course</option>
+                            <?php foreach ($courses as $course): ?>
+                                <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="addBatchId">Batch</label>
+                        <select class="form-control" id="addBatchId" name="batch_id">
+                            <option value="">Select Batch</option>
+                            <?php foreach ($batches as $batch): ?>
+                                <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- View Student Modal -->
+<div class="modal fade" id="viewStudentModal" tabindex="-1" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="viewStudentModalLabel">View Student Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
                 <div class="row">
-                  <div class="col-md-4">
+                    <div class="col-md-6">
+                        <div class="form-group"><label>Enrollment No</label><p data-field="enrollment_no"></p></div>
+                        <div class="form-group"><label>First Name</label><p data-field="first_name"></p></div>
+                        <div class="form-group"><label>Last Name</label><p data-field="last_name"></p></div>
+                        <div class="form-group"><label>Email</label><p data-field="email"></p></div>
+                        <div class="form-group"><label>Mobile</label><p data-field="mobile"></p></div>
+                        <div class="form-group"><label>Date of Birth</label><p data-field="date_of_birth"></p></div>
+                        <div class="form-group"><label>Gender</label><p data-field="gender"></p></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group"><label>Course</label><p data-field="course_name"></p></div>
+                        <div class="form-group"><label>Batch</label><p data-field="batch_code"></p></div>
+                        <div class="form-group"><label>Address</label><p data-field="address"></p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Student Modal -->
+<div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="editStudentModalLabel">Edit Student</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editStudentForm" novalidate>
+                <input type="hidden" id="editStudentId" name="student_id">
+                <div class="modal-body">
+                    <div id="editStudentError" class="alert alert-danger d-none"></div>
                     <div class="form-group">
-                      <label for="photo">Photograph</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="photo" accept="image/jpeg,image/jpg,application/pdf" required>
-                        <label class="custom-file-label" for="photo">Choose file</label>
-                      </div>
-                      <small class="form-text text-muted">Max size: 1MB, Format: JPG, JPEG, PDF</small>
+                        <label for="editEnrollmentNo">Enrollment No <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" readonly required aria-required="true">
                     </div>
-                  </div>
-                  <div class="col-md-4">
                     <div class="form-group">
-                      <label for="aadhaarDoc">Aadhaar Card</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="aadhaarDoc" accept="image/jpeg,image/jpg,application/pdf" required>
-                        <label class="custom-file-label" for="aadhaarDoc">Choose file</label>
-                      </div>
-                      <small class="form-text text-muted">Max size: 1MB, Format: JPG, JPEG, PDF</small>
+                        <label for="editFirstName">First Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editFirstName" name="first_name" required aria-required="true">
                     </div>
-                  </div>
-                  <div class="col-md-4">
                     <div class="form-group">
-                      <label for="educationDoc">Educational Documents</label>
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="educationDoc" accept="image/jpeg,image/jpg,application/pdf" required>
-                        <label class="custom-file-label" for="educationDoc">Choose file</label>
-                      </div>
-                      <small class="form-text text-muted">Max size: 1MB, Format: JPG, JPEG, PDF</small>
+                        <label for="editLastName">Last Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editLastName" name="last_name" required aria-required="true">
                     </div>
-                  </div>
+                    <div class="form-group">
+                        <label for="editEmail">Email</label>
+                        <input type="email" class="form-control" id="editEmail" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="editMobile">Mobile</label>
+                        <input type="tel" class="form-control" id="editMobile" name="mobile" pattern="^[0-9]{10,15}$">
+                    </div>
+                    <div class="form-group">
+                        <label for="editDOB">Date of Birth</label>
+                        <input type="date" class="form-control" id="editDOB" name="date_of_birth">
+                    </div>
+                    <div class="form-group">
+                        <label for="editGender">Gender</label>
+                        <select class="form-control" id="editGender" name="gender">
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editAddress">Address</label>
+                        <textarea class="form-control" id="editAddress" name="address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCourseId">Course</label>
+                        <select class="form-control" id="editCourseId" name="course_id">
+                            <option value="">Select Course</option>
+                            <?php foreach ($courses as $course): ?>
+                                <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editBatchId">Batch</label>
+                        <select class="form-control" id="editBatchId" name="batch_id">
+                            <option value="">Select Batch</option>
+                            <?php foreach ($batches as $batch): ?>
+                                <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Student</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- View Student Modal -->
-  <div class="modal fade" id="viewStudentModal" tabindex="-1" role="dialog" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="viewStudentModalLabel">View Student</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <p><strong>Enrollment No:</strong> <span id="viewEnrollmentNo"></span></p>
-              <p><strong>Name:</strong> <span id="viewName"></span></p>
-              <p><strong>Gender:</strong> <span id="viewGender"></span></p>
-              <p><strong>Phone:</strong> <span id="viewPhone"></span></p>
-              <p><strong>Email:</strong> <span id="viewEmail"></span></p>
-              <p><strong>Aadhaar:</strong> <span id="viewAadhaar"></span></p>
-            </div>
-            <div class="col-md-6">
-              <p><strong>Address:</strong> <span id="viewAddress"></span></p>
-              <p><strong>Training Partner:</strong> <span id="viewTrainingPartner"></span></p>
-              <p><strong>Training Center:</strong> <span id="viewTrainingCenter"></span></p>
-              <p><strong>Scheme:</strong> <span id="viewScheme"></span></p>
-              <p><strong>Course:</strong> <span id="viewCourse"></span></p>
-              <p><strong>Batch:</strong> <span id="viewBatch"></span></p>
-            </div>
-          </div>
-          <div class="row mt-4">
-            <div class="col-md-12">
-              <h6>Documents</h6>
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h6 class="card-title">Photograph</h6>
-                    </div>
-                    <div class="card-body">
-                      <img src="#" id="viewPhoto" class="img-fluid" alt="Student Photo">
-                    </div>
-                  </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update Student</button>
                 </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h6 class="card-title">Aadhaar Card</h6>
-                    </div>
-                    <div class="card-body">
-                      <a href="#" id="viewAadhaarDoc" class="btn btn-primary btn-sm" target="_blank">View Document</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="card">
-                    <div class="card-header">
-                      <h6 class="card-title">Educational Documents</h6>
-                    </div>
-                    <div class="card-body">
-                      <a href="#" id="viewEducationDoc" class="btn btn-primary btn-sm" target="_blank">View Document</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Delete Student Modal -->
+<div class="modal fade" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteStudentModalLabel">Delete Student</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-          </div>
-          <div class="row mt-4">
-            <div class="col-md-12">
-              <h6>Payment History</h6>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Receipt No</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Mode</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>RCPT001</td>
-                    <td>01/01/2024</td>
-                    <td>₹5,000</td>
-                    <td>Online</td>
-                    <td><span class="badge badge-success">Paid</span></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="modal-body">
+                <input type="hidden" id="deleteStudentId">
+                <p>Are you sure you want to delete this student? This action cannot be undone.</p>
             </div>
-          </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteStudent">Delete Student</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="window.print()">Print Application</button>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <!-- Edit Student Modal -->
-  <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog" aria-labelledby="editStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="editStudentForm">
-            <!-- Same form fields as Add Student Modal -->
-            <!-- Pre-populated with existing data -->
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Delete Student Modal -->
-  <div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteStudentModalLabel">Delete Student</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete this student? This action cannot be undone.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
+</div>
 <?php include 'includes/js.php'; ?>
-
 <script>
-  $(function () {
-    // Initialize DataTable with default configuration
-    $('#studentsTable').DataTable();
-
-    // Initialize Select2
-    $('.select2').select2({
-      theme: 'bootstrap4'
+$(function () {
+    var table = $('#studentsTable').DataTable({
+        processing: true,
+        serverSide: false,
+        ajax: {
+            url: 'inc/ajax/students_ajax.php',
+            type: 'POST',
+            data: { action: 'list' },
+            dataSrc: function (json) { return json.data || []; }
+        },
+        columns: [
+            { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
+            { data: 'enrollment_no' },
+            { data: 'first_name' },
+            { data: 'last_name' },
+            { data: 'email' },
+            { data: 'mobile' },
+            { data: 'date_of_birth' },
+            { data: 'gender', render: function (data) { return data ? data.charAt(0).toUpperCase() + data.slice(1) : ''; } },
+            { data: 'address' },
+            { data: 'course_name' },
+            { data: 'batch_code' },
+            { data: null, orderable: false, searchable: false, render: function (data, type, row) {
+                return '<div class="btn-group btn-group-sm">' +
+                    '<button type="button" class="btn btn-info view-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-eye"></i></button>' +
+                    '<button type="button" class="btn btn-primary edit-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-edit"></i></button>' +
+                    '<button type="button" class="btn btn-danger delete-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-trash"></i></button>' +
+                    '</div>';
+            } }
+        ],
+        responsive: true,
+        lengthChange: true,
+        autoWidth: false,
+        order: [[0, 'asc']]
     });
 
-    // Initialize custom file input
-    bsCustomFileInput.init();
+    function showError($el, message) {
+        $el.removeClass('d-none').text(message).show();
+    }
+    function hideError($el) {
+        $el.addClass('d-none').text('').hide();
+    }
 
-    // File size validation
-    $('input[type="file"]').on('change', function() {
-      const file = this.files[0];
-      const maxSize = 1024 * 1024; // 1MB
-      
-      if (file && file.size > maxSize) {
-        alert('File size exceeds 1MB limit');
-        this.value = '';
-        $(this).next('.custom-file-label').text('Choose file');
-      }
+    // Reset forms and errors on modal close
+    $('#addStudentModal, #editStudentModal').on('hidden.bs.modal', function () {
+        $(this).find('form')[0].reset();
+        hideError($(this).find('.alert'));
+        $(this).find('.is-invalid').removeClass('is-invalid');
     });
 
-    // Cascading dropdowns
-    $('#trainingPartner').on('change', function() {
-      const partnerId = $(this).val();
-      // Load training centers based on selected partner
+    $('#addStudentForm').on('submit', function (e) {
+        e.preventDefault();
+        var $form = $(this);
+        var $btn = $form.find('button[type="submit"]');
+        var $error = $('#addStudentError');
+        hideError($error);
+        var valid = true;
+        $form.find('[required]').each(function() {
+            if (!$(this).val()) {
+                valid = false;
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        if (!valid) {
+            showError($error, 'Please fill all required fields.');
+            return;
+        }
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Saving...');
+        $.post('inc/ajax/students_ajax.php', $form.serialize() + '&action=create', function (response) {
+            if (response.success) {
+                $('#addStudentModal').modal('hide');
+                table.ajax.reload();
+                toastr.success(response.message || 'Student added successfully.');
+            } else {
+                showError($error, response.message || 'Failed to add student.');
+                toastr.error(response.message || 'Failed to add student.');
+            }
+            $btn.prop('disabled', false).text('Save Student');
+        }, 'json');
     });
 
-    $('#trainingCenter').on('change', function() {
-      const centerId = $(this).val();
-      // Load schemes based on selected center
+    $('#editStudentForm').on('submit', function (e) {
+        e.preventDefault();
+        var $form = $(this);
+        var $btn = $form.find('button[type="submit"]');
+        var $error = $('#editStudentError');
+        hideError($error);
+        var valid = true;
+        $form.find('[required]').each(function() {
+            if (!$(this).val()) {
+                valid = false;
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        if (!valid) {
+            showError($error, 'Please fill all required fields.');
+            return;
+        }
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Updating...');
+        $.post('inc/ajax/students_ajax.php', $form.serialize() + '&action=update', function (response) {
+            if (response.success) {
+                $('#editStudentModal').modal('hide');
+                table.ajax.reload();
+                toastr.success(response.message || 'Student updated successfully.');
+            } else {
+                showError($error, response.message || 'Failed to update student.');
+                toastr.error(response.message || 'Failed to update student.');
+            }
+            $btn.prop('disabled', false).text('Update Student');
+        }, 'json');
     });
 
-    $('#scheme').on('change', function() {
-      const schemeId = $(this).val();
-      // Load courses based on selected scheme
+    $('#confirmDeleteStudent').on('click', function () {
+        var studentId = $('#deleteStudentId').val();
+        var $btn = $(this);
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Deleting...');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This action cannot be undone!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post('inc/ajax/students_ajax.php', { action: 'delete', student_id: studentId }, function (response) {
+                    if (response.success) {
+                        $('#deleteStudentModal').modal('hide');
+                        table.ajax.reload();
+                        toastr.success(response.message || 'Student deleted successfully.');
+                    } else {
+                        toastr.error(response.message || 'Failed to delete student.');
+                    }
+                    $btn.prop('disabled', false).text('Delete Student');
+                }, 'json');
+            } else {
+                $btn.prop('disabled', false).text('Delete Student');
+            }
+        });
     });
 
-    $('#course').on('change', function() {
-      const courseId = $(this).val();
-      // Load batches based on selected course
+    $(document).on('click', '.view-student-btn', function () {
+        var studentId = $(this).data('student-id');
+        var modal = $('#viewStudentModal');
+        modal.find('.alert').remove();
+        $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: studentId }, function (response) {
+            if (response.success && response.data) {
+                var data = response.data;
+                modal.find('[data-field]').each(function () {
+                    var field = $(this).data('field');
+                    $(this).text(data[field] || '');
+                });
+            } else {
+                modal.find('[data-field]').text('');
+                modal.find('.modal-body').prepend('<div class="alert alert-danger">' + (response.message || 'Failed to fetch student details.') + '</div>');
+            }
+            modal.modal('show');
+        }, 'json');
     });
-  });
+
+    $(document).on('click', '.edit-student-btn', function () {
+        var studentId = $(this).data('student-id');
+        $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: studentId }, function (response) {
+            if (response.success) {
+                var data = response.data;
+                $('#editStudentForm').find('[name]').each(function () {
+                    var name = $(this).attr('name');
+                    $(this).val(data[name] || '');
+                });
+                $('#editStudentModal').modal('show');
+            } else {
+                alert(response.message || 'Failed to fetch student details.');
+            }
+        }, 'json');
+    });
+
+    $(document).on('click', '.delete-student-btn', function () {
+        var studentId = $(this).data('student-id');
+        $('#deleteStudentId').val(studentId);
+        $('#deleteStudentModal').modal('show');
+    });
+});
 </script>
 </body>
-</html> 
+</html>

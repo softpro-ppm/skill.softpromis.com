@@ -210,4 +210,250 @@ $(document).ready(function() {
         passwordInput.attr('type', type);
         $(this).toggleClass('fa-eye fa-eye-slash');
     });
+
+    // Find the course update AJAX call and add error logging
+    $(document).on('submit', '#editCourseForm', function(e) {
+        e.preventDefault();
+
+        if (!validateForm(this)) {
+            return false;
+        }
+
+        const formData = new FormData(this);
+        const submitBtn = $(this).find('[type="submit"]');
+        const originalText = submitBtn.html();
+
+        $.ajax({
+            url: 'inc/ajax/courses_ajax.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: () => {
+                submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Processing...').prop('disabled', true);
+            },
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message || 'Operation completed successfully');
+                } else {
+                    toastr.error(response.message || 'An error occurred');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log('AJAX error:', xhr.responseText, status, error);
+                toastr.error('An error occurred while updating the course.');
+            },
+            complete: () => {
+                submitBtn.html(originalText).prop('disabled', false);
+            }
+        });
+    });
+
+    // DataTable for payments
+    var paymentsTable = $('#paymentsTable').DataTable({
+        ajax: {
+            url: 'inc/ajax/fees_ajax.php',
+            type: 'POST',
+            data: { action: 'list' },
+            dataSrc: function(json) {
+                return json.data || [];
+            }
+        },
+        columns: [
+            { data: 'receipt_no' },
+            { data: 'student_name' },
+            { data: 'course_name' },
+            { data: 'amount', render: function(data) { return '₹' + data; } },
+            { data: 'payment_date' },
+            { data: 'payment_mode' },
+            { data: 'status', render: function(data) {
+                var badge = 'secondary';
+                if (data === 'paid') badge = 'success';
+                if (data === 'pending') badge = 'warning';
+                if (data === 'failed') badge = 'danger';
+                return '<span class="badge badge-' + badge + '">' + data.charAt(0).toUpperCase() + data.slice(1) + '</span>';
+            }
+            },
+            { data: null, orderable: false, searchable: false, render: function(data, type, row) {
+                return '<button class="btn btn-sm btn-info view-payment-btn" data-id="' + row.fee_id + '"><i class="fas fa-eye"></i></button>' +
+                       '<button class="btn btn-sm btn-primary edit-payment-btn" data-id="' + row.fee_id + '"><i class="fas fa-edit"></i></button>' +
+                       '<button class="btn btn-sm btn-danger delete-payment-btn" data-id="' + row.fee_id + '"><i class="fas fa-trash"></i></button>';
+            }
+            }
+        ],
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true
+    });
+
+    // Populate Enrollment dropdowns
+    function loadEnrollments(selectId) {
+        $.ajax({
+            url: 'inc/ajax/fees_ajax.php',
+            type: 'POST',
+            data: { action: 'getAllEnrollments' },
+            dataType: 'json',
+            success: function(response) {
+                var $select = $(selectId);
+                $select.empty().append('<option value="">Select Enrollment</option>');
+                if (response.success && response.data) {
+                    $.each(response.data, function(_, e) {
+                        $select.append('<option value="' + e.enrollment_id + '">' + e.enrollment_id + ' - ' + e.student_name + '</option>');
+                    });
+                }
+            }
+        });
+    }
+    loadEnrollments('#addEnrollmentId');
+    loadEnrollments('#editEnrollmentId');
+
+    // Add Payment
+    $('#addPaymentForm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize() + '&action=create';
+        $.ajax({
+            url: 'inc/ajax/fees_ajax.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message || 'Payment added successfully');
+                    $('#addPaymentModal').modal('hide');
+                    $('#addPaymentForm')[0].reset();
+                    paymentsTable.ajax.reload();
+                } else {
+                    toastr.error(response.message || 'Error adding payment');
+                }
+            },
+            error: function() {
+                toastr.error('An error occurred. Please try again.');
+            }
+        });
+    });
+
+    // View Payment
+    $(document).on('click', '.view-payment-btn', function() {
+        var feeId = $(this).data('id');
+        $.ajax({
+            url: 'inc/ajax/fees_ajax.php',
+            type: 'POST',
+            data: { action: 'get', fee_id: feeId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.data) {
+                    var d = response.data;
+                    $('#viewReceiptNo').text(d.receipt_no || '');
+                    $('#viewEnrollmentId').text(d.enrollment_id || '');
+                    $('#viewStudent').text(d.student_name || '');
+                    $('#viewCourse').text(d.course_name || '');
+                    $('#viewAmount').text('₹' + d.amount);
+                    $('#viewPaymentDate').text(d.payment_date || '');
+                    $('#viewPaymentMode').text(d.payment_mode || '');
+                    $('#viewStatus').text(d.status || '');
+                    $('#viewNotes').text(d.notes || '');
+                    $('#viewPaymentModal').modal('show');
+                } else {
+                    toastr.error('Could not fetch payment details.');
+                }
+            },
+            error: function() {
+                toastr.error('Could not fetch payment details.');
+            }
+        });
+    });
+
+    // Edit Payment (open modal and fill data)
+    $(document).on('click', '.edit-payment-btn', function() {
+        var feeId = $(this).data('id');
+        $.ajax({
+            url: 'inc/ajax/fees_ajax.php',
+            type: 'POST',
+            data: { action: 'get', fee_id: feeId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.data) {
+                    var d = response.data;
+                    $('#editFeeId').val(d.fee_id);
+                    $('#editReceiptNo').val(d.receipt_no);
+                    $('#editEnrollmentId').val(d.enrollment_id).trigger('change');
+                    $('#editAmount').val(d.amount);
+                    $('#editPaymentDate').val(d.payment_date);
+                    $('#editPaymentMode').val(d.payment_mode);
+                    $('#editTransactionId').val(d.transaction_id);
+                    $('#editNotes').val(d.notes);
+                    $('#editPaymentModal').modal('show');
+                } else {
+                    toastr.error('Could not fetch payment details.');
+                }
+            },
+            error: function() {
+                toastr.error('Could not fetch payment details.');
+            }
+        });
+    });
+
+    // Edit Payment (submit)
+    $('#editPaymentForm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize() + '&action=update';
+        $.ajax({
+            url: 'inc/ajax/fees_ajax.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message || 'Payment updated successfully');
+                    $('#editPaymentModal').modal('hide');
+                    paymentsTable.ajax.reload();
+                } else {
+                    toastr.error(response.message || 'Error updating payment');
+                }
+            },
+            error: function() {
+                toastr.error('An error occurred. Please try again.');
+            }
+        });
+    });
+
+    // Delete Payment (open modal)
+    var deleteFeeId = null;
+    $(document).on('click', '.delete-payment-btn', function() {
+        deleteFeeId = $(this).data('id');
+        $('#deletePaymentModal').modal('show');
+    });
+
+    // Confirm Delete
+    $('#confirmDeletePayment').on('click', function() {
+        if (!deleteFeeId) return;
+        $.ajax({
+            url: 'inc/ajax/fees_ajax.php',
+            type: 'POST',
+            data: { action: 'delete', fee_id: deleteFeeId },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    toastr.success(response.message || 'Payment deleted successfully');
+                    $('#deletePaymentModal').modal('hide');
+                    paymentsTable.ajax.reload();
+                } else {
+                    toastr.error(response.message || 'Error deleting payment');
+                }
+            },
+            error: function() {
+                toastr.error('An error occurred. Please try again.');
+            }
+        });
+    });
+
+    // Reset forms on modal close
+    $('#addPaymentModal, #editPaymentModal').on('hidden.bs.modal', function() {
+        $(this).find('form')[0].reset();
+        $(this).find('.is-invalid').removeClass('is-invalid');
+    });
 }); 

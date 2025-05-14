@@ -31,30 +31,72 @@ if(isset($_POST['action'])) {
         case 'add':
             $response = array('status' => false, 'message' => '');
             try {
+                // Create uploads directory if it doesn't exist
+                $upload_dir = 'uploads/partners/';
+                if (!file_exists($upload_dir)) {
+                    mkdir($upload_dir, 0777, true);
+                }
+
                 // Sanitize input data
                 $partner_name = mysqli_real_escape_string($conn, $_POST['partner_name']);
                 $contact_person = mysqli_real_escape_string($conn, $_POST['contact_person']);
                 $email = mysqli_real_escape_string($conn, $_POST['email']);
                 $phone = mysqli_real_escape_string($conn, $_POST['phone']);
                 $address = mysqli_real_escape_string($conn, $_POST['address']);
+                $website = mysqli_real_escape_string($conn, $_POST['website']);
                 $status = mysqli_real_escape_string($conn, $_POST['status']);
 
+                // Handle file uploads
+                $registration_doc = null;
+                $agreement_doc = null;
+
+                // Process registration document
+                if(isset($_FILES['registration_doc']) && $_FILES['registration_doc']['error'] == 0) {
+                    $file_info = pathinfo($_FILES['registration_doc']['name']);
+                    $registration_doc = uniqid() . '_reg.' . $file_info['extension'];
+                    $target_file = $upload_dir . $registration_doc;
+                    
+                    if(!move_uploaded_file($_FILES['registration_doc']['tmp_name'], $target_file)) {
+                        throw new Exception("Error uploading registration document");
+                    }
+                }
+
+                // Process agreement document
+                if(isset($_FILES['agreement_doc']) && $_FILES['agreement_doc']['error'] == 0) {
+                    $file_info = pathinfo($_FILES['agreement_doc']['name']);
+                    $agreement_doc = uniqid() . '_agr.' . $file_info['extension'];
+                    $target_file = $upload_dir . $agreement_doc;
+                    
+                    if(!move_uploaded_file($_FILES['agreement_doc']['tmp_name'], $target_file)) {
+                        throw new Exception("Error uploading agreement document");
+                    }
+                }
+
                 // Prepare the insert query
-                $query = "INSERT INTO training_partners (partner_name, contact_person, email, phone, address, status, created_at, updated_at) 
-                         VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+                $query = "INSERT INTO training_partners (partner_name, contact_person, email, phone, address, website, 
+                         registration_doc, agreement_doc, status, created_at, updated_at) 
+                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
                 
                 $stmt = $conn->prepare($query);
                 if (!$stmt) {
                     throw new Exception("Prepare failed: " . $conn->error);
                 }
 
-                $stmt->bind_param("ssssss", $partner_name, $contact_person, $email, $phone, $address, $status);
+                $stmt->bind_param("sssssssss", $partner_name, $contact_person, $email, $phone, $address, $website,
+                                $registration_doc, $agreement_doc, $status);
                 
                 if($stmt->execute()) {
                     $response['status'] = true;
                     $response['message'] = 'Partner added successfully';
                     $response['partner_id'] = $conn->insert_id;
                 } else {
+                    // If insert fails, delete uploaded files
+                    if($registration_doc && file_exists($upload_dir . $registration_doc)) {
+                        unlink($upload_dir . $registration_doc);
+                    }
+                    if($agreement_doc && file_exists($upload_dir . $agreement_doc)) {
+                        unlink($upload_dir . $agreement_doc);
+                    }
                     throw new Exception("Execute failed: " . $stmt->error);
                 }
                 $stmt->close();
@@ -89,7 +131,10 @@ if(isset($_POST['action'])) {
                         "phone" => htmlspecialchars($row['phone']),
                         "center_count" => $row['center_count'],
                         "status" => $row['status'],
-                        "actions" => '<button type="button" class="btn btn-info btn-sm edit-btn mr-1" data-id="' . $row['partner_id'] . '">
+                        "actions" => '<button type="button" class="btn btn-primary btn-sm view-btn mr-1" data-id="' . $row['partner_id'] . '">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-info btn-sm edit-btn mr-1" data-id="' . $row['partner_id'] . '">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button type="button" class="btn btn-danger btn-sm delete-btn" 
@@ -119,13 +164,64 @@ if(isset($_POST['action'])) {
         case 'edit':
             $response = array('status' => false, 'message' => '');
             if(isset($_POST['partner_id'])) {
+                try {
+                    $upload_dir = 'uploads/partners/';
+                    if (!file_exists($upload_dir)) {
+                        mkdir($upload_dir, 0777, true);
+                    }
+
                 $partner_id = mysqli_real_escape_string($conn, $_POST['partner_id']);
                 $partner_name = mysqli_real_escape_string($conn, $_POST['partner_name']);
                 $contact_person = mysqli_real_escape_string($conn, $_POST['contact_person']);
                 $email = mysqli_real_escape_string($conn, $_POST['email']);
                 $phone = mysqli_real_escape_string($conn, $_POST['phone']);
                 $address = mysqli_real_escape_string($conn, $_POST['address']);
+                    $website = mysqli_real_escape_string($conn, $_POST['website']);
                 $status = mysqli_real_escape_string($conn, $_POST['status']);
+
+                    // Get current document filenames
+                    $current_docs_query = "SELECT registration_doc, agreement_doc FROM training_partners WHERE partner_id = ?";
+                    $stmt = $conn->prepare($current_docs_query);
+                    $stmt->bind_param("i", $partner_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $current_docs = $result->fetch_assoc();
+                    $stmt->close();
+
+                    $registration_doc = $current_docs['registration_doc'];
+                    $agreement_doc = $current_docs['agreement_doc'];
+
+                    // Process registration document
+                    if(isset($_FILES['registration_doc']) && $_FILES['registration_doc']['error'] == 0) {
+                        // Delete old file if exists
+                        if($registration_doc && file_exists($upload_dir . $registration_doc)) {
+                            unlink($upload_dir . $registration_doc);
+                        }
+                        
+                        $file_info = pathinfo($_FILES['registration_doc']['name']);
+                        $registration_doc = uniqid() . '_reg.' . $file_info['extension'];
+                        $target_file = $upload_dir . $registration_doc;
+                        
+                        if(!move_uploaded_file($_FILES['registration_doc']['tmp_name'], $target_file)) {
+                            throw new Exception("Error uploading registration document");
+                        }
+                    }
+
+                    // Process agreement document
+                    if(isset($_FILES['agreement_doc']) && $_FILES['agreement_doc']['error'] == 0) {
+                        // Delete old file if exists
+                        if($agreement_doc && file_exists($upload_dir . $agreement_doc)) {
+                            unlink($upload_dir . $agreement_doc);
+                        }
+                        
+                        $file_info = pathinfo($_FILES['agreement_doc']['name']);
+                        $agreement_doc = uniqid() . '_agr.' . $file_info['extension'];
+                        $target_file = $upload_dir . $agreement_doc;
+                        
+                        if(!move_uploaded_file($_FILES['agreement_doc']['tmp_name'], $target_file)) {
+                            throw new Exception("Error uploading agreement document");
+                        }
+                    }
 
                 $query = "UPDATE training_partners SET 
                          partner_name = ?, 
@@ -133,20 +229,27 @@ if(isset($_POST['action'])) {
                          email = ?, 
                          phone = ?, 
                          address = ?, 
+                             website = ?,
+                             registration_doc = ?,
+                             agreement_doc = ?,
                          status = ?, 
                          updated_at = CURRENT_TIMESTAMP 
                          WHERE partner_id = ?";
                 
                 $stmt = $conn->prepare($query);
-                $stmt->bind_param("ssssssi", $partner_name, $contact_person, $email, $phone, $address, $status, $partner_id);
+                    $stmt->bind_param("sssssssssi", $partner_name, $contact_person, $email, $phone, $address, 
+                                    $website, $registration_doc, $agreement_doc, $status, $partner_id);
                 
                 if($stmt->execute()) {
                     $response['status'] = true;
                     $response['message'] = 'Partner updated successfully';
                 } else {
-                    $response['message'] = 'Error updating partner';
+                        throw new Exception("Error updating partner");
+                    }
+                    $stmt->close();
+                } catch (Exception $e) {
+                    $response['message'] = 'Error updating partner: ' . $e->getMessage();
                 }
-                $stmt->close();
             }
             echo json_encode($response);
             exit;
@@ -256,7 +359,7 @@ require_once 'includes/sidebar.php';
                         <div class="card-header">
                             <h3 class="card-title">Training Partners List</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#partnerModal">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#partnerModal">
                                     <i class="fas fa-plus"></i> Add New Partner
                                 </button>
                             </div>
@@ -291,11 +394,9 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Add New Training Partner</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="partnerForm">
+            <form id="partnerForm" enctype="multipart/form-data">
                 <input type="hidden" id="partner_id" name="partner_id" value="">
                 <div class="modal-body">
                     <div class="row">
@@ -340,12 +441,12 @@ require_once 'includes/sidebar.php';
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Documents</label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="registration_doc" name="registration_doc">
+                                <div class="custom-file mb-2">
+                                    <input type="file" class="custom-file-input" id="registration_doc" name="registration_doc" accept=".pdf,.doc,.docx">
                                     <label class="custom-file-label" for="registration_doc">Registration Document</label>
                                 </div>
-                                <div class="custom-file mt-2">
-                                    <input type="file" class="custom-file-input" id="agreement_doc" name="agreement_doc">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="agreement_doc" name="agreement_doc" accept=".pdf,.doc,.docx">
                                     <label class="custom-file-label" for="agreement_doc">Agreement Document</label>
                                 </div>
                             </div>
@@ -353,7 +454,7 @@ require_once 'includes/sidebar.php';
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save Partner</button>
                 </div>
             </form>
@@ -367,9 +468,7 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Confirm Delete</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>Are you sure you want to delete this training partner?</p>
@@ -377,12 +476,105 @@ require_once 'includes/sidebar.php';
                 <p><strong>Associated Centers:</strong> <span id="delete_partner_centers"></span></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- View Partner Modal -->
+<div class="modal fade" id="viewPartnerModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Partner Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Partner Name</label>
+                            <p id="view_partner_name" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Person</label>
+                            <p id="view_contact_person" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <p id="view_email" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <p id="view_phone" class="form-control-static"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Address</label>
+                            <p id="view_address" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Website</label>
+                            <p id="view_website" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <p id="view_status" class="form-control-static"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Training Centers</label>
+                            <p id="view_centers" class="form-control-static"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Documents</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="d-block">Registration Document</label>
+                                    <p id="view_registration_doc" class="form-control-static"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="d-block">Agreement Document</label>
+                                    <p id="view_agreement_doc" class="form-control-static"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-control-static {
+    padding: 7px 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    min-height: 35px;
+}
+.document-link {
+    color: #007bff;
+    text-decoration: none;
+}
+.document-link:hover {
+    text-decoration: underline;
+}
+.document-not-uploaded {
+    color: #6c757d;
+    font-style: italic;
+}
+</style>
 
 <?php include 'includes/js.php'; ?>
 
@@ -518,6 +710,7 @@ $(function () {
                     $('#email').val(data.email);
                     $('#phone').val(data.phone);
                     $('#address').val(data.address);
+                    $('#website').val(data.website);
                     $('#status').val(data.status).trigger('change');
                     
                     // Update modal title
@@ -547,33 +740,6 @@ $(function () {
         $('#confirmDelete').data('id', partnerId);
     });
 
-    // Handle delete confirmation
-    $('#confirmDelete').on('click', function() {
-        var partnerId = $(this).data('id');
-        
-        $.ajax({
-            url: 'training-partners.php',
-            type: 'POST',
-            data: {
-                action: 'delete',
-                partner_id: partnerId
-            },
-            dataType: 'json',
-            success: function(response) {
-                $('#deleteModal').modal('hide');
-                if(response.status) {
-                    table.ajax.reload();
-                    toastr.success(response.message);
-                } else {
-                    toastr.error(response.message || 'Error deleting partner');
-                }
-            },
-            error: function() {
-                toastr.error('Error deleting partner');
-            }
-        });
-    });
-
     // Handle form submission
     $('#partnerForm').on('submit', function(e) {
         e.preventDefault();
@@ -597,10 +763,10 @@ $(function () {
             return false;
         }
         
-        // Prepare form data
-        var formData = $(this).serialize();
+        // Create FormData object to handle file uploads
+        var formData = new FormData(this);
         var partnerId = $('#partner_id').val();
-        formData += '&action=' + (partnerId ? 'edit' : 'add');
+        formData.append('action', partnerId ? 'edit' : 'add');
         
         // Disable submit button and show loading state
         var submitBtn = $(this).find('button[type="submit"]');
@@ -612,15 +778,19 @@ $(function () {
             type: 'POST',
             data: formData,
             dataType: 'json',
+            contentType: false,
+            processData: false,
             success: function(response) {
                 if(response.status) {
-                    $('#partnerModal').modal('hide');
+                    var partnerModal = bootstrap.Modal.getInstance(document.getElementById('partnerModal'));
+                    partnerModal.hide();
                     table.ajax.reload();
                     toastr.success(response.message);
                     
                     // Reset form
                     $('#partnerForm')[0].reset();
                     $('#partner_id').val('');
+                    $('.custom-file-label').html('Choose file');
                 } else {
                     toastr.error(response.message || 'Error processing request');
                 }
@@ -645,6 +815,34 @@ $(function () {
         $('.is-invalid').removeClass('is-invalid');
     });
 
+    // Handle delete confirmation
+    $('#confirmDelete').on('click', function() {
+        var partnerId = $(this).data('id');
+        
+        $.ajax({
+            url: 'training-partners.php',
+            type: 'POST',
+            data: {
+                action: 'delete',
+                partner_id: partnerId
+            },
+            dataType: 'json',
+            success: function(response) {
+                var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+                deleteModal.hide();
+                if(response.status) {
+                    table.ajax.reload();
+                    toastr.success(response.message);
+                } else {
+                    toastr.error(response.message || 'Error deleting partner');
+                }
+            },
+            error: function() {
+                toastr.error('Error deleting partner');
+            }
+        });
+    });
+
     // Initialize Select2
     $('.select2').select2({
         theme: 'bootstrap4'
@@ -652,5 +850,68 @@ $(function () {
 
     // Initialize custom file input
     bsCustomFileInput.init();
+
+    // Handle view button click
+    $(document).on('click', '.view-btn', function() {
+        var partnerId = $(this).data('id');
+        
+        // Get partner data
+        $.ajax({
+            url: 'training-partners.php',
+            type: 'POST',
+            data: {
+                action: 'get_partner',
+                partner_id: partnerId
+            },
+            dataType: 'json',
+            success: function(response) {
+                if(response.status) {
+                    var data = response.data;
+                    
+                    // Set the data in the view modal
+                    $('#view_partner_name').text(data.partner_name);
+                    $('#view_contact_person').text(data.contact_person);
+                    $('#view_email').text(data.email);
+                    $('#view_phone').text(data.phone);
+                    $('#view_address').text(data.address);
+                    $('#view_website').html(data.website ? '<a href="' + data.website + '" target="_blank">' + data.website + '</a>' : 'N/A');
+                    $('#view_status').html('<span class="badge badge-' + (data.status === 'active' ? 'success' : 'danger') + '">' + 
+                        data.status.charAt(0).toUpperCase() + data.status.slice(1) + '</span>');
+                    $('#view_centers').text(data.center_count || '0');
+
+                    // Set document information
+                    if(data.registration_doc) {
+                        $('#view_registration_doc').html(
+                            '<a href="uploads/partners/' + data.registration_doc + '" target="_blank" class="document-link">' +
+                            '<i class="fas fa-file-pdf"></i> View Document</a>'
+                        );
+                    } else {
+                        $('#view_registration_doc').html(
+                            '<span class="document-not-uploaded">No document uploaded</span>'
+                        );
+                    }
+
+                    if(data.agreement_doc) {
+                        $('#view_agreement_doc').html(
+                            '<a href="uploads/partners/' + data.agreement_doc + '" target="_blank" class="document-link">' +
+                            '<i class="fas fa-file-pdf"></i> View Document</a>'
+                        );
+                    } else {
+                        $('#view_agreement_doc').html(
+                            '<span class="document-not-uploaded">No document uploaded</span>'
+                        );
+                    }
+                    
+                    // Show the modal
+                    $('#viewPartnerModal').modal('show');
+                } else {
+                    toastr.error(response.message || 'Error fetching partner data');
+                }
+            },
+            error: function() {
+                toastr.error('Error fetching partner data');
+            }
+        });
+    });
 });
 </script>

@@ -34,7 +34,7 @@ require_once 'includes/sidebar.php';
           </div>
           <div class="col-sm-6">
             <div class="float-sm-right">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCertificateModal">
+              <button type="button" class="btn btn-primary" id="addCertificateBtn">
                 <i class="fas fa-plus"></i> Add New Certificate
               </button>
             </div>
@@ -114,44 +114,7 @@ require_once 'includes/sidebar.php';
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>CERT001</td>
-                  <td>Rahul Sharma</td>
-                  <td>Web Development</td>
-                  <td>01/01/2024</td>
-                  <td>01/01/2027</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCertificateModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCertificateModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCertificateModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>CERT002</td>
-                  <td>Priya Patel</td>
-                  <td>Digital Marketing</td>
-                  <td>15/01/2024</td>
-                  <td>15/01/2027</td>
-                  <td><span class="badge badge-warning">Pending</span></td>
-                  <td>
-                    <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#viewCertificateModal">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCertificateModal">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteCertificateModal">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
+                <!-- DataTables will populate this -->
               </tbody>
             </table>
           </div>
@@ -163,209 +126,156 @@ require_once 'includes/sidebar.php';
   <!-- /.content-wrapper -->
 </div><!-- ./wrapper -->
 
-  <!-- Add Certificate Modal -->
-  <div class="modal fade" id="addCertificateModal" tabindex="-1" role="dialog" aria-labelledby="addCertificateModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addCertificateModalLabel">Add New Certificate</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+<!-- Improved Modal Design -->
+<div class="modal fade" id="certificateModal" tabindex="-1" role="dialog" aria-labelledby="certificateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <form id="certificateForm">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="certificateModalLabel">Add/Edit Certificate</h5>
+          <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="addCertificateForm">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="certificateNo">Certificate Number</label>
-                  <input type="text" class="form-control" id="certificateNo" readonly>
-                  <small class="form-text text-muted">Auto-generated</small>
-                </div>
-                <div class="form-group">
-                  <label for="student">Student</label>
-                  <select class="form-control select2" id="student" required>
-                    <option value="">Select Student</option>
-                    <option value="1">Rahul Sharma (ENR001)</option>
-                    <option value="2">Priya Patel (ENR002)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="course">Course</label>
-                  <input type="text" class="form-control" id="course" readonly>
-                </div>
-                <div class="form-group">
-                  <label for="batch">Batch</label>
-                  <input type="text" class="form-control" id="batch" readonly>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="issueDate">Issue Date</label>
-                  <div class="input-group date" id="issueDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#issueDate" required>
-                    <div class="input-group-append" data-target="#issueDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="expiryDate">Expiry Date</label>
-                  <div class="input-group date" id="expiryDate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#expiryDate" required>
-                    <div class="input-group-append" data-target="#expiryDate" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="certificateType">Certificate Type</label>
-                  <select class="form-control" id="certificateType" required>
-                    <option value="">Select Type</option>
-                    <option value="completion">Course Completion</option>
-                    <option value="achievement">Achievement</option>
-                    <option value="specialization">Specialization</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="remarks">Remarks</label>
-                  <textarea class="form-control" id="remarks" rows="2"></textarea>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Certificate</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- View Certificate Modal -->
-  <div class="modal fade" id="viewCertificateModal" tabindex="-1" role="dialog" aria-labelledby="viewCertificateModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="viewCertificateModalLabel">View Certificate</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
+          <input type="hidden" id="certificate_id" name="certificate_id">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Certificate No:</strong> <span id="viewCertificateNo"></span></p>
-              <p><strong>Student:</strong> <span id="viewStudent"></span></p>
-              <p><strong>Course:</strong> <span id="viewCourse"></span></p>
-              <p><strong>Batch:</strong> <span id="viewBatch"></span></p>
+              <div class="form-group">
+                <label for="enrollment_id">Enrollment</label>
+                <select class="form-control select2" id="enrollment_id" name="enrollment_id" required>
+                  <option value="">Select Enrollment</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="certificate_number">Certificate Number</label>
+                <input type="text" class="form-control" id="certificate_number" name="certificate_number" required>
+              </div>
+              <div class="form-group">
+                <label for="certificate_type">Certificate Type</label>
+                <select class="form-control" id="certificate_type" name="certificate_type" required>
+                  <option value="">Select Type</option>
+                  <option value="completion">Course Completion</option>
+                  <option value="achievement">Achievement</option>
+                  <option value="specialization">Specialization</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status" required>
+                  <option value="issued">Issued</option>
+                  <option value="revoked">Revoked</option>
+                </select>
+              </div>
             </div>
             <div class="col-md-6">
-              <p><strong>Issue Date:</strong> <span id="viewIssueDate"></span></p>
-              <p><strong>Expiry Date:</strong> <span id="viewExpiryDate"></span></p>
-              <p><strong>Certificate Type:</strong> <span id="viewCertificateType"></span></p>
-              <p><strong>Status:</strong> <span id="viewStatus"></span></p>
-            </div>
-          </div>
-          <div class="row mt-4">
-            <div class="col-md-12">
-              <h6>Certificate History</h6>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Certificate No</th>
-                    <th>Issue Date</th>
-                    <th>Expiry Date</th>
-                    <th>Type</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>CERT001</td>
-                    <td>01/01/2024</td>
-                    <td>01/01/2027</td>
-                    <td>Course Completion</td>
-                    <td><span class="badge badge-success">Active</span></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="form-group">
+                <label for="issue_date">Issue Date</label>
+                <input type="date" class="form-control" id="issue_date" name="issue_date" required>
+              </div>
+              <div class="form-group">
+                <label for="valid_until">Valid Until</label>
+                <input type="date" class="form-control" id="valid_until" name="valid_until">
+              </div>
+              <div class="form-group">
+                <label for="remarks">Remarks</label>
+                <textarea class="form-control" id="remarks" name="remarks" rows="2"></textarea>
+              </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="window.print()">Print Certificate</button>
+          <button type="submit" class="btn btn-primary" id="saveCertificateBtn">Save Certificate</button>
         </div>
-      </div>
+      </form>
     </div>
   </div>
+</div>
 
-  <!-- Edit Certificate Modal -->
-  <div class="modal fade" id="editCertificateModal" tabindex="-1" role="dialog" aria-labelledby="editCertificateModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editCertificateModalLabel">Edit Certificate</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="editCertificateForm">
-            <!-- Same form fields as Add Certificate Modal -->
-            <!-- Pre-populated with existing data -->
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save Changes</button>
-        </div>
+<!-- Enhanced View Certificate Modal -->
+<div class="modal fade" id="viewCertificateModal" tabindex="-1" role="dialog" aria-labelledby="viewCertificateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title" id="viewCertificateModalLabel">Certificate Details</h5>
+        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="viewCertificateBody">
+        <!-- Populated by JS -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Delete Certificate Modal -->
-  <div class="modal fade" id="deleteCertificateModal" tabindex="-1" role="dialog" aria-labelledby="deleteCertificateModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteCertificateModalLabel">Delete Certificate</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete this certificate? This action cannot be undone.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger">Delete</button>
-        </div>
+<!-- Enhanced Delete Certificate Modal -->
+<div class="modal fade" id="deleteCertificateModal" tabindex="-1" role="dialog" aria-labelledby="deleteCertificateModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteCertificateModalLabel">Delete Certificate</h5>
+        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this certificate?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteCertificateBtn">Delete</button>
       </div>
     </div>
   </div>
+</div>
 
 <?php include 'includes/js.php'; ?>
 
 <script>
   $(function () {
-    // Initialize DataTable with default configuration
-    $('#certificatesTable').DataTable();
+    $('#certificatesTable').DataTable({
+      processing: true,
+      serverSide: false,
+      ajax: {
+        url: 'inc/ajax/certificates_ajax.php',
+        type: 'POST',
+        data: { action: 'list' },
+        dataSrc: function(json) {
+          return json.data || [];
+        }
+      },
+      columns: [
+        { data: 'certificate_number' },
+        { data: 'student_name' },
+        { data: 'course_name' },
+        { data: 'issue_date' },
+        { data: 'valid_until' },
+        { data: 'status', render: function(data) {
+            var badge = 'secondary';
+            if (data === 'Active') badge = 'success';
+            if (data === 'Pending') badge = 'warning';
+            if (data === 'Expired') badge = 'danger';
+            return '<span class="badge badge-' + badge + '">' + data + '</span>';
+          }
+        },
+        { data: null, orderable: false, searchable: false, render: function(data, type, row) {
+            return '<button class="btn btn-sm btn-info view-certificate-btn" data-id="' + row.certificate_id + '"><i class="fas fa-eye"></i></button>' +
+                   '<button class="btn btn-sm btn-primary edit-certificate-btn" data-id="' + row.certificate_id + '"><i class="fas fa-edit"></i></button>' +
+                   '<button class="btn btn-sm btn-danger delete-certificate-btn" data-id="' + row.certificate_id + '"><i class="fas fa-trash"></i></button>';
+          }
+        }
+      ],
+      paging: true,
+      lengthChange: true,
+      searching: true,
+      ordering: true,
+      info: true,
+      autoWidth: false,
+      responsive: true
+    });
 
     // Initialize Select2
     $('.select2').select2({
       theme: 'bootstrap4'
-    });
-
-    // Initialize date picker
-    $('.datepicker').daterangepicker({
-      singleDatePicker: true,
-      showDropdowns: true,
-      locale: {
-        format: 'DD/MM/YYYY'
-      }
     });
 
     // Load course and batch details when student is selected
@@ -380,7 +290,143 @@ require_once 'includes/sidebar.php';
         $('#batch').val('');
       }
     });
+
+    // Load enrollments for select
+    function loadEnrollments() {
+      $.ajax({
+        url: 'inc/ajax/certificates_ajax.php',
+        type: 'POST',
+        data: { action: 'get_enrollments' },
+        dataType: 'json',
+        success: function (response) {
+          var $select = $('#enrollment_id');
+          $select.empty().append('<option value="">Select Enrollment</option>');
+          if (response.success && response.data) {
+            $.each(response.data, function (_, e) {
+              $select.append('<option value="' + e.enrollment_id + '">' + e.student_name + ' (' + e.enrollment_id + ')</option>');
+            });
+          }
+        }
+      });
+    }
+    loadEnrollments();
+
+    // Add/Edit Certificate
+    $('#certificateForm').on('submit', function (e) {
+      e.preventDefault();
+      var formData = $(this).serialize();
+      var action = $('#certificate_id').val() ? 'update' : 'create';
+      formData += '&action=' + action;
+      $.ajax({
+        url: 'inc/ajax/certificates_ajax.php',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        success: function (response) {
+          if (response.success) {
+            toastr.success(response.message || 'Certificate saved successfully');
+            $('#certificateModal').modal('hide');
+            $('#certificateForm')[0].reset();
+            $('#certificatesTable').DataTable().ajax.reload();
+          } else {
+            toastr.error(response.message || 'Error saving certificate');
+          }
+        },
+        error: function () {
+          toastr.error('An error occurred. Please try again.');
+        }
+      });
+    });
+
+    // Open Add Modal
+    $(document).on('click', '#addCertificateBtn', function () {
+      $('#certificateForm')[0].reset();
+      $('#certificate_id').val('');
+      $('#certificateModalLabel').text('Add Certificate');
+      $('#certificateModal').modal('show');
+    });
+
+    // Open Edit Modal
+    $(document).on('click', '.edit-certificate-btn', function () {
+      var id = $(this).data('id');
+      $.ajax({
+        url: 'inc/ajax/certificates_ajax.php',
+        type: 'POST',
+        data: { action: 'get', certificate_id: id },
+        dataType: 'json',
+        success: function (response) {
+          if (response.success && response.data) {
+            var d = response.data;
+            $('#certificate_id').val(d.certificate_id);
+            $('#enrollment_id').val(d.enrollment_id).trigger('change');
+            $('#certificate_number').val(d.certificate_number);
+            $('#certificate_type').val(d.certificate_type);
+            $('#status').val(d.status);
+            $('#issue_date').val(d.issue_date);
+            $('#valid_until').val(d.valid_until);
+            $('#remarks').val(d.remarks);
+            $('#certificateModalLabel').text('Edit Certificate');
+            $('#certificateModal').modal('show');
+          } else {
+            toastr.error('Could not fetch certificate details.');
+          }
+        }
+      });
+    });
+
+    // Open View Modal
+    $(document).on('click', '.view-certificate-btn', function () {
+      var id = $(this).data('id');
+      $.ajax({
+        url: 'inc/ajax/certificates_ajax.php',
+        type: 'POST',
+        data: { action: 'get', certificate_id: id },
+        dataType: 'json',
+        success: function (response) {
+          if (response.success && response.data) {
+            var d = response.data;
+            var html = '<p><strong>Certificate Number:</strong> ' + d.certificate_number + '</p>' +
+                       '<p><strong>Type:</strong> ' + d.certificate_type + '</p>' +
+                       '<p><strong>Status:</strong> ' + d.status + '</p>' +
+                       '<p><strong>Issue Date:</strong> ' + d.issue_date + '</p>' +
+                       '<p><strong>Valid Until:</strong> ' + d.valid_until + '</p>' +
+                       '<p><strong>Remarks:</strong> ' + (d.remarks || '') + '</p>';
+            $('#viewCertificateBody').html(html);
+            $('#viewCertificateModal').modal('show');
+          } else {
+            toastr.error('Could not fetch certificate details.');
+          }
+        }
+      });
+    });
+
+    // Open Delete Modal
+    var deleteCertificateId = null;
+    $(document).on('click', '.delete-certificate-btn', function () {
+      deleteCertificateId = $(this).data('id');
+      $('#deleteCertificateModal').modal('show');
+    });
+
+    // Confirm Delete
+    $('#confirmDeleteCertificateBtn').on('click', function () {
+      if (!deleteCertificateId) return;
+      $.ajax({
+        url: 'inc/ajax/certificates_ajax.php',
+        type: 'POST',
+        data: { action: 'delete', certificate_id: deleteCertificateId },
+        dataType: 'json',
+        success: function (response) {
+          if (response.success) {
+            toastr.success(response.message || 'Certificate deleted successfully');
+            $('#deleteCertificateModal').modal('hide');
+            $('#certificatesTable').DataTable().ajax.reload();
+          } else {
+            toastr.error(response.message || 'Error deleting certificate');
+          }
+        }
+      });
+    });
   });
 </script>
 </body>
-</html> 
+</html>

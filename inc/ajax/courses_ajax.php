@@ -15,32 +15,39 @@ try {
 
     switch ($action) {
         case 'create':
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $course_name = sanitizeInput($_POST['course_name'] ?? '');
+            $course_code = sanitizeInput($_POST['course_code'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
-            $duration = (int)($_POST['duration'] ?? 0);
-            $duration_unit = sanitizeInput($_POST['duration_unit'] ?? 'hours');
+            $duration_hours = (int)($_POST['duration_hours'] ?? 0);
             $fee = (float)($_POST['fee'] ?? 0);
-            $max_students = (int)($_POST['max_students'] ?? 0);
             $prerequisites = sanitizeInput($_POST['prerequisites'] ?? '');
             $syllabus = sanitizeInput($_POST['syllabus'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
             $sector_id = (int)($_POST['sector_id'] ?? 0);
-            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            $scheme_id = isset($_POST['scheme_id']) && $_POST['scheme_id'] !== '' ? (int)$_POST['scheme_id'] : null;
+            $center_id = isset($_POST['center_id']) && $_POST['center_id'] !== '' ? (int)$_POST['center_id'] : null;
 
-            if (empty($name) || empty($description) || $duration <= 0 || $sector_id <= 0) {
+            if (empty($course_name) || empty($course_code) || $duration_hours <= 0 || $sector_id <= 0 || empty($center_id)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
             // Validate sector
-            $stmt = $pdo->prepare("SELECT id FROM sectors WHERE id = ?");
+            $stmt = $pdo->prepare("SELECT sector_id FROM sectors WHERE sector_id = ?");
             $stmt->execute([$sector_id]);
             if (!$stmt->fetch()) {
                 sendJSONResponse(false, 'Invalid sector');
             }
 
+            // Validate center
+            $stmt = $pdo->prepare("SELECT center_id FROM training_centers WHERE center_id = ?");
+            $stmt->execute([$center_id]);
+            if (!$stmt->fetch()) {
+                sendJSONResponse(false, 'Invalid training center');
+            }
+
             // Validate scheme if provided
-            if ($scheme_id > 0) {
-                $stmt = $pdo->prepare("SELECT id FROM schemes WHERE id = ?");
+            if ($scheme_id !== null) {
+                $stmt = $pdo->prepare("SELECT scheme_id FROM schemes WHERE scheme_id = ?");
                 $stmt->execute([$scheme_id]);
                 if (!$stmt->fetch()) {
                     sendJSONResponse(false, 'Invalid scheme');
@@ -49,218 +56,199 @@ try {
 
             $stmt = $pdo->prepare("
                 INSERT INTO courses (
-                    name, description, duration, duration_unit, fee,
-                    max_students, prerequisites, syllabus, status,
-                    sector_id, scheme_id, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                    sector_id, scheme_id, center_id, course_code, course_name, duration_hours, fee, description, prerequisites, syllabus, status, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
             ");
             $stmt->execute([
-                $name, $description, $duration, $duration_unit, $fee,
-                $max_students, $prerequisites, $syllabus, $status,
-                $sector_id, $scheme_id
+                $sector_id, $scheme_id, $center_id, $course_code, $course_name, $duration_hours, $fee, $description, $prerequisites, $syllabus, $status
             ]);
 
-            logAudit($_SESSION['user']['id'], 'create_course', [
-                'name' => $name,
+            logAudit($_SESSION['user']['user_id'], 'create_course', [
+                'course_name' => $course_name,
                 'sector_id' => $sector_id,
-                'scheme_id' => $scheme_id
+                'scheme_id' => $scheme_id,
+                'center_id' => $center_id
             ]);
 
             sendJSONResponse(true, 'Course created successfully', [
-                'id' => $pdo->lastInsertId()
+                'course_id' => $pdo->lastInsertId()
             ]);
             break;
 
         case 'read':
-            $page = (int)($_POST['page'] ?? 1);
-            $perPage = (int)($_POST['per_page'] ?? 10);
-            $search = sanitizeInput($_POST['search'] ?? '');
+            $where = [];
+            $params = [];
             $status = sanitizeInput($_POST['status'] ?? '');
             $sector_id = (int)($_POST['sector_id'] ?? 0);
             $scheme_id = (int)($_POST['scheme_id'] ?? 0);
-
-            $where = [];
-            $params = [];
-
-            if (!empty($search)) {
-                $searchFields = ['name', 'description', 'prerequisites', 'syllabus'];
-                $searchResult = buildSearchQuery($searchFields, $search);
-                $where[] = "(" . $searchResult['conditions'] . ")";
-                $params = array_merge($params, $searchResult['params']);
-            }
-
             if (!empty($status)) {
                 $where[] = "c.status = ?";
                 $params[] = $status;
             }
-
             if ($sector_id > 0) {
                 $where[] = "c.sector_id = ?";
                 $params[] = $sector_id;
             }
-
             if ($scheme_id > 0) {
                 $where[] = "c.scheme_id = ?";
                 $params[] = $scheme_id;
             }
-
             $whereClause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
-
-            // Get total count
-            $countStmt = $pdo->prepare("
-                SELECT COUNT(*) 
-                FROM courses c
-                $whereClause
-            ");
-            $countStmt->execute($params);
-            $total = $countStmt->fetchColumn();
-
-            // Get pagination info
-            $pagination = getPagination($page, $total, $perPage);
-
-            // Get data with related info
             $stmt = $pdo->prepare("
-                SELECT c.*, s.name as sector_name, sc.name as scheme_name
+                SELECT c.*, s.sector_name, sc.scheme_name, tc.center_name
                 FROM courses c
-                LEFT JOIN sectors s ON c.sector_id = s.id
-                LEFT JOIN schemes sc ON c.scheme_id = sc.id
+                LEFT JOIN sectors s ON c.sector_id = s.sector_id
+                LEFT JOIN schemes sc ON c.scheme_id = sc.scheme_id
+                LEFT JOIN training_centers tc ON c.center_id = tc.center_id
                 $whereClause
-                ORDER BY c.created_at DESC
-                LIMIT ? OFFSET ?
+                ORDER BY c.course_id DESC
             ");
-            $stmt->execute([...$params, $pagination['per_page'], $pagination['offset']]);
+            $stmt->execute($params);
             $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            sendJSONResponse(true, 'Courses retrieved successfully', [
-                'data' => $courses,
-                'pagination' => $pagination
-            ]);
+            sendJSONResponse(true, 'Courses retrieved successfully', $courses);
             break;
 
         case 'update':
-            $id = (int)($_POST['id'] ?? 0);
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $course_id = (int)($_POST['course_id'] ?? 0);
+            $course_name = sanitizeInput($_POST['course_name'] ?? '');
+            $course_code = sanitizeInput($_POST['course_code'] ?? '');
             $description = sanitizeInput($_POST['description'] ?? '');
-            $duration = (int)($_POST['duration'] ?? 0);
-            $duration_unit = sanitizeInput($_POST['duration_unit'] ?? 'hours');
+            $duration_hours = (int)($_POST['duration_hours'] ?? 0);
             $fee = (float)($_POST['fee'] ?? 0);
-            $max_students = (int)($_POST['max_students'] ?? 0);
             $prerequisites = sanitizeInput($_POST['prerequisites'] ?? '');
             $syllabus = sanitizeInput($_POST['syllabus'] ?? '');
             $status = sanitizeInput($_POST['status'] ?? 'active');
             $sector_id = (int)($_POST['sector_id'] ?? 0);
-            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            $scheme_id = isset($_POST['scheme_id']) && $_POST['scheme_id'] !== '' ? (int)$_POST['scheme_id'] : null;
+            $center_id = isset($_POST['center_id']) && $_POST['center_id'] !== '' ? (int)$_POST['center_id'] : null;
 
-            if (empty($id) || empty($name) || empty($description) || $duration <= 0 || $sector_id <= 0) {
+            if (empty($course_id) || empty($course_name) || empty($course_code) || $duration_hours <= 0 || $sector_id <= 0 || empty($center_id)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
             // Validate sector
-            $stmt = $pdo->prepare("SELECT id FROM sectors WHERE id = ?");
+            $stmt = $pdo->prepare("SELECT sector_id FROM sectors WHERE sector_id = ?");
             $stmt->execute([$sector_id]);
             if (!$stmt->fetch()) {
                 sendJSONResponse(false, 'Invalid sector');
             }
-
+            // Validate center
+            $stmt = $pdo->prepare("SELECT center_id FROM training_centers WHERE center_id = ?");
+            $stmt->execute([$center_id]);
+            if (!$stmt->fetch()) {
+                sendJSONResponse(false, 'Invalid training center');
+            }
             // Validate scheme if provided
-            if ($scheme_id > 0) {
-                $stmt = $pdo->prepare("SELECT id FROM schemes WHERE id = ?");
+            if ($scheme_id !== null) {
+                $stmt = $pdo->prepare("SELECT scheme_id FROM schemes WHERE scheme_id = ?");
                 $stmt->execute([$scheme_id]);
                 if (!$stmt->fetch()) {
                     sendJSONResponse(false, 'Invalid scheme');
                 }
             }
-
             $stmt = $pdo->prepare("
-                UPDATE courses 
-                SET name = ?, description = ?, duration = ?, duration_unit = ?,
-                    fee = ?, max_students = ?, prerequisites = ?, syllabus = ?,
-                    status = ?, sector_id = ?, scheme_id = ?, updated_at = NOW()
-                WHERE id = ?
+                UPDATE courses SET sector_id = ?, scheme_id = ?, center_id = ?, course_code = ?, course_name = ?, duration_hours = ?, fee = ?, description = ?, prerequisites = ?, syllabus = ?, status = ?, updated_at = NOW()
+                WHERE course_id = ?
             ");
             $stmt->execute([
-                $name, $description, $duration, $duration_unit, $fee,
-                $max_students, $prerequisites, $syllabus, $status,
-                $sector_id, $scheme_id, $id
+                $sector_id, $scheme_id, $center_id, $course_code, $course_name, $duration_hours, $fee, $description, $prerequisites, $syllabus, $status, $course_id
             ]);
-
-            logAudit($_SESSION['user']['id'], 'update_course', [
-                'id' => $id,
-                'name' => $name,
+            logAudit($_SESSION['user']['user_id'], 'update_course', [
+                'course_id' => $course_id,
+                'course_name' => $course_name,
                 'sector_id' => $sector_id,
-                'scheme_id' => $scheme_id
+                'scheme_id' => $scheme_id,
+                'center_id' => $center_id
             ]);
-
             sendJSONResponse(true, 'Course updated successfully');
             break;
 
         case 'delete':
-            $id = (int)($_POST['id'] ?? 0);
-
-            if (empty($id)) {
-                sendJSONResponse(false, 'ID is required');
+            $course_id = (int)($_POST['course_id'] ?? 0);
+            if (empty($course_id)) {
+                sendJSONResponse(false, 'Course ID is required');
             }
 
-            // Check if course has active batches
-            $stmt = $pdo->prepare("
-                SELECT COUNT(*) FROM batches 
-                WHERE course_id = ? AND status = 'active'
-            ");
-            $stmt->execute([$id]);
-            if ($stmt->fetchColumn() > 0) {
-                sendJSONResponse(false, 'Cannot delete course with active batches');
+            try {
+                // Check if the course exists
+                $stmt = $pdo->prepare("SELECT course_id FROM courses WHERE course_id = ?");
+                $stmt->execute([$course_id]);
+                if (!$stmt->fetch()) {
+                    sendJSONResponse(false, 'Course not found');
+                }
+
+                // Check for dependencies in the batches table
+                $stmt = $pdo->prepare("SELECT COUNT(*) FROM batches WHERE course_id = ?");
+                $stmt->execute([$course_id]);
+                $batchCount = $stmt->fetchColumn();
+                if ($batchCount > 0) {
+                    sendJSONResponse(false, 'Cannot delete course. It is associated with existing batches.');
+                }
+
+                // Attempt to delete the course
+                $stmt = $pdo->prepare("DELETE FROM courses WHERE course_id = ?");
+                $stmt->execute([$course_id]);
+
+                logAudit($_SESSION['user']['user_id'], 'delete_course', [
+                    'course_id' => $course_id
+                ]);
+
+                sendJSONResponse(true, 'Course deleted successfully');
+            } catch (PDOException $e) {
+                logError("Delete course error: " . $e->getMessage());
+                sendJSONResponse(false, 'An error occurred while deleting the course. Please try again later.');
             }
-
-            // Get course info for audit log
-            $stmt = $pdo->prepare("
-                SELECT c.name, s.name as sector_name, sc.name as scheme_name
-                FROM courses c
-                LEFT JOIN sectors s ON c.sector_id = s.id
-                LEFT JOIN schemes sc ON c.scheme_id = sc.id
-                WHERE c.id = ?
-            ");
-            $stmt->execute([$id]);
-            $course = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$course) {
-                sendJSONResponse(false, 'Course not found');
-            }
-
-            $stmt = $pdo->prepare("DELETE FROM courses WHERE id = ?");
-            $stmt->execute([$id]);
-
-            logAudit($_SESSION['user']['id'], 'delete_course', [
-                'id' => $id,
-                'name' => $course['name'],
-                'sector' => $course['sector_name'],
-                'scheme' => $course['scheme_name']
-            ]);
-
-            sendJSONResponse(true, 'Course deleted successfully');
             break;
 
         case 'get':
-            $id = (int)($_POST['id'] ?? 0);
-
-            if (empty($id)) {
-                sendJSONResponse(false, 'ID is required');
+            $course_id = (int)($_POST['course_id'] ?? 0);
+            if (empty($course_id)) {
+                sendJSONResponse(false, 'Course ID is required');
             }
-
             $stmt = $pdo->prepare("
-                SELECT c.*, s.name as sector_name, sc.name as scheme_name
+                SELECT c.*, s.sector_name, sc.scheme_name, tc.center_name
                 FROM courses c
-                LEFT JOIN sectors s ON c.sector_id = s.id
-                LEFT JOIN schemes sc ON c.scheme_id = sc.id
-                WHERE c.id = ?
+                LEFT JOIN sectors s ON c.sector_id = s.sector_id
+                LEFT JOIN schemes sc ON c.scheme_id = sc.scheme_id
+                LEFT JOIN training_centers tc ON c.center_id = tc.center_id
+                WHERE c.course_id = ?
             ");
-            $stmt->execute([$id]);
+            $stmt->execute([$course_id]);
             $course = $stmt->fetch(PDO::FETCH_ASSOC);
-
             if ($course) {
                 sendJSONResponse(true, 'Course retrieved successfully', $course);
             } else {
                 sendJSONResponse(false, 'Course not found');
             }
+            break;
+
+        case 'assign_course':
+            $course_id = (int)($_POST['course_id'] ?? 0);
+            $sector_id = (int)($_POST['sector_id'] ?? 0);
+            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            $center_id = (int)($_POST['center_id'] ?? 0);
+            if (!$course_id || !$sector_id || !$scheme_id || !$center_id) {
+                sendJSONResponse(false, 'All fields are required');
+            }
+            $stmt = $pdo->prepare("SELECT id FROM assigned_courses WHERE course_id = ? AND sector_id = ? AND scheme_id = ? AND center_id = ?");
+            $stmt->execute([$course_id, $sector_id, $scheme_id, $center_id]);
+            if ($stmt->fetch()) {
+                sendJSONResponse(false, 'This course is already assigned to the selected sector, scheme, and center');
+            }
+            $stmt = $pdo->prepare("INSERT INTO assigned_courses (course_id, sector_id, scheme_id, center_id, assigned_at) VALUES (?, ?, ?, ?, NOW())");
+            $stmt->execute([$course_id, $sector_id, $scheme_id, $center_id]);
+            sendJSONResponse(true, 'Course assigned successfully');
+            break;
+
+        case 'get_assigned_courses':
+            $course_id = (int)($_POST['course_id'] ?? 0);
+            if (!$course_id) {
+                sendJSONResponse(false, 'Course ID is required');
+            }
+            $stmt = $pdo->prepare("SELECT ac.sector_id, ac.scheme_id, ac.center_id, s.sector_name, sc.scheme_name, tc.center_name FROM assigned_courses ac JOIN sectors s ON ac.sector_id = s.sector_id JOIN schemes sc ON ac.scheme_id = sc.scheme_id JOIN training_centers tc ON ac.center_id = tc.center_id WHERE ac.course_id = ?");
+            $stmt->execute([$course_id]);
+            $assignments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Assignments fetched', $assignments);
             break;
 
         default:
@@ -269,4 +257,4 @@ try {
 } catch (PDOException $e) {
     logError("Courses error: " . $e->getMessage());
     sendJSONResponse(false, 'An error occurred. Please try again later.');
-} 
+}

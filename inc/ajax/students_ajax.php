@@ -9,247 +9,94 @@ checkPermission('admin');
 header('Content-Type: application/json');
 
 $action = $_POST['action'] ?? '';
+error_log('Action received: ' . $action);
 
 try {
     $pdo = getDBConnection();
 
     switch ($action) {
         case 'create':
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $enrollment_no = sanitizeInput($_POST['enrollment_no'] ?? '');
+            $first_name = sanitizeInput($_POST['first_name'] ?? '');
+            $last_name = sanitizeInput($_POST['last_name'] ?? '');
             $email = sanitizeInput($_POST['email'] ?? '');
-            $phone = sanitizeInput($_POST['phone'] ?? '');
-            $address = sanitizeInput($_POST['address'] ?? '');
-            $city = sanitizeInput($_POST['city'] ?? '');
-            $state = sanitizeInput($_POST['state'] ?? '');
-            $pincode = sanitizeInput($_POST['pincode'] ?? '');
-            $dob = sanitizeInput($_POST['dob'] ?? '');
+            $mobile = sanitizeInput($_POST['mobile'] ?? '');
+            $date_of_birth = sanitizeInput($_POST['date_of_birth'] ?? '');
             $gender = sanitizeInput($_POST['gender'] ?? '');
-            $education = sanitizeInput($_POST['education'] ?? '');
-            $status = sanitizeInput($_POST['status'] ?? 'active');
-            $center_id = (int)($_POST['center_id'] ?? 0);
+            $address = sanitizeInput($_POST['address'] ?? '');
+            $course_id = isset($_POST['course_id']) ? (int)$_POST['course_id'] : null;
+            $batch_id = isset($_POST['batch_id']) ? (int)$_POST['batch_id'] : null;
 
-            if (empty($name) || empty($email) || empty($phone)) {
+            if (empty($enrollment_no) || empty($first_name) || empty($last_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
-
-            if (!validateEmail($email)) {
+            if (!empty($email) && !validateEmail($email)) {
                 sendJSONResponse(false, 'Invalid email format');
             }
-
-            if (!validatePhone($phone)) {
-                sendJSONResponse(false, 'Invalid phone format');
+            if (!empty($mobile) && !validatePhone($mobile)) {
+                sendJSONResponse(false, 'Invalid mobile format');
             }
-
-            // Validate center if provided
-            if ($center_id > 0) {
-                $stmt = $pdo->prepare("SELECT id FROM training_centers WHERE id = ?");
-                $stmt->execute([$center_id]);
-                if (!$stmt->fetch()) {
-                    sendJSONResponse(false, 'Invalid training center');
-                }
+            // Check for unique enrollment_no
+            $stmt = $pdo->prepare('SELECT COUNT(*) FROM students WHERE enrollment_no = ?');
+            $stmt->execute([$enrollment_no]);
+            if ($stmt->fetchColumn() > 0) {
+                sendJSONResponse(false, 'Enrollment number already exists');
             }
-
-            $stmt = $pdo->prepare("
-                INSERT INTO students (
-                    name, email, phone, address, city, state, pincode,
-                    dob, gender, education, status, center_id, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-            ");
-            $stmt->execute([
-                $name, $email, $phone, $address, $city, $state, $pincode,
-                $dob, $gender, $education, $status, $center_id
-            ]);
-
-            logAudit($_SESSION['user']['id'], 'create_student', [
-                'name' => $name,
-                'email' => $email,
-                'center_id' => $center_id
-            ]);
-
-            sendJSONResponse(true, 'Student created successfully', [
-                'id' => $pdo->lastInsertId()
-            ]);
-            break;
-
-        case 'read':
-            $page = (int)($_POST['page'] ?? 1);
-            $perPage = (int)($_POST['per_page'] ?? 10);
-            $search = sanitizeInput($_POST['search'] ?? '');
-            $status = sanitizeInput($_POST['status'] ?? '');
-            $center_id = (int)($_POST['center_id'] ?? 0);
-
-            $where = [];
-            $params = [];
-
-            if (!empty($search)) {
-                $searchFields = ['name', 'email', 'phone', 'address', 'city', 'state'];
-                $searchResult = buildSearchQuery($searchFields, $search);
-                $where[] = "(" . $searchResult['conditions'] . ")";
-                $params = array_merge($params, $searchResult['params']);
-            }
-
-            if (!empty($status)) {
-                $where[] = "s.status = ?";
-                $params[] = $status;
-            }
-
-            if ($center_id > 0) {
-                $where[] = "s.center_id = ?";
-                $params[] = $center_id;
-            }
-
-            $whereClause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
-
-            // Get total count
-            $countStmt = $pdo->prepare("
-                SELECT COUNT(*) 
-                FROM students s
-                $whereClause
-            ");
-            $countStmt->execute($params);
-            $total = $countStmt->fetchColumn();
-
-            // Get pagination info
-            $pagination = getPagination($page, $total, $perPage);
-
-            // Get data with related info
-            $stmt = $pdo->prepare("
-                SELECT s.*, tc.name as center_name,
-                       (SELECT COUNT(*) FROM batch_students WHERE student_id = s.id) as batch_count
-                FROM students s
-                LEFT JOIN training_centers tc ON s.center_id = tc.id
-                $whereClause
-                ORDER BY s.created_at DESC
-                LIMIT ? OFFSET ?
-            ");
-            $stmt->execute([...$params, $pagination['per_page'], $pagination['offset']]);
-            $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            sendJSONResponse(true, 'Students retrieved successfully', [
-                'data' => $students,
-                'pagination' => $pagination
-            ]);
+            $stmt = $pdo->prepare("INSERT INTO students (enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, course_id, batch_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+            $stmt->execute([$enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id]);
+            sendJSONResponse(true, 'Student created successfully', ['student_id' => $pdo->lastInsertId()]);
             break;
 
         case 'update':
-            $id = (int)($_POST['id'] ?? 0);
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $student_id = (int)($_POST['student_id'] ?? 0);
+            $first_name = sanitizeInput($_POST['first_name'] ?? '');
+            $last_name = sanitizeInput($_POST['last_name'] ?? '');
             $email = sanitizeInput($_POST['email'] ?? '');
-            $phone = sanitizeInput($_POST['phone'] ?? '');
-            $address = sanitizeInput($_POST['address'] ?? '');
-            $city = sanitizeInput($_POST['city'] ?? '');
-            $state = sanitizeInput($_POST['state'] ?? '');
-            $pincode = sanitizeInput($_POST['pincode'] ?? '');
-            $dob = sanitizeInput($_POST['dob'] ?? '');
+            $mobile = sanitizeInput($_POST['mobile'] ?? '');
+            $date_of_birth = sanitizeInput($_POST['date_of_birth'] ?? '');
             $gender = sanitizeInput($_POST['gender'] ?? '');
-            $education = sanitizeInput($_POST['education'] ?? '');
-            $status = sanitizeInput($_POST['status'] ?? 'active');
-            $center_id = (int)($_POST['center_id'] ?? 0);
+            $address = sanitizeInput($_POST['address'] ?? '');
+            $course_id = isset($_POST['course_id']) ? (int)$_POST['course_id'] : null;
+            $batch_id = isset($_POST['batch_id']) ? (int)$_POST['batch_id'] : null;
 
-            if (empty($id) || empty($name) || empty($email) || empty($phone)) {
+            if (empty($student_id) || empty($first_name) || empty($last_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
-
-            if (!validateEmail($email)) {
+            if (!empty($email) && !validateEmail($email)) {
                 sendJSONResponse(false, 'Invalid email format');
             }
-
-            if (!validatePhone($phone)) {
-                sendJSONResponse(false, 'Invalid phone format');
+            if (!empty($mobile) && !validatePhone($mobile)) {
+                sendJSONResponse(false, 'Invalid mobile format');
             }
-
-            // Validate center if provided
-            if ($center_id > 0) {
-                $stmt = $pdo->prepare("SELECT id FROM training_centers WHERE id = ?");
-                $stmt->execute([$center_id]);
-                if (!$stmt->fetch()) {
-                    sendJSONResponse(false, 'Invalid training center');
-                }
-            }
-
-            $stmt = $pdo->prepare("
-                UPDATE students 
-                SET name = ?, email = ?, phone = ?, address = ?, city = ?,
-                    state = ?, pincode = ?, dob = ?, gender = ?, education = ?,
-                    status = ?, center_id = ?, updated_at = NOW()
-                WHERE id = ?
-            ");
-            $stmt->execute([
-                $name, $email, $phone, $address, $city, $state, $pincode,
-                $dob, $gender, $education, $status, $center_id, $id
-            ]);
-
-            logAudit($_SESSION['user']['id'], 'update_student', [
-                'id' => $id,
-                'name' => $name,
-                'email' => $email,
-                'center_id' => $center_id
-            ]);
-
+            $stmt = $pdo->prepare("UPDATE students SET first_name = ?, last_name = ?, email = ?, mobile = ?, date_of_birth = ?, gender = ?, address = ?, course_id = ?, batch_id = ?, updated_at = NOW() WHERE student_id = ?");
+            $stmt->execute([$first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id, $student_id]);
             sendJSONResponse(true, 'Student updated successfully');
             break;
 
         case 'delete':
-            $id = (int)($_POST['id'] ?? 0);
-
-            if (empty($id)) {
-                sendJSONResponse(false, 'ID is required');
+            $student_id = (int)($_POST['student_id'] ?? 0);
+            error_log('Delete Action: student_id=' . $student_id);
+            if (empty($student_id)) {
+                sendJSONResponse(false, 'Student ID is required');
             }
-
-            // Check if student has active batch enrollments
-            $stmt = $pdo->prepare("
-                SELECT COUNT(*) FROM batch_students 
-                WHERE student_id = ? AND status = 'active'
-            ");
-            $stmt->execute([$id]);
-            if ($stmt->fetchColumn() > 0) {
-                sendJSONResponse(false, 'Cannot delete student with active batch enrollments');
+            try {
+                $stmt = $pdo->prepare('DELETE FROM students WHERE student_id = ?');
+                $stmt->execute([$student_id]);
+                sendJSONResponse(true, 'Student deleted successfully');
+            } catch (PDOException $e) {
+                error_log('Delete Error: ' . $e->getMessage());
+                sendJSONResponse(false, 'Failed to delete student');
             }
-
-            // Get student info for audit log
-            $stmt = $pdo->prepare("
-                SELECT s.name, s.email, tc.name as center_name
-                FROM students s
-                LEFT JOIN training_centers tc ON s.center_id = tc.id
-                WHERE s.id = ?
-            ");
-            $stmt->execute([$id]);
-            $student = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$student) {
-                sendJSONResponse(false, 'Student not found');
-            }
-
-            $stmt = $pdo->prepare("DELETE FROM students WHERE id = ?");
-            $stmt->execute([$id]);
-
-            logAudit($_SESSION['user']['id'], 'delete_student', [
-                'id' => $id,
-                'name' => $student['name'],
-                'email' => $student['email'],
-                'center' => $student['center_name']
-            ]);
-
-            sendJSONResponse(true, 'Student deleted successfully');
             break;
 
         case 'get':
-            $id = (int)($_POST['id'] ?? 0);
-
-            if (empty($id)) {
-                sendJSONResponse(false, 'ID is required');
+            $student_id = (int)($_POST['student_id'] ?? 0);
+            if (empty($student_id)) {
+                sendJSONResponse(false, 'Student ID is required');
             }
-
-            $stmt = $pdo->prepare("
-                SELECT s.*, tc.name as center_name,
-                       (SELECT COUNT(*) FROM batch_students WHERE student_id = s.id) as batch_count
-                FROM students s
-                LEFT JOIN training_centers tc ON s.center_id = tc.id
-                WHERE s.id = ?
-            ");
-            $stmt->execute([$id]);
+            $stmt = $pdo->prepare('SELECT s.*, c.course_name, b.batch_code FROM students s LEFT JOIN courses c ON s.course_id = c.course_id LEFT JOIN batches b ON s.batch_id = b.batch_id WHERE s.student_id = ?');
+            $stmt->execute([$student_id]);
             $student = $stmt->fetch(PDO::FETCH_ASSOC);
-
             if ($student) {
                 sendJSONResponse(true, 'Student retrieved successfully', $student);
             } else {
@@ -257,33 +104,51 @@ try {
             }
             break;
 
-        case 'get_batches':
-            $student_id = (int)($_POST['student_id'] ?? 0);
+        case 'list':
+            $stmt = $pdo->query('SELECT s.student_id, s.enrollment_no, s.first_name, s.last_name, s.gender, s.mobile, s.email, s.date_of_birth, s.address, 
+                c.course_name, b.batch_code
+                FROM students s
+                LEFT JOIN courses c ON s.course_id = c.course_id
+                LEFT JOIN batches b ON s.batch_id = b.batch_id
+                ORDER BY s.created_at DESC');
+            $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode(['success' => true, 'data' => $students]);
+            exit;
 
+        case 'getEnrollments':
+            try {
+                $stmt = $pdo->query('SELECT student_id AS enrollment_id, enrollment_no, CONCAT(first_name, " ", last_name) AS student_name FROM students ORDER BY first_name ASC');
+                $enrollments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                error_log('Enrollments fetched: ' . json_encode($enrollments));
+
+                echo json_encode([
+                    'success' => true,
+                    'data' => $enrollments
+                ]);
+            } catch (Exception $e) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Failed to fetch enrollments: ' . $e->getMessage()
+                ]);
+            }
+            exit;
+
+        case 'get_enrollments_by_student':
+            $student_id = (int)($_POST['student_id'] ?? 0);
             if (empty($student_id)) {
                 sendJSONResponse(false, 'Student ID is required');
             }
-
-            $stmt = $pdo->prepare("
-                SELECT b.*, c.name as course_name, tc.name as center_name,
-                       bs.status as enrollment_status, bs.enrolled_at
-                FROM batches b
-                JOIN batch_students bs ON b.id = bs.batch_id
-                LEFT JOIN courses c ON b.course_id = c.id
-                LEFT JOIN training_centers tc ON b.center_id = tc.id
-                WHERE bs.student_id = ?
-                ORDER BY b.start_date DESC
-            ");
+            $stmt = $pdo->prepare('SELECT enrollment_id FROM student_batch_enrollment WHERE student_id = ?');
             $stmt->execute([$student_id]);
-            $batches = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            sendJSONResponse(true, 'Student batches retrieved successfully', $batches);
+            $enrollments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Enrollments fetched', $enrollments);
             break;
 
         default:
             sendJSONResponse(false, 'Invalid action');
     }
 } catch (PDOException $e) {
-    logError("Students error: " . $e->getMessage());
-    sendJSONResponse(false, 'An error occurred. Please try again later.');
-} 
+    logError('Students error: ' . $e->getMessage());
+    echo json_encode(['success' => false, 'data' => [], 'error' => 'An error occurred. Please try again later.']);
+    exit;
+}

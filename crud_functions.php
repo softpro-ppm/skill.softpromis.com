@@ -19,21 +19,25 @@ class TrainingPartner {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO training_partners (partner_name, contact_person, email, phone, address) 
-                               VALUES (?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO training_partners (partner_name, contact_person, email, phone, address, website, status, created_at, updated_at, registration_doc, agreement_doc) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?, ?)");
         return $stmt->execute([
             $data['partner_name'],
             $data['contact_person'],
             $data['email'],
             $data['phone'],
-            $data['address']
+            $data['address'],
+            $data['website'],
+            $data['status'],
+            $data['registration_doc'] ?? null,
+            $data['agreement_doc'] ?? null
         ]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE training_partners 
-                               SET partner_name = ?, contact_person = ?, email = ?, phone = ?, address = ?, status = ? 
+                               SET partner_name = ?, contact_person = ?, email = ?, phone = ?, address = ?, website = ?, status = ?, updated_at = NOW(), registration_doc = ?, agreement_doc = ? 
                                WHERE partner_id = ?");
         return $stmt->execute([
             $data['partner_name'],
@@ -41,7 +45,10 @@ class TrainingPartner {
             $data['email'],
             $data['phone'],
             $data['address'],
+            $data['website'],
             $data['status'],
+            $data['registration_doc'] ?? null,
+            $data['agreement_doc'] ?? null,
             $id
         ]);
     }
@@ -57,8 +64,13 @@ class TrainingPartner {
 class TrainingCenter {
     public static function getAll($partnerId = null) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("CALL sp_get_training_centers(?)");
-        $stmt->execute([$partnerId]);
+        if ($partnerId) {
+            $stmt = $conn->prepare("SELECT * FROM training_centers WHERE partner_id = ? AND status = 'active' ORDER BY center_id DESC");
+            $stmt->execute([$partnerId]);
+        } else {
+            $stmt = $conn->prepare("SELECT * FROM training_centers WHERE status = 'active' ORDER BY center_id DESC");
+            $stmt->execute();
+        }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -73,15 +85,19 @@ class TrainingCenter {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO training_centers (partner_id, center_name, contact_person, email, phone, address) 
-                               VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO training_centers (partner_id, center_name, contact_person, email, phone, address, city, state, pincode, status, created_at, updated_at) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
         return $stmt->execute([
             $data['partner_id'],
             $data['center_name'],
             $data['contact_person'],
             $data['email'],
             $data['phone'],
-            $data['address']
+            $data['address'],
+            $data['city'],
+            $data['state'],
+            $data['pincode'],
+            $data['status']
         ]);
     }
 
@@ -89,7 +105,7 @@ class TrainingCenter {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE training_centers 
                                SET partner_id = ?, center_name = ?, contact_person = ?, email = ?, phone = ?, 
-                                   address = ?, status = ? 
+                                   address = ?, city = ?, state = ?, pincode = ?, status = ?, updated_at = NOW() 
                                WHERE center_id = ?");
         return $stmt->execute([
             $data['partner_id'],
@@ -98,6 +114,9 @@ class TrainingCenter {
             $data['email'],
             $data['phone'],
             $data['address'],
+            $data['city'],
+            $data['state'],
+            $data['pincode'],
             $data['status'],
             $id
         ]);
@@ -114,7 +133,7 @@ class TrainingCenter {
 class Sector {
     public static function getAll() {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("SELECT * FROM sectors WHERE status = 'active'");
+        $stmt = $conn->prepare("SELECT * FROM sectors WHERE status = 'active' ORDER BY sector_id DESC");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -128,14 +147,27 @@ class Sector {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO sectors (sector_name, description) VALUES (?, ?)");
-        return $stmt->execute([$data['sector_name'], $data['description']]);
+        $stmt = $conn->prepare("INSERT INTO sectors (sector_name, description, status, center_id, scheme_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())");
+        return $stmt->execute([
+            $data['sector_name'],
+            $data['description'],
+            $data['status'],
+            $data['center_id'],
+            $data['scheme_id']
+        ]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("UPDATE sectors SET sector_name = ?, description = ?, status = ? WHERE sector_id = ?");
-        return $stmt->execute([$data['sector_name'], $data['description'], $data['status'], $id]);
+        $stmt = $conn->prepare("UPDATE sectors SET sector_name = ?, description = ?, status = ?, center_id = ?, scheme_id = ?, updated_at = NOW() WHERE sector_id = ?");
+        return $stmt->execute([
+            $data['sector_name'],
+            $data['description'],
+            $data['status'],
+            $data['center_id'],
+            $data['scheme_id'],
+            $id
+        ]);
     }
 
     public static function delete($id) {
@@ -163,13 +195,13 @@ class Scheme {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO schemes (scheme_name, description) VALUES (?, ?)");
-        return $stmt->execute([$data['scheme_name'], $data['description']]);
+        $stmt = $conn->prepare("INSERT INTO schemes (scheme_name, description, status, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
+        return $stmt->execute([$data['scheme_name'], $data['description'], $data['status']]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("UPDATE schemes SET scheme_name = ?, description = ?, status = ? WHERE scheme_id = ?");
+        $stmt = $conn->prepare("UPDATE schemes SET scheme_name = ?, description = ?, status = ?, updated_at = NOW() WHERE scheme_id = ?");
         return $stmt->execute([$data['scheme_name'], $data['description'], $data['status'], $id]);
     }
 
@@ -184,8 +216,16 @@ class Scheme {
 class Course {
     public static function getAll($sectorId = null, $schemeId = null) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("CALL sp_get_courses(?, ?)");
-        $stmt->execute([$sectorId, $schemeId]);
+        if ($sectorId && $schemeId) {
+            $stmt = $conn->prepare("SELECT * FROM courses WHERE sector_id = ? AND scheme_id = ? AND status = 'active' ORDER BY course_id DESC");
+            $stmt->execute([$sectorId, $schemeId]);
+        } elseif ($sectorId) {
+            $stmt = $conn->prepare("SELECT * FROM courses WHERE sector_id = ? AND status = 'active' ORDER BY course_id DESC");
+            $stmt->execute([$sectorId]);
+        } else {
+            $stmt = $conn->prepare("SELECT * FROM courses WHERE status = 'active' ORDER BY course_id DESC");
+            $stmt->execute();
+        }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -202,27 +242,28 @@ class Course {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO courses (sector_id, scheme_id, course_code, course_name, duration_hours, description) 
-                               VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO courses (sector_id, scheme_id, course_code, course_name, duration_hours, description, status, created_at, updated_at) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
         return $stmt->execute([
             $data['sector_id'],
             $data['scheme_id'],
             $data['course_code'],
             $data['course_name'],
             $data['duration_hours'],
-            $data['description']
+            $data['description'],
+            $data['status']
         ]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE courses 
-                               SET sector_id = ?, scheme_id = ?, course_name = ?, duration_hours = ?, 
-                                   description = ?, status = ? 
+                               SET sector_id = ?, scheme_id = ?, course_code = ?, course_name = ?, duration_hours = ?, description = ?, status = ?, updated_at = NOW() 
                                WHERE course_id = ?");
         return $stmt->execute([
             $data['sector_id'],
             $data['scheme_id'],
+            $data['course_code'],
             $data['course_name'],
             $data['duration_hours'],
             $data['description'],
@@ -260,27 +301,29 @@ class Batch {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("INSERT INTO batches (center_id, course_id, batch_code, start_date, end_date, capacity) 
-                               VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO batches (center_id, course_id, batch_code, start_date, end_date, capacity, status, created_at, updated_at) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
         return $stmt->execute([
             $data['center_id'],
             $data['course_id'],
             $data['batch_code'],
             $data['start_date'],
             $data['end_date'],
-            $data['capacity']
+            $data['capacity'],
+            $data['status']
         ]);
     }
 
     public static function update($id, $data) {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE batches 
-                               SET center_id = ?, course_id = ?, start_date = ?, end_date = ?, 
-                                   capacity = ?, status = ? 
+                               SET center_id = ?, course_id = ?, batch_code = ?, start_date = ?, end_date = ?, 
+                                   capacity = ?, status = ?, updated_at = NOW() 
                                WHERE batch_id = ?");
         return $stmt->execute([
             $data['center_id'],
             $data['course_id'],
+            $data['batch_code'],
             $data['start_date'],
             $data['end_date'],
             $data['capacity'],
@@ -314,7 +357,8 @@ class Student {
 
     public static function create($data) {
         $conn = getDBConnection();
-        $stmt = $conn->prepare("CALL sp_create_student(?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO students (enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, created_at, updated_at) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
         return $stmt->execute([
             $data['enrollment_no'],
             $data['first_name'],
@@ -331,7 +375,7 @@ class Student {
         $conn = getDBConnection();
         $stmt = $conn->prepare("UPDATE students 
                                SET first_name = ?, last_name = ?, email = ?, mobile = ?, 
-                                   date_of_birth = ?, gender = ?, address = ? 
+                                   date_of_birth = ?, gender = ?, address = ?, updated_at = NOW() 
                                WHERE student_id = ?");
         return $stmt->execute([
             $data['first_name'],
@@ -569,4 +613,40 @@ class Dashboard {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-?> 
+
+// Roles CRUD
+class Role {
+    public static function getAll() {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("SELECT r.role_id, r.role_name, r.description, r.created_at, r.permissions, COUNT(u.user_id) as user_count FROM roles r LEFT JOIN users u ON r.role_id = u.role_id GROUP BY r.role_id ORDER BY r.role_id ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getById($roleId) {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("SELECT * FROM roles WHERE role_id = ?");
+        $stmt->execute([$roleId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function create($roleName, $description, $permissions = []) {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("INSERT INTO roles (role_name, description, permissions) VALUES (?, ?, ?)");
+        $stmt->execute([$roleName, $description, json_encode($permissions)]);
+        return $conn->lastInsertId();
+    }
+
+    public static function update($roleId, $roleName, $description, $permissions = []) {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("UPDATE roles SET role_name = ?, description = ?, permissions = ? WHERE role_id = ?");
+        return $stmt->execute([$roleName, $description, json_encode($permissions), $roleId]);
+    }
+
+    public static function delete($roleId) {
+        $conn = getDBConnection();
+        $stmt = $conn->prepare("DELETE FROM roles WHERE role_id = ?");
+        return $stmt->execute([$roleId]);
+    }
+}
+?>

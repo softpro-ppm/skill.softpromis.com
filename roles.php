@@ -56,6 +56,7 @@ require_once 'includes/sidebar.php';
                   <thead>
                     <tr>
                       <th>Role Name</th>
+                      <th>User Type</th>
                       <th>Description</th>
                       <th>Users</th>
                       <th>Created Date</th>
@@ -63,48 +64,27 @@ require_once 'includes/sidebar.php';
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Administrator</td>
-                      <td>Full system access and control</td>
-                      <td>5</td>
-                      <td>2024-01-01</td>
-                      <td>
-                        <button class="btn btn-sm btn-info edit-role" data-id="1">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-role" data-id="1">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Center Manager</td>
-                      <td>Manage training center operations</td>
-                      <td>8</td>
-                      <td>2024-01-01</td>
-                      <td>
-                        <button class="btn btn-sm btn-info edit-role" data-id="2">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-role" data-id="2">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Trainer</td>
-                      <td>Manage training sessions and students</td>
-                      <td>12</td>
-                      <td>2024-01-01</td>
-                      <td>
-                        <button class="btn btn-sm btn-info edit-role" data-id="3">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-role" data-id="3">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
+                  <?php
+                  require_once 'crud_functions.php';
+                  $roles = Role::getAll();
+                  if ($roles) {
+                    foreach ($roles as $role) {
+                      echo '<tr>';
+                      echo '<td>' . htmlspecialchars($role['role_name']) . '</td>';
+                      echo '<td>' . htmlspecialchars(ucfirst($role['role_name'])) . '</td>';
+                      echo '<td>' . htmlspecialchars($role['description']) . '</td>';
+                      echo '<td>' . (int)$role['user_count'] . '</td>';
+                      echo '<td>' . htmlspecialchars(substr($role['created_at'], 0, 10)) . '</td>';
+                      echo '<td>';
+                      echo '<button class="btn btn-sm btn-info edit-role" data-id="' . $role['role_id'] . '"><i class="fas fa-edit"></i></button> ';
+                      echo '<button class="btn btn-sm btn-danger delete-role" data-id="' . $role['role_id'] . '"><i class="fas fa-trash"></i></button>';
+                      echo '</td>';
+                      echo '</tr>';
+                    }
+                  } else {
+                    echo '<tr><td colspan="6">No roles found.</td></tr>';
+                  }
+                  ?>
                   </tbody>
                 </table>
               </div>
@@ -246,47 +226,60 @@ require_once 'includes/sidebar.php';
 <script>
   $(function () {
     // Initialize DataTable with default configuration
-    $('#rolesTable').DataTable();
+    var rolesTable = $('#rolesTable').DataTable();
 
-    // Initialize checkbox iCheck
-    $('input[type="checkbox"].flat-red').iCheck({
-      checkboxClass: 'icheckbox_flat-green',
-      radioClass: 'iradio_flat-green'
-    });
+    // Helper to reload roles table (optional, for future use)
+    function reloadRolesTable() {
+      $.post('inc/ajax/roles_ajax.php', {action: 'list'}, function(res) {
+        if (res.success) {
+          rolesTable.clear();
+          res.data.forEach(function(role) {
+            rolesTable.row.add([
+              $('<div>').text(role.role_name).html(),
+              $('<div>').text(role.role_name.charAt(0).toUpperCase() + role.role_name.slice(1)).html(),
+              $('<div>').text(role.description).html(),
+              role.user_count,
+              role.created_at ? role.created_at.substr(0, 10) : '',
+              '<button class="btn btn-sm btn-info edit-role" data-id="' + role.role_id + '"><i class="fas fa-edit"></i></button> ' +
+              '<button class="btn btn-sm btn-danger delete-role" data-id="' + role.role_id + '"><i class="fas fa-trash"></i></button>'
+            ]);
+          });
+          rolesTable.draw();
+        }
+      }, 'json');
+    }
 
     // Edit Role
-    $('.edit-role').click(function() {
+    $('#rolesTable').on('click', '.edit-role', function() {
       const roleId = $(this).data('id');
-      const row = $(this).closest('tr');
-      const roleName = row.find('td:first').text();
-      const description = row.find('td:eq(1)').text();
-
-      $('#roleModalLabel').text('Edit Role');
-      $('#roleId').val(roleId);
-      $('#roleName').val(roleName);
-      $('#roleDescription').val(description);
-
-      // Simulate loading permissions
-      setTimeout(() => {
-        // Check all permissions for Administrator role
-        if (roleName === 'Administrator') {
-          $('input[name="permissions[]"]').prop('checked', true);
-        } else if (roleName === 'Center Manager') {
-          // Set specific permissions for Center Manager
-          $('#viewDashboard, #viewUsers, #viewTraining, #viewReports, #generateReports').prop('checked', true);
-        } else if (roleName === 'Trainer') {
-          // Set specific permissions for Trainer
-          $('#viewDashboard, #viewTraining').prop('checked', true);
+      // Fetch role details including permissions
+      $.get('inc/ajax/roles_ajax.php', {action: 'get', roleId: roleId}, function(res) {
+        if (res.success) {
+          const role = res.data;
+          $('#roleModalLabel').text('Edit Role');
+          $('#roleId').val(role.role_id);
+          $('#roleName').val(role.role_name);
+          $('#roleDescription').val(role.description);
+          // Uncheck all permissions first
+          $('input[name="permissions[]"]').prop('checked', false);
+          // Check permissions from DB
+          if (Array.isArray(role.permissions)) {
+            role.permissions.forEach(function(perm) {
+              $('input[name="permissions[]"][value="' + perm + '"]').prop('checked', true);
+            });
+          }
+          $('#roleModal').modal('show');
+        } else {
+          toastr.error(res.message || 'Failed to load role');
         }
-      }, 500);
-
-      $('#roleModal').modal('show');
+      }, 'json');
     });
 
     // Delete Role
-    $('.delete-role').click(function() {
-      const roleId = $(this).data('id');
-      const roleName = $(this).closest('tr').find('td:first').text();
+    $('#rolesTable').on('click', '.delete-role', function() {
+      const btn = $(this);
+      const roleId = btn.data('id');
+      const roleName = btn.closest('tr').find('td:first').text();
 
       Swal.fire({
         title: 'Are you sure?',
@@ -298,18 +291,19 @@ require_once 'includes/sidebar.php';
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          // Simulate server request
-          setTimeout(() => {
-            $(this).closest('tr').fadeOut(400, function() {
-              $(this).remove();
+          $.post('inc/ajax/roles_ajax.php', {action: 'delete', roleId: roleId}, function(res) {
+            if (res.success) {
+              rolesTable.row(btn.closest('tr')).remove().draw();
               toastr.success('Role deleted successfully');
-            });
-          }, 500);
+            } else {
+              toastr.error(res.message || 'Failed to delete role');
+            }
+          }, 'json');
         }
       });
     });
 
-    // Save Role
+    // Save Role (Add/Edit)
     $('#saveRole').click(function() {
       const form = $('#roleForm');
       const roleId = $('#roleId').val();
@@ -323,53 +317,60 @@ require_once 'includes/sidebar.php';
         toastr.error('Please fill in all required fields');
         return;
       }
-
       if (permissions.length === 0) {
         toastr.error('Please select at least one permission');
         return;
       }
 
-      // Show loading state
       const submitBtn = $(this);
       const originalText = submitBtn.html();
       submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Saving...').prop('disabled', true);
 
-      // Simulate server request
-      setTimeout(() => {
-        if (roleId) {
-          // Update existing role
-          const row = $(`button[data-id="${roleId}"]`).closest('tr');
-          row.find('td:first').text(roleName);
-          row.find('td:eq(1)').text(description);
-          toastr.success('Role updated successfully');
+      const action = roleId ? 'edit' : 'add';
+      const postData = {
+        action: action,
+        roleId: roleId,
+        roleName: roleName,
+        roleDescription: description,
+        'permissions[]': permissions
+      };
+      $.post('inc/ajax/roles_ajax.php', postData, function(res) {
+        if (res.success) {
+          if (action === 'add') {
+            // Add new row to DataTable
+            const role = res.data;
+            rolesTable.row.add([
+              $('<div>').text(role.role_name).html(),
+              $('<div>').text(role.role_name.charAt(0).toUpperCase() + role.role_name.slice(1)).html(),
+              $('<div>').text(role.description).html(),
+              role.user_count,
+              role.created_at ? role.created_at.substr(0, 10) : '',
+              '<button class="btn btn-sm btn-info edit-role" data-id="' + role.role_id + '"><i class="fas fa-edit"></i></button> ' +
+              '<button class="btn btn-sm btn-danger delete-role" data-id="' + role.role_id + '"><i class="fas fa-trash"></i></button>'
+            ]).draw(false);
+            toastr.success('Role created successfully');
+          } else {
+            // Update existing row
+            const row = $(`button.edit-role[data-id="${roleId}"]`).closest('tr');
+            rolesTable.row(row).data([
+              $('<div>').text(roleName).html(),
+              $('<div>').text(roleName.charAt(0).toUpperCase() + roleName.slice(1)).html(),
+              $('<div>').text(description).html(),
+              row.find('td:eq(3)').text(), // user count
+              row.find('td:eq(4)').text(), // created date
+              '<button class="btn btn-sm btn-info edit-role" data-id="' + roleId + '"><i class="fas fa-edit"></i></button> ' +
+              '<button class="btn btn-sm btn-danger delete-role" data-id="' + roleId + '"><i class="fas fa-trash"></i></button>'
+            ]).draw(false);
+            toastr.success('Role updated successfully');
+          }
+          form[0].reset();
+          $('#roleId').val('');
+          $('#roleModal').modal('hide');
         } else {
-          // Add new role
-          const newRow = `
-            <tr>
-              <td>${roleName}</td>
-              <td>${description}</td>
-              <td>0</td>
-              <td>${new Date().toISOString().split('T')[0]}</td>
-              <td>
-                <button class="btn btn-sm btn-info edit-role" data-id="${Date.now()}">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-sm btn-danger delete-role" data-id="${Date.now()}">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-          $('#rolesTable tbody').prepend(newRow);
-          toastr.success('Role created successfully');
+          toastr.error(res.message || 'Failed to save role');
         }
-
-        // Reset form and close modal
-        form[0].reset();
-        $('#roleId').val('');
-        $('#roleModal').modal('hide');
         submitBtn.html(originalText).prop('disabled', false);
-      }, 1000);
+      }, 'json');
     });
 
     // Reset form when modal is closed

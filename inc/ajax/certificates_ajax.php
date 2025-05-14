@@ -13,78 +13,38 @@ $action = $_POST['action'] ?? '';
 try {
     $pdo = getDBConnection();
 
+    if ($action === 'get_enrollments') {
+        // Return all enrollments with student names for the select
+        $stmt = $pdo->prepare("SELECT e.enrollment_id, CONCAT(s.first_name, ' ', s.last_name) AS student_name FROM student_batch_enrollment e JOIN students s ON e.student_id = s.student_id");
+        $stmt->execute();
+        $enrollments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        sendJSONResponse(true, 'Enrollments fetched', $enrollments);
+    }
+
     switch ($action) {
         case 'create':
-            $student_id = (int)($_POST['student_id'] ?? 0);
-            $batch_id = (int)($_POST['batch_id'] ?? 0);
+            $enrollment_id = (int)($_POST['enrollment_id'] ?? 0);
             $certificate_number = sanitizeInput($_POST['certificate_number'] ?? '');
+            $certificate_type = sanitizeInput($_POST['certificate_type'] ?? '');
             $issue_date = sanitizeInput($_POST['issue_date'] ?? '');
             $valid_until = sanitizeInput($_POST['valid_until'] ?? '');
-            $status = sanitizeInput($_POST['status'] ?? 'active');
+            $status = sanitizeInput($_POST['status'] ?? 'issued');
             $remarks = sanitizeInput($_POST['remarks'] ?? '');
 
-            if (empty($student_id) || empty($batch_id) || empty($certificate_number) || empty($issue_date)) {
+            if (empty($enrollment_id) || empty($certificate_number) || empty($issue_date) || empty($certificate_type)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
-            if (!empty($valid_until) && strtotime($valid_until) < strtotime($issue_date)) {
-                sendJSONResponse(false, 'Valid until date cannot be before issue date');
-            }
-
-            // Validate student
-            $stmt = $pdo->prepare("SELECT id FROM students WHERE id = ?");
-            $stmt->execute([$student_id]);
-            if (!$stmt->fetch()) {
-                sendJSONResponse(false, 'Invalid student');
-            }
-
-            // Validate batch
-            $stmt = $pdo->prepare("SELECT id FROM batches WHERE id = ?");
-            $stmt->execute([$batch_id]);
-            if (!$stmt->fetch()) {
-                sendJSONResponse(false, 'Invalid batch');
-            }
-
-            // Check if student is enrolled in the batch
-            $stmt = $pdo->prepare("
-                SELECT id FROM batch_students 
-                WHERE student_id = ? AND batch_id = ?
-            ");
-            $stmt->execute([$student_id, $batch_id]);
-            if (!$stmt->fetch()) {
-                sendJSONResponse(false, 'Student is not enrolled in this batch');
-            }
-
             // Check if certificate number is unique
-            $stmt = $pdo->prepare("
-                SELECT id FROM certificates 
-                WHERE certificate_number = ?
-            ");
+            $stmt = $pdo->prepare("SELECT certificate_id FROM certificates WHERE certificate_number = ?");
             $stmt->execute([$certificate_number]);
             if ($stmt->fetch()) {
                 sendJSONResponse(false, 'Certificate number already exists');
             }
 
-            $stmt = $pdo->prepare("
-                INSERT INTO certificates (
-                    student_id, batch_id, certificate_number, issue_date,
-                    valid_until, status, remarks, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
-            ");
-            $stmt->execute([
-                $student_id, $batch_id, $certificate_number, $issue_date,
-                $valid_until, $status, $remarks
-            ]);
-
-            logAudit($_SESSION['user']['id'], 'create_certificate', [
-                'student_id' => $student_id,
-                'batch_id' => $batch_id,
-                'certificate_number' => $certificate_number
-            ]);
-
-            sendJSONResponse(true, 'Certificate created successfully', [
-                'id' => $pdo->lastInsertId()
-            ]);
+            $stmt = $pdo->prepare("INSERT INTO certificates (enrollment_id, certificate_number, certificate_type, issue_date, valid_until, status, remarks, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+            $stmt->execute([$enrollment_id, $certificate_number, $certificate_type, $issue_date, $valid_until, $status, $remarks]);
+            sendJSONResponse(true, 'Certificate created successfully');
             break;
 
         case 'read':
@@ -157,108 +117,49 @@ try {
             break;
 
         case 'update':
-            $id = (int)($_POST['id'] ?? 0);
+            $certificate_id = (int)($_POST['certificate_id'] ?? 0);
+            $enrollment_id = (int)($_POST['enrollment_id'] ?? 0);
             $certificate_number = sanitizeInput($_POST['certificate_number'] ?? '');
+            $certificate_type = sanitizeInput($_POST['certificate_type'] ?? '');
             $issue_date = sanitizeInput($_POST['issue_date'] ?? '');
             $valid_until = sanitizeInput($_POST['valid_until'] ?? '');
-            $status = sanitizeInput($_POST['status'] ?? 'active');
+            $status = sanitizeInput($_POST['status'] ?? 'issued');
             $remarks = sanitizeInput($_POST['remarks'] ?? '');
 
-            if (empty($id) || empty($certificate_number) || empty($issue_date)) {
+            if (empty($certificate_id) || empty($enrollment_id) || empty($certificate_number) || empty($issue_date) || empty($certificate_type)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
-            if (!empty($valid_until) && strtotime($valid_until) < strtotime($issue_date)) {
-                sendJSONResponse(false, 'Valid until date cannot be before issue date');
-            }
-
-            // Check if certificate number is unique (excluding current certificate)
-            $stmt = $pdo->prepare("
-                SELECT id FROM certificates 
-                WHERE certificate_number = ? AND id != ?
-            ");
-            $stmt->execute([$certificate_number, $id]);
+            // Check if certificate number is unique (excluding current)
+            $stmt = $pdo->prepare("SELECT certificate_id FROM certificates WHERE certificate_number = ? AND certificate_id != ?");
+            $stmt->execute([$certificate_number, $certificate_id]);
             if ($stmt->fetch()) {
                 sendJSONResponse(false, 'Certificate number already exists');
             }
 
-            $stmt = $pdo->prepare("
-                UPDATE certificates 
-                SET certificate_number = ?, issue_date = ?, valid_until = ?,
-                    status = ?, remarks = ?, updated_at = NOW()
-                WHERE id = ?
-            ");
-            $stmt->execute([
-                $certificate_number, $issue_date, $valid_until,
-                $status, $remarks, $id
-            ]);
-
-            logAudit($_SESSION['user']['id'], 'update_certificate', [
-                'id' => $id,
-                'certificate_number' => $certificate_number,
-                'issue_date' => $issue_date
-            ]);
-
+            $stmt = $pdo->prepare("UPDATE certificates SET enrollment_id = ?, certificate_number = ?, certificate_type = ?, issue_date = ?, valid_until = ?, status = ?, remarks = ?, updated_at = NOW() WHERE certificate_id = ?");
+            $stmt->execute([$enrollment_id, $certificate_number, $certificate_type, $issue_date, $valid_until, $status, $remarks, $certificate_id]);
             sendJSONResponse(true, 'Certificate updated successfully');
             break;
 
         case 'delete':
-            $id = (int)($_POST['id'] ?? 0);
-
-            if (empty($id)) {
+            $certificate_id = (int)($_POST['certificate_id'] ?? 0);
+            if (empty($certificate_id)) {
                 sendJSONResponse(false, 'ID is required');
             }
-
-            // Get certificate info for audit log
-            $stmt = $pdo->prepare("
-                SELECT c.certificate_number, c.issue_date, s.name as student_name,
-                       b.name as batch_name
-                FROM certificates c
-                JOIN students s ON c.student_id = s.id
-                JOIN batches b ON c.batch_id = b.id
-                WHERE c.id = ?
-            ");
-            $stmt->execute([$id]);
-            $certificate = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if (!$certificate) {
-                sendJSONResponse(false, 'Certificate not found');
-            }
-
-            $stmt = $pdo->prepare("DELETE FROM certificates WHERE id = ?");
-            $stmt->execute([$id]);
-
-            logAudit($_SESSION['user']['id'], 'delete_certificate', [
-                'id' => $id,
-                'certificate_number' => $certificate['certificate_number'],
-                'issue_date' => $certificate['issue_date'],
-                'student' => $certificate['student_name'],
-                'batch' => $certificate['batch_name']
-            ]);
-
+            $stmt = $pdo->prepare("DELETE FROM certificates WHERE certificate_id = ?");
+            $stmt->execute([$certificate_id]);
             sendJSONResponse(true, 'Certificate deleted successfully');
             break;
 
         case 'get':
-            $id = (int)($_POST['id'] ?? 0);
-
-            if (empty($id)) {
+            $certificate_id = (int)($_POST['certificate_id'] ?? 0);
+            if (empty($certificate_id)) {
                 sendJSONResponse(false, 'ID is required');
             }
-
-            $stmt = $pdo->prepare("
-                SELECT c.*, s.name as student_name, b.name as batch_name,
-                       co.name as course_name, tc.name as center_name
-                FROM certificates c
-                JOIN students s ON c.student_id = s.id
-                JOIN batches b ON c.batch_id = b.id
-                LEFT JOIN courses co ON b.course_id = co.id
-                LEFT JOIN training_centers tc ON b.center_id = tc.id
-                WHERE c.id = ?
-            ");
-            $stmt->execute([$id]);
+            $stmt = $pdo->prepare("SELECT c.*, e.enrollment_id, CONCAT(s.first_name, ' ', s.last_name) AS student_name, b.batch_code, co.course_name FROM certificates c JOIN student_batch_enrollment e ON c.enrollment_id = e.enrollment_id JOIN students s ON e.student_id = s.student_id JOIN batches b ON e.batch_id = b.batch_id JOIN courses co ON b.course_id = co.course_id WHERE c.certificate_id = ?");
+            $stmt->execute([$certificate_id]);
             $certificate = $stmt->fetch(PDO::FETCH_ASSOC);
-
             if ($certificate) {
                 sendJSONResponse(true, 'Certificate retrieved successfully', $certificate);
             } else {
@@ -349,6 +250,14 @@ try {
             } else {
                 sendJSONResponse(false, 'Certificate not found');
             }
+            break;
+
+        case 'list':
+            // DataTables expects 'list' action for fetching all certificates
+            $stmt = $pdo->prepare("SELECT c.*, e.enrollment_id, CONCAT(s.first_name, ' ', s.last_name) AS student_name, b.batch_code, co.course_name FROM certificates c JOIN student_batch_enrollment e ON c.enrollment_id = e.enrollment_id JOIN students s ON e.student_id = s.student_id JOIN batches b ON e.batch_id = b.batch_id JOIN courses co ON b.course_id = co.course_id ORDER BY c.issue_date DESC");
+            $stmt->execute();
+            $certificates = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Certificates retrieved successfully', [ 'data' => $certificates ]);
             break;
 
         default:
