@@ -121,9 +121,11 @@ if(isset($_POST['action'])) {
                 }
                 
                 $data = array();
+                $counter = 1;
                 while($row = $result->fetch_assoc()) {
                     // Prepare the row data
                     $data[] = array(
+                        "sr_no" => $counter++,
                         "partner_id" => $row['partner_id'],
                         "partner_name" => htmlspecialchars($row['partner_name']),
                         "contact_person" => htmlspecialchars($row['contact_person']),
@@ -368,6 +370,7 @@ require_once 'includes/sidebar.php';
                             <table id="partnersTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Sr. No.</th>
                                         <th>Partner ID</th>
                                         <th>Name</th>
                                         <th>Contact Person</th>
@@ -616,6 +619,7 @@ $(function () {
             }
         },
         "columns": [
+            { "data": "sr_no" },
             { "data": "partner_id" },
             { "data": "partner_name" },
             { "data": "contact_person" },
