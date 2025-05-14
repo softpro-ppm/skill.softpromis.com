@@ -439,7 +439,7 @@ require_once 'includes/sidebar.php';
                             </div>
                             <div class="form-group">
                                 <label for="status">Status</label>
-                                <select class="form-control select2" id="status" name="status" required>
+                                <select class="form-control" id="status" name="status" required>
                                     <option value="active">Active</option>
                                     <option value="inactive">Inactive</option>
                                     <option value="pending">Pending Approval</option>
@@ -892,11 +892,6 @@ $(function () {
                 toastr.error('Error deleting partner');
             }
         });
-    });
-
-    // Initialize Select2
-    $('.select2').select2({
-        theme: 'bootstrap4'
     });
 
     // Initialize custom file input
