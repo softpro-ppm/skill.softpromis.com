@@ -357,7 +357,7 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Add New Training Center</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
             <form id="centerForm">
                 <input type="hidden" id="center_id" name="center_id">
@@ -372,11 +372,11 @@ require_once 'includes/sidebar.php';
                             </div>
                             <div class="form-group">
                                 <label for="center_name">Center Name</label>
-                                <input type="text" class="form-control" id="center_name" name="center_name" required>
+                                <input type="text" class="form-control capitalize-every-word" id="center_name" name="center_name" required>
                             </div>
                             <div class="form-group">
                                 <label for="contact_person">Contact Person</label>
-                                <input type="text" class="form-control" id="contact_person" name="contact_person" required>
+                                <input type="text" class="form-control capitalize-every-word" id="contact_person" name="contact_person" required>
                 </div>
                 <div class="form-group">
                                 <label for="email">Email</label>
@@ -394,11 +394,11 @@ require_once 'includes/sidebar.php';
                 </div>
                 <div class="form-group">
                   <label for="city">City</label>
-                                <input type="text" class="form-control" id="city" name="city" required>
+                                <input type="text" class="form-control capitalize-every-word" id="city" name="city" required>
                 </div>
                 <div class="form-group">
                   <label for="state">State</label>
-                                <input type="text" class="form-control" id="state" name="state" required>
+                                <input type="text" class="form-control capitalize-every-word" id="state" name="state" required>
                 </div>
                 <div class="form-group">
                   <label for="pincode">Pincode</label>
@@ -429,7 +429,7 @@ require_once 'includes/sidebar.php';
       <div class="modal-content">
         <div class="modal-header">
                 <h4 class="modal-title">Confirm Delete</h4>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
                 <p>Are you sure you want to delete this training center?</p>
@@ -449,7 +449,7 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="viewCenterModalLabel">Training Center Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -489,6 +489,9 @@ require_once 'includes/sidebar.php';
     font-size: 0.875rem;
     line-height: 1.5;
     border-radius: 0.2rem;
+}
+.capitalize-every-word {
+    text-transform: capitalize;
 }
 </style>
 
@@ -809,23 +812,29 @@ $(function () {
             }
         });
         
-        if (!isValid) return false;
-        
-        // Validate email format
+        // Email validation
         var email = $('#email').val();
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            toastr.error('Please enter a valid email address');
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            isValid = false;
             $('#email').addClass('is-invalid');
-            return false;
+            toastr.error('Please enter a valid email address');
+        } else {
+            $('#email').removeClass('is-invalid');
         }
         
-        // Validate phone format
+        // Phone validation (exactly 10 digits, numbers only)
         var phone = $('#phone').val();
-        if (!/^[0-9+\-\s()]{10,15}$/.test(phone)) {
-            toastr.error('Please enter a valid phone number');
+        var phonePattern = /^\d{10}$/;
+        if (!phonePattern.test(phone)) {
+            isValid = false;
             $('#phone').addClass('is-invalid');
-            return false;
+            toastr.error('Please enter a valid 10-digit phone number');
+        } else {
+            $('#phone').removeClass('is-invalid');
         }
+        
+        if (!isValid) return false;
         
         // Validate pincode format
         var pincode = $('#pincode').val();
@@ -941,6 +950,17 @@ $(function () {
             error: function(xhr, status, error) {
                 toastr.error('Error fetching center details');
             }
+        });
+    });
+
+    // Add this JS to force capitalization as user types (handles pasted text too)
+    $(function() {
+        $(document).on('input', '.capitalize-every-word', function() {
+            let val = $(this).val();
+            val = val.replace(/\b\w+/g, function(word) {
+                return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            });
+            $(this).val(val);
         });
     });
 });
