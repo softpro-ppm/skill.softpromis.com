@@ -384,7 +384,7 @@ require_once 'includes/sidebar.php';
                 </div>
                 <div class="form-group">
                   <label for="phone">Phone</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                                <input type="tel" class="form-control" id="phone" name="phone" required maxlength="10" pattern="\d{10}" oninput="this.value = this.value.replace(/[^\d]/g, '').slice(0, 10)">
                 </div>
               </div>
               <div class="col-md-6">
@@ -402,7 +402,7 @@ require_once 'includes/sidebar.php';
                 </div>
                 <div class="form-group">
                   <label for="pincode">Pincode</label>
-                                <input type="text" class="form-control" id="pincode" name="pincode" required>
+                                <input type="text" class="form-control" id="pincode" name="pincode" required maxlength="6" pattern="\d{6}" oninput="this.value = this.value.replace(/[^\d]/g, '').slice(0, 6)">
                 </div>
                 <div class="form-group">
                                 <label for="status">Status</label>
