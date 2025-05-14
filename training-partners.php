@@ -429,9 +429,14 @@ require_once 'includes/sidebar.php';
                             </div>
                             <div class="form-group">
                                 <label for="status">Status</label>
+<<<<<<< HEAD
                                 <select class="form-control" id="status" name="status">
+=======
+                                <select class="form-control select2" id="status" name="status">
+>>>>>>> parent of d1081a0 (dfv)
                                     <option value="active">Active</option>
                                     <option value="inactive">Inactive</option>
+                                    <option value="pending">Pending Approval</option>
                                 </select>
                             </div>
                         </div>

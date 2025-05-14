@@ -56,7 +56,10 @@ $(document).ready(function() {
                 email: formData.get('email'),
                 phone: formData.get('phone'),
                 address: formData.get('address'),
+<<<<<<< HEAD
                 website: formData.get('website'),
+=======
+>>>>>>> parent of d1081a0 (dfv)
                 status: formData.get('status')
             },
             success: function(response) {
@@ -96,8 +99,12 @@ $(document).ready(function() {
                     $('#email').val(partner.email);
                     $('#phone').val(partner.phone);
                     $('#address').val(partner.address);
+<<<<<<< HEAD
                     $('#website').val(partner.website);
                     $('#status').val(partner.status); // Set current status
+=======
+                    $('#status').val(partner.status);
+>>>>>>> parent of d1081a0 (dfv)
                     $('#partnerModal').modal('show');
                     $('.modal-title').text('Edit Training Partner');
                 } else {
