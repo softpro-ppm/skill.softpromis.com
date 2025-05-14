@@ -44,10 +44,15 @@ $(document).ready(function() {
         
         const formData = new FormData(this);
         formData.append('action', $('#partner_id').val() ? 'update' : 'add');
-        // Always set status to active for new partners
-        if (!$('#partner_id').val()) {
-            formData.set('status', 'active');
+
+        // Validate status
+        const status = formData.get('status').toLowerCase();
+        if (status !== 'active' && status !== 'inactive') {
+            toastr.error('Status must be either "active" or "inactive"');
+            $('#status').addClass('is-invalid');
+            return false;
         }
+        $('#status').removeClass('is-invalid');
 
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
@@ -61,13 +66,13 @@ $(document).ready(function() {
                 phone: formData.get('phone'),
                 address: formData.get('address'),
                 website: formData.get('website'),
-                status: formData.get('status')
+                status: status
             },
             success: function(response) {
                 if (response.success) {
                     $('#partnerModal').modal('hide');
                     $('#partnerForm')[0].reset();
-                    $('#status').val('active'); // Reset status to active
+                    $('#status').val('active'); // Reset to default
                     partnersTable.ajax.reload();
                     toastr.success(response.message);
                 } else {
@@ -101,7 +106,7 @@ $(document).ready(function() {
                     $('#phone').val(partner.phone);
                     $('#address').val(partner.address);
                     $('#website').val(partner.website);
-                    $('#status').val(partner.status); // Keep existing status
+                    $('#status').val(partner.status); // Show current status
                     $('#partnerModal').modal('show');
                     $('.modal-title').text('Edit Training Partner');
                 } else {
@@ -151,8 +156,19 @@ $(document).ready(function() {
     $('#partnerModal').on('hidden.bs.modal', function() {
         $('#partnerForm')[0].reset();
         $('#partner_id').val('');
-        $('#status').val('active'); // Reset status to active
+        $('#status').val('active'); // Reset to default
         $('.modal-title').text('Add New Training Partner');
+        $('.is-invalid').removeClass('is-invalid');
+    });
+
+    // Add input validation for status field
+    $('#status').on('input', function() {
+        const value = $(this).val().toLowerCase();
+        if (value === 'active' || value === 'inactive' || value === '') {
+            $(this).removeClass('is-invalid');
+        } else {
+            $(this).addClass('is-invalid');
+        }
     });
 
     // Configure Toastr
