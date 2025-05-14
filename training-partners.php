@@ -405,11 +405,13 @@ require_once 'includes/sidebar.php';
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="partner_name">Partner Name</label>
-                                <input type="text" class="form-control" id="partner_name" name="partner_name" required>
+                                <input type="text" class="form-control" id="partner_name" name="partner_name" required 
+                                    oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
                             </div>
                             <div class="form-group">
                                 <label for="contact_person">SPOC</label>
-                                <input type="text" class="form-control" id="contact_person" name="contact_person" required>
+                                <input type="text" class="form-control" id="contact_person" name="contact_person" required
+                                    oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
@@ -417,13 +419,17 @@ require_once 'includes/sidebar.php';
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone</label>
-                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                                <input type="tel" class="form-control" id="phone" name="phone" required
+                                    pattern="[0-9]{10}" maxlength="10" minlength="10"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    title="Please enter exactly 10 digits">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                                <textarea class="form-control" id="address" name="address" rows="3" required
+                                    oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="website">Website</label>
@@ -443,11 +449,13 @@ require_once 'includes/sidebar.php';
                             <div class="form-group">
                                 <label>Documents</label>
                                 <div class="custom-file mb-2">
-                                    <input type="file" class="custom-file-input" id="registration_doc" name="registration_doc" accept=".pdf,.doc,.docx">
+                                    <input type="file" class="custom-file-input" id="registration_doc" name="registration_doc" 
+                                        accept=".pdf,.jpg,.jpeg,.png" onchange="validateFile(this)">
                                     <label class="custom-file-label" for="registration_doc">Registration Document</label>
                                 </div>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="agreement_doc" name="agreement_doc" accept=".pdf,.doc,.docx">
+                                    <input type="file" class="custom-file-input" id="agreement_doc" name="agreement_doc" 
+                                        accept=".pdf,.jpg,.jpeg,.png" onchange="validateFile(this)">
                                     <label class="custom-file-label" for="agreement_doc">Agreement Document</label>
                                 </div>
                             </div>
@@ -769,6 +777,14 @@ $(function () {
             }
         });
         
+        // Phone number validation
+        var phone = $('#phone').val();
+        if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
+            isValid = false;
+            $('#phone').addClass('is-invalid');
+            toastr.error('Phone number must be exactly 10 digits');
+        }
+        
         if (!isValid) {
             return false;
         }
@@ -923,5 +939,26 @@ $(function () {
             }
         });
     });
+
+    // Add this to your existing JavaScript
+    function validateFile(input) {
+        const file = input.files[0];
+        const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+        const maxSize = 5 * 1024 * 1024; // 5MB
+
+        if (file) {
+            if (!validTypes.includes(file.type)) {
+                toastr.error('Please upload only PDF, JPG, or PNG files');
+                input.value = '';
+                return false;
+            }
+            if (file.size > maxSize) {
+                toastr.error('File size should not exceed 5MB');
+                input.value = '';
+                return false;
+            }
+        }
+        return true;
+    }
 });
 </script>
