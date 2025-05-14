@@ -371,9 +371,8 @@ require_once 'includes/sidebar.php';
                                 <thead>
                                     <tr>
                                         <th>Sr. No.</th>
-                                        <th>Partner ID</th>
                                         <th>Name</th>
-                                        <th>Contact Person</th>
+                                        <th>SPOC</th>
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Centers</th>
@@ -409,7 +408,7 @@ require_once 'includes/sidebar.php';
                                 <input type="text" class="form-control" id="partner_name" name="partner_name" required>
                             </div>
                             <div class="form-group">
-                                <label for="contact_person">Contact Person</label>
+                                <label for="contact_person">SPOC</label>
                                 <input type="text" class="form-control" id="contact_person" name="contact_person" required>
                             </div>
                             <div class="form-group">
@@ -501,7 +500,7 @@ require_once 'includes/sidebar.php';
                             <p id="view_partner_name" class="form-control-static"></p>
                         </div>
                         <div class="form-group">
-                            <label>Contact Person</label>
+                            <label>SPOC</label>
                             <p id="view_contact_person" class="form-control-static"></p>
                         </div>
                         <div class="form-group">
@@ -619,8 +618,12 @@ $(function () {
             }
         },
         "columns": [
-            { "data": "sr_no" },
-            { "data": "partner_id" },
+            { 
+                "data": null,
+                "render": function (data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
             { "data": "partner_name" },
             { "data": "contact_person" },
             { "data": "email" },
