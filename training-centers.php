@@ -331,13 +331,13 @@ require_once 'includes/sidebar.php';
             <table id="centersTable" class="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Center ID</th>
-                                        <th>Partner</th>
-                                        <th>Center Name</th>
+                  <th>Sr. No.</th>
+                  <th>Partner</th>
+                  <th>Center Name</th>
                   <th>Contact Person</th>
-                                        <th>Email</th>
+                  <th>Email</th>
                   <th>Phone</th>
-                                        <th>Address</th>
+                  <th>Address</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
