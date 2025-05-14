@@ -56,7 +56,8 @@ $(document).ready(function() {
                 email: formData.get('email'),
                 phone: formData.get('phone'),
                 address: formData.get('address'),
-                status: formData.get('status')
+                website: formData.get('website'),
+                status: formData.get('status') || 'active'
             },
             success: function(response) {
                 if (response.success) {
@@ -94,7 +95,8 @@ $(document).ready(function() {
                     $('#email').val(partner.email);
                     $('#phone').val(partner.phone);
                     $('#address').val(partner.address);
-                    $('#status').val(partner.status);
+                    $('#website').val(partner.website);
+                    $('#status').val(partner.status || 'active');
                     $('#partnerModal').modal('show');
                     $('.modal-title').text('Edit Training Partner');
                 } else {
