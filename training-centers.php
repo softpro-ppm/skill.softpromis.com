@@ -78,6 +78,15 @@ if(isset($_POST['action'])) {
         case 'add':
             $response = array('status' => false, 'message' => '');
             try {
+                // Validate required fields
+                $required_fields = ['partner_id', 'center_name', 'contact_person', 'email', 'phone', 
+                                  'address', 'city', 'state', 'pincode', 'status'];
+                foreach ($required_fields as $field) {
+                    if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
+                        throw new Exception("Required field missing: " . $field);
+                    }
+                }
+
                 // Sanitize input data
                 $partner_id = mysqli_real_escape_string($conn, $_POST['partner_id']);
                 $center_name = mysqli_real_escape_string($conn, $_POST['center_name']);
@@ -89,6 +98,30 @@ if(isset($_POST['action'])) {
                 $state = mysqli_real_escape_string($conn, $_POST['state']);
                 $pincode = mysqli_real_escape_string($conn, $_POST['pincode']);
                 $status = mysqli_real_escape_string($conn, $_POST['status']);
+
+                // Validate email format
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    throw new Exception("Invalid email format");
+                }
+
+                // Validate phone format
+                if (!preg_match('/^[0-9+\-\s()]{10,15}$/', $phone)) {
+                    throw new Exception("Invalid phone format");
+                }
+
+                // Validate pincode format
+                if (!preg_match('/^[0-9]{6}$/', $pincode)) {
+                    throw new Exception("Invalid pincode format");
+                }
+
+                // Check if partner exists
+                $check_partner = $conn->prepare("SELECT partner_id FROM training_partners WHERE partner_id = ?");
+                $check_partner->bind_param("i", $partner_id);
+                $check_partner->execute();
+                if ($check_partner->get_result()->num_rows === 0) {
+                    throw new Exception("Invalid training partner selected");
+                }
+                $check_partner->close();
 
                 // Prepare the insert query
                 $query = "INSERT INTO training_centers (partner_id, center_name, contact_person, email, phone, 
@@ -766,10 +799,34 @@ $(function () {
         
         if (!isValid) return false;
         
+        // Validate email format
+        var email = $('#email').val();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            toastr.error('Please enter a valid email address');
+            $('#email').addClass('is-invalid');
+            return false;
+        }
+        
+        // Validate phone format
+        var phone = $('#phone').val();
+        if (!/^[0-9+\-\s()]{10,15}$/.test(phone)) {
+            toastr.error('Please enter a valid phone number');
+            $('#phone').addClass('is-invalid');
+            return false;
+        }
+        
+        // Validate pincode format
+        var pincode = $('#pincode').val();
+        if (!/^[0-9]{6}$/.test(pincode)) {
+            toastr.error('Please enter a valid 6-digit pincode');
+            $('#pincode').addClass('is-invalid');
+            return false;
+        }
+        
         // Prepare form data
-        var formData = new FormData(this);
+        var formData = $(this).serialize();
         var centerId = $('#center_id').val();
-        formData.append('action', centerId ? 'edit' : 'add');
+        formData += '&action=' + (centerId ? 'edit' : 'add');
         
         // Disable submit button and show loading state
         var submitBtn = $(this).find('button[type="submit"]');
@@ -777,14 +834,12 @@ $(function () {
         submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Saving...');
         
         $.ajax({
-            url: 'inc/ajax/training-centers.php',
+            url: 'training-centers.php',
             type: 'POST',
             data: formData,
-            processData: false,
-            contentType: false,
             dataType: 'json',
             success: function(response) {
-                if(response.status === 'success') {
+                if(response.status) {
                     $('#centerModal').modal('hide');
                     table.ajax.reload();
                     toastr.success(response.message);
@@ -793,8 +848,8 @@ $(function () {
                 }
             },
             error: function(xhr, status, error) {
-                toastr.error('Error processing request: ' + error);
                 console.error('Ajax error:', error);
+                toastr.error('Error processing request: ' + error);
             },
             complete: function() {
                 submitBtn.prop('disabled', false).text(originalText);
