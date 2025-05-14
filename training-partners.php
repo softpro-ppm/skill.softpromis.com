@@ -622,7 +622,8 @@ $(function () {
                 "data": null,
                 "render": function (data, type, row, meta) {
                     return meta.row + 1;
-                }
+                },
+                "className": "text-center"
             },
             { "data": "partner_name" },
             { "data": "contact_person" },
