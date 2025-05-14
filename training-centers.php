@@ -601,7 +601,7 @@ $(function () {
         "processing": true,
         "serverSide": false,
         "ajax": {
-            "url": "inc/ajax/training-centers.php",
+            "url": "training-centers.php",
             "type": "POST",
             "data": function(d) {
                 d.action = "list";
@@ -696,7 +696,7 @@ $(function () {
     $('#centersTable').on('click', '.view-btn', function() {
         var centerId = $(this).data('id');
         $.ajax({
-            url: 'inc/ajax/training-centers.php',
+            url: 'training-centers.php',
             type: 'POST',
             data: {
                 action: 'get_center',
@@ -748,9 +748,8 @@ $(function () {
         var submitBtn = $('#centerModal button[type="submit"]');
         submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
         
-        // Load center data
         $.ajax({
-            url: 'inc/ajax/training-centers.php',
+            url: 'training-centers.php',
             type: 'POST',
             data: {
                 action: 'get_center',
@@ -763,7 +762,7 @@ $(function () {
                     
                     // Load partners first
                     $.ajax({
-                        url: 'inc/ajax/training-centers.php',
+                        url: 'training-centers.php',
                         type: 'POST',
                         data: { action: 'get_partners' },
                         success: function(partnersResponse) {
@@ -833,7 +832,7 @@ $(function () {
         submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Saving...');
         
         $.ajax({
-            url: 'inc/ajax/training-centers.php',
+            url: 'training-centers.php',
             type: 'POST',
             data: formData + '&action=' + action,
             dataType: 'json',
@@ -860,40 +859,36 @@ $(function () {
     
     $('#centersTable').on('click', '.delete-btn', function() {
         deleteCenterId = $(this).data('id');
-        $('#delete_center_name').text($(this).data('name'));
+        var centerName = $(this).data('name');
+        
+        $('#delete_center_name').text(centerName);
         $('#deleteModal').modal('show');
-    });
-    
-    $('#confirmDelete').on('click', function() {
-        if (!deleteCenterId) return;
         
-        var btn = $(this);
-        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Deleting...');
-        
-        $.ajax({
-            url: 'inc/ajax/training-centers.php',
-            type: 'POST',
-            data: {
-                action: 'delete',
-                center_id: deleteCenterId
-            },
-            dataType: 'json',
-            success: function(response) {
-                if(response.status) {
-                    toastr.success(response.message);
-                    $('#deleteModal').modal('hide');
-                    table.ajax.reload();
-                } else {
-                    toastr.error(response.message || 'Error deleting training center');
+        $('#confirmDelete').off('click').on('click', function() {
+            $.ajax({
+                url: 'training-centers.php',
+                type: 'POST',
+                data: {
+                    action: 'delete',
+                    center_id: deleteCenterId
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if(response.status) {
+                        toastr.success(response.message);
+                        $('#deleteModal').modal('hide');
+                        table.ajax.reload();
+                    } else {
+                        toastr.error(response.message || 'Error deleting training center');
+                    }
+                },
+                error: function() {
+                    toastr.error('Error deleting training center');
+                },
+                complete: function() {
+                    deleteCenterId = null;
                 }
-            },
-            error: function() {
-                toastr.error('Error deleting training center');
-            },
-            complete: function() {
-                btn.prop('disabled', false).text('Delete');
-                deleteCenterId = null;
-            }
+            });
         });
     });
 
@@ -912,7 +907,7 @@ $(function () {
         if(!$('#center_id').val()) {
             Select2Handler.loadFromServer(
                 '#partner_id',
-                'inc/ajax/training-centers.php',
+                'training-centers.php',
                 { action: 'get_partners' },
                 { placeholder: 'Select Partner' }
             );
