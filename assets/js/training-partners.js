@@ -45,15 +45,6 @@ $(document).ready(function() {
         const formData = new FormData(this);
         formData.append('action', $('#partner_id').val() ? 'update' : 'add');
 
-        // Validate status
-        const status = formData.get('status').toLowerCase();
-        if (status !== 'active' && status !== 'inactive') {
-            toastr.error('Status must be either "active" or "inactive"');
-            $('#status').addClass('is-invalid');
-            return false;
-        }
-        $('#status').removeClass('is-invalid');
-
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
             type: 'POST',
@@ -66,7 +57,7 @@ $(document).ready(function() {
                 phone: formData.get('phone'),
                 address: formData.get('address'),
                 website: formData.get('website'),
-                status: status
+                status: formData.get('status')
             },
             success: function(response) {
                 if (response.success) {
@@ -106,7 +97,7 @@ $(document).ready(function() {
                     $('#phone').val(partner.phone);
                     $('#address').val(partner.address);
                     $('#website').val(partner.website);
-                    $('#status').val(partner.status); // Show current status
+                    $('#status').val(partner.status); // Set current status
                     $('#partnerModal').modal('show');
                     $('.modal-title').text('Edit Training Partner');
                 } else {
@@ -158,7 +149,6 @@ $(document).ready(function() {
         $('#partner_id').val('');
         $('#status').val('active'); // Reset to default
         $('.modal-title').text('Add New Training Partner');
-        $('.is-invalid').removeClass('is-invalid');
     });
 
     // Add input validation for status field
