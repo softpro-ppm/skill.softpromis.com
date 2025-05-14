@@ -79,13 +79,29 @@ try {
             if (empty($student_id)) {
                 sendJSONResponse(false, 'Student ID is required');
             }
+            // Check for enrollments
+            $stmt = $pdo->prepare('SELECT COUNT(*) FROM student_batch_enrollment WHERE student_id = ?');
+            $stmt->execute([$student_id]);
+            if ($stmt->fetchColumn() > 0) {
+                sendJSONResponse(false, 'Cannot delete student: student has enrollments.');
+            }
+            // Check for fees
+            $stmt = $pdo->prepare('SELECT COUNT(*) FROM fees WHERE student_id = ?');
+            $stmt->execute([$student_id]);
+            if ($stmt->fetchColumn() > 0) {
+                sendJSONResponse(false, 'Cannot delete student: student has fee records.');
+            }
             try {
                 $stmt = $pdo->prepare('DELETE FROM students WHERE student_id = ?');
                 $stmt->execute([$student_id]);
-                sendJSONResponse(true, 'Student deleted successfully');
+                if ($stmt->rowCount() > 0) {
+                    sendJSONResponse(true, 'Student deleted successfully');
+                } else {
+                    sendJSONResponse(false, 'No student deleted. The student may not exist.');
+                }
             } catch (PDOException $e) {
                 error_log('Delete Error: ' . $e->getMessage());
-                sendJSONResponse(false, 'Failed to delete student');
+                sendJSONResponse(false, 'Failed to delete student: ' . $e->getMessage());
             }
             break;
 
