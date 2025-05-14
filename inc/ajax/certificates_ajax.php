@@ -253,12 +253,22 @@ try {
             break;
 
         case 'list':
-            // DataTables expects 'list' action for fetching all certificates
-            $stmt = $pdo->prepare("SELECT c.*, e.enrollment_id, CONCAT(s.first_name, ' ', s.last_name) AS student_name, b.batch_code, co.course_name FROM certificates c JOIN student_batch_enrollment e ON c.enrollment_id = e.enrollment_id JOIN students s ON e.student_id = s.student_id JOIN batches b ON e.batch_id = b.batch_id JOIN courses co ON b.course_id = co.course_id ORDER BY c.issue_date DESC");
-            $stmt->execute();
+            // Return all certificates for DataTables
+            $stmt = $pdo->query("
+                SELECT c.*, e.enrollment_id, CONCAT(s.first_name, ' ', s.last_name) AS student_name, b.batch_code, co.course_name
+                FROM certificates c
+                JOIN student_batch_enrollment e ON c.enrollment_id = e.enrollment_id
+                JOIN students s ON e.student_id = s.student_id
+                JOIN batches b ON e.batch_id = b.batch_id
+                JOIN courses co ON b.course_id = co.course_id
+                ORDER BY c.issue_date DESC
+            ");
             $certificates = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            sendJSONResponse(true, 'Certificates retrieved successfully', [ 'data' => $certificates ]);
-            break;
+            echo json_encode([
+                'success' => true,
+                'data' => $certificates
+            ]);
+            exit;
 
         default:
             sendJSONResponse(false, 'Invalid action');
