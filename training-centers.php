@@ -542,7 +542,7 @@ $(function () {
             { 
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    return meta.row + 1 + meta.settings._iDisplayStart;
+                    return meta.row + 1;
                 },
                 "className": "text-center"
             },
