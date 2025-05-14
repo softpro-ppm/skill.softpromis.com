@@ -82,7 +82,7 @@ try {
 
             $whereClause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
 
-            // Get total count
+            // Get total count (using c.student_id and c.batch_id)
             $countStmt = $pdo->prepare("
                 SELECT COUNT(*) 
                 FROM certificates c
@@ -94,15 +94,13 @@ try {
             // Get pagination info
             $pagination = getPagination($page, $total, $perPage);
 
-            // Get data with related info
+            // Get data with related info (using c.student_id and c.batch_id)
             $stmt = $pdo->prepare("
-                SELECT c.*, s.name as student_name, b.name as batch_name,
-                       co.name as course_name, tc.name as center_name
+                SELECT c.*, CONCAT(s.first_name, ' ', s.last_name) AS student_name, b.batch_code, co.course_name
                 FROM certificates c
-                JOIN students s ON c.student_id = s.id
-                JOIN batches b ON c.batch_id = b.id
-                LEFT JOIN courses co ON b.course_id = co.id
-                LEFT JOIN training_centers tc ON b.center_id = tc.id
+                JOIN students s ON c.student_id = s.student_id
+                JOIN batches b ON c.batch_id = b.batch_id
+                JOIN courses co ON b.course_id = co.course_id
                 $whereClause
                 ORDER BY c.issue_date DESC
                 LIMIT ? OFFSET ?
@@ -175,12 +173,10 @@ try {
             }
 
             $stmt = $pdo->prepare("
-                SELECT c.*, b.name as batch_name, co.name as course_name,
-                       tc.name as center_name
+                SELECT c.*, b.batch_code, co.course_name
                 FROM certificates c
-                JOIN batches b ON c.batch_id = b.id
-                LEFT JOIN courses co ON b.course_id = co.id
-                LEFT JOIN training_centers tc ON b.center_id = tc.id
+                JOIN batches b ON c.batch_id = b.batch_id
+                JOIN courses co ON b.course_id = co.course_id
                 WHERE c.student_id = ?
                 ORDER BY c.issue_date DESC
             ");
@@ -198,9 +194,9 @@ try {
             }
 
             $stmt = $pdo->prepare("
-                SELECT c.*, s.name as student_name
+                SELECT c.*, CONCAT(s.first_name, ' ', s.last_name) AS student_name
                 FROM certificates c
-                JOIN students s ON c.student_id = s.id
+                JOIN students s ON c.student_id = s.student_id
                 WHERE c.batch_id = ?
                 ORDER BY c.issue_date DESC
             ");
@@ -218,13 +214,11 @@ try {
             }
 
             $stmt = $pdo->prepare("
-                SELECT c.*, s.name as student_name, b.name as batch_name,
-                       co.name as course_name, tc.name as center_name
+                SELECT c.*, CONCAT(s.first_name, ' ', s.last_name) AS student_name, b.batch_code, co.course_name
                 FROM certificates c
-                JOIN students s ON c.student_id = s.id
-                JOIN batches b ON c.batch_id = b.id
-                LEFT JOIN courses co ON b.course_id = co.id
-                LEFT JOIN training_centers tc ON b.center_id = tc.id
+                JOIN students s ON c.student_id = s.student_id
+                JOIN batches b ON c.batch_id = b.batch_id
+                JOIN courses co ON b.course_id = co.course_id
                 WHERE c.certificate_number = ?
             ");
             $stmt->execute([$certificate_number]);
@@ -235,7 +229,7 @@ try {
                 $isValid = true;
                 $message = 'Certificate is valid';
 
-                if ($certificate['status'] !== 'active') {
+                if ($certificate['status'] !== 'issued') {
                     $isValid = false;
                     $message = 'Certificate is not active';
                 } elseif (!empty($certificate['valid_until']) && strtotime($certificate['valid_until']) < time()) {
@@ -253,13 +247,12 @@ try {
             break;
 
         case 'list':
-            // Return all certificates for DataTables
+            // Return all certificates for DataTables (using c.student_id and c.batch_id)
             $stmt = $pdo->query("
-                SELECT c.*, e.enrollment_id, CONCAT(s.first_name, ' ', s.last_name) AS student_name, b.batch_code, co.course_name
+                SELECT c.*, CONCAT(s.first_name, ' ', s.last_name) AS student_name, b.batch_code, co.course_name
                 FROM certificates c
-                JOIN student_batch_enrollment e ON c.enrollment_id = e.enrollment_id
-                JOIN students s ON e.student_id = s.student_id
-                JOIN batches b ON e.batch_id = b.batch_id
+                JOIN students s ON c.student_id = s.student_id
+                JOIN batches b ON c.batch_id = b.batch_id
                 JOIN courses co ON b.course_id = co.course_id
                 ORDER BY c.issue_date DESC
             ");
