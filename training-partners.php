@@ -589,6 +589,24 @@ require_once 'includes/sidebar.php';
     color: #6c757d;
     font-style: italic;
 }
+.btn-close {
+    padding: 1rem;
+    margin: -1rem -1rem -1rem auto;
+    background: transparent;
+    border: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #000;
+    opacity: .5;
+    cursor: pointer;
+}
+.btn-close:hover {
+    opacity: .75;
+}
+.btn-close span {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
 </style>
 
 <?php include 'includes/js.php'; ?>
