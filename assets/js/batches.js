@@ -18,6 +18,7 @@ $(document).ready(function() {
             { data: 'start_date' },
             { data: 'end_date' },
             { data: null, render: function(data, type, row) {
+                // Show total students added (student_count) and total capacity
                 return (row.student_count || 0) + ' / ' + (row.capacity || 0);
             } },
             { data: 'status', render: function(data) {

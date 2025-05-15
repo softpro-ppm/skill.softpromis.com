@@ -66,7 +66,7 @@ require_once 'includes/sidebar.php';
                                         <th>Batch Name</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
-                                        <th>Capacity (Added/Total)</th>
+                                        <th>Students / Capacity</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
