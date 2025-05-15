@@ -30,6 +30,7 @@ $(document).ready(function() {
                 orderable: false,
                 render: function(data) {
                     return `
+                        <button class="btn btn-sm btn-info view-batch-students-btn" data-batch-id="${data.batch_id}"><i class="fas fa-users"></i></button>
                         <button class="btn btn-sm btn-primary edit-batch-btn" data-batch-id="${data.batch_id}"><i class="fas fa-edit"></i></button>
                         <button class="btn btn-sm btn-danger delete-batch-btn" data-batch-id="${data.batch_id}"><i class="fas fa-trash"></i></button>
                     `;
@@ -146,6 +147,42 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    // View students in batch
+    $(document).on('click', '.view-batch-students-btn', function() {
+        var batchId = $(this).data('batch-id');
+        $('#batchStudentsError').addClass('d-none').text('');
+        var $tableBody = $('#batchStudentsTable tbody');
+        $tableBody.empty();
+        $.ajax({
+            url: 'inc/ajax/batch_students_ajax.php',
+            type: 'POST',
+            data: { action: 'get_students_by_batch', batch_id: batchId },
+            dataType: 'json',
+            success: function(res) {
+                if(res.success && res.data.length) {
+                    $.each(res.data, function(i, s) {
+                        $tableBody.append('<tr>' +
+                            '<td>' + (i+1) + '</td>' +
+                            '<td>' + (s.enrollment_no || '') + '</td>' +
+                            '<td>' + (s.first_name || '') + '</td>' +
+                            '<td>' + (s.last_name || '') + '</td>' +
+                            '<td>' + (s.email || '') + '</td>' +
+                            '<td>' + (s.mobile || '') + '</td>' +
+                            '<td>' + (s.gender ? s.gender.charAt(0).toUpperCase() + s.gender.slice(1) : '') + '</td>' +
+                        '</tr>');
+                    });
+                } else {
+                    $tableBody.append('<tr><td colspan="7" class="text-center">No students found in this batch.</td></tr>');
+                }
+                $('#batchStudentsModal').modal('show');
+            },
+            error: function() {
+                $('#batchStudentsError').removeClass('d-none').text('Could not load students.');
+                $('#batchStudentsModal').modal('show');
+            }
+        });
     });
 
     // Reset modal on close

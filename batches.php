@@ -133,6 +133,38 @@ require_once 'includes/sidebar.php';
     </div>
 </div>
 
+<!-- Student List Modal -->
+<div class="modal fade" id="batchStudentsModal" tabindex="-1" aria-labelledby="batchStudentsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="batchStudentsModalLabel">Batch Students</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="batchStudentsError" class="alert alert-danger d-none"></div>
+        <table class="table table-bordered table-striped" id="batchStudentsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Enrollment No</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Gender</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php include 'includes/js.php'; ?>
 <script src="assets/js/batches.js"></script>
 </body>
