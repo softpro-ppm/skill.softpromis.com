@@ -35,6 +35,13 @@ try {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
+            // Check enrollment exists
+            $stmt = $pdo->prepare("SELECT * FROM student_batch_enrollment WHERE enrollment_id = ?");
+            $stmt->execute([$enrollment_id]);
+            if (!$stmt->fetch()) {
+                sendJSONResponse(false, 'Invalid enrollment ID');
+            }
+
             // Check if certificate number is unique
             $stmt = $pdo->prepare("SELECT certificate_id FROM certificates WHERE certificate_number = ?");
             $stmt->execute([$certificate_number]);
@@ -128,6 +135,13 @@ try {
 
             if (empty($certificate_id) || empty($enrollment_id) || empty($certificate_number) || empty($issue_date) || empty($certificate_type)) {
                 sendJSONResponse(false, 'Required fields are missing');
+            }
+
+            // Check enrollment exists
+            $stmt = $pdo->prepare("SELECT * FROM student_batch_enrollment WHERE enrollment_id = ?");
+            $stmt->execute([$enrollment_id]);
+            if (!$stmt->fetch()) {
+                sendJSONResponse(false, 'Invalid enrollment ID');
             }
 
             // Check if certificate number is unique (excluding current)
@@ -274,5 +288,5 @@ try {
     }
 } catch (PDOException $e) {
     logError("Certificates error: " . $e->getMessage());
-    sendJSONResponse(false, 'An error occurred. Please try again later.');
+    sendJSONResponse(false, 'An error occurred: ' . $e->getMessage());
 } 

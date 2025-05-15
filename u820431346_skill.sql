@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 13, 2025 at 10:56 AM
+-- Generation Time: May 15, 2025 at 12:05 AM
 -- Server version: 10.11.10-MariaDB
 -- PHP Version: 7.2.34
 
@@ -39,14 +39,6 @@ CREATE TABLE `assessments` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `assessments`
---
-
-INSERT INTO `assessments` (`assessment_id`, `enrollment_id`, `assessment_type`, `assessment_date`, `score`, `max_score`, `remarks`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'theory', '2024-02-15', 85.00, 100.00, 'Good performance', 'completed', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(2, 1, 'practical', '2024-02-20', 90.00, 100.00, 'Excellent practical skills', 'completed', '2025-04-24 05:17:04', '2025-04-24 05:17:04');
 
 -- --------------------------------------------------------
 
@@ -150,6 +142,8 @@ INSERT INTO `batches` (`batch_id`, `batch_name`, `center_id`, `course_id`, `batc
 CREATE TABLE `certificates` (
   `certificate_id` int(11) NOT NULL,
   `enrollment_id` int(11) DEFAULT NULL,
+  `student_id` int(11) DEFAULT NULL,
+  `batch_id` int(11) DEFAULT NULL,
   `certificate_number` varchar(50) DEFAULT NULL,
   `certificate_type` enum('completion','achievement','specialization') DEFAULT NULL,
   `issue_date` date DEFAULT NULL,
@@ -164,9 +158,9 @@ CREATE TABLE `certificates` (
 -- Dumping data for table `certificates`
 --
 
-INSERT INTO `certificates` (`certificate_id`, `enrollment_id`, `certificate_number`, `certificate_type`, `issue_date`, `valid_until`, `status`, `remarks`, `created_at`, `updated_at`) VALUES
-(1, 1, 'CERT001', NULL, '2024-06-30', '2026-06-30', 'issued', NULL, '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(2, 2, 'CERT002', NULL, '2024-06-30', '2026-06-30', 'issued', NULL, '2025-04-24 05:17:04', '2025-04-24 05:17:04');
+INSERT INTO `certificates` (`certificate_id`, `enrollment_id`, `student_id`, `batch_id`, `certificate_number`, `certificate_type`, `issue_date`, `valid_until`, `status`, `remarks`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 2, 'CERT001', NULL, '2024-06-30', '2026-06-30', 'issued', NULL, '2025-04-24 05:17:04', '2025-05-15 00:03:54'),
+(2, 2, 2, 2, 'CERT002', NULL, '2024-06-30', '2026-06-30', 'issued', NULL, '2025-04-24 05:17:04', '2025-05-15 00:03:48');
 
 -- --------------------------------------------------------
 
@@ -199,8 +193,9 @@ INSERT INTO `courses` (`course_id`, `sector_id`, `scheme_id`, `course_code`, `co
 (1, 1, 1, 'WD001', 'Web Development', 480, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL, NULL, NULL, NULL),
 (2, 1, 1, 'DM001', 'Digital Marketing', 240, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL, NULL, NULL, NULL),
 (3, 1, 3, 'DA001', 'Data Analytics', 360, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL, NULL, NULL, NULL),
-(4, 5, 1, '45554', 'Melodie Nichols', 5, 'Rerum culpa nulla qu', 'active', '2025-05-01 10:04:53', '2025-05-13 10:53:50', 16.00, 'Veniam consectetur', 'Ut adipisicing moles', NULL),
-(5, 9, 2, 'Excepturi ea cumque', 'Wylie Dunlap', 25, 'Tempore facilis et', 'inactive', '2025-05-03 09:11:57', '2025-05-03 09:11:57', 59.00, 'Omnis voluptatem do', 'Fugiat excepteur no', NULL);
+(4, 5, 1, '45554', 'Melodie Nichols', 5, 'Rerum culpa nulla qu', 'active', '2025-05-01 10:04:53', '2025-05-13 10:57:35', 16.00, 'Veniam consectetur', 'Ut adipisicing moles', 4),
+(5, 9, 2, 'Excepturi ea cumque', 'Wylie Dunlap', 25, 'Tempore facilis et', 'inactive', '2025-05-03 09:11:57', '2025-05-03 09:11:57', 59.00, 'Omnis voluptatem do', 'Fugiat excepteur no', NULL),
+(6, 4, 3, 'Dolorem aut architec', 'Aristotle Dunn', 69, 'Qui dolor cupiditate', 'active', '2025-05-13 10:57:43', '2025-05-13 10:57:43', 90.00, 'Autem sed cupiditate', 'Temporibus ea autem', 1);
 
 -- --------------------------------------------------------
 
@@ -222,20 +217,6 @@ CREATE TABLE `fees` (
   `notes` text DEFAULT NULL,
   `receipt_no` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `fees`
---
-
-INSERT INTO `fees` (`fee_id`, `student_id`, `enrollment_id`, `amount`, `payment_date`, `payment_mode`, `transaction_id`, `status`, `created_at`, `updated_at`, `notes`, `receipt_no`) VALUES
-(2, NULL, 2, 25000.00, '2024-01-01', 'online', 'TXN123457', 'paid', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL, NULL),
-(3, NULL, 3, 15000.00, '2024-02-01', 'online', 'TXN123458', 'paid', '2025-04-24 05:17:04', '2025-05-04 10:01:44', 'sdf', 'sdf'),
-(5, NULL, 2, 99.00, '1978-07-02', 'Et provident qui co', 'Saepe facere aut ill', 'failed', '2025-05-04 09:21:51', '2025-05-04 10:01:36', 'ttt', 'Voluptas explicabo'),
-(6, NULL, 1, 50.00, '2007-12-20', 'Sit cum adipisicing', 'Veritatis sit possi', 'failed', '2025-05-04 10:02:04', '2025-05-04 21:36:18', 'Dolor commodi repell', 'Culpa earum at id mi'),
-(7, NULL, 3, 7.00, '2004-07-02', 'Aut esse et veritat', 'Illo veritatis optio', 'pending', '2025-05-04 21:36:26', '2025-05-04 21:36:26', 'Voluptatem dignissim', 'At maiores a volupta'),
-(8, NULL, 1, 100.00, '2025-05-05', 'Et provident qui co', 'Sit eos fugit earum', 'paid', '2025-05-04 21:37:02', '2025-05-04 21:37:16', 'cv', 'Culpa earum at id mi'),
-(9, NULL, 3, 16.00, '1985-12-02', 'Nesciunt aut magnam', 'Consequatur Sed inc', 'paid', '2025-05-04 21:39:53', '2025-05-04 21:39:53', 'Qui nulla consequatu', 'Assumenda repellendu'),
-(10, NULL, 3, 400.00, '2025-05-05', 'Et provident qui co', 'Et quasi nostrum qui', 'paid', '2025-05-04 21:40:20', '2025-05-04 21:40:41', 'xdfv', 'dfv');
 
 -- --------------------------------------------------------
 
@@ -285,9 +266,7 @@ CREATE TABLE `schemes` (
 INSERT INTO `schemes` (`scheme_id`, `center_id`, `scheme_name`, `description`, `status`, `created_at`, `updated_at`) VALUES
 (1, 2, 'PMKVY', 'Pradhan Mantri Kaushal Vikas Yojana', 'active', '2025-04-24 05:17:04', '2025-05-13 05:28:12'),
 (2, 1, 'DDU-GKY', 'Deen Dayal Upadhyaya Grameen Kaushalya Yojana', 'active', '2025-04-24 05:17:04', '2025-05-13 05:37:24'),
-(3, 2, 'Regular', 'Regular Training Programs', 'active', '2025-04-24 05:17:04', '2025-05-13 05:37:33'),
-(11, 3, 'Debra Moody', 'Sunt eum porro veli', 'active', '2025-05-03 08:53:33', '2025-05-13 05:28:04'),
-(14, 4, 'Wayne Mack', 'sdfg', 'active', '2025-05-13 04:50:58', '2025-05-13 05:41:37');
+(3, 2, 'Regular', 'Regular Training Programs', 'active', '2025-04-24 05:17:04', '2025-05-13 05:37:33');
 
 -- --------------------------------------------------------
 
@@ -351,12 +330,9 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`student_id`, `enrollment_no`, `first_name`, `last_name`, `email`, `mobile`, `date_of_birth`, `gender`, `address`, `course_id`, `batch_id`, `created_at`, `updated_at`) VALUES
-(1, 'ENR001', 'Rahul', 'Sharma', 'rahul@gmail.com', '9876543218', '2000-01-15', 'male', 'yyyy', NULL, NULL, '2025-04-24 05:17:04', '2025-05-03 10:03:07'),
+(1, 'ENR001', 'Rahul', 'Sharma', 'rahul@gmail.com', '9876543218', '2000-01-15', 'male', 'yyyy', 3, 1, '2025-04-24 05:17:04', '2025-05-14 23:32:05'),
 (2, 'ENR002', 'Priya', 'Patel', 'priya@gmail.com', '9876543219', '2001-03-20', 'female', NULL, NULL, NULL, '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(3, 'ENR003', 'Amit', 'Kumar', 'amit@gmail.com', '9876543220', '1999-07-10', 'male', NULL, NULL, NULL, '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(11, 'ENR004', 'weq', 'qw', 'xavutuq@mailinator.com', '2425342424', '2010-07-30', 'male', 'qw\r\nq', NULL, NULL, '2025-05-03 11:21:00', '2025-05-03 11:21:00'),
-(14, 'ENR006', 'Umakant', 'Yadav', 'uky171991@gmail.com', '9453619260', '2025-05-05', 'male', 'Jaunpur Rd', 3, 2, '2025-05-04 23:46:24', '2025-05-05 00:02:57'),
-(15, 'ENR007', 'Erica', 'Steele', 'gabowyg@mailinator.com', '5656565656', '1982-04-17', 'female', 'Esse consequatur o', 3, 3, '2025-05-04 23:54:58', '2025-05-05 00:15:17');
+(3, 'ENR003', 'Amit', 'Kumar', 'amit@gmail.com', '9876543220', '1999-07-10', 'male', NULL, NULL, NULL, '2025-04-24 05:17:04', '2025-04-24 05:17:04');
 
 -- --------------------------------------------------------
 
@@ -415,7 +391,8 @@ INSERT INTO `training_centers` (`center_id`, `partner_id`, `center_name`, `conta
 (1, 1, 'TechSkill Mumbai Center', 'Amit Shah', 'mumbai@techskill.com', '9876543215', 'Andheri, Mumbai', NULL, NULL, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
 (2, 1, 'TechSkill Pune Center', 'Sneha Patil', 'pune@techskill.com', '9876543216', 'Hinjewadi, Pune', NULL, NULL, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
 (3, 2, 'DTI Delhi Center', 'Vikram Singh', 'delhi@dti.com', '9876543217', 'Connaught Place, Delhi', NULL, NULL, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(4, 1, 'Kameko Patel', 'Irure est accusamus ', 'vubi@mailinator.com', '+1 (326) 925-23', 'Reprehenderit non t', 'Irure molestiae cons', 'Quia repudiandae mol', 'Aliquip li', 'active', '2025-04-26 02:01:19', '2025-04-26 02:04:38');
+(4, 1, 'Kameko Patel', 'Irure est accusamus', 'vubi@mailinator.com', '+1 (326) 925-23', 'Reprehenderit non t', 'Irure molestiae cons', 'Quia repudiandae mol', 'Aliquip li', 'active', '2025-04-26 02:01:19', '2025-05-14 22:53:38'),
+(8, 1, 'Lysandra Potts', 'Laborum quia ipsa m', 'sykalasup@mailinator.com', '5445545454', '6666', 'Odio dolore quaerat ', 'At obcaecati est com', '343434', 'active', '2025-05-14 22:58:34', '2025-05-14 22:58:57');
 
 -- --------------------------------------------------------
 
@@ -443,13 +420,12 @@ CREATE TABLE `training_partners` (
 --
 
 INSERT INTO `training_partners` (`partner_id`, `partner_name`, `contact_person`, `email`, `phone`, `address`, `website`, `status`, `created_at`, `updated_at`, `registration_doc`, `agreement_doc`) VALUES
-(1, 'TechSkill Solutions', 'Rajesh Kumar', 'contact@techskill.com', '9876543213', 'Mumbai, India', '', 'active', '2025-04-24 05:17:04', '2025-04-26 01:52:08', NULL, NULL),
-(2, 'Digital Training Institute', 'Priya Singh', 'info@dti.com', '9876543214', 'Delhi, India', '', 'active', '2025-04-24 05:17:04', '2025-04-26 01:51:57', NULL, NULL),
-(4, 'Cassidy Carr', 'Et aspernatur do dol', 'gekysopodu@mailinator.com', '+1 (338) 718-60', 'Harum facere asperio', 'https://www.lozupofetok.co', 'active', '2025-04-26 02:22:34', '2025-04-30 00:29:01', NULL, NULL),
-(5, 'bdvs djkbjhs', 'jnjkbjbh', 'hhjhjkhj@gmail', '6756567', 'hjhghgh', '', 'active', '2025-04-30 00:30:31', '2025-05-01 09:16:22', '68117106bd505_reg.jpg', '68117106bd791_agr.jpg'),
-(7, 'tytytyty', 'Sunt eum eu qui ut e', 'xunecejybe@mailinator.com', '+1 (227) 851-33', 'Voluptatem et sit ', 'https://www.dybubyboruhiz.ws', 'active', '2025-05-01 09:43:19', '2025-05-01 09:43:30', NULL, NULL),
-(8, 'Indigo Joyce', 'Ipsum nisi id et do', 'ditopyw@mailinator.com', '+1 (616) 157-57', 'Quia ipsum amet ei', 'https://www.nuw.com', 'active', '2025-05-03 09:00:50', '2025-05-03 09:00:50', NULL, NULL),
-(9, 'Justina Foley', 'Tempora in hic aut t', 'cepyraw@mailinato', '+1 (839) 493-99', 'Nisi aliquam velit u', 'https://www.hecolomuh.org.au', 'active', '2025-05-03 09:01:00', '2025-05-13 04:21:38', NULL, NULL);
+(1, 'TechSkill Solutions', 'Rajesh Kumar', 'contact@techskill.com', '9876543213', 'Mumbai, India', '', 'active', '2025-04-24 05:17:04', '2025-05-14 14:25:22', NULL, NULL),
+(2, 'Digital Training Institute', 'Priya Singh', 'info@dti.com', '9876543214', 'Delhi, India', '', 'active', '2025-04-24 05:17:04', '2025-05-14 14:25:30', NULL, NULL),
+(16, 'Softpro', 'Ipsum et sunt iusto ', 'vazi@mailinator.com', '5444555454', 'Et modi dolore commo', 'https://www.jory.cc', 'active', '2025-05-14 14:11:18', '2025-05-14 14:11:43', NULL, NULL),
+(17, 'Metx', 'Quo ipsum laborum A', 'hulyvigy@mailinator.com', '9884684654', 'Non exercitation del', 'https://www.cuqozyz.tv', 'active', '2025-05-14 14:12:07', '2025-05-14 14:12:07', NULL, NULL),
+(18, 'Penelope Hancock', 'Ut quo Nam hic labor', 'xajoluke@mailinator.com', '5656565656', 'Qui commodi sint atq', 'https://www.vazely.info', 'active', '2025-05-14 22:33:06', '2025-05-14 22:33:06', NULL, NULL),
+(19, 'Harper Rosa', 'Proident dolorem op', 'fykiw@mailinator.com', '5665565656', 'Qui iusto assumenda ', 'https://www.gurezaled.us', 'inactive', '2025-05-14 23:06:51', '2025-05-14 23:06:51', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -479,7 +455,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`user_id`, `role_id`, `username`, `password`, `email`, `full_name`, `mobile`, `status`, `created_at`, `updated_at`, `token`, `last_login`) VALUES
 (5, 2, 'trainer1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'trainer@softpro.com', 'John Trainer', '9876543211', 'active', '2025-04-24 07:12:13', '2025-04-24 07:12:13', NULL, NULL),
 (6, 3, 'assessor1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'assessor@softpro.com', 'Jane Assessor', '9876543212', 'active', '2025-04-24 07:12:13', '2025-04-24 07:12:13', NULL, NULL),
-(7, 1, 'admin', '$2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C', 'admin@softpro.com', 'Administrator', '', 'active', '2025-04-24 07:16:39', '2025-05-13 07:25:02', '3567554cad69e154b6e556d447ef4c19eb7b373cf81d2c8e6642259fc864a991', '2025-05-13 07:25:02');
+(7, 1, 'admin', '$2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C', 'admin@softpro.com', 'Administrator', '', 'active', '2025-04-24 07:16:39', '2025-05-14 22:10:01', 'c7c1a381dfb692f5522bce628cb9f8479635751c647078e9f9a3a6dd6e198e33', '2025-05-14 22:10:01');
 
 --
 -- Indexes for dumped tables
@@ -528,6 +504,7 @@ ALTER TABLE `assigned_sectors`
 ALTER TABLE `batches`
   ADD PRIMARY KEY (`batch_id`),
   ADD UNIQUE KEY `batch_code` (`batch_code`),
+  ADD UNIQUE KEY `center_id_2` (`center_id`),
   ADD KEY `center_id` (`center_id`),
   ADD KEY `course_id` (`course_id`);
 
@@ -537,7 +514,9 @@ ALTER TABLE `batches`
 ALTER TABLE `certificates`
   ADD PRIMARY KEY (`certificate_id`),
   ADD UNIQUE KEY `certificate_no` (`certificate_number`),
-  ADD KEY `enrollment_id` (`enrollment_id`);
+  ADD KEY `enrollment_id` (`enrollment_id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `batch_id` (`batch_id`);
 
 --
 -- Indexes for table `courses`
@@ -646,7 +625,7 @@ ALTER TABLE `assigned_sectors`
 -- AUTO_INCREMENT for table `batches`
 --
 ALTER TABLE `batches`
-  MODIFY `batch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `batch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `certificates`
@@ -658,7 +637,7 @@ ALTER TABLE `certificates`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `fees`
@@ -700,13 +679,13 @@ ALTER TABLE `student_batch_enrollment`
 -- AUTO_INCREMENT for table `training_centers`
 --
 ALTER TABLE `training_centers`
-  MODIFY `center_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `center_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `training_partners`
 --
 ALTER TABLE `training_partners`
-  MODIFY `partner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `partner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -759,7 +738,9 @@ ALTER TABLE `batches`
 -- Constraints for table `certificates`
 --
 ALTER TABLE `certificates`
-  ADD CONSTRAINT `certificates_ibfk_1` FOREIGN KEY (`enrollment_id`) REFERENCES `student_batch_enrollment` (`enrollment_id`);
+  ADD CONSTRAINT `certificates_ibfk_1` FOREIGN KEY (`enrollment_id`) REFERENCES `student_batch_enrollment` (`enrollment_id`),
+  ADD CONSTRAINT `certificates_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `certificates_ibfk_3` FOREIGN KEY (`batch_id`) REFERENCES `batches` (`batch_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `courses`
