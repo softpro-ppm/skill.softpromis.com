@@ -22,10 +22,10 @@ try {
                 ORDER BY b.batch_id DESC");
             $batches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Add student count for each batch
+            // Add student count for each batch (count unique students from students table)
             foreach ($batches as &$batch) {
                 $batch_id = $batch['batch_id'];
-                $stmt2 = $pdo->prepare("SELECT COUNT(*) FROM student_batch_enrollment WHERE batch_id = ?");
+                $stmt2 = $pdo->prepare("SELECT COUNT(DISTINCT s.student_id) FROM student_batch_enrollment e JOIN students s ON e.student_id = s.student_id WHERE e.batch_id = ?");
                 $stmt2->execute([$batch_id]);
                 $batch['student_count'] = $stmt2->fetchColumn();
             }
