@@ -38,7 +38,7 @@ $(document).ready(function() {
             }
         ],
         responsive: true,
-        order: [[0, 'desc']]
+        order: [[0, 'desc']] // Order by Sr No. descending (latest first)
     });
 
     // Reload table data when modal is closed or after add/edit/delete
