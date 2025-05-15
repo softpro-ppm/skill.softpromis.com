@@ -145,8 +145,8 @@ try {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="addBatchId">Batch</label>
-                        <select class="form-control" id="addBatchId" name="batch_id">
+                        <label for="addBatchId">Batch <span class="text-danger">*</span></label>
+                        <select class="form-control" id="addBatchId" name="batch_id" required aria-required="true">
                             <option value="">Select Batch</option>
                             <?php foreach ($batches as $batch): ?>
                                 <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
@@ -253,8 +253,8 @@ try {
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="editBatchId">Batch</label>
-                        <select class="form-control" id="editBatchId" name="batch_id">
+                        <label for="editBatchId">Batch <span class="text-danger">*</span></label>
+                        <select class="form-control" id="editBatchId" name="batch_id" required aria-required="true">
                             <option value="">Select Batch</option>
                             <?php foreach ($batches as $batch): ?>
                                 <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
