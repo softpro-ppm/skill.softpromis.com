@@ -44,7 +44,14 @@ try {
             }
             $stmt = $pdo->prepare("INSERT INTO students (enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, course_id, batch_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
             $stmt->execute([$enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id]);
-            sendJSONResponse(true, 'Student created successfully', ['student_id' => $pdo->lastInsertId()]);
+            $student_id = $pdo->lastInsertId();
+            // Insert into student_batch_enrollment if batch_id is set
+            if ($batch_id) {
+                $enrollment_date = date('Y-m-d');
+                $stmtEnroll = $pdo->prepare("INSERT INTO student_batch_enrollment (student_id, batch_id, enrollment_date, status, created_at, updated_at) VALUES (?, ?, ?, 'active', NOW(), NOW())");
+                $stmtEnroll->execute([$student_id, $batch_id, $enrollment_date]);
+            }
+            sendJSONResponse(true, 'Student created successfully', ['student_id' => $student_id]);
             break;
 
         case 'update':
@@ -70,6 +77,22 @@ try {
             }
             $stmt = $pdo->prepare("UPDATE students SET first_name = ?, last_name = ?, email = ?, mobile = ?, date_of_birth = ?, gender = ?, address = ?, course_id = ?, batch_id = ?, updated_at = NOW() WHERE student_id = ?");
             $stmt->execute([$first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id, $student_id]);
+            // Update or insert into student_batch_enrollment
+            if ($batch_id) {
+                $enrollment_date = date('Y-m-d');
+                // Check if already enrolled
+                $stmtCheck = $pdo->prepare("SELECT enrollment_id FROM student_batch_enrollment WHERE student_id = ? AND batch_id = ?");
+                $stmtCheck->execute([$student_id, $batch_id]);
+                if ($stmtCheck->fetchColumn()) {
+                    // Update status and date
+                    $stmtUpdate = $pdo->prepare("UPDATE student_batch_enrollment SET status = 'active', enrollment_date = ?, updated_at = NOW() WHERE student_id = ? AND batch_id = ?");
+                    $stmtUpdate->execute([$enrollment_date, $student_id, $batch_id]);
+                } else {
+                    // Insert new enrollment
+                    $stmtEnroll = $pdo->prepare("INSERT INTO student_batch_enrollment (student_id, batch_id, enrollment_date, status, created_at, updated_at) VALUES (?, ?, ?, 'active', NOW(), NOW())");
+                    $stmtEnroll->execute([$student_id, $batch_id, $enrollment_date]);
+                }
+            }
             sendJSONResponse(true, 'Student updated successfully');
             break;
 
