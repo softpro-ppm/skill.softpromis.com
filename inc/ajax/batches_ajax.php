@@ -22,6 +22,14 @@ try {
                 ORDER BY b.batch_id DESC");
             $batches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            // Add student count for each batch
+            foreach ($batches as &$batch) {
+                $batch_id = $batch['batch_id'];
+                $stmt2 = $pdo->prepare("SELECT COUNT(*) FROM student_batch_enrollment WHERE batch_id = ?");
+                $stmt2->execute([$batch_id]);
+                $batch['student_count'] = $stmt2->fetchColumn();
+            }
+
             // Debugging log to inspect the data being returned
             error_log('Batches List Response: ' . json_encode($batches));
 

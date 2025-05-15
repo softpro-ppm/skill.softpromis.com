@@ -67,6 +67,7 @@ require_once 'includes/sidebar.php';
                                         <th>Start Date</th>
                                         <th>End Date</th>
                                         <th>Capacity</th>
+                                        <th>Added Students</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -161,6 +162,7 @@ $(function () {
       { data: 'start_date' },
       { data: 'end_date' },
       { data: 'capacity' },
+      { data: null, render: function(data, type, row) { return (row.student_count || 0) + ' / ' + (row.capacity || 0); }, className: 'text-center' },
       { data: 'status' },
       { data: null, orderable: false, searchable: false, render: function(data, type, row) {
           // Add your actions here
