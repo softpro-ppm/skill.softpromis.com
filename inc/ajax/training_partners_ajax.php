@@ -106,6 +106,11 @@ try {
             $partner = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($partner) {
+                // Fetch center count
+                $stmt2 = $pdo->prepare("SELECT COUNT(*) as center_count FROM training_centers WHERE partner_id = ?");
+                $stmt2->execute([$partner_id]);
+                $centerCount = $stmt2->fetchColumn();
+                $partner['center_count'] = $centerCount;
                 echo json_encode([
                     'success' => true,
                     'data' => $partner
