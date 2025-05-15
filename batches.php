@@ -60,7 +60,7 @@ require_once 'includes/sidebar.php';
                             <table id="batchesTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Batch ID</th>
+                                        <th>Sr. No.</th>
                                         <th>Batch Code</th>
                                         <th>Course Name</th>
                                         <th>Batch Name</th>
@@ -142,6 +142,42 @@ require_once 'includes/sidebar.php';
 </div>
 
 <?php include 'includes/js.php'; ?>
-<script src="assets/js/batches.js"></script>
+<script>
+$(function () {
+  var batchesTable = $('#batchesTable').DataTable({
+    processing: true,
+    serverSide: false,
+    ajax: {
+      url: 'inc/ajax/batches_ajax.php',
+      type: 'GET',
+      data: { action: 'list' },
+      dataSrc: function(json) { return json.data || []; }
+    },
+    columns: [
+      { data: null, render: function (data, type, row, meta) { return meta.row + 1; }, className: 'text-center' },
+      { data: 'batch_code' },
+      { data: 'course_name' },
+      { data: 'batch_name' },
+      { data: 'start_date' },
+      { data: 'end_date' },
+      { data: 'capacity' },
+      { data: 'status' },
+      { data: null, orderable: false, searchable: false, render: function(data, type, row) {
+          // Add your actions here
+          return '<button class="btn btn-sm btn-primary edit-batch-btn" data-batch-id="' + row.batch_id + '"><i class="fas fa-edit"></i></button>' +
+                 ' <button class="btn btn-sm btn-danger delete-batch-btn" data-batch-id="' + row.batch_id + '"><i class="fas fa-trash"></i></button>';
+        }
+      }
+    ],
+    paging: true,
+    lengthChange: true,
+    searching: true,
+    ordering: true,
+    info: true,
+    autoWidth: false,
+    responsive: true
+  });
+});
+</script>
 </body>
 </html>
