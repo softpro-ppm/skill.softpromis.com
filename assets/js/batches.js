@@ -17,7 +17,9 @@ $(document).ready(function() {
             { data: 'batch_name' },
             { data: 'start_date' },
             { data: 'end_date' },
-            { data: 'capacity' },
+            { data: null, render: function(data, type, row) {
+                return (row.student_count || 0) + ' / ' + (row.capacity || 0);
+            } },
             { data: 'status', render: function(data) {
                 let badgeClass = data === 'active' ? 'badge-success' : 'badge-secondary';
                 return `<span class="badge ${badgeClass}">${data}</span>`;
