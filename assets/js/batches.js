@@ -85,7 +85,7 @@ $(document).ready(function() {
                     $('#start_date').val(b.start_date);
                     $('#end_date').val(b.end_date);
                     $('#capacity').val(b.capacity);
-                    $('#status').val(b.status);
+                    // $('#status').val(b.status); // Status is now automatic
                     loadCourses(b.course_id);
                     $('#batchModal').modal('show');
                 } else {
@@ -99,6 +99,8 @@ $(document).ready(function() {
     $('#batchForm').on('submit', function(e) {
         e.preventDefault();
         var formData = $(this).serialize();
+        // Remove status from formData if present
+        formData = formData.replace(/&?status=[^&]*/g, '');
         var isEdit = $('#batch_id').val() !== '';
         formData += '&action=' + (isEdit ? 'edit' : 'add');
         $.ajax({

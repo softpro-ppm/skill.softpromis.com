@@ -11,6 +11,14 @@ checkPermission('admin');
 
 header('Content-Type: application/json');
 
+// Helper function to determine status
+function getBatchStatus($start_date, $end_date) {
+    $today = date('Y-m-d');
+    if ($today < $start_date) return 'upcoming';
+    if ($today > $end_date) return 'completed';
+    return 'ongoing';
+}
+
 $action = $_REQUEST['action'] ?? '';
 
 try {
@@ -28,6 +36,8 @@ try {
                 $stmt2 = $pdo->prepare("SELECT COUNT(DISTINCT s.student_id) FROM student_batch_enrollment e JOIN students s ON e.student_id = s.student_id WHERE e.batch_id = ?");
                 $stmt2->execute([$batch_id]);
                 $batch['student_count'] = $stmt2->fetchColumn();
+                // Always recalculate status for display
+                $batch['status'] = getBatchStatus($batch['start_date'], $batch['end_date']);
             }
 
             // Debugging log to inspect the data being returned
@@ -41,7 +51,7 @@ try {
             $start_date = sanitizeInput($_POST['start_date'] ?? '');
             $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
-            $status = sanitizeInput($_POST['status'] ?? 'upcoming');
+            $status = getBatchStatus($start_date, $end_date);
 
             if (empty($batch_name) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
                 sendJSONResponse(false, 'Required fields are missing');
@@ -73,7 +83,7 @@ try {
             $start_date = sanitizeInput($_POST['start_date'] ?? '');
             $end_date = sanitizeInput($_POST['end_date'] ?? '');
             $capacity = (int)($_POST['capacity'] ?? 0);
-            $status = sanitizeInput($_POST['status'] ?? 'upcoming');
+            $status = getBatchStatus($start_date, $end_date);
             $batch_code = null; // Do not update batch_code on edit
 
             if (empty($batch_id) || empty($batch_name) || empty($course_id) || empty($start_date) || empty($end_date) || $capacity <= 0) {
