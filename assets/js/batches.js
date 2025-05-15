@@ -7,7 +7,7 @@ $(document).ready(function() {
             data: { action: 'list' }
         },
         columns: [
-            { data: 'batch_id' },
+            { data: null, render: function(data, type, row, meta) { return meta.row + 1; } }, // SR No.
             { data: 'batch_code', render: function(data) {
                 return data ? data : '-';
             } },

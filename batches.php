@@ -60,7 +60,8 @@ require_once 'includes/sidebar.php';
                             <table id="batchesTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Batch ID</th>
+                                        <th>Sr No.</th>
+                                        <!--<th>Batch ID</th>-->
                                         <th>Batch Code</th>
                                         <th>Course Name</th>
                                         <th>Batch Name</th>
