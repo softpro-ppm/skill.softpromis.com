@@ -183,7 +183,7 @@ require_once 'includes/sidebar.php';
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary" id="saveCertificateBtn">Save Certificate</button>
         </div>
       </form>
@@ -203,7 +203,7 @@ require_once 'includes/sidebar.php';
         <!-- Populated by JS -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -221,7 +221,7 @@ require_once 'includes/sidebar.php';
         <p>Are you sure you want to delete this certificate?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-danger" id="confirmDeleteCertificateBtn">Delete</button>
       </div>
     </div>
