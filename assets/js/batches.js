@@ -41,6 +41,15 @@ $(document).ready(function() {
         order: [[0, 'desc']]
     });
 
+    // Reload table data when modal is closed or after add/edit/delete
+    function reloadBatchesTable() {
+        if (window.batchesTable && typeof window.batchesTable.ajax === 'object') {
+            window.batchesTable.ajax.reload(null, false); // false = keep current page
+        } else if ($('#batchesTable').DataTable) {
+            $('#batchesTable').DataTable().ajax.reload(null, false);
+        }
+    }
+
     // Load courses for modal select
     function loadCourses(courseId) {
         $.ajax({
@@ -113,7 +122,7 @@ $(document).ready(function() {
             success: function(res) {
                 if(res.success) {
                     $('#batchModal').modal('hide');
-                    batchesTable.ajax.reload();
+                    reloadBatchesTable();
                     toastr.success(res.message || (isEdit ? 'Batch updated successfully' : 'Batch added successfully'));
                 } else {
                     toastr.error(res.message || 'Error saving batch.');
@@ -136,7 +145,7 @@ $(document).ready(function() {
                 dataType: 'json',
                 success: function(res) {
                     if(res.success) {
-                        batchesTable.ajax.reload();
+                        reloadBatchesTable();
                         toastr.success(res.message || 'Batch deleted successfully');
                     } else {
                         toastr.error(res.message || 'Error deleting batch.');
@@ -183,6 +192,16 @@ $(document).ready(function() {
                 $('#batchStudentsModal').modal('show');
             }
         });
+    });
+
+    // Reload after closing add/edit modal
+    $('#batchModal').on('hidden.bs.modal', function() {
+        reloadBatchesTable();
+    });
+
+    // Reload after closing students modal (in case of changes)
+    $('#batchStudentsModal').on('hidden.bs.modal', function() {
+        reloadBatchesTable();
     });
 
     // Reset modal on close
