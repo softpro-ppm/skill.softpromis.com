@@ -90,7 +90,7 @@ require_once 'includes/sidebar.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="batchModalTitle">Add New Batch</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <form id="batchForm">
                 <div class="modal-body">
@@ -126,7 +126,7 @@ require_once 'includes/sidebar.php';
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span> Close</button>
                     <button type="submit" class="btn btn-primary" id="saveBatchBtn">Save</button>
                 </div>
             </form>
@@ -140,7 +140,7 @@ require_once 'includes/sidebar.php';
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="batchStudentsModalLabel">Batch Students</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
         <div id="batchStudentsError" class="alert alert-danger d-none"></div>
@@ -160,7 +160,7 @@ require_once 'includes/sidebar.php';
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal"><span aria-hidden="true">&times;</span> Close</button>
       </div>
     </div>
   </div>
