@@ -530,7 +530,6 @@ $(function () {
     });
 
     $(document).on('click', '.edit-student-btn', function () {
-        console.log('Edit button clicked'); // Debug log
         var studentId = $(this).data('student-id');
         $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: studentId }, function (response) {
             if (response.success) {
@@ -551,7 +550,10 @@ $(function () {
                 });
                 // Set full_name field explicitly
                 $('#editFullName').val(fullName);
-                $('#editStudentModal').modal('show');
+                // Use Bootstrap 5 API to show modal
+                var modal = document.getElementById('editStudentModal');
+                var bsModal = bootstrap.Modal.getOrCreateInstance(modal);
+                bsModal.show();
             } else {
                 alert(response.message || 'Failed to fetch student details.');
             }
