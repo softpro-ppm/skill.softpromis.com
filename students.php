@@ -186,8 +186,7 @@ try {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group"><label>Enrollment No</label><p data-field="enrollment_no"></p></div>
-                        <div class="form-group"><label>First Name</label><p data-field="first_name"></p></div>
-                        <div class="form-group"><label>Last Name</label><p data-field="last_name"></p></div>
+                        <div class="form-group"><label>Full Name</label><p data-field="full_name"></p></div>
                         <div class="form-group"><label>Email</label><p data-field="email"></p></div>
                         <div class="form-group"><label>Mobile</label><p data-field="mobile"></p></div>
                         <div class="form-group"><label>Date of Birth</label><p data-field="date_of_birth"></p></div>
@@ -226,7 +225,7 @@ try {
                             </div>
                             <div class="col-md-6">
                                 <label for="editFullName" class="form-label">Full Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="editFullName" name="full_name" required aria-required="true">
+                                <input type="text" class="form-control" id="editFullName" name="full_name" required aria-required="true" autocomplete="off" placeholder="Enter full name">
                             </div>
                             <div class="col-md-4">
                                 <label for="editPhoto" class="form-label">Student Photo</label>
