@@ -534,8 +534,18 @@ $(function () {
                         } else {
                             $(this).text('No qualification uploaded');
                         }
+                    } else if ([
+                        'partner_name',
+                        'center_name',
+                        'scheme_name',
+                        'sector_name',
+                        'course_name',
+                        'batch_code',
+                        'batch_name'
+                    ].includes(field)) {
+                        // Show empty string if value is null or undefined
+                        $(this).text(data[field] ? data[field] : '');
                     } else if (field === 'batch_code') {
-                        // Show batch code and batch name together if both exist
                         var batchText = (data.batch_code ? data.batch_code : '') + (data.batch_name ? ' - ' + data.batch_name : '');
                         $(this).text(batchText.trim());
                     } else {
