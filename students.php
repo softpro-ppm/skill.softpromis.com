@@ -73,8 +73,7 @@ try {
                                         <th>Date of Birth</th>
                                         <th>Gender</th>
                                         <th>Address</th>
-                                        <th>Course</th>
-                                        <th>Batch</th>
+                                        
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -145,24 +144,7 @@ try {
                                 <label for="addAddress" class="form-label">Address</label>
                                 <textarea class="form-control" id="addAddress" name="address"></textarea>
                             </div>
-                            <div class="col-md-6">
-                                <label for="addCourseId" class="form-label">Course</label>
-                                <select class="form-control" id="addCourseId" name="course_id">
-                                    <option value="">Select Course</option>
-                                    <?php foreach ($courses as $course): ?>
-                                        <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="addBatchId" class="form-label">Batch <span class="text-danger">*</span></label>
-                                <select class="form-control" id="addBatchId" name="batch_id" required aria-required="true">
-                                    <option value="">Select Batch</option>
-                                    <?php foreach ($batches as $batch): ?>
-                                        <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -210,8 +192,6 @@ try {
                                 <div class="card-body">
                                     <h6 class="text-primary mb-3"><i class="fas fa-graduation-cap me-2"></i>Academic Info</h6>
                                     <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><span class="fw-bold">Course:</span> <span data-field="course_name"></span></li>
-                                        <li class="mb-2"><span class="fw-bold">Batch:</span> <span data-field="batch_code"></span></li>
                                         <li class="mb-2"><span class="fw-bold">Address:</span> <span data-field="address"></span></li>
                                     </ul>
                                 </div>
@@ -301,24 +281,7 @@ try {
                                 <label for="editAddress" class="form-label">Address</label>
                                 <textarea class="form-control" id="editAddress" name="address"></textarea>
                             </div>
-                            <div class="col-md-6">
-                                <label for="editCourseId" class="form-label">Course</label>
-                                <select class="form-control" id="editCourseId" name="course_id">
-                                    <option value="">Select Course</option>
-                                    <?php foreach ($courses as $course): ?>
-                                        <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="editBatchId" class="form-label">Batch <span class="text-danger">*</span></label>
-                                <select class="form-control" id="editBatchId" name="batch_id" required aria-required="true">
-                                    <option value="">Select Batch</option>
-                                    <?php foreach ($batches as $batch): ?>
-                                        <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -371,8 +334,7 @@ $(function () {
             { data: 'date_of_birth' },
             { data: 'gender', render: function (data) { return data ? data.charAt(0).toUpperCase() + data.slice(1) : ''; } },
             { data: 'address' },
-            { data: 'course_name' },
-            { data: 'batch_code' },
+            
             { data: null, orderable: false, searchable: false, render: function (data, type, row) {
                 return '<div class="btn-group btn-group-sm">' +
                     '<button type="button" class="btn btn-info view-student-btn" data-student-id="' + row.student_id + '"><i class="fas fa-eye"></i></button>' +
