@@ -52,32 +52,31 @@ try {
             }
 
             // Handle file uploads
-            $photo_path = null;
-            $aadhaar_path = null;
-            $qualification_path = null;
+            $photo = null;
+            $aadhaar = null;
+            $qualification = null;
             $upload_dir = '../../uploads/students/';
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
             }
             if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
                 $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-                $photo_path = $upload_dir . uniqid('photo_') . '.' . $ext;
-                move_uploaded_file($_FILES['photo']['tmp_name'], $photo_path);
+                $photo = uniqid('photo_') . '.' . $ext;
+                move_uploaded_file($_FILES['photo']['tmp_name'], $upload_dir . $photo);
             }
             if (isset($_FILES['aadhaar']) && $_FILES['aadhaar']['error'] === UPLOAD_ERR_OK) {
                 $ext = pathinfo($_FILES['aadhaar']['name'], PATHINFO_EXTENSION);
-                $aadhaar_path = $upload_dir . uniqid('aadhaar_') . '.' . $ext;
-                move_uploaded_file($_FILES['aadhaar']['tmp_name'], $aadhaar_path);
+                $aadhaar = uniqid('aadhaar_') . '.' . $ext;
+                move_uploaded_file($_FILES['aadhaar']['tmp_name'], $upload_dir . $aadhaar);
             }
             if (isset($_FILES['qualification']) && $_FILES['qualification']['error'] === UPLOAD_ERR_OK) {
                 $ext = pathinfo($_FILES['qualification']['name'], PATHINFO_EXTENSION);
-                $qualification_path = $upload_dir . uniqid('qualification_') . '.' . $ext;
-                move_uploaded_file($_FILES['qualification']['tmp_name'], $qualification_path);
+                $qualification = uniqid('qualification_') . '.' . $ext;
+                move_uploaded_file($_FILES['qualification']['tmp_name'], $upload_dir . $qualification);
             }
 
-            // Note: You must add columns to the students table to store these file paths if you want to persist them.
-            $stmt = $pdo->prepare("INSERT INTO students (enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, course_id, batch_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
-            $stmt->execute([$enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id]);
+            $stmt = $pdo->prepare("INSERT INTO students (enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, course_id, batch_id, photo, aadhaar, qualification, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
+            $stmt->execute([$enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id, $photo, $aadhaar, $qualification]);
             $student_id = $pdo->lastInsertId();
             // Insert into student_batch_enrollment if batch_id is set
             if ($batch_id) {
@@ -119,31 +118,47 @@ try {
             }
 
             // Handle file uploads (optional, update if new file provided)
-            $photo_path = null;
-            $aadhaar_path = null;
-            $qualification_path = null;
+            $photo = null;
+            $aadhaar = null;
+            $qualification = null;
             $upload_dir = '../../uploads/students/';
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
             }
             if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
                 $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
-                $photo_path = $upload_dir . uniqid('photo_') . '.' . $ext;
-                move_uploaded_file($_FILES['photo']['tmp_name'], $photo_path);
+                $photo = uniqid('photo_') . '.' . $ext;
+                move_uploaded_file($_FILES['photo']['tmp_name'], $upload_dir . $photo);
             }
             if (isset($_FILES['aadhaar']) && $_FILES['aadhaar']['error'] === UPLOAD_ERR_OK) {
                 $ext = pathinfo($_FILES['aadhaar']['name'], PATHINFO_EXTENSION);
-                $aadhaar_path = $upload_dir . uniqid('aadhaar_') . '.' . $ext;
-                move_uploaded_file($_FILES['aadhaar']['tmp_name'], $aadhaar_path);
+                $aadhaar = uniqid('aadhaar_') . '.' . $ext;
+                move_uploaded_file($_FILES['aadhaar']['tmp_name'], $upload_dir . $aadhaar);
             }
             if (isset($_FILES['qualification']) && $_FILES['qualification']['error'] === UPLOAD_ERR_OK) {
                 $ext = pathinfo($_FILES['qualification']['name'], PATHINFO_EXTENSION);
-                $qualification_path = $upload_dir . uniqid('qualification_') . '.' . $ext;
-                move_uploaded_file($_FILES['qualification']['tmp_name'], $qualification_path);
+                $qualification = uniqid('qualification_') . '.' . $ext;
+                move_uploaded_file($_FILES['qualification']['tmp_name'], $upload_dir . $qualification);
             }
 
-            $stmt = $pdo->prepare("UPDATE students SET first_name = ?, last_name = ?, email = ?, mobile = ?, date_of_birth = ?, gender = ?, address = ?, course_id = ?, batch_id = ?, updated_at = NOW() WHERE student_id = ?");
-            $stmt->execute([$first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id, $student_id]);
+            $updateFields = "first_name = ?, last_name = ?, email = ?, mobile = ?, date_of_birth = ?, gender = ?, address = ?, course_id = ?, batch_id = ?";
+            $params = [$first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id];
+            if ($photo !== null) {
+                $updateFields .= ", photo = ?";
+                $params[] = $photo;
+            }
+            if ($aadhaar !== null) {
+                $updateFields .= ", aadhaar = ?";
+                $params[] = $aadhaar;
+            }
+            if ($qualification !== null) {
+                $updateFields .= ", qualification = ?";
+                $params[] = $qualification;
+            }
+            $updateFields .= ", updated_at = NOW()";
+            $params[] = $student_id;
+            $stmt = $pdo->prepare("UPDATE students SET $updateFields WHERE student_id = ?");
+            $stmt->execute($params);
             // Update or insert into student_batch_enrollment
             if ($batch_id) {
                 $enrollment_date = date('Y-m-d');

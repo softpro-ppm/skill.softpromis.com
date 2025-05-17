@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 15, 2025 at 12:05 AM
+-- Generation Time: May 17, 2025 at 01:42 AM
 -- Server version: 10.11.10-MariaDB
 -- PHP Version: 7.2.34
 
@@ -55,13 +55,6 @@ CREATE TABLE `assigned_courses` (
   `assigned_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `assigned_courses`
---
-
-INSERT INTO `assigned_courses` (`id`, `course_id`, `sector_id`, `scheme_id`, `center_id`, `assigned_at`) VALUES
-(1, 4, 5, 1, 4, '2025-05-11 08:29:51');
-
 -- --------------------------------------------------------
 
 --
@@ -74,14 +67,6 @@ CREATE TABLE `assigned_schemes` (
   `center_id` int(11) NOT NULL,
   `assigned_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `assigned_schemes`
---
-
-INSERT INTO `assigned_schemes` (`id`, `scheme_id`, `center_id`, `assigned_at`) VALUES
-(1, 1, 4, '2025-05-11 08:14:31'),
-(2, 1, 1, '2025-05-11 08:15:02');
 
 -- --------------------------------------------------------
 
@@ -96,13 +81,6 @@ CREATE TABLE `assigned_sectors` (
   `center_id` int(11) NOT NULL,
   `assigned_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `assigned_sectors`
---
-
-INSERT INTO `assigned_sectors` (`id`, `sector_id`, `scheme_id`, `center_id`, `assigned_at`) VALUES
-(1, 5, 1, 4, '2025-05-11 08:23:33');
 
 -- --------------------------------------------------------
 
@@ -129,9 +107,8 @@ CREATE TABLE `batches` (
 --
 
 INSERT INTO `batches` (`batch_id`, `batch_name`, `center_id`, `course_id`, `batch_code`, `start_date`, `end_date`, `capacity`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Test', 1, 1, 'B001', '2024-01-01', '2024-06-30', 30, 'ongoing', '2025-04-24 05:17:04', '2025-05-11 08:44:09'),
-(2, 'dfgh', 2, 2, 'B002', '2024-02-01', '2024-04-30', 25, 'ongoing', '2025-04-24 05:17:04', '2025-05-11 08:44:02'),
-(3, 'dfgb', 3, 3, 'B003', '2024-03-01', '2024-08-31', 20, 'upcoming', '2025-04-24 05:17:04', '2025-05-11 08:48:56');
+(11, 'ELE-B1', NULL, 7, 'B001', '2025-05-01', '2025-05-31', 60, 'ongoing', '2025-05-15 00:46:12', '2025-05-15 06:34:38'),
+(12, 'Skyler Drake', NULL, 7, 'B012', '1972-05-23', '2010-12-22', 44, 'completed', '2025-05-15 06:14:45', '2025-05-15 06:14:45');
 
 -- --------------------------------------------------------
 
@@ -153,14 +130,6 @@ CREATE TABLE `certificates` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `certificates`
---
-
-INSERT INTO `certificates` (`certificate_id`, `enrollment_id`, `student_id`, `batch_id`, `certificate_number`, `certificate_type`, `issue_date`, `valid_until`, `status`, `remarks`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 2, 'CERT001', NULL, '2024-06-30', '2026-06-30', 'issued', NULL, '2025-04-24 05:17:04', '2025-05-15 00:03:54'),
-(2, 2, 2, 2, 'CERT002', NULL, '2024-06-30', '2026-06-30', 'issued', NULL, '2025-04-24 05:17:04', '2025-05-15 00:03:48');
 
 -- --------------------------------------------------------
 
@@ -190,12 +159,7 @@ CREATE TABLE `courses` (
 --
 
 INSERT INTO `courses` (`course_id`, `sector_id`, `scheme_id`, `course_code`, `course_name`, `duration_hours`, `description`, `status`, `created_at`, `updated_at`, `fee`, `prerequisites`, `syllabus`, `center_id`) VALUES
-(1, 1, 1, 'WD001', 'Web Development', 480, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL, NULL, NULL, NULL),
-(2, 1, 1, 'DM001', 'Digital Marketing', 240, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL, NULL, NULL, NULL),
-(3, 1, 3, 'DA001', 'Data Analytics', 360, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04', NULL, NULL, NULL, NULL),
-(4, 5, 1, '45554', 'Melodie Nichols', 5, 'Rerum culpa nulla qu', 'active', '2025-05-01 10:04:53', '2025-05-13 10:57:35', 16.00, 'Veniam consectetur', 'Ut adipisicing moles', 4),
-(5, 9, 2, 'Excepturi ea cumque', 'Wylie Dunlap', 25, 'Tempore facilis et', 'inactive', '2025-05-03 09:11:57', '2025-05-03 09:11:57', 59.00, 'Omnis voluptatem do', 'Fugiat excepteur no', NULL),
-(6, 4, 3, 'Dolorem aut architec', 'Aristotle Dunn', 69, 'Qui dolor cupiditate', 'active', '2025-05-13 10:57:43', '2025-05-13 10:57:43', 90.00, 'Autem sed cupiditate', 'Temporibus ea autem', 1);
+(7, 18, 15, 'ELE1', 'Asst. Electrician', 360, '', 'active', '2025-05-15 00:43:12', '2025-05-15 00:43:12', 3000.00, '', '', 11);
 
 -- --------------------------------------------------------
 
@@ -264,9 +228,7 @@ CREATE TABLE `schemes` (
 --
 
 INSERT INTO `schemes` (`scheme_id`, `center_id`, `scheme_name`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 'PMKVY', 'Pradhan Mantri Kaushal Vikas Yojana', 'active', '2025-04-24 05:17:04', '2025-05-13 05:28:12'),
-(2, 1, 'DDU-GKY', 'Deen Dayal Upadhyaya Grameen Kaushalya Yojana', 'active', '2025-04-24 05:17:04', '2025-05-13 05:37:24'),
-(3, 2, 'Regular', 'Regular Training Programs', 'active', '2025-04-24 05:17:04', '2025-05-13 05:37:33');
+(15, 11, 'PMKVY', 'PMKVY', 'active', '2025-05-15 00:41:48', '2025-05-15 00:41:48');
 
 -- --------------------------------------------------------
 
@@ -290,18 +252,7 @@ CREATE TABLE `sectors` (
 --
 
 INSERT INTO `sectors` (`sector_id`, `center_id`, `scheme_id`, `sector_name`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, NULL, NULL, 'IT-ITeS', 'Information Technology and IT Enabled Services', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(2, NULL, NULL, 'Healthcare', 'Healthcare and Medical Services', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(3, NULL, NULL, 'Retail', 'Retail and Sales Management', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(4, NULL, NULL, 'Petra Mathis', 'Dolore magni sunt es', 'active', '2025-04-30 06:12:13', '2025-04-30 06:12:13'),
-(5, NULL, NULL, 'Petra Mathis yyy', 'Dolore magni sunt es', 'active', '2025-04-30 06:12:24', '2025-04-30 06:12:41'),
-(6, NULL, NULL, 'asdf', 'asdfv', 'active', '2025-04-30 06:15:32', '2025-04-30 06:24:40'),
-(7, NULL, NULL, 'asdf', 'wedf', 'active', '2025-04-30 06:24:58', '2025-04-30 06:24:58'),
-(9, NULL, NULL, 'dfv', 'sdc', 'active', '2025-04-30 06:37:33', '2025-04-30 06:37:33'),
-(10, NULL, NULL, 'dfv', 'sdc', 'active', '2025-04-30 06:37:47', '2025-04-30 06:37:47'),
-(11, NULL, NULL, 'sdfv', 'xcv', 'active', '2025-04-30 06:39:35', '2025-04-30 06:39:35'),
-(12, 4, 1, 'sdfv', 'xcv', 'active', '2025-04-30 06:39:43', '2025-05-13 05:59:24'),
-(17, 4, 1, 'Gillian Villarreal', 'Perspiciatis at ill', 'active', '2025-05-13 05:50:08', '2025-05-13 05:56:16');
+(18, 11, 15, 'Electronics', 'Electronics', 'active', '2025-05-15 00:42:16', '2025-05-15 00:42:16');
 
 -- --------------------------------------------------------
 
@@ -322,17 +273,19 @@ CREATE TABLE `students` (
   `course_id` int(11) DEFAULT NULL,
   `batch_id` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `photo` varchar(255) DEFAULT NULL,
+  `aadhaar` varchar(255) DEFAULT NULL,
+  `qualification` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`student_id`, `enrollment_no`, `first_name`, `last_name`, `email`, `mobile`, `date_of_birth`, `gender`, `address`, `course_id`, `batch_id`, `created_at`, `updated_at`) VALUES
-(1, 'ENR001', 'Rahul', 'Sharma', 'rahul@gmail.com', '9876543218', '2000-01-15', 'male', 'yyyy', 3, 1, '2025-04-24 05:17:04', '2025-05-14 23:32:05'),
-(2, 'ENR002', 'Priya', 'Patel', 'priya@gmail.com', '9876543219', '2001-03-20', 'female', NULL, NULL, NULL, '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(3, 'ENR003', 'Amit', 'Kumar', 'amit@gmail.com', '9876543220', '1999-07-10', 'male', NULL, NULL, NULL, '2025-04-24 05:17:04', '2025-04-24 05:17:04');
+INSERT INTO `students` (`student_id`, `enrollment_no`, `first_name`, `last_name`, `email`, `mobile`, `date_of_birth`, `gender`, `address`, `course_id`, `batch_id`, `created_at`, `updated_at`, `photo`, `aadhaar`, `qualification`) VALUES
+(16, 'ENR001', 'Rajesh', 'G', 'pusyriqani@mailinator.com', '9550755039', '2007-07-11', 'male', 'Illum ut incidunt', 7, 11, '2025-05-15 00:47:07', '2025-05-15 08:14:27', NULL, NULL, NULL),
+(18, 'ENR002', 'aaa', '', 'abc@mailinator.com', '6776676776', '1985-08-17', 'other', 'Lorem saepe minus co', 7, 11, '2025-05-17 01:26:48', '2025-05-17 01:38:04', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -355,11 +308,8 @@ CREATE TABLE `student_batch_enrollment` (
 --
 
 INSERT INTO `student_batch_enrollment` (`enrollment_id`, `student_id`, `batch_id`, `enrollment_date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2024-01-01', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(2, 2, 1, '2024-01-01', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(3, 3, 2, '2024-02-01', 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(4, 1, 3, '2025-05-11', 'active', '2025-05-11 08:50:45', '2025-05-11 08:50:45'),
-(5, 3, 3, '2025-05-12', 'active', '2025-05-12 10:04:07', '2025-05-12 10:04:07');
+(7, 16, 11, '2025-05-15', 'active', '2025-05-15 07:54:47', '2025-05-15 08:14:27'),
+(9, 18, 11, '2025-05-17', 'active', '2025-05-17 01:26:48', '2025-05-17 01:38:04');
 
 -- --------------------------------------------------------
 
@@ -388,11 +338,8 @@ CREATE TABLE `training_centers` (
 --
 
 INSERT INTO `training_centers` (`center_id`, `partner_id`, `center_name`, `contact_person`, `email`, `phone`, `address`, `city`, `state`, `pincode`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'TechSkill Mumbai Center', 'Amit Shah', 'mumbai@techskill.com', '9876543215', 'Andheri, Mumbai', NULL, NULL, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(2, 1, 'TechSkill Pune Center', 'Sneha Patil', 'pune@techskill.com', '9876543216', 'Hinjewadi, Pune', NULL, NULL, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(3, 2, 'DTI Delhi Center', 'Vikram Singh', 'delhi@dti.com', '9876543217', 'Connaught Place, Delhi', NULL, NULL, NULL, 'active', '2025-04-24 05:17:04', '2025-04-24 05:17:04'),
-(4, 1, 'Kameko Patel', 'Irure est accusamus', 'vubi@mailinator.com', '+1 (326) 925-23', 'Reprehenderit non t', 'Irure molestiae cons', 'Quia repudiandae mol', 'Aliquip li', 'active', '2025-04-26 02:01:19', '2025-05-14 22:53:38'),
-(8, 1, 'Lysandra Potts', 'Laborum quia ipsa m', 'sykalasup@mailinator.com', '5445545454', '6666', 'Odio dolore quaerat ', 'At obcaecati est com', '343434', 'active', '2025-05-14 22:58:34', '2025-05-14 22:58:57');
+(11, 20, 'Softpro Branch', 'Aperiam Et Minim Vol', 'duqel@mailinator.com', '5456456456', 'Libero provident en', 'Vel Laboris Non Aliq', 'Non Officiis Quisqua', '564564', 'active', '2025-05-15 00:34:51', '2025-05-15 00:41:15'),
+(12, 21, 'Imani Wagner', 'Proident Voluptatem', 'qyquxevu@mailinator.com', '1617382164', 'Sit est laboris eni', 'Quos Repellendus Pr', 'Aliquid Amet Enim V', '564656', 'active', '2025-05-15 01:22:47', '2025-05-15 01:22:47');
 
 -- --------------------------------------------------------
 
@@ -420,12 +367,8 @@ CREATE TABLE `training_partners` (
 --
 
 INSERT INTO `training_partners` (`partner_id`, `partner_name`, `contact_person`, `email`, `phone`, `address`, `website`, `status`, `created_at`, `updated_at`, `registration_doc`, `agreement_doc`) VALUES
-(1, 'TechSkill Solutions', 'Rajesh Kumar', 'contact@techskill.com', '9876543213', 'Mumbai, India', '', 'active', '2025-04-24 05:17:04', '2025-05-14 14:25:22', NULL, NULL),
-(2, 'Digital Training Institute', 'Priya Singh', 'info@dti.com', '9876543214', 'Delhi, India', '', 'active', '2025-04-24 05:17:04', '2025-05-14 14:25:30', NULL, NULL),
-(16, 'Softpro', 'Ipsum et sunt iusto ', 'vazi@mailinator.com', '5444555454', 'Et modi dolore commo', 'https://www.jory.cc', 'active', '2025-05-14 14:11:18', '2025-05-14 14:11:43', NULL, NULL),
-(17, 'Metx', 'Quo ipsum laborum A', 'hulyvigy@mailinator.com', '9884684654', 'Non exercitation del', 'https://www.cuqozyz.tv', 'active', '2025-05-14 14:12:07', '2025-05-14 14:12:07', NULL, NULL),
-(18, 'Penelope Hancock', 'Ut quo Nam hic labor', 'xajoluke@mailinator.com', '5656565656', 'Qui commodi sint atq', 'https://www.vazely.info', 'active', '2025-05-14 22:33:06', '2025-05-14 22:33:06', NULL, NULL),
-(19, 'Harper Rosa', 'Proident dolorem op', 'fykiw@mailinator.com', '5665565656', 'Qui iusto assumenda ', 'https://www.gurezaled.us', 'inactive', '2025-05-14 23:06:51', '2025-05-14 23:06:51', NULL, NULL);
+(20, 'Softpro', 'Rerum vel voluptas p', 'mabixetaz@mailinator.com', '5454555554', 'Ad quis culpa aliqui', 'https://www.rulakifiniqetu.me.uk', 'active', '2025-05-15 00:33:36', '2025-05-15 00:34:24', '68253660cb1c8_reg.pdf', '68253660ce96e_agr.pdf'),
+(21, 'Metx', 'Error nulla distinct', 'nylyqy@mailinator.com', '5415341564', 'Debitis aut dolore i', 'https://www.myjilygufipe.us', 'active', '2025-05-15 01:21:44', '2025-05-15 01:22:21', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -455,7 +398,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`user_id`, `role_id`, `username`, `password`, `email`, `full_name`, `mobile`, `status`, `created_at`, `updated_at`, `token`, `last_login`) VALUES
 (5, 2, 'trainer1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'trainer@softpro.com', 'John Trainer', '9876543211', 'active', '2025-04-24 07:12:13', '2025-04-24 07:12:13', NULL, NULL),
 (6, 3, 'assessor1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'assessor@softpro.com', 'Jane Assessor', '9876543212', 'active', '2025-04-24 07:12:13', '2025-04-24 07:12:13', NULL, NULL),
-(7, 1, 'admin', '$2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C', 'admin@softpro.com', 'Administrator', '', 'active', '2025-04-24 07:16:39', '2025-05-14 22:10:01', 'c7c1a381dfb692f5522bce628cb9f8479635751c647078e9f9a3a6dd6e198e33', '2025-05-14 22:10:01');
+(7, 1, 'admin', '$2y$10$zX0FKvO3WAdGwlYasWjkIOTBGEfWB9KAVshBsNXOA3KU2lkbYN93C', 'admin@softpro.com', 'Administrator', '', 'active', '2025-04-24 07:16:39', '2025-05-17 01:08:57', '29be2a27b2844b6b005a1e64c7a79b482ceaf497c4a32b76719d5ece9363eea2', '2025-05-17 01:08:57');
 
 --
 -- Indexes for dumped tables
@@ -625,7 +568,7 @@ ALTER TABLE `assigned_sectors`
 -- AUTO_INCREMENT for table `batches`
 --
 ALTER TABLE `batches`
-  MODIFY `batch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `batch_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `certificates`
@@ -637,7 +580,7 @@ ALTER TABLE `certificates`
 -- AUTO_INCREMENT for table `courses`
 --
 ALTER TABLE `courses`
-  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `course_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `fees`
@@ -655,37 +598,37 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `schemes`
 --
 ALTER TABLE `schemes`
-  MODIFY `scheme_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `scheme_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `sectors`
 --
 ALTER TABLE `sectors`
-  MODIFY `sector_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `sector_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `student_batch_enrollment`
 --
 ALTER TABLE `student_batch_enrollment`
-  MODIFY `enrollment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `enrollment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `training_centers`
 --
 ALTER TABLE `training_centers`
-  MODIFY `center_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `center_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `training_partners`
 --
 ALTER TABLE `training_partners`
-  MODIFY `partner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `partner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`
