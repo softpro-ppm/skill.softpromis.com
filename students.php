@@ -508,6 +508,15 @@ $(function () {
                     var field = $(this).data('field');
                     if (field === 'full_name') {
                         $(this).text(fullName);
+                    } else if (field === 'photo' && data.photo) {
+                        var url = 'uploads/students/' + data.photo;
+                        $(this).html('<a href="' + url + '" target="_blank">View Photo</a>');
+                    } else if (field === 'aadhaar' && data.aadhaar) {
+                        var url = 'uploads/students/' + data.aadhaar;
+                        $(this).html('<a href="' + url + '" target="_blank">View Aadhaar</a>');
+                    } else if (field === 'qualification' && data.qualification) {
+                        var url = 'uploads/students/' + data.qualification;
+                        $(this).html('<a href="' + url + '" target="_blank">View Qualification</a>');
                     } else {
                         $(this).text(data[field] || '');
                     }
