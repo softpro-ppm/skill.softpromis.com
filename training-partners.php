@@ -303,29 +303,14 @@ if(isset($_POST['action'])) {
                 $result = $stmt->get_result();
                 
                 if($row = $result->fetch_assoc()) {
-<<<<<<< Updated upstream
-                    // Fetch the correct count of training centers for this partner
-=======
-                    // Fetch center count for this partner
->>>>>>> Stashed changes
                     $count_query = "SELECT COUNT(*) as center_count FROM training_centers WHERE partner_id = ?";
                     $count_stmt = $conn->prepare($count_query);
                     $count_stmt->bind_param("i", $partner_id);
                     $count_stmt->execute();
                     $count_result = $count_stmt->get_result();
-<<<<<<< Updated upstream
-                    $center_count = 0;
-                    if($count_row = $count_result->fetch_assoc()) {
-                        $center_count = $count_row['center_count'];
-                    }
-                    $row['center_count'] = $center_count;
-                    $count_stmt->close();
-=======
                     $count_row = $count_result->fetch_assoc();
                     $row['center_count'] = $count_row ? $count_row['center_count'] : 0;
                     $count_stmt->close();
-
->>>>>>> Stashed changes
                     $response['status'] = true;
                     $response['data'] = $row;
                 } else {
