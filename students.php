@@ -177,7 +177,7 @@ try {
 <!-- View Student Modal -->
 <div class="modal fade" id="viewStudentModal" tabindex="-1" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
 
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-dialog-centered modal-md">
 </div>
     <div class="modal-content smart-modal">
         <div class="modal-header bg-primary text-white align-items-center">
