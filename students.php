@@ -497,9 +497,20 @@ $(function () {
         $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: studentId }, function (response) {
             if (response.success && response.data) {
                 var data = response.data;
+                // Compose full_name if not present, fallback to first_name + last_name
+                var fullName = '';
+                if (data.full_name && data.full_name.trim() !== '') {
+                    fullName = data.full_name;
+                } else if ((data.first_name && data.first_name.trim() !== '') || (data.last_name && data.last_name.trim() !== '')) {
+                    fullName = ((data.first_name || '') + (data.last_name ? (' ' + data.last_name) : '')).trim();
+                }
                 modal.find('[data-field]').each(function () {
                     var field = $(this).data('field');
-                    $(this).text(data[field] || '');
+                    if (field === 'full_name') {
+                        $(this).text(fullName);
+                    } else {
+                        $(this).text(data[field] || '');
+                    }
                 });
             } else {
                 modal.find('[data-field]').text('');
