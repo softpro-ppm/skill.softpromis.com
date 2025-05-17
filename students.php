@@ -179,13 +179,13 @@ try {
     <div class="modal-dialog modal-dialog-centered modal-md">
         <div class="modal-content smart-modal">
             <div class="modal-header bg-primary text-white align-items-center">
-                <div class="d-flex align-items-center w-100">
-                    <div class="me-2" style="font-size:2rem;"><i class="fas fa-user-graduate"></i></div>
-                    <div>
-                        <h4 class="modal-title mb-0" id="viewStudentModalLabel">Student Details</h4>
-                    </div>
-                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="d-flex align-items-center w-100 position-relative">
+                <div class="me-2" style="font-size:2rem;"><i class="fas fa-user-graduate"></i></div>
+                <div>
+                    <h4 class="modal-title mb-0" id="viewStudentModalLabel">Student Details</h4>
                 </div>
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-2" style="filter: invert(1); background: none;" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             </div>
             <div class="modal-body p-4">
                 <div class="container-fluid">
