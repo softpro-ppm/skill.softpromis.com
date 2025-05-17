@@ -550,7 +550,21 @@ $(function () {
                 $('#editStudentForm').find('[name]').each(function () {
                     var name = $(this).attr('name');
                     if (name !== 'full_name') {
-                        $(this).val(data[name] || '');
+                        // For file inputs, do not set value (security restriction)
+                        if ($(this).attr('type') === 'file') {
+                            // Show link if file exists
+                            var fileField = name;
+                            var fileVal = data[fileField];
+                            var linkId = '#current_' + fileField + '_link';
+                            if (fileVal) {
+                                var url = 'uploads/students/' + fileVal;
+                                $(linkId).html('<a href="' + url + '" target="_blank">View Uploaded</a>');
+                            } else {
+                                $(linkId).html('');
+                            }
+                        } else {
+                            $(this).val(data[name] || '');
+                        }
                     }
                 });
                 $('#editFullName').val(fullName);
