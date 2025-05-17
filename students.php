@@ -540,12 +540,12 @@ $(function () {
                         'scheme_name',
                         'sector_name',
                         'course_name',
-                        'batch_code',
                         'batch_name'
                     ].includes(field)) {
                         // Show empty string if value is null or undefined
                         $(this).text(data[field] ? data[field] : '');
                     } else if (field === 'batch_code') {
+                        // Show batch_code and batch_name together for the Batch field
                         var batchText = (data.batch_code ? data.batch_code : '') + (data.batch_name ? ' - ' + data.batch_name : '');
                         $(this).text(batchText.trim());
                     } else {
