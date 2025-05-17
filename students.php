@@ -530,6 +530,7 @@ $(function () {
     });
 
     $(document).on('click', '.edit-student-btn', function () {
+        console.log('Edit button clicked'); // Debug log
         var studentId = $(this).data('student-id');
         $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: studentId }, function (response) {
             if (response.success) {
