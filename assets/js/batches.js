@@ -31,6 +31,7 @@ $(document).ready(function() {
                 render: function(data) {
                     return `
                         <button class="btn btn-sm btn-info view-batch-students-btn" data-batch-id="${data.batch_id}"><i class="fas fa-users"></i></button>
+                        <button class="btn btn-sm btn-success assign-students-btn" data-batch-id="${data.batch_id}"><i class="fas fa-user-plus"></i> Assign</button>
                         <button class="btn btn-sm btn-primary edit-batch-btn" data-batch-id="${data.batch_id}"><i class="fas fa-edit"></i></button>
                         <button class="btn btn-sm btn-danger delete-batch-btn" data-batch-id="${data.batch_id}"><i class="fas fa-trash"></i></button>
                     `;

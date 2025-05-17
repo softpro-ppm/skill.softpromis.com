@@ -84,6 +84,33 @@ require_once 'includes/sidebar.php';
     </section>
 </div><!-- /.content-wrapper -->
 
+<!-- Assign Students to Batch Modal -->
+<div class="modal fade" id="assignStudentsModal" tabindex="-1" aria-labelledby="assignStudentsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="assignStudentsModalLabel">Assign Students to Batch</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="assignStudentsForm">
+                <div class="modal-body">
+                    <input type="hidden" id="assignBatchId" name="batch_id">
+                    <div class="form-group mb-3">
+                        <label for="assignStudentIds">Select Students</label>
+                        <select class="form-control" id="assignStudentIds" name="student_ids[]" multiple required style="min-height:150px;"></select>
+                        <small class="form-text text-muted">Only students not assigned to any batch are shown.</small>
+                    </div>
+                    <div id="assignStudentsError" class="alert alert-danger d-none"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Assign</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Add/Edit Batch Modal -->
 <div class="modal fade" id="batchModal" tabindex="-1">
     <div class="modal-dialog">
@@ -168,5 +195,51 @@ require_once 'includes/sidebar.php';
 
 <?php include 'includes/js.php'; ?>
 <script src="assets/js/batches.js"></script>
+<script>
+// Assign Students Modal logic
+$(function() {
+    // Open assign modal
+    $(document).on('click', '.assign-students-btn', function() {
+        var batchId = $(this).data('batch-id');
+        $('#assignBatchId').val(batchId);
+        var $select = $('#assignStudentIds');
+        $select.empty();
+        $('#assignStudentsError').addClass('d-none').text('');
+        // Load available students
+        $.post('inc/ajax/batches_ajax.php', { action: 'get_available_students' }, function(res) {
+            if(res.success && res.data.length) {
+                $.each(res.data, function(i, s) {
+                    $select.append('<option value="'+s.student_id+'">'+s.full_name+' ('+s.enrollment_no+')</option>');
+                });
+            } else {
+                $select.append('<option disabled>No available students</option>');
+            }
+            $('#assignStudentsModal').modal('show');
+        }, 'json');
+    });
+
+    // Submit assign form
+    $('#assignStudentsForm').on('submit', function(e) {
+        e.preventDefault();
+        var batchId = $('#assignBatchId').val();
+        var studentIds = $('#assignStudentIds').val();
+        var $error = $('#assignStudentsError');
+        $error.addClass('d-none').text('');
+        if(!studentIds || studentIds.length === 0) {
+            $error.removeClass('d-none').text('Please select at least one student.');
+            return;
+        }
+        $.post('inc/ajax/batches_ajax.php', { action: 'assign_students', batch_id: batchId, student_ids: studentIds }, function(res) {
+            if(res.success) {
+                $('#assignStudentsModal').modal('hide');
+                toastr.success(res.message || 'Students assigned successfully');
+                // Optionally reload batch students table if open
+            } else {
+                $error.removeClass('d-none').text(res.message || 'Failed to assign students.');
+            }
+        }, 'json');
+    });
+});
+</script>
 </body>
 </html>
