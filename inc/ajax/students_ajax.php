@@ -17,8 +17,7 @@ try {
     switch ($action) {
         case 'create':
             $enrollment_no = sanitizeInput($_POST['enrollment_no'] ?? '');
-            $first_name = sanitizeInput($_POST['first_name'] ?? '');
-            $last_name = sanitizeInput($_POST['last_name'] ?? '');
+            $full_name = sanitizeInput($_POST['full_name'] ?? '');
             $email = sanitizeInput($_POST['email'] ?? '');
             $mobile = sanitizeInput($_POST['mobile'] ?? '');
             $date_of_birth = sanitizeInput($_POST['date_of_birth'] ?? '');
@@ -27,13 +26,22 @@ try {
             $course_id = isset($_POST['course_id']) ? (int)$_POST['course_id'] : null;
             $batch_id = isset($_POST['batch_id']) ? (int)$_POST['batch_id'] : null;
 
-            if (empty($enrollment_no) || empty($first_name) || empty($last_name)) {
+            // Split full name into first and last name
+            $first_name = '';
+            $last_name = '';
+            if (!empty($full_name)) {
+                $parts = preg_split('/\s+/', trim($full_name), 2);
+                $first_name = $parts[0];
+                $last_name = isset($parts[1]) ? $parts[1] : '';
+            }
+
+            if (empty($enrollment_no) || empty($first_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
             if (!empty($email) && !validateEmail($email)) {
                 sendJSONResponse(false, 'Invalid email format');
             }
-            if (!empty($mobile) && !validatePhone($mobile)) {
+            if (!empty($mobile) && !preg_match('/^[0-9]{10}$/', $mobile)) {
                 sendJSONResponse(false, 'Invalid mobile format');
             }
             // Check for unique enrollment_no
@@ -42,6 +50,32 @@ try {
             if ($stmt->fetchColumn() > 0) {
                 sendJSONResponse(false, 'Enrollment number already exists');
             }
+
+            // Handle file uploads
+            $photo_path = null;
+            $aadhaar_path = null;
+            $qualification_path = null;
+            $upload_dir = '../../uploads/students/';
+            if (!file_exists($upload_dir)) {
+                mkdir($upload_dir, 0777, true);
+            }
+            if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+                $photo_path = $upload_dir . uniqid('photo_') . '.' . $ext;
+                move_uploaded_file($_FILES['photo']['tmp_name'], $photo_path);
+            }
+            if (isset($_FILES['aadhaar']) && $_FILES['aadhaar']['error'] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($_FILES['aadhaar']['name'], PATHINFO_EXTENSION);
+                $aadhaar_path = $upload_dir . uniqid('aadhaar_') . '.' . $ext;
+                move_uploaded_file($_FILES['aadhaar']['tmp_name'], $aadhaar_path);
+            }
+            if (isset($_FILES['qualification']) && $_FILES['qualification']['error'] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($_FILES['qualification']['name'], PATHINFO_EXTENSION);
+                $qualification_path = $upload_dir . uniqid('qualification_') . '.' . $ext;
+                move_uploaded_file($_FILES['qualification']['tmp_name'], $qualification_path);
+            }
+
+            // Note: You must add columns to the students table to store these file paths if you want to persist them.
             $stmt = $pdo->prepare("INSERT INTO students (enrollment_no, first_name, last_name, email, mobile, date_of_birth, gender, address, course_id, batch_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())");
             $stmt->execute([$enrollment_no, $first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id]);
             $student_id = $pdo->lastInsertId();
@@ -56,8 +90,7 @@ try {
 
         case 'update':
             $student_id = (int)($_POST['student_id'] ?? 0);
-            $first_name = sanitizeInput($_POST['first_name'] ?? '');
-            $last_name = sanitizeInput($_POST['last_name'] ?? '');
+            $full_name = sanitizeInput($_POST['full_name'] ?? '');
             $email = sanitizeInput($_POST['email'] ?? '');
             $mobile = sanitizeInput($_POST['mobile'] ?? '');
             $date_of_birth = sanitizeInput($_POST['date_of_birth'] ?? '');
@@ -66,15 +99,49 @@ try {
             $course_id = isset($_POST['course_id']) ? (int)$_POST['course_id'] : null;
             $batch_id = isset($_POST['batch_id']) ? (int)$_POST['batch_id'] : null;
 
-            if (empty($student_id) || empty($first_name) || empty($last_name)) {
+            // Split full name into first and last name
+            $first_name = '';
+            $last_name = '';
+            if (!empty($full_name)) {
+                $parts = preg_split('/\s+/', trim($full_name), 2);
+                $first_name = $parts[0];
+                $last_name = isset($parts[1]) ? $parts[1] : '';
+            }
+
+            if (empty($student_id) || empty($first_name)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
             if (!empty($email) && !validateEmail($email)) {
                 sendJSONResponse(false, 'Invalid email format');
             }
-            if (!empty($mobile) && !validatePhone($mobile)) {
+            if (!empty($mobile) && !preg_match('/^[0-9]{10}$/', $mobile)) {
                 sendJSONResponse(false, 'Invalid mobile format');
             }
+
+            // Handle file uploads (optional, update if new file provided)
+            $photo_path = null;
+            $aadhaar_path = null;
+            $qualification_path = null;
+            $upload_dir = '../../uploads/students/';
+            if (!file_exists($upload_dir)) {
+                mkdir($upload_dir, 0777, true);
+            }
+            if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+                $photo_path = $upload_dir . uniqid('photo_') . '.' . $ext;
+                move_uploaded_file($_FILES['photo']['tmp_name'], $photo_path);
+            }
+            if (isset($_FILES['aadhaar']) && $_FILES['aadhaar']['error'] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($_FILES['aadhaar']['name'], PATHINFO_EXTENSION);
+                $aadhaar_path = $upload_dir . uniqid('aadhaar_') . '.' . $ext;
+                move_uploaded_file($_FILES['aadhaar']['tmp_name'], $aadhaar_path);
+            }
+            if (isset($_FILES['qualification']) && $_FILES['qualification']['error'] === UPLOAD_ERR_OK) {
+                $ext = pathinfo($_FILES['qualification']['name'], PATHINFO_EXTENSION);
+                $qualification_path = $upload_dir . uniqid('qualification_') . '.' . $ext;
+                move_uploaded_file($_FILES['qualification']['tmp_name'], $qualification_path);
+            }
+
             $stmt = $pdo->prepare("UPDATE students SET first_name = ?, last_name = ?, email = ?, mobile = ?, date_of_birth = ?, gender = ?, address = ?, course_id = ?, batch_id = ?, updated_at = NOW() WHERE student_id = ?");
             $stmt->execute([$first_name, $last_name, $email, $mobile, $date_of_birth, $gender, $address, $course_id, $batch_id, $student_id]);
             // Update or insert into student_batch_enrollment

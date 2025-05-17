@@ -95,7 +95,7 @@ try {
                 <h4 class="modal-title" id="addStudentModalLabel">Add New Student</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="addStudentForm" novalidate>
+            <form id="addStudentForm" novalidate enctype="multipart/form-data">
                 <div class="modal-body">
                     <div id="addStudentError" class="alert alert-danger d-none"></div>
                     <div class="form-group">
@@ -103,20 +103,28 @@ try {
                         <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="addFirstName">First Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="addFirstName" name="first_name" required aria-required="true">
+                        <label for="addFullName">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="addFullName" name="full_name" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="addLastName">Last Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="addLastName" name="last_name" required aria-required="true">
+                        <label for="addPhoto">Student Photo</label>
+                        <input type="file" class="form-control" id="addPhoto" name="photo" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="addAadhaar">Aadhaar Card</label>
+                        <input type="file" class="form-control" id="addAadhaar" name="aadhaar" accept="application/pdf,image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="addQualification">Qualification Document</label>
+                        <input type="file" class="form-control" id="addQualification" name="qualification" accept="application/pdf,image/*">
                     </div>
                     <div class="form-group">
                         <label for="addEmail">Email</label>
-                        <input type="email" class="form-control" id="addEmail" name="email">
+                        <input type="email" class="form-control" id="addEmail" name="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                     </div>
                     <div class="form-group">
                         <label for="addMobile">Mobile</label>
-                        <input type="tel" class="form-control" id="addMobile" name="mobile" pattern="^[0-9]{10,15}$">
+                        <input type="tel" class="form-control" id="addMobile" name="mobile" pattern="^[0-9]{10}$" maxlength="10" minlength="10" required>
                     </div>
                     <div class="form-group">
                         <label for="addDOB">Date of Birth</label>
@@ -202,7 +210,7 @@ try {
                 <h4 class="modal-title" id="editStudentModalLabel">Edit Student</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="editStudentForm" novalidate>
+            <form id="editStudentForm" novalidate enctype="multipart/form-data">
                 <input type="hidden" id="editStudentId" name="student_id">
                 <div class="modal-body">
                     <div id="editStudentError" class="alert alert-danger d-none"></div>
@@ -211,20 +219,28 @@ try {
                         <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" readonly required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="editFirstName">First Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="editFirstName" name="first_name" required aria-required="true">
+                        <label for="editFullName">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editFullName" name="full_name" required aria-required="true">
                     </div>
                     <div class="form-group">
-                        <label for="editLastName">Last Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="editLastName" name="last_name" required aria-required="true">
+                        <label for="editPhoto">Student Photo</label>
+                        <input type="file" class="form-control" id="editPhoto" name="photo" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="editAadhaar">Aadhaar Card</label>
+                        <input type="file" class="form-control" id="editAadhaar" name="aadhaar" accept="application/pdf,image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="editQualification">Qualification Document</label>
+                        <input type="file" class="form-control" id="editQualification" name="qualification" accept="application/pdf,image/*">
                     </div>
                     <div class="form-group">
                         <label for="editEmail">Email</label>
-                        <input type="email" class="form-control" id="editEmail" name="email">
+                        <input type="email" class="form-control" id="editEmail" name="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                     </div>
                     <div class="form-group">
                         <label for="editMobile">Mobile</label>
-                        <input type="tel" class="form-control" id="editMobile" name="mobile" pattern="^[0-9]{10,15}$">
+                        <input type="tel" class="form-control" id="editMobile" name="mobile" pattern="^[0-9]{10}$" maxlength="10" minlength="10" required>
                     </div>
                     <div class="form-group">
                         <label for="editDOB">Date of Birth</label>
@@ -361,17 +377,32 @@ $(function () {
             return;
         }
         $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Saving...');
-        $.post('inc/ajax/students_ajax.php', $form.serialize() + '&action=create', function (response) {
-            if (response.success) {
-                $('#addStudentModal').modal('hide');
-                table.ajax.reload();
-                toastr.success(response.message || 'Student added successfully.');
-            } else {
-                showError($error, response.message || 'Failed to add student.');
-                toastr.error(response.message || 'Failed to add student.');
+        var formData = new FormData($form[0]);
+        formData.append('action', 'create');
+        $.ajax({
+            url: 'inc/ajax/students_ajax.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#addStudentModal').modal('hide');
+                    table.ajax.reload();
+                    toastr.success(response.message || 'Student added successfully.');
+                } else {
+                    showError($error, response.message || 'Failed to add student.');
+                    toastr.error(response.message || 'Failed to add student.');
+                }
+                $btn.prop('disabled', false).text('Save Student');
+            },
+            error: function () {
+                showError($error, 'Failed to add student.');
+                toastr.error('Failed to add student.');
+                $btn.prop('disabled', false).text('Save Student');
             }
-            $btn.prop('disabled', false).text('Save Student');
-        }, 'json');
+        });
     });
 
     $('#editStudentForm').on('submit', function (e) {
@@ -394,17 +425,32 @@ $(function () {
             return;
         }
         $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Updating...');
-        $.post('inc/ajax/students_ajax.php', $form.serialize() + '&action=update', function (response) {
-            if (response.success) {
-                $('#editStudentModal').modal('hide');
-                table.ajax.reload();
-                toastr.success(response.message || 'Student updated successfully.');
-            } else {
-                showError($error, response.message || 'Failed to update student.');
-                toastr.error(response.message || 'Failed to update student.');
+        var formData = new FormData($form[0]);
+        formData.append('action', 'update');
+        $.ajax({
+            url: 'inc/ajax/students_ajax.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#editStudentModal').modal('hide');
+                    table.ajax.reload();
+                    toastr.success(response.message || 'Student updated successfully.');
+                } else {
+                    showError($error, response.message || 'Failed to update student.');
+                    toastr.error(response.message || 'Failed to update student.');
+                }
+                $btn.prop('disabled', false).text('Update Student');
+            },
+            error: function () {
+                showError($error, 'Failed to update student.');
+                toastr.error('Failed to update student.');
+                $btn.prop('disabled', false).text('Update Student');
             }
-            $btn.prop('disabled', false).text('Update Student');
-        }, 'json');
+        });
     });
 
     $('#confirmDeleteStudent').on('click', function () {
