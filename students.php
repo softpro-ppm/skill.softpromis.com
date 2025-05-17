@@ -90,6 +90,7 @@ try {
 <!-- Add Student Modal -->
 <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="addStudentModalLabel">Add New Student</h4>
@@ -177,6 +178,7 @@ try {
 <!-- View Student Modal -->
 <div class="modal fade" id="viewStudentModal" tabindex="-1" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="viewStudentModalLabel">View Student Details</h4>
