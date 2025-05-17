@@ -179,50 +179,66 @@ try {
 
 <div class="modal-dialog modal-lg">
 </div>
-    <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-            <h4 class="modal-title" id="viewStudentModalLabel">
-                <i class="fas fa-user-graduate me-2"></i>Student Details
-            </h4>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="container-fluid">
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <h5 class="mb-3 text-secondary"><i class="fas fa-id-card me-2"></i>Personal Information</h5>
-                    </div>
-                    <div class="col-md-6 col-lg-6">
-                        <div class="mb-3"><span class="fw-bold">Enrollment No:</span> <span class="text-dark" data-field="enrollment_no"></span></div>
-                        <div class="mb-3"><span class="fw-bold">Full Name:</span> <span class="text-dark" data-field="full_name"></span></div>
-                        <div class="mb-3"><span class="fw-bold">Email:</span> <span class="text-dark" data-field="email"></span></div>
-                        <div class="mb-3"><span class="fw-bold">Mobile:</span> <span class="text-dark" data-field="mobile"></span></div>
-                        <div class="mb-3"><span class="fw-bold">Date of Birth:</span> <span class="text-dark" data-field="date_of_birth"></span></div>
-                        <div class="mb-3"><span class="fw-bold">Gender:</span> <span class="text-dark" data-field="gender"></span></div>
-                    </div>
-                    <div class="col-md-6 col-lg-6">
-                        <div class="mb-3"><span class="fw-bold">Course:</span> <span class="text-dark" data-field="course_name"></span></div>
-                        <div class="mb-3"><span class="fw-bold">Batch:</span> <span class="text-dark" data-field="batch_code"></span></div>
-                        <div class="mb-3"><span class="fw-bold">Address:</span> <span class="text-dark" data-field="address"></span></div>
-                    </div>
+    <div class="modal-content smart-modal">
+        <div class="modal-header bg-primary text-white align-items-center">
+            <div class="d-flex align-items-center w-100">
+                <div class="me-2" style="font-size:2rem;"><i class="fas fa-user-graduate"></i></div>
+                <div>
+                    <h4 class="modal-title mb-0" id="viewStudentModalLabel">Student Details</h4>
                 </div>
-                <div class="row mb-2">
-                    <div class="col-12">
-                        <h5 class="mb-3 text-secondary"><i class="fas fa-file-alt me-2"></i>Documents</h5>
+                <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="modal-body p-4">
+            <div class="container-fluid">
+                <div class="row g-4 align-items-start">
+                    <div class="col-md-5 col-12">
+                        <div class="card shadow-sm border-0 mb-4">
+                            <div class="card-body">
+                                <h6 class="text-primary mb-3"><i class="fas fa-id-card me-2"></i>Personal Info</h6>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2"><span class="fw-bold">Enrollment No:</span> <span data-field="enrollment_no"></span></li>
+                                    <li class="mb-2"><span class="fw-bold">Full Name:</span> <span data-field="full_name"></span></li>
+                                    <li class="mb-2"><span class="fw-bold">Email:</span> <span data-field="email"></span></li>
+                                    <li class="mb-2"><span class="fw-bold">Mobile:</span> <span data-field="mobile"></span></li>
+                                    <li class="mb-2"><span class="fw-bold">DOB:</span> <span data-field="date_of_birth"></span></li>
+                                    <li class="mb-2"><span class="fw-bold">Gender:</span> <span data-field="gender"></span></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-4 col-12 mb-2">
-                        <span class="fw-bold">Photo:</span> <span data-field="photo"></span>
-                    </div>
-                    <div class="col-md-4 col-12 mb-2">
-                        <span class="fw-bold">Aadhaar:</span> <span data-field="aadhaar"></span>
-                    </div>
-                    <div class="col-md-4 col-12 mb-2">
-                        <span class="fw-bold">Qualification:</span> <span data-field="qualification"></span>
+                    <div class="col-md-7 col-12">
+                        <div class="card shadow-sm border-0 mb-4">
+                            <div class="card-body">
+                                <h6 class="text-primary mb-3"><i class="fas fa-graduation-cap me-2"></i>Academic Info</h6>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2"><span class="fw-bold">Course:</span> <span data-field="course_name"></span></li>
+                                    <li class="mb-2"><span class="fw-bold">Batch:</span> <span data-field="batch_code"></span></li>
+                                    <li class="mb-2"><span class="fw-bold">Address:</span> <span data-field="address"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body">
+                                <h6 class="text-primary mb-3"><i class="fas fa-file-alt me-2"></i>Documents</h6>
+                                <div class="row g-2">
+                                    <div class="col-md-4 col-12 mb-2">
+                                        <span class="fw-bold">Photo:</span> <span data-field="photo"></span>
+                                    </div>
+                                    <div class="col-md-4 col-12 mb-2">
+                                        <span class="fw-bold">Aadhaar:</span> <span data-field="aadhaar"></span>
+                                    </div>
+                                    <div class="col-md-4 col-12 mb-2">
+                                        <span class="fw-bold">Qualification:</span> <span data-field="qualification"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer bg-light">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
         </div>
     </div>
