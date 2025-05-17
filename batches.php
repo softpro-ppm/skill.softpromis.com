@@ -233,7 +233,12 @@ $(function() {
             if(res.success) {
                 $('#assignStudentsModal').modal('hide');
                 toastr.success(res.message || 'Students assigned successfully');
-                // Optionally reload batch students table if open
+                // Reload batches table after assigning
+                if (window.batchesTable && typeof window.batchesTable.ajax === 'object') {
+                    window.batchesTable.ajax.reload(null, false);
+                } else if ($('#batchesTable').DataTable) {
+                    $('#batchesTable').DataTable().ajax.reload(null, false);
+                }
             } else {
                 $error.removeClass('d-none').text(res.message || 'Failed to assign students.');
             }
