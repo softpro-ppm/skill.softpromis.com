@@ -215,11 +215,22 @@ try {
             if (empty($student_id)) {
                 sendJSONResponse(false, 'Student ID is required');
             }
-            $stmt = $pdo->prepare('SELECT s.*, c.course_name, b.batch_code FROM students s LEFT JOIN courses c ON s.course_id = c.course_id LEFT JOIN batches b ON s.batch_id = b.batch_id WHERE s.student_id = ?');
+            // Fetch student with all related info for view modal
+            $stmt = $pdo->prepare('
+                SELECT s.*, c.course_name, b.batch_code, b.batch_name, c.sector_id, c.scheme_id, c.center_id,
+                       tc.center_name, sc.scheme_name, se.sector_name, tp.partner_name
+                FROM students s
+                LEFT JOIN courses c ON s.course_id = c.course_id
+                LEFT JOIN batches b ON s.batch_id = b.batch_id
+                LEFT JOIN sectors se ON c.sector_id = se.sector_id
+                LEFT JOIN schemes sc ON c.scheme_id = sc.scheme_id
+                LEFT JOIN training_centers tc ON c.center_id = tc.center_id
+                LEFT JOIN training_partners tp ON tc.partner_id = tp.partner_id
+                WHERE s.student_id = ?
+            ');
             $stmt->execute([$student_id]);
             $student = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($student) {
-                // Compose full_name from first_name and last_name
                 $student['full_name'] = trim($student['first_name'] . ' ' . $student['last_name']);
                 sendJSONResponse(true, 'Student retrieved successfully', $student);
             } else {

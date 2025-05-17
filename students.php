@@ -192,6 +192,12 @@ try {
                                 <div class="card-body">
                                     <h6 class="text-primary mb-3"><i class="fas fa-graduation-cap me-2"></i>Academic Info</h6>
                                     <ul class="list-unstyled mb-0">
+                                        <li class="mb-2"><span class="fw-bold">Training Partner:</span> <span data-field="partner_name"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Training Center:</span> <span data-field="center_name"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Scheme:</span> <span data-field="scheme_name"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Sector:</span> <span data-field="sector_name"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Course:</span> <span data-field="course_name"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Batch:</span> <span data-field="batch_code"></span> <span data-field="batch_name"></span></li>
                                         <li class="mb-2"><span class="fw-bold">Address:</span> <span data-field="address"></span></li>
                                     </ul>
                                 </div>
@@ -528,6 +534,10 @@ $(function () {
                         } else {
                             $(this).text('No qualification uploaded');
                         }
+                    } else if (field === 'batch_code') {
+                        // Show batch code and batch name together if both exist
+                        var batchText = (data.batch_code ? data.batch_code : '') + (data.batch_name ? ' - ' + data.batch_name : '');
+                        $(this).text(batchText.trim());
                     } else {
                         $(this).text(data[field] || '');
                     }
