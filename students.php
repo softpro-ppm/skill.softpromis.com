@@ -531,31 +531,31 @@ $(function () {
 
     $(document).on('click', '.edit-student-btn', function () {
         var studentId = $(this).data('student-id');
+        // Show loading spinner in modal
+        var modal = document.getElementById('editStudentModal');
+        var bsModal = bootstrap.Modal.getOrCreateInstance(modal);
+        $('#editStudentForm')[0].reset();
+        $('#editStudentError').addClass('d-none').text('');
+        bsModal.show();
+        // Fetch data and populate form
         $.post('inc/ajax/students_ajax.php', { action: 'get', student_id: studentId }, function (response) {
             if (response.success) {
                 var data = response.data;
-                // Compose full_name if not present, fallback to first_name + last_name
                 var fullName = '';
                 if (data.full_name && data.full_name.trim() !== '') {
                     fullName = data.full_name;
                 } else if ((data.first_name && data.first_name.trim() !== '') || (data.last_name && data.last_name.trim() !== '')) {
                     fullName = ((data.first_name || '') + (data.last_name ? (' ' + data.last_name) : '')).trim();
                 }
-                // Set all fields except full_name
                 $('#editStudentForm').find('[name]').each(function () {
                     var name = $(this).attr('name');
                     if (name !== 'full_name') {
                         $(this).val(data[name] || '');
                     }
                 });
-                // Set full_name field explicitly
                 $('#editFullName').val(fullName);
-                // Use Bootstrap 5 API to show modal
-                var modal = document.getElementById('editStudentModal');
-                var bsModal = bootstrap.Modal.getOrCreateInstance(modal);
-                bsModal.show();
             } else {
-                alert(response.message || 'Failed to fetch student details.');
+                $('#editStudentError').removeClass('d-none').text(response.message || 'Failed to fetch student details.');
             }
         }, 'json');
     });
