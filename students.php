@@ -178,9 +178,12 @@ try {
 <div class="modal fade" id="viewStudentModal" tabindex="-1" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
 
 <div class="modal-dialog modal-lg">
+</div>
     <div class="modal-content">
         <div class="modal-header bg-primary text-white">
-            <h4 class="modal-title" id="viewStudentModalLabel"><i class="fas fa-user-graduate me-2"></i>Student Details</h4>
+            <h4 class="modal-title" id="viewStudentModalLabel">
+                <i class="fas fa-user-graduate me-2"></i>Student Details
+            </h4>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -189,33 +192,32 @@ try {
                     <div class="col-12">
                         <h5 class="mb-3 text-secondary"><i class="fas fa-id-card me-2"></i>Personal Information</h5>
                     </div>
-                    <div class="col-md-6">
-                        <div class="mb-2"><strong>Enrollment No:</strong> <span class="text-dark" data-field="enrollment_no"></span></div>
-                        <div class="mb-2"><strong>Full Name:</strong> <span class="text-dark" data-field="full_name"></span></div>
-                        <div class="mb-2"><strong>Email:</strong> <span class="text-dark" data-field="email"></span></div>
-                        <div class="mb-2"><strong>Mobile:</strong> <span class="text-dark" data-field="mobile"></span></div>
-                        <div class="mb-2"><strong>Date of Birth:</strong> <span class="text-dark" data-field="date_of_birth"></span></div>
-                        <div class="mb-2"><strong>Gender:</strong> <span class="text-dark" data-field="gender"></span></div>
+                    <div class="col-md-6 col-lg-6">
+                        <div class="mb-3"><span class="fw-bold">Enrollment No:</span> <span class="text-dark" data-field="enrollment_no"></span></div>
+                        <div class="mb-3"><span class="fw-bold">Full Name:</span> <span class="text-dark" data-field="full_name"></span></div>
+                        <div class="mb-3"><span class="fw-bold">Email:</span> <span class="text-dark" data-field="email"></span></div>
+                        <div class="mb-3"><span class="fw-bold">Mobile:</span> <span class="text-dark" data-field="mobile"></span></div>
+                        <div class="mb-3"><span class="fw-bold">Date of Birth:</span> <span class="text-dark" data-field="date_of_birth"></span></div>
+                        <div class="mb-3"><span class="fw-bold">Gender:</span> <span class="text-dark" data-field="gender"></span></div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="mb-2"><strong>Course:</strong> <span class="text-dark" data-field="course_name"></span></div>
-                        <div class="mb-2"><strong>Batch:</strong> <span class="text-dark" data-field="batch_code"></span></div>
-                        <div class="mb-2"><strong>Address:</strong> <span class="text-dark" data-field="address"></span></div>
+                    <div class="col-md-6 col-lg-6">
+                        <div class="mb-3"><span class="fw-bold">Course:</span> <span class="text-dark" data-field="course_name"></span></div>
+                        <div class="mb-3"><span class="fw-bold">Batch:</span> <span class="text-dark" data-field="batch_code"></span></div>
+                        <div class="mb-3"><span class="fw-bold">Address:</span> <span class="text-dark" data-field="address"></span></div>
                     </div>
                 </div>
-                <hr>
                 <div class="row mb-2">
                     <div class="col-12">
                         <h5 class="mb-3 text-secondary"><i class="fas fa-file-alt me-2"></i>Documents</h5>
                     </div>
-                    <div class="col-md-4 mb-2">
-                        <strong>Photo:</strong> <span data-field="photo"></span>
+                    <div class="col-md-4 col-12 mb-2">
+                        <span class="fw-bold">Photo:</span> <span data-field="photo"></span>
                     </div>
-                    <div class="col-md-4 mb-2">
-                        <strong>Aadhaar:</strong> <span data-field="aadhaar"></span>
+                    <div class="col-md-4 col-12 mb-2">
+                        <span class="fw-bold">Aadhaar:</span> <span data-field="aadhaar"></span>
                     </div>
-                    <div class="col-md-4 mb-2">
-                        <strong>Qualification:</strong> <span data-field="qualification"></span>
+                    <div class="col-md-4 col-12 mb-2">
+                        <span class="fw-bold">Qualification:</span> <span data-field="qualification"></span>
                     </div>
                 </div>
             </div>
