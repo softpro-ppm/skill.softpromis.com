@@ -219,6 +219,8 @@ try {
             $stmt->execute([$student_id]);
             $student = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($student) {
+                // Compose full_name from first_name and last_name
+                $student['full_name'] = trim($student['first_name'] . ' ' . $student['last_name']);
                 sendJSONResponse(true, 'Student retrieved successfully', $student);
             } else {
                 sendJSONResponse(false, 'Student not found');
