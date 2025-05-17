@@ -508,15 +508,27 @@ $(function () {
                     var field = $(this).data('field');
                     if (field === 'full_name') {
                         $(this).text(fullName);
-                    } else if (field === 'photo' && data.photo) {
-                        var url = 'uploads/students/' + data.photo;
-                        $(this).html('<a href="' + url + '" target="_blank">View Photo</a>');
-                    } else if (field === 'aadhaar' && data.aadhaar) {
-                        var url = 'uploads/students/' + data.aadhaar;
-                        $(this).html('<a href="' + url + '" target="_blank">View Aadhaar</a>');
-                    } else if (field === 'qualification' && data.qualification) {
-                        var url = 'uploads/students/' + data.qualification;
-                        $(this).html('<a href="' + url + '" target="_blank">View Qualification</a>');
+                    } else if (field === 'photo') {
+                        if (data.photo) {
+                            var url = 'uploads/students/' + data.photo;
+                            $(this).html('<a href="' + url + '" target="_blank">View Photo</a>');
+                        } else {
+                            $(this).text('No photo uploaded');
+                        }
+                    } else if (field === 'aadhaar') {
+                        if (data.aadhaar) {
+                            var url = 'uploads/students/' + data.aadhaar;
+                            $(this).html('<a href="' + url + '" target="_blank">View Aadhaar</a>');
+                        } else {
+                            $(this).text('No Aadhaar uploaded');
+                        }
+                    } else if (field === 'qualification') {
+                        if (data.qualification) {
+                            var url = 'uploads/students/' + data.qualification;
+                            $(this).html('<a href="' + url + '" target="_blank">View Qualification</a>');
+                        } else {
+                            $(this).text('No qualification uploaded');
+                        }
                     } else {
                         $(this).text(data[field] || '');
                     }
