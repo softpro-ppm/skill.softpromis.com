@@ -191,6 +191,9 @@ try {
                         <div class="form-group"><label>Mobile</label><p data-field="mobile"></p></div>
                         <div class="form-group"><label>Date of Birth</label><p data-field="date_of_birth"></p></div>
                         <div class="form-group"><label>Gender</label><p data-field="gender"></p></div>
+                        <div class="form-group"><label>Photo</label><p data-field="photo"></p></div>
+                        <div class="form-group"><label>Aadhaar</label><p data-field="aadhaar"></p></div>
+                        <div class="form-group"><label>Qualification</label><p data-field="qualification"></p></div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group"><label>Course</label><p data-field="course_name"></p></div>
