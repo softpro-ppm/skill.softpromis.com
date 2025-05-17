@@ -98,68 +98,72 @@ try {
             <form id="addStudentForm" novalidate enctype="multipart/form-data">
                 <div class="modal-body">
                     <div id="addStudentError" class="alert alert-danger d-none"></div>
-                    <div class="form-group">
-                        <label for="addEnrollmentNo">Enrollment No <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly required aria-required="true">
-                    </div>
-                    <div class="form-group">
-                        <label for="addFullName">Full Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="addFullName" name="full_name" required aria-required="true">
-                    </div>
-                    <div class="form-group">
-                        <label for="addPhoto">Student Photo</label>
-                        <input type="file" class="form-control" id="addPhoto" name="photo" accept="image/*">
-                    </div>
-                    <div class="form-group">
-                        <label for="addAadhaar">Aadhaar Card</label>
-                        <input type="file" class="form-control" id="addAadhaar" name="aadhaar" accept="application/pdf,image/*">
-                    </div>
-                    <div class="form-group">
-                        <label for="addQualification">Qualification Document</label>
-                        <input type="file" class="form-control" id="addQualification" name="qualification" accept="application/pdf,image/*">
-                    </div>
-                    <div class="form-group">
-                        <label for="addEmail">Email</label>
-                        <input type="email" class="form-control" id="addEmail" name="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
-                    </div>
-                    <div class="form-group">
-                        <label for="addMobile">Mobile</label>
-                        <input type="tel" class="form-control" id="addMobile" name="mobile" pattern="^[0-9]{10}$" maxlength="10" minlength="10" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="addDOB">Date of Birth</label>
-                        <input type="date" class="form-control" id="addDOB" name="date_of_birth">
-                    </div>
-                    <div class="form-group">
-                        <label for="addGender">Gender</label>
-                        <select class="form-control" id="addGender" name="gender">
-                            <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="addAddress">Address</label>
-                        <textarea class="form-control" id="addAddress" name="address"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="addCourseId">Course</label>
-                        <select class="form-control" id="addCourseId" name="course_id">
-                            <option value="">Select Course</option>
-                            <?php foreach ($courses as $course): ?>
-                                <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="addBatchId">Batch <span class="text-danger">*</span></label>
-                        <select class="form-control" id="addBatchId" name="batch_id" required aria-required="true">
-                            <option value="">Select Batch</option>
-                            <?php foreach ($batches as $batch): ?>
-                                <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                    <div class="container-fluid">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="addEnrollmentNo" class="form-label">Enrollment No <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly required aria-required="true">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="addFullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="addFullName" name="full_name" required aria-required="true">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="addPhoto" class="form-label">Student Photo</label>
+                                <input type="file" class="form-control" id="addPhoto" name="photo" accept="image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="addAadhaar" class="form-label">Aadhaar Card</label>
+                                <input type="file" class="form-control" id="addAadhaar" name="aadhaar" accept="application/pdf,image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="addQualification" class="form-label">Qualification Document</label>
+                                <input type="file" class="form-control" id="addQualification" name="qualification" accept="application/pdf,image/*">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="addEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="addEmail" name="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="addMobile" class="form-label">Mobile</label>
+                                <input type="tel" class="form-control" id="addMobile" name="mobile" pattern="^[0-9]{10}$" maxlength="10" minlength="10" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="addDOB" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="addDOB" name="date_of_birth">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="addGender" class="form-label">Gender</label>
+                                <select class="form-control" id="addGender" name="gender">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="addAddress" class="form-label">Address</label>
+                                <textarea class="form-control" id="addAddress" name="address"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="addCourseId" class="form-label">Course</label>
+                                <select class="form-control" id="addCourseId" name="course_id">
+                                    <option value="">Select Course</option>
+                                    <?php foreach ($courses as $course): ?>
+                                        <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="addBatchId" class="form-label">Batch <span class="text-danger">*</span></label>
+                                <select class="form-control" id="addBatchId" name="batch_id" required aria-required="true">
+                                    <option value="">Select Batch</option>
+                                    <?php foreach ($batches as $batch): ?>
+                                        <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -214,68 +218,72 @@ try {
                 <input type="hidden" id="editStudentId" name="student_id">
                 <div class="modal-body">
                     <div id="editStudentError" class="alert alert-danger d-none"></div>
-                    <div class="form-group">
-                        <label for="editEnrollmentNo">Enrollment No <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" readonly required aria-required="true">
-                    </div>
-                    <div class="form-group">
-                        <label for="editFullName">Full Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="editFullName" name="full_name" required aria-required="true">
-                    </div>
-                    <div class="form-group">
-                        <label for="editPhoto">Student Photo</label>
-                        <input type="file" class="form-control" id="editPhoto" name="photo" accept="image/*">
-                    </div>
-                    <div class="form-group">
-                        <label for="editAadhaar">Aadhaar Card</label>
-                        <input type="file" class="form-control" id="editAadhaar" name="aadhaar" accept="application/pdf,image/*">
-                    </div>
-                    <div class="form-group">
-                        <label for="editQualification">Qualification Document</label>
-                        <input type="file" class="form-control" id="editQualification" name="qualification" accept="application/pdf,image/*">
-                    </div>
-                    <div class="form-group">
-                        <label for="editEmail">Email</label>
-                        <input type="email" class="form-control" id="editEmail" name="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
-                    </div>
-                    <div class="form-group">
-                        <label for="editMobile">Mobile</label>
-                        <input type="tel" class="form-control" id="editMobile" name="mobile" pattern="^[0-9]{10}$" maxlength="10" minlength="10" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editDOB">Date of Birth</label>
-                        <input type="date" class="form-control" id="editDOB" name="date_of_birth">
-                    </div>
-                    <div class="form-group">
-                        <label for="editGender">Gender</label>
-                        <select class="form-control" id="editGender" name="gender">
-                            <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="editAddress">Address</label>
-                        <textarea class="form-control" id="editAddress" name="address"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="editCourseId">Course</label>
-                        <select class="form-control" id="editCourseId" name="course_id">
-                            <option value="">Select Course</option>
-                            <?php foreach ($courses as $course): ?>
-                                <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="editBatchId">Batch <span class="text-danger">*</span></label>
-                        <select class="form-control" id="editBatchId" name="batch_id" required aria-required="true">
-                            <option value="">Select Batch</option>
-                            <?php foreach ($batches as $batch): ?>
-                                <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                    <div class="container-fluid">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="editEnrollmentNo" class="form-label">Enrollment No <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="editEnrollmentNo" name="enrollment_no" readonly required aria-required="true">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editFullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="editFullName" name="full_name" required aria-required="true">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="editPhoto" class="form-label">Student Photo</label>
+                                <input type="file" class="form-control" id="editPhoto" name="photo" accept="image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="editAadhaar" class="form-label">Aadhaar Card</label>
+                                <input type="file" class="form-control" id="editAadhaar" name="aadhaar" accept="application/pdf,image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="editQualification" class="form-label">Qualification Document</label>
+                                <input type="file" class="form-control" id="editQualification" name="qualification" accept="application/pdf,image/*">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="editEmail" name="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editMobile" class="form-label">Mobile</label>
+                                <input type="tel" class="form-control" id="editMobile" name="mobile" pattern="^[0-9]{10}$" maxlength="10" minlength="10" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editDOB" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="editDOB" name="date_of_birth">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editGender" class="form-label">Gender</label>
+                                <select class="form-control" id="editGender" name="gender">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="editAddress" class="form-label">Address</label>
+                                <textarea class="form-control" id="editAddress" name="address"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editCourseId" class="form-label">Course</label>
+                                <select class="form-control" id="editCourseId" name="course_id">
+                                    <option value="">Select Course</option>
+                                    <?php foreach ($courses as $course): ?>
+                                        <option value="<?= htmlspecialchars($course['course_id']) ?>"><?= htmlspecialchars($course['course_name']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editBatchId" class="form-label">Batch <span class="text-danger">*</span></label>
+                                <select class="form-control" id="editBatchId" name="batch_id" required aria-required="true">
+                                    <option value="">Select Batch</option>
+                                    <?php foreach ($batches as $batch): ?>
+                                        <option value="<?= htmlspecialchars($batch['batch_id']) ?>"><?= htmlspecialchars($batch['batch_label']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
