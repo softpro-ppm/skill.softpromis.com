@@ -176,60 +176,59 @@ try {
 </div>
 <!-- View Student Modal -->
 <div class="modal fade" id="viewStudentModal" tabindex="-1" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
-
-<div class="modal-dialog modal-dialog-centered modal-md">
-</div>
-    <div class="modal-content smart-modal">
-        <div class="modal-header bg-primary text-white align-items-center">
-            <div class="d-flex align-items-center w-100">
-                <div class="me-2" style="font-size:2rem;"><i class="fas fa-user-graduate"></i></div>
-                <div>
-                    <h4 class="modal-title mb-0" id="viewStudentModalLabel">Student Details</h4>
-                </div>
-                <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-        </div>
-        <div class="modal-body p-4">
-            <div class="container-fluid">
-                <div class="row g-4 align-items-start">
-                    <div class="col-md-5 col-12">
-                        <div class="card shadow-sm border-0 mb-4">
-                            <div class="card-body">
-                                <h6 class="text-primary mb-3"><i class="fas fa-id-card me-2"></i>Personal Info</h6>
-                                <ul class="list-unstyled mb-0">
-                                    <li class="mb-2"><span class="fw-bold">Enrollment No:</span> <span data-field="enrollment_no"></span></li>
-                                    <li class="mb-2"><span class="fw-bold">Full Name:</span> <span data-field="full_name"></span></li>
-                                    <li class="mb-2"><span class="fw-bold">Email:</span> <span data-field="email"></span></li>
-                                    <li class="mb-2"><span class="fw-bold">Mobile:</span> <span data-field="mobile"></span></li>
-                                    <li class="mb-2"><span class="fw-bold">DOB:</span> <span data-field="date_of_birth"></span></li>
-                                    <li class="mb-2"><span class="fw-bold">Gender:</span> <span data-field="gender"></span></li>
-                                </ul>
-                            </div>
-                        </div>
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content smart-modal">
+            <div class="modal-header bg-primary text-white align-items-center">
+                <div class="d-flex align-items-center w-100">
+                    <div class="me-2" style="font-size:2rem;"><i class="fas fa-user-graduate"></i></div>
+                    <div>
+                        <h4 class="modal-title mb-0" id="viewStudentModalLabel">Student Details</h4>
                     </div>
-                    <div class="col-md-7 col-12">
-                        <div class="card shadow-sm border-0 mb-4">
-                            <div class="card-body">
-                                <h6 class="text-primary mb-3"><i class="fas fa-graduation-cap me-2"></i>Academic Info</h6>
-                                <ul class="list-unstyled mb-0">
-                                    <li class="mb-2"><span class="fw-bold">Course:</span> <span data-field="course_name"></span></li>
-                                    <li class="mb-2"><span class="fw-bold">Batch:</span> <span data-field="batch_code"></span></li>
-                                    <li class="mb-2"><span class="fw-bold">Address:</span> <span data-field="address"></span></li>
-                                </ul>
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body p-4">
+                <div class="container-fluid">
+                    <div class="row g-4 align-items-start">
+                        <div class="col-md-5 col-12">
+                            <div class="card shadow-sm border-0 mb-4">
+                                <div class="card-body">
+                                    <h6 class="text-primary mb-3"><i class="fas fa-id-card me-2"></i>Personal Info</h6>
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2"><span class="fw-bold">Enrollment No:</span> <span data-field="enrollment_no"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Full Name:</span> <span data-field="full_name"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Email:</span> <span data-field="email"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Mobile:</span> <span data-field="mobile"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">DOB:</span> <span data-field="date_of_birth"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Gender:</span> <span data-field="gender"></span></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <div class="card shadow-sm border-0">
-                            <div class="card-body">
-                                <h6 class="text-primary mb-3"><i class="fas fa-file-alt me-2"></i>Documents</h6>
-                                <div class="row g-2">
-                                    <div class="col-md-4 col-12 mb-2">
-                                        <span class="fw-bold">Photo:</span> <span data-field="photo"></span>
-                                    </div>
-                                    <div class="col-md-4 col-12 mb-2">
-                                        <span class="fw-bold">Aadhaar:</span> <span data-field="aadhaar"></span>
-                                    </div>
-                                    <div class="col-md-4 col-12 mb-2">
-                                        <span class="fw-bold">Qualification:</span> <span data-field="qualification"></span>
+                        <div class="col-md-7 col-12">
+                            <div class="card shadow-sm border-0 mb-4">
+                                <div class="card-body">
+                                    <h6 class="text-primary mb-3"><i class="fas fa-graduation-cap me-2"></i>Academic Info</h6>
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2"><span class="fw-bold">Course:</span> <span data-field="course_name"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Batch:</span> <span data-field="batch_code"></span></li>
+                                        <li class="mb-2"><span class="fw-bold">Address:</span> <span data-field="address"></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body">
+                                    <h6 class="text-primary mb-3"><i class="fas fa-file-alt me-2"></i>Documents</h6>
+                                    <div class="row g-2">
+                                        <div class="col-md-4 col-12 mb-2">
+                                            <span class="fw-bold">Photo:</span> <span data-field="photo"></span>
+                                        </div>
+                                        <div class="col-md-4 col-12 mb-2">
+                                            <span class="fw-bold">Aadhaar:</span> <span data-field="aadhaar"></span>
+                                        </div>
+                                        <div class="col-md-4 col-12 mb-2">
+                                            <span class="fw-bold">Qualification:</span> <span data-field="qualification"></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -237,9 +236,9 @@ try {
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal-footer bg-light">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Close</button>
+            </div>
         </div>
     </div>
 </div>
