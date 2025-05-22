@@ -181,6 +181,10 @@ require_once 'includes/sidebar.php';
                     <div class="container-fluid">
                         <div class="row g-3">
                             <div class="col-md-6">
+                                <label for="registerEnrollmentNo" class="form-label">Enrollment No <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="registerEnrollmentNo" name="enrollment_no" required aria-required="true">
+                            </div>
+                            <div class="col-md-6">
                                 <label for="registerFullName" class="form-label">Full Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="registerFullName" name="full_name" required aria-required="true">
                             </div>
