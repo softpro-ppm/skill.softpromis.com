@@ -142,27 +142,12 @@ try {
             ]);
             exit;
         case 'get_available_students':
-            // Return students who are NOT assigned to any batch (not present in student_batch_enrollment or have no active enrollment)
-            $stmt = $pdo->query('SELECT s.student_id, s.enrollment_no, CONCAT(s.first_name, " ", s.last_name) AS full_name, s.email, s.mobile FROM students s LEFT JOIN student_batch_enrollment e ON s.student_id = e.student_id AND e.status = "active" WHERE e.enrollment_id IS NULL');
-            $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            sendJSONResponse(true, 'Available students fetched', $students);
+            // This feature is no longer needed, return empty
+            sendJSONResponse(true, 'Feature removed', []);
             break;
         case 'assign_students':
-            // Assign multiple students to a batch
-            $batch_id = (int)($_POST['batch_id'] ?? 0);
-            $student_ids = isset($_POST['student_ids']) ? $_POST['student_ids'] : [];
-            if (empty($batch_id) || !is_array($student_ids) || count($student_ids) === 0) {
-                sendJSONResponse(false, 'Batch ID and at least one student required');
-            }
-            $enrollment_date = date('Y-m-d');
-            $count = 0;
-            foreach ($student_ids as $student_id) {
-                $stmt = $pdo->prepare("INSERT INTO student_batch_enrollment (student_id, batch_id, enrollment_date, status, created_at, updated_at) VALUES (?, ?, ?, 'active', NOW(), NOW())");
-                if ($stmt->execute([$student_id, $batch_id, $enrollment_date])) {
-                    $count++;
-                }
-            }
-            sendJSONResponse(true, "$count students assigned to batch");
+            // This feature is no longer needed, return error
+            sendJSONResponse(false, 'Assign students to batch is no longer supported. Register students directly from batch context.');
             break;
         case 'add_candidate_to_batch':
             // Removed Add Candidate to Batch feature

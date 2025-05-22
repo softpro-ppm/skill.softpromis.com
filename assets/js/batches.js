@@ -31,7 +31,7 @@ $(document).ready(function() {
                 render: function(data) {
                     return `
                         <button class="btn btn-sm btn-info view-batch-students-btn" data-batch-id="${data.batch_id}"><i class="fas fa-users"></i></button>
-                        <button class="btn btn-sm btn-success assign-students-btn" data-batch-id="${data.batch_id}"><i class="fas fa-user-plus"></i> Assign</button>
+                        <button class="btn btn-sm btn-success register-student-btn" data-batch-id="${data.batch_id}"><i class="fas fa-user-plus"></i> Register New Student</button>
                         <button class="btn btn-sm btn-primary edit-batch-btn" data-batch-id="${data.batch_id}"><i class="fas fa-edit"></i></button>
                         <button class="btn btn-sm btn-danger delete-batch-btn" data-batch-id="${data.batch_id}"><i class="fas fa-trash"></i></button>
                     `;
@@ -191,6 +191,64 @@ $(document).ready(function() {
             error: function() {
                 $('#batchStudentsError').removeClass('d-none').text('Could not load students.');
                 $('#batchStudentsModal').modal('show');
+            }
+        });
+    });
+
+    // Register New Student from batch context
+    $(document).on('click', '.register-student-btn', function() {
+        var batchId = $(this).data('batch-id');
+        $('#registerBatchId').val(batchId);
+        $('#registerStudentForm')[0].reset();
+        $('#registerStudentError').addClass('d-none').text('');
+        $('#registerStudentModal').modal('show');
+    });
+
+    // Handle register student form submit
+    $('#registerStudentForm').on('submit', function(e) {
+        e.preventDefault();
+        var $form = $(this);
+        var $btn = $form.find('button[type="submit"]');
+        var $error = $('#registerStudentError');
+        $error.addClass('d-none').text('');
+        var valid = true;
+        $form.find('[required]').each(function() {
+            if (!$(this).val()) {
+                valid = false;
+                $(this).addClass('is-invalid');
+            } else {
+                $(this).removeClass('is-invalid');
+            }
+        });
+        if (!valid) {
+            $error.removeClass('d-none').text('Please fill all required fields.');
+            return;
+        }
+        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Registering...');
+        var formData = new FormData($form[0]);
+        formData.append('action', 'create');
+        $.ajax({
+            url: 'inc/ajax/students_ajax.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#registerStudentModal').modal('hide');
+                    reloadBatchesTable();
+                    toastr.success(response.message || 'Student registered successfully.');
+                } else {
+                    $error.removeClass('d-none').text(response.message || 'Failed to register student.');
+                    toastr.error(response.message || 'Failed to register student.');
+                }
+                $btn.prop('disabled', false).text('Register Student');
+            },
+            error: function () {
+                $error.removeClass('d-none').text('Failed to register student.');
+                toastr.error('Failed to register student.');
+                $btn.prop('disabled', false).text('Register Student');
             }
         });
     });

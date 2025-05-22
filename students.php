@@ -53,11 +53,6 @@ try {
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Students List</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                                    <i class="fas fa-plus"></i> Add New Student
-                                </button>
-                            </div>
                         </div>
                         <div class="card-body">
                             <div id="studentError" class="alert alert-danger d-none"></div>
@@ -85,76 +80,6 @@ try {
             </div>
         </div>
     </section>
-</div>
-<!-- Add Student Modal -->
-<div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="addStudentModalLabel">Add New Student</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="addStudentForm" novalidate enctype="multipart/form-data">
-                <div class="modal-body">
-                    <div id="addStudentError" class="alert alert-danger d-none"></div>
-                    <div class="container-fluid">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="addEnrollmentNo" class="form-label">Enrollment No <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="addEnrollmentNo" name="enrollment_no" value="<?= htmlspecialchars($nextEnrollmentNo) ?>" readonly required aria-required="true">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="addFullName" class="form-label">Full Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="addFullName" name="full_name" required aria-required="true">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="addPhoto" class="form-label">Student Photo</label>
-                                <input type="file" class="form-control" id="addPhoto" name="photo" accept="image/*">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="addAadhaar" class="form-label">Aadhaar Card</label>
-                                <input type="file" class="form-control" id="addAadhaar" name="aadhaar" accept="application/pdf,image/*">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="addQualification" class="form-label">Qualification Document</label>
-                                <input type="file" class="form-control" id="addQualification" name="qualification" accept="application/pdf,image/*">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="addEmail" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="addEmail" name="email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="addMobile" class="form-label">Mobile</label>
-                                <input type="tel" class="form-control" id="addMobile" name="mobile" pattern="^[0-9]{10}$" maxlength="10" minlength="10" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="addDOB" class="form-label">Date of Birth</label>
-                                <input type="date" class="form-control" id="addDOB" name="date_of_birth">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="addGender" class="form-label">Gender</label>
-                                <select class="form-control" id="addGender" name="gender">
-                                    <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label for="addAddress" class="form-label">Address</label>
-                                <textarea class="form-control" id="addAddress" name="address"></textarea>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save Student</button>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
 <!-- View Student Modal -->
 <div class="modal fade" id="viewStudentModal" tabindex="-1" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
@@ -363,58 +288,10 @@ $(function () {
     }
 
     // Reset forms and errors on modal close
-    $('#addStudentModal, #editStudentModal').on('hidden.bs.modal', function () {
+    $('#editStudentModal').on('hidden.bs.modal', function () {
         $(this).find('form')[0].reset();
         hideError($(this).find('.alert'));
         $(this).find('.is-invalid').removeClass('is-invalid');
-    });
-
-    $('#addStudentForm').on('submit', function (e) {
-        e.preventDefault();
-        var $form = $(this);
-        var $btn = $form.find('button[type="submit"]');
-        var $error = $('#addStudentError');
-        hideError($error);
-        var valid = true;
-        $form.find('[required]').each(function() {
-            if (!$(this).val()) {
-                valid = false;
-                $(this).addClass('is-invalid');
-            } else {
-                $(this).removeClass('is-invalid');
-            }
-        });
-        if (!valid) {
-            showError($error, 'Please fill all required fields.');
-            return;
-        }
-        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Saving...');
-        var formData = new FormData($form[0]);
-        formData.append('action', 'create');
-        $.ajax({
-            url: 'inc/ajax/students_ajax.php',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            success: function (response) {
-                if (response.success) {
-                    $('#addStudentModal').modal('hide');
-                    table.ajax.reload();
-                    toastr.success(response.message || 'Student added successfully.');
-                } else {
-                    showError($error, response.message || 'Failed to add student.');
-                    toastr.error(response.message || 'Failed to add student.');
-                }
-                $btn.prop('disabled', false).text('Save Student');
-            },
-            error: function () {
-                showError($error, 'Failed to add student.');
-                toastr.error('Failed to add student.');
-                $btn.prop('disabled', false).text('Save Student');
-            }
-        });
     });
 
     $('#editStudentForm').on('submit', function (e) {

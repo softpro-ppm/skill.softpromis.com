@@ -84,33 +84,6 @@ require_once 'includes/sidebar.php';
     </section>
 </div><!-- /.content-wrapper -->
 
-<!-- Assign Students to Batch Modal -->
-<div class="modal fade" id="assignStudentsModal" tabindex="-1" aria-labelledby="assignStudentsModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="assignStudentsModalLabel">Assign Students to Batch</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="assignStudentsForm">
-                <div class="modal-body">
-                    <input type="hidden" id="assignBatchId" name="batch_id">
-                    <div class="form-group mb-3">
-                        <label for="assignStudentIds">Select Students</label>
-                        <select class="form-control" id="assignStudentIds" name="student_ids[]" multiple required style="min-height:150px;"></select>
-                        <small class="form-text text-muted">Only students not assigned to any batch are shown.</small>
-                    </div>
-                    <div id="assignStudentsError" class="alert alert-danger d-none"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Assign</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <!-- Add/Edit Batch Modal -->
 <div class="modal fade" id="batchModal" tabindex="-1">
     <div class="modal-dialog">
@@ -193,56 +166,116 @@ require_once 'includes/sidebar.php';
   </div>
 </div>
 
+<!-- Register New Student Modal (Batch Context) -->
+<div class="modal fade" id="registerStudentModal" tabindex="-1" aria-labelledby="registerStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="registerStudentModalLabel">Register New Student for Batch</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="registerStudentForm" novalidate enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div id="registerStudentError" class="alert alert-danger d-none"></div>
+                    <input type="hidden" id="registerBatchId" name="batch_id">
+                    <div class="container-fluid">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="registerFullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="registerFullName" name="full_name" required aria-required="true">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="registerEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="registerEmail" name="email">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="registerMobile" class="form-label">Mobile</label>
+                                <input type="tel" class="form-control" id="registerMobile" name="mobile" pattern="^[0-9]{10}$" maxlength="10" minlength="10">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="registerDOB" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="registerDOB" name="date_of_birth">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="registerGender" class="form-label">Gender</label>
+                                <select class="form-control" id="registerGender" name="gender">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="registerAddress" class="form-label">Address</label>
+                                <textarea class="form-control" id="registerAddress" name="address"></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="registerPhoto" class="form-label">Student Photo</label>
+                                <input type="file" class="form-control" id="registerPhoto" name="photo" accept="image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="registerAadhaar" class="form-label">Aadhaar Card</label>
+                                <input type="file" class="form-control" id="registerAadhaar" name="aadhaar" accept="application/pdf,image/*">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="registerQualification" class="form-label">Qualification Document</label>
+                                <input type="file" class="form-control" id="registerQualification" name="qualification" accept="application/pdf,image/*">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Register Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <?php include 'includes/js.php'; ?>
 <script src="assets/js/batches.js"></script>
 <script>
-// Assign Students Modal logic
 $(function() {
-    // Open assign modal
-    $(document).on('click', '.assign-students-btn', function() {
+    // Register Student Modal logic
+    $(document).on('click', '.register-student-btn', function() {
         var batchId = $(this).data('batch-id');
-        $('#assignBatchId').val(batchId);
-        var $select = $('#assignStudentIds');
-        $select.empty();
-        $('#assignStudentsError').addClass('d-none').text('');
-        // Load available students
-        $.post('inc/ajax/batches_ajax.php', { action: 'get_available_students' }, function(res) {
-            if(res.success && res.data.length) {
-                $.each(res.data, function(i, s) {
-                    $select.append('<option value="'+s.student_id+'">'+s.full_name+' ('+s.enrollment_no+')</option>');
-                });
-            } else {
-                $select.append('<option disabled>No available students</option>');
-            }
-            $('#assignStudentsModal').modal('show');
-        }, 'json');
+        $('#registerBatchId').val(batchId);
+        $('#registerStudentForm')[0].reset();
+        $('#registerStudentError').addClass('d-none').text('');
+        $('#registerStudentModal').modal('show');
     });
 
-    // Submit assign form
-    $('#assignStudentsForm').on('submit', function(e) {
+    // Submit register student form
+    $('#registerStudentForm').on('submit', function(e) {
         e.preventDefault();
-        var batchId = $('#assignBatchId').val();
-        var studentIds = $('#assignStudentIds').val();
-        var $error = $('#assignStudentsError');
+        var formData = new FormData(this);
+        var $error = $('#registerStudentError');
         $error.addClass('d-none').text('');
-        if(!studentIds || studentIds.length === 0) {
-            $error.removeClass('d-none').text('Please select at least one student.');
-            return;
-        }
-        $.post('inc/ajax/batches_ajax.php', { action: 'assign_students', batch_id: batchId, student_ids: studentIds }, function(res) {
-            if(res.success) {
-                $('#assignStudentsModal').modal('hide');
-                toastr.success(res.message || 'Students assigned successfully');
-                // Reload batches table after assigning
-                if (window.batchesTable && typeof window.batchesTable.ajax === 'object') {
-                    window.batchesTable.ajax.reload(null, false);
-                } else if ($('#batchesTable').DataTable) {
-                    $('#batchesTable').DataTable().ajax.reload(null, false);
+        $.ajax({
+            url: 'inc/ajax/batches_ajax.php?action=register_student',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                if(res.success) {
+                    $('#registerStudentModal').modal('hide');
+                    toastr.success(res.message || 'Student registered successfully');
+                    // Reload batches table if needed
+                    if (window.batchesTable && typeof window.batchesTable.ajax === 'object') {
+                        window.batchesTable.ajax.reload(null, false);
+                    } else if ($('#batchesTable').DataTable) {
+                        $('#batchesTable').DataTable().ajax.reload(null, false);
+                    }
+                } else {
+                    $error.removeClass('d-none').text(res.message || 'Failed to register student.');
                 }
-            } else {
-                $error.removeClass('d-none').text(res.message || 'Failed to assign students.');
+            },
+            error: function() {
+                $error.removeClass('d-none').text('An error occurred. Please try again.');
             }
-        }, 'json');
+        });
     });
 });
 </script>
