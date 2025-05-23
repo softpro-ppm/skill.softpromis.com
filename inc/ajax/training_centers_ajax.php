@@ -96,7 +96,7 @@ try {
 
             // Get data with partner info
             $stmt = $pdo->prepare("
-                SELECT tc.center_id, tc.center_name, tc.partner_id
+                SELECT tc.center_id, tc.partner_id, tc.center_name, tc.contact_person, tc.email, tc.phone, tc.address, tc.city, tc.state, tc.pincode, tc.status, tp.partner_name, CONCAT(tc.address, ', ', tc.city, ', ', tc.state, ' - ', tc.pincode) as full_address
                 FROM training_centers tc
                 LEFT JOIN training_partners tp ON tc.partner_id = tp.partner_id
                 $whereClause
