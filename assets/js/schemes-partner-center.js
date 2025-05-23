@@ -37,8 +37,8 @@ $(document).ready(function() {
                 var $center = $('#center_id');
                 $center.empty().append('<option value="">Select Training Center</option>');
                 
-                if(res.status && res.data && res.data.data && res.data.data.length) {
-                    $.each(res.data.data, function(i, c) {
+                if(res.status && res.data && res.data.length) {
+                    $.each(res.data, function(i, c) {
                         $center.append(`<option value="${c.id}"${selectedId==c.id?' selected':''}>${c.name}</option>`);
                     });
                 } else {
