@@ -87,6 +87,12 @@ require_once 'includes/sidebar.php';
         <form id="addSchemeForm">
           <div class="modal-body">
             <div class="form-group">
+              <label for="partner_id">Training Partner</label>
+              <select class="form-control" id="partner_id" name="partner_id" required>
+                <option value="">Select Training Partner</option>
+              </select>
+            </div>
+            <div class="form-group">
               <label for="center_id">Training Center</label>
               <select class="form-control" id="center_id" name="center_id" required>
                 <option value="">Select Training Center</option>
@@ -216,7 +222,7 @@ require_once 'includes/sidebar.php';
   </div>
 
 <?php include 'includes/js.php'; ?>
-
+<script src="assets/js/schemes-partner-center.js"></script>
 <script>
 // Map center_id to center_name for DataTable rendering
 var centerMap = {};
