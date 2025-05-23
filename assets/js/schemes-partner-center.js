@@ -25,15 +25,15 @@ $(document).ready(function() {
         $.ajax({
             url: 'inc/ajax/training_centers_ajax.php',
             type: 'POST',
-            data: { action: 'list', partner_id: partnerId },
+            data: { action: 'read', partner_id: partnerId, per_page: 1000 }, // changed 'list' to 'read' and added per_page
             dataType: 'json',
             success: function(res) {
                 console.log('Centers AJAX response:', res); // Debug log
                 var $center = $('#center_id');
                 $center.empty().append('<option value="">Select Training Center</option>');
-                if(res.data && res.data.length) {
-                    $.each(res.data, function(i, c) {
-                        $center.append(`<option value="${c.center_id}"${selectedId==c.center_id?' selected':''}>${c.center_name}</option>`);
+                if(res.data && res.data.data && res.data.data.length) {
+                    $.each(res.data.data, function(i, c) {
+                        $center.append(`<option value="${c.id}"${selectedId==c.id?' selected':''}>${c.name}</option>`);
                     });
                 }
             },
