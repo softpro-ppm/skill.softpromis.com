@@ -104,6 +104,18 @@ require_once 'includes/sidebar.php';
                         <input type="text" class="form-control" id="batch_code" name="batch_code" value="" style="display:none" readonly>
                     </div>
                     <div class="form-group">
+                        <label for="partner_id"><strong>Training Partner</strong></label>
+                        <select class="form-control" id="partner_id" name="partner_id" required>
+                            <option value="">Select Training Partner</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="center_id"><strong>Training Center</strong></label>
+                        <select class="form-control" id="center_id" name="center_id" required>
+                            <option value="">Select Training Center</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="scheme_id"><strong>Scheme</strong></label>
                         <select class="form-control" id="scheme_id" name="scheme_id" required>
                             <option value="">Select Scheme</option>
@@ -252,6 +264,7 @@ require_once 'includes/sidebar.php';
 <?php include 'includes/js.php'; ?>
 <script src="assets/js/batches.js"></script>
 <script src="assets/js/batches-scheme-sector.js"></script>
+<script src="assets/js/batches-partner-center.js"></script>
 <script>
 $(function() {
     // Register Student Modal logic
