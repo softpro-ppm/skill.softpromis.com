@@ -1,5 +1,17 @@
 // JS to dynamically populate Training Partner and Training Center dropdowns in Add Scheme modal
 $(document).ready(function() {
+    // Load partners on modal open
+    $('#addSchemeModal').on('show.bs.modal', function() {
+        loadPartners();
+        $('#center_id').empty().append('<option value="">Select Training Center</option>');
+    });
+
+    // Load centers when partner changes
+    $(document).on('change', '#partner_id', function() {
+        var partnerId = $(this).val();
+        loadCenters(partnerId);
+    });
+
     function loadPartners(selectedId) {
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
@@ -23,7 +35,6 @@ $(document).ready(function() {
             $('#center_id').empty().append('<option value="">Select Training Center</option>');
             return;
         }
-
         $.ajax({
             url: 'inc/ajax/training_centers_ajax.php',
             type: 'POST',
@@ -36,7 +47,6 @@ $(document).ready(function() {
             success: function(res) {
                 var $center = $('#center_id');
                 $center.empty().append('<option value="">Select Training Center</option>');
-                
                 if(res.success && res.data && res.data.length) {
                     $.each(res.data, function(i, c) {
                         $center.append(`<option value="${c.center_id}"${selectedId==c.center_id?' selected':''}>${c.center_name}</option>`);
@@ -51,16 +61,4 @@ $(document).ready(function() {
             }
         });
     }
-
-    // When Add Scheme modal is shown, load partners
-    $('#addSchemeModal').on('show.bs.modal', function() {
-        loadPartners();
-        $('#center_id').empty().append('<option value="">Select Training Center</option>');
-    });
-
-    // When partner changes, load centers
-    $(document).on('change', '#partner_id', function() {
-        var partnerId = $(this).val();
-        loadCenters(partnerId);
-    });
 });

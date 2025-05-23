@@ -66,50 +66,29 @@ try {
         case 'read':
             $page = (int)($_POST['page'] ?? 1);
             $perPage = (int)($_POST['per_page'] ?? 10);
-            $search = sanitizeInput($_POST['search'] ?? '');
             $partner_id = (int)($_POST['partner_id'] ?? 0);
 
             $where = [];
             $params = [];
 
-            if (!empty($search)) {
-                $searchFields = ['center_name', 'address', 'city', 'state', 'pincode', 'phone', 'email'];
-                $searchResult = buildSearchQuery($searchFields, $search);
-                $where[] = "(" . $searchResult['conditions'] . ")";
-                $params = array_merge($params, $searchResult['params']);
-            }
-
             if ($partner_id > 0) {
-                $where[] = "partner_id = ?";
+                $where[] = "tc.partner_id = ?";
                 $params[] = $partner_id;
             }
 
             $whereClause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
 
-            // Get total count
-            $countStmt = $pdo->prepare("SELECT COUNT(*) FROM training_centers $whereClause");
-            $countStmt->execute($params);
-            $total = $countStmt->fetchColumn();
-
-            // Get pagination info
-            $pagination = getPagination($page, $total, $perPage);
-
-            // Get data with partner info
             $stmt = $pdo->prepare("
-                SELECT tc.center_id, tc.partner_id, tc.center_name, tc.contact_person, tc.email, tc.phone, tc.address, tc.city, tc.state, tc.pincode, tc.status, tp.partner_name, CONCAT(tc.address, ', ', tc.city, ', ', tc.state, ' - ', tc.pincode) as full_address
+                SELECT tc.center_id, tc.center_name
                 FROM training_centers tc
-                LEFT JOIN training_partners tp ON tc.partner_id = tp.partner_id
                 $whereClause
                 ORDER BY tc.center_id DESC
                 LIMIT ? OFFSET ?
             ");
-            $stmt->execute([...$params, $pagination['per_page'], $pagination['offset']]);
+            $stmt->execute([...$params, $perPage, ($page-1)*$perPage]);
             $centers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            sendJSONResponse(true, 'Training centers retrieved successfully', [
-                'data' => $centers,
-                'pagination' => $pagination
-            ]);
+            sendJSONResponse(true, 'Training centers retrieved successfully', $centers);
             break;
 
         case 'update':
