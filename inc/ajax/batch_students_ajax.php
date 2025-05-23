@@ -19,7 +19,7 @@ try {
                 echo json_encode(['success' => false, 'message' => 'Batch ID is required']);
                 exit;
             }
-            $stmt = $pdo->prepare('SELECT s.enrollment_no, CONCAT(s.first_name, " ", s.last_name) AS full_name, s.email, s.mobile, s.gender FROM students s INNER JOIN student_batch_enrollment e ON s.student_id = e.student_id WHERE e.batch_id = ? AND e.status = "active" ORDER BY s.first_name, s.last_name');
+            $stmt = $pdo->prepare('SELECT s.enrollment_no, s.first_name, s.last_name, s.email, s.mobile, s.gender FROM students s INNER JOIN student_batch_enrollment e ON s.student_id = e.student_id WHERE e.batch_id = ? AND e.status = "active" ORDER BY s.first_name, s.last_name');
             $stmt->execute([$batch_id]);
             $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['success' => true, 'data' => $students]);

@@ -18,38 +18,21 @@
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item<?php if(in_array($currentPage, ['training-partners.php','training-centers.php'])) echo ' menu-open'; ?>">
-            <a href="#" class="nav-link<?php if(in_array($currentPage, ['training-partners.php','training-centers.php'])) echo ' active'; ?>">
-              <i class="nav-icon fas fa-building"></i>
+          <li class="nav-item<?php if(in_array($currentPage, ['training-partners.php','training-centers.php','schemes.php','sectors.php','courses.php','batches.php'])) echo ' menu-open'; ?>">
+            <a href="#" class="nav-link<?php if(in_array($currentPage, ['training-partners.php','training-centers.php','schemes.php','sectors.php','courses.php','batches.php'])) echo ' active'; ?>">
+              <i class="nav-icon fas fa-cogs"></i>
               <p>
-                Training Partners
+                Manage Programs
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="training-partners.php" class="nav-link<?php if($currentPage == 'training-partners.php') echo ' active'; ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Manage Partners</p>
-                </a>
-              </li>
               <li class="nav-item">
                 <a href="training-centers.php" class="nav-link<?php if($currentPage == 'training-centers.php') echo ' active'; ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Training Centers</p>
                 </a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-item<?php if(in_array($currentPage, ['schemes.php','sectors.php','courses.php','batches.php'])) echo ' menu-open'; ?>">
-            <a href="#" class="nav-link<?php if(in_array($currentPage, ['schemes.php','sectors.php','courses.php','batches.php'])) echo ' active'; ?>">
-              <i class="nav-icon fas fa-graduation-cap"></i>
-              <p>
-                Training Programs
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="schemes.php" class="nav-link<?php if($currentPage == 'schemes.php') echo ' active'; ?>">
                   <i class="far fa-circle nav-icon"></i>

@@ -45,7 +45,7 @@ $(document).ready(function() {
                     var studentSel = $('#student_id');
                     studentSel.empty().append('<option value="">Select Student</option>');
                     $.each(res.data, function(i, s) {
-                        var label = s.full_name + ' (' + s.enrollment_no + ')';
+                        var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
                         studentSel.append(`<option value="${s.student_id}" data-enrollment-no="${s.enrollment_no}"${selectedStudentId==s.student_id?' selected':''}>${label}</option>`);
                     });
                 }
@@ -119,7 +119,7 @@ $(document).ready(function() {
                     var studentSel = $('#student_id');
                     studentSel.empty().append('<option value="">Select Student</option>');
                     $.each(res.data, function(i, s) {
-                        var label = s.full_name + ' (' + s.enrollment_no + ')';
+                        var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
                         studentSel.append(`<option value="${s.student_id}">${label}</option>`);
                     });
                     // Force the select to update (for some browsers/UI)
@@ -175,8 +175,8 @@ $(document).ready(function() {
                                 studentSel.empty().append('<option value="">Select Student</option>');
                                 var foundStudent = null;
                                 $.each(stuRes.data, function(i, s) {
-                                    var label = s.full_name + ' (' + s.enrollment_no + ')';
-                                    studentSel.append(`<option value="${s.student_id}"${s.student_id==f.student_id?' selected':''}>${label}</option>
+                                    var label = s.first_name + ' ' + s.last_name + ' (' + s.enrollment_no + ')';
+                                    studentSel.append(`<option value="${s.student_id}"${s.student_id==f.student_id?' selected':''}>${label}</option>`);
                                     if(s.student_id==f.student_id) foundStudent = s.student_id;
                                 });
                                 if(foundStudent) {
