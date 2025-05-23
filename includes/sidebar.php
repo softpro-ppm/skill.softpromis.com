@@ -30,7 +30,7 @@
               <li class="nav-item">
                 <a href="training-partners.php" class="nav-link<?php if($currentPage == 'training-partners.php') echo ' active'; ?>">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Manage Partners</p>
+                  <p>Training Partners</p>
                 </a>
               </li>
               <li class="nav-item">
