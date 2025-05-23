@@ -39,7 +39,7 @@ $(document).ready(function() {
                 
                 if(res.status && res.data && res.data.length) {
                     $.each(res.data, function(i, c) {
-                        $center.append(`<option value="${c.id}"${selectedId==c.id?' selected':''}>${c.name}</option>`);
+                        $center.append(`<option value="${c.center_id}"${selectedId==c.center_id?' selected':''}>${c.center_name}</option>`);
                     });
                 } else {
                     $center.append('<option value="">No centers found for this partner</option>');

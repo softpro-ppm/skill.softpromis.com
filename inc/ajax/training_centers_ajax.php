@@ -96,7 +96,7 @@ try {
 
             // Get data with partner info
             $stmt = $pdo->prepare("
-                SELECT tc.center_id as id, tc.center_name as name, tc.partner_id, 
+                SELECT tc.center_id, tc.center_name, tc.partner_id, 
                        tc.contact_person, tc.email, tc.phone, tc.address, 
                        tc.city, tc.state, tc.pincode, tc.status,
                        tp.partner_name
