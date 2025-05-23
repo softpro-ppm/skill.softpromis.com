@@ -96,9 +96,12 @@ try {
 
             // Get data with partner info
             $stmt = $pdo->prepare("
-                SELECT tc.*, tp.name as partner_name 
+                SELECT tc.center_id as id, tc.center_name as name, tc.partner_id, 
+                       tc.contact_person, tc.email, tc.phone, tc.address, 
+                       tc.city, tc.state, tc.pincode, tc.status,
+                       tp.partner_name
                 FROM training_centers tc
-                LEFT JOIN training_partners tp ON tc.partner_id = tp.id
+                LEFT JOIN training_partners tp ON tc.partner_id = tp.partner_id
                 $whereClause
                 ORDER BY tc.created_at DESC
                 LIMIT ? OFFSET ?
@@ -194,10 +197,13 @@ try {
             }
 
             $stmt = $pdo->prepare("
-                SELECT tc.*, tp.name as partner_name 
+                SELECT tc.center_id as id, tc.center_name as name, tc.partner_id, 
+                       tc.contact_person, tc.email, tc.phone, tc.address, 
+                       tc.city, tc.state, tc.pincode, tc.status,
+                       tp.partner_name
                 FROM training_centers tc
-                LEFT JOIN training_partners tp ON tc.partner_id = tp.id
-                WHERE tc.id = ?
+                LEFT JOIN training_partners tp ON tc.partner_id = tp.partner_id
+                WHERE tc.center_id = ?
             ");
             $stmt->execute([$id]);
             $center = $stmt->fetch(PDO::FETCH_ASSOC);
