@@ -1,17 +1,5 @@
 // JS to dynamically populate Training Partner and Training Center dropdowns in Add Scheme modal
 $(document).ready(function() {
-    // Load partners on modal open
-    $('#addSchemeModal').on('show.bs.modal', function() {
-        loadPartners();
-        $('#center_id').empty().append('<option value="">Select Training Center</option>');
-    });
-
-    // Load centers when partner changes
-    $(document).on('change', '#partner_id', function() {
-        var partnerId = $(this).val();
-        loadCenters(partnerId);
-    });
-
     function loadPartners(selectedId) {
         $.ajax({
             url: 'inc/ajax/training_partners_ajax.php',
@@ -26,6 +14,10 @@ $(document).ready(function() {
                         $partner.append(`<option value="${p.partner_id}"${selectedId==p.partner_id?' selected':''}>${p.partner_name}</option>`);
                     });
                 }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading partners:', error);
+                toastr.error('Error loading training partners');
             }
         });
     }
@@ -35,6 +27,11 @@ $(document).ready(function() {
             $('#center_id').empty().append('<option value="">Select Training Center</option>');
             return;
         }
+
+        // Show loading state
+        var $center = $('#center_id');
+        $center.empty().append('<option value="">Loading centers...</option>');
+
         $.ajax({
             url: 'inc/ajax/training_centers_ajax.php',
             type: 'POST',
@@ -45,11 +42,11 @@ $(document).ready(function() {
             },
             dataType: 'json',
             success: function(res) {
-                var $center = $('#center_id');
                 $center.empty().append('<option value="">Select Training Center</option>');
-                if(res.success && res.data && res.data.length) {
-                    $.each(res.data, function(i, c) {
-                        $center.append(`<option value="${c.center_id}"${selectedId==c.center_id?' selected':''}>${c.center_name}</option>`);
+                
+                if(res.status && res.data && res.data.data && res.data.data.length) {
+                    $.each(res.data.data, function(i, c) {
+                        $center.append(`<option value="${c.id}"${selectedId==c.id?' selected':''}>${c.name}</option>`);
                     });
                 } else {
                     $center.append('<option value="">No centers found for this partner</option>');
@@ -57,8 +54,21 @@ $(document).ready(function() {
             },
             error: function(xhr, status, error) {
                 console.error('Error loading centers:', error);
-                $('#center_id').empty().append('<option value="">Error loading centers</option>');
+                $center.empty().append('<option value="">Error loading centers</option>');
+                toastr.error('Error loading training centers');
             }
         });
     }
+
+    // When Add Scheme modal is shown, load partners
+    $('#addSchemeModal').on('show.bs.modal', function() {
+        loadPartners();
+        $('#center_id').empty().append('<option value="">Select Training Center</option>');
+    });
+
+    // When partner changes, load centers
+    $(document).on('change', '#partner_id', function() {
+        var partnerId = $(this).val();
+        loadCenters(partnerId);
+    });
 });

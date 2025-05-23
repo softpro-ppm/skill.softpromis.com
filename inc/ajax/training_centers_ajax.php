@@ -82,7 +82,25 @@ try {
             error_log('DEBUG: whereClause: ' . $whereClause);
             error_log('DEBUG: params: ' . json_encode($params));
 
-            $sql = "SELECT tc.center_id, tc.center_name FROM training_centers tc $whereClause ORDER BY tc.center_id DESC LIMIT ? OFFSET ?";
+            // Get total count for pagination
+            $countSql = "SELECT COUNT(*) FROM training_centers tc $whereClause";
+            $countStmt = $pdo->prepare($countSql);
+            $countStmt->execute($params);
+            $total = $countStmt->fetchColumn();
+
+            // Get pagination info
+            $pagination = [
+                'total' => $total,
+                'per_page' => $perPage,
+                'current_page' => $page,
+                'last_page' => ceil($total / $perPage)
+            ];
+
+            $sql = "SELECT tc.center_id as id, tc.center_name as name 
+                   FROM training_centers tc 
+                   $whereClause 
+                   ORDER BY tc.center_name ASC 
+                   LIMIT ? OFFSET ?";
             error_log('DEBUG: SQL: ' . $sql);
             $params[] = $perPage;
             $params[] = ($page-1)*$perPage;
@@ -93,11 +111,13 @@ try {
                 $stmt->execute($params);
                 $centers = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 error_log('DEBUG: Query executed, centers count: ' . count($centers));
-                sendJSONResponse(true, 'Training centers retrieved successfully', $centers);
+                sendJSONResponse(true, 'Training centers retrieved successfully', [
+                    'data' => $centers,
+                    'pagination' => $pagination
+                ]);
             } catch (PDOException $e) {
                 error_log('DEBUG: PDOException: ' . $e->getMessage());
-                echo $e->getMessage();
-                sendJSONResponse(false, 'An error occurred. Please try again later.');
+                sendJSONResponse(false, 'An error occurred while fetching training centers: ' . $e->getMessage());
             }
             break;
 
