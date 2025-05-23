@@ -219,6 +219,7 @@ try {
             sendJSONResponse(false, 'Invalid action');
     }
 } catch (PDOException $e) {
+    echo $e->getMessage(); // DEBUG: Show the PDO error in the response for troubleshooting
     logError("Training centers error: " . $e->getMessage());
     sendJSONResponse(false, 'An error occurred. Please try again later.');
 }
