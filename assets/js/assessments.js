@@ -66,7 +66,7 @@ $(function () {
         $student.empty().append('<option value="">Select Student</option>');
         if(res.success && res.data) {
           $.each(res.data, function(i, s) {
-            var label = s.first_name + ' ' + s.last_name + (s.enrollment_no ? ' (' + s.enrollment_no + ')' : '');
+            var label = s.full_name + (s.enrollment_no ? ' (' + s.enrollment_no + ')' : '');
             $student.append('<option value="' + s.student_id + '">' + label + '</option>');
           });
         }
@@ -171,7 +171,7 @@ $(function () {
               var foundStudent = null;
               if(res.success && res.data) {
                 $.each(res.data, function(i, s) {
-                  var label = s.first_name + ' ' + s.last_name + (s.enrollment_no ? ' (' + s.enrollment_no + ')' : '');
+                  var label = s.full_name + (s.enrollment_no ? ' (' + s.enrollment_no + ')' : '');
                   $student.append('<option value="' + s.student_id + '"' + (s.student_id==d.student_id?' selected':'') + '>' + label + '</option>');
                   if(s.student_id==d.student_id) foundStudent = s.student_id;
                 });

@@ -176,15 +176,14 @@ $(document).ready(function() {
                         $tableBody.append('<tr>' +
                             '<td>' + (i+1) + '</td>' +
                             '<td>' + (s.enrollment_no || '') + '</td>' +
-                            '<td>' + (s.first_name || '') + '</td>' +
-                            '<td>' + (s.last_name || '') + '</td>' +
+                            '<td>' + (s.full_name || '') + '</td>' +
                             '<td>' + (s.email || '') + '</td>' +
                             '<td>' + (s.mobile || '') + '</td>' +
                             '<td>' + (s.gender ? s.gender.charAt(0).toUpperCase() + s.gender.slice(1) : '') + '</td>' +
                         '</tr>');
                     });
                 } else {
-                    $tableBody.append('<tr><td colspan="7" class="text-center">No students found in this batch.</td></tr>');
+                    $tableBody.append('<tr><td colspan="6" class="text-center">No students found in this batch.</td></tr>');
                 }
                 $('#batchStudentsModal').modal('show');
             },

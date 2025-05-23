@@ -61,8 +61,7 @@ try {
                                     <tr>
                                         <th>No.</th>
                                         <th>Enrollment No</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
+                                        <th>Full Name</th>
                                         <th>Email</th>
                                         <th>Mobile</th>
                                         <th>Date of Birth</th>
@@ -258,8 +257,7 @@ $(function () {
         columns: [
             { data: null, render: function (data, type, row, meta) { return meta.row + 1; } },
             { data: 'enrollment_no' },
-            { data: 'first_name' },
-            { data: 'last_name' },
+            { data: 'full_name' },
             { data: 'email' },
             { data: 'mobile' },
             { data: 'date_of_birth' },
