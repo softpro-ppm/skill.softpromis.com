@@ -18,8 +18,8 @@
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item<?php if(in_array($currentPage, ['training-partners.php','training-centers.php','schemes.php','sectors.php','courses.php','batches.php'])) echo ' menu-open'; ?>">
-            <a href="#" class="nav-link<?php if(in_array($currentPage, ['training-partners.php','training-centers.php','schemes.php','sectors.php','courses.php','batches.php'])) echo ' active'; ?>">
+          <li class="nav-item<?php if(in_array($currentPage, ['training-partners.php','training-centers.php','schemes.php','sectors.php','courses.php','batches.php','managing-programs.php'])) echo ' menu-open'; ?>">
+            <a href="managing-programs.php" class="nav-link<?php if(in_array($currentPage, ['training-partners.php','training-centers.php','schemes.php','sectors.php','courses.php','batches.php','managing-programs.php'])) echo ' active'; ?>">
               <i class="nav-icon fas fa-cogs"></i>
               <p>
                 Manage Programs
@@ -27,6 +27,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="managing-programs.php" class="nav-link<?php if($currentPage == 'managing-programs.php') echo ' active'; ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Overview</p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="training-partners.php" class="nav-link<?php if($currentPage == 'training-partners.php') echo ' active'; ?>">
                   <i class="far fa-circle nav-icon"></i>
