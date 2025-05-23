@@ -22,10 +22,11 @@ $(document).ready(function() {
             $('#center_id').empty().append('<option value="">Select Training Center</option>');
             return;
         }
+        console.log('Requesting centers with:', { action: 'read', partner_id: partnerId, per_page: 1000 }); // Debug log
         $.ajax({
             url: 'inc/ajax/training_centers_ajax.php',
             type: 'POST',
-            data: { action: 'read', partner_id: partnerId, per_page: 1000 }, // changed 'list' to 'read' and added per_page
+            data: { action: 'read', partner_id: partnerId, per_page: 1000 },
             dataType: 'json',
             success: function(res) {
                 console.log('Centers AJAX response:', res); // Debug log
@@ -35,6 +36,8 @@ $(document).ready(function() {
                     $.each(res.data.data, function(i, c) {
                         $center.append(`<option value="${c.id}"${selectedId==c.id?' selected':''}>${c.name}</option>`);
                     });
+                } else {
+                    $center.append('<option value="">No centers found</option>');
                 }
             },
             error: function(xhr, status, error) {
