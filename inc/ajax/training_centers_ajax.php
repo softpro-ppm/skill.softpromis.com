@@ -64,9 +64,11 @@ try {
             break;
 
         case 'read':
+            error_log('DEBUG: Entered read action');
             $page = (int)($_POST['page'] ?? 1);
             $perPage = (int)($_POST['per_page'] ?? 10);
             $partner_id = (int)($_POST['partner_id'] ?? 0);
+            error_log('DEBUG: Params - page: ' . $page . ', perPage: ' . $perPage . ', partner_id: ' . $partner_id);
 
             $where = [];
             $params = [];
@@ -77,18 +79,26 @@ try {
             }
 
             $whereClause = !empty($where) ? "WHERE " . implode(" AND ", $where) : "";
+            error_log('DEBUG: whereClause: ' . $whereClause);
+            error_log('DEBUG: params: ' . json_encode($params));
 
-            $stmt = $pdo->prepare("
-                SELECT tc.center_id, tc.center_name
-                FROM training_centers tc
-                $whereClause
-                ORDER BY tc.center_id DESC
-                LIMIT ? OFFSET ?
-            ");
-            $stmt->execute([...$params, $perPage, ($page-1)*$perPage]);
-            $centers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $sql = "SELECT tc.center_id, tc.center_name FROM training_centers tc $whereClause ORDER BY tc.center_id DESC LIMIT ? OFFSET ?";
+            error_log('DEBUG: SQL: ' . $sql);
+            $params[] = $perPage;
+            $params[] = ($page-1)*$perPage;
+            error_log('DEBUG: Final params: ' . json_encode($params));
 
-            sendJSONResponse(true, 'Training centers retrieved successfully', $centers);
+            try {
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute($params);
+                $centers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                error_log('DEBUG: Query executed, centers count: ' . count($centers));
+                sendJSONResponse(true, 'Training centers retrieved successfully', $centers);
+            } catch (PDOException $e) {
+                error_log('DEBUG: PDOException: ' . $e->getMessage());
+                echo $e->getMessage();
+                sendJSONResponse(false, 'An error occurred. Please try again later.');
+            }
             break;
 
         case 'update':
