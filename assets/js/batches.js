@@ -173,17 +173,18 @@ $(document).ready(function() {
             success: function(res) {
                 if(res.success && res.data.length) {
                     $.each(res.data, function(i, s) {
+                        var fullName = ((s.first_name || '') + (s.last_name ? ' ' + s.last_name : '')).trim();
                         $tableBody.append('<tr>' +
                             '<td>' + (i+1) + '</td>' +
                             '<td>' + (s.enrollment_no || '') + '</td>' +
-                            '<td>' + (s.full_name || '') + '</td>' +
+                            '<td>' + fullName + '</td>' +
                             '<td>' + (s.email || '') + '</td>' +
                             '<td>' + (s.mobile || '') + '</td>' +
                             '<td>' + (s.gender ? s.gender.charAt(0).toUpperCase() + s.gender.slice(1) : '') + '</td>' +
                         '</tr>');
                     });
                 } else {
-                    $tableBody.append('<tr><td colspan="6" class="text-center">No students found in this batch.</td></tr>');
+                    $tableBody.append('<tr><td colspan="7" class="text-center">No students found in this batch.</td></tr>');
                 }
                 $('#batchStudentsModal').modal('show');
             },
