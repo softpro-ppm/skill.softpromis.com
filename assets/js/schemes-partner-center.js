@@ -42,10 +42,11 @@ $(document).ready(function() {
             },
             dataType: 'json',
             success: function(res) {
+                var $center = $('#center_id');
                 $center.empty().append('<option value="">Select Training Center</option>');
-                
-                if(res.status && res.data && res.data.data && res.data.data.length) {
-                    $.each(res.data.data, function(i, c) {
+                var centers = res.data && res.data.data ? res.data.data : [];
+                if(res.success && centers.length) {
+                    $.each(centers, function(i, c) {
                         $center.append(`<option value="${c.id}"${selectedId==c.id?' selected':''}>${c.name}</option>`);
                     });
                 } else {
