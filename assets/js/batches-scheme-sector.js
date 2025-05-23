@@ -69,4 +69,37 @@ $(document).ready(function() {
         var sectorId = $(this).val();
         loadCourses(schemeId, sectorId);
     });
+    // On modal open, clear scheme dropdown
+    $('#addSectorModal').on('show.bs.modal', function() {
+        $('#scheme_id').empty().append('<option value="">Select Scheme</option>');
+    });
+    // On training center change, load schemes
+    $('#center_id').on('change', function() {
+        var centerId = $(this).val();
+        if (!centerId) {
+            $('#scheme_id').empty().append('<option value="">Select Scheme</option>');
+            return;
+        }
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: { action: 'list_by_center', center_id: centerId },
+            dataType: 'json',
+            success: function(res) {
+                var $scheme = $('#scheme_id');
+                $scheme.empty().append('<option value="">Select Scheme</option>');
+                if(res.success && res.data && res.data.length) {
+                    $.each(res.data, function(i, s) {
+                        $scheme.append(`<option value="${s.scheme_id}">${s.scheme_name}</option>`);
+                    });
+                } else {
+                    $scheme.append('<option value="">No schemes found for this center</option>');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading schemes:', error);
+                $('#scheme_id').empty().append('<option value="">Error loading schemes</option>');
+            }
+        });
+    });
 });

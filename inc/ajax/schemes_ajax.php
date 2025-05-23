@@ -178,6 +178,18 @@ try {
             sendJSONResponse(true, 'Assigned centers fetched', $centers);
             break;
 
+        case 'list_by_center':
+            $center_id = (int)($_POST['center_id'] ?? 0);
+            if (!$center_id) {
+                sendJSONResponse(false, 'Center ID is required');
+            }
+            $stmt = $pdo->prepare("SELECT scheme_id, scheme_name FROM schemes WHERE center_id = ? ORDER BY scheme_name ASC");
+            $stmt->execute([$center_id]);
+            $schemes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Schemes loaded', $schemes);
+            exit;
+            break;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }
