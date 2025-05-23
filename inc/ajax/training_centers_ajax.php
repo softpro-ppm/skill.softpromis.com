@@ -45,7 +45,7 @@ try {
 
             $stmt = $pdo->prepare("
                 INSERT INTO training_centers (
-                    partner_id, name, address, city, state, pincode, phone, email, capacity, status, created_at, updated_at
+                    partner_id, center_name, address, city, state, pincode, phone, email, capacity, status, created_at, updated_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
             ");
             $stmt->execute([
@@ -73,7 +73,7 @@ try {
             $params = [];
 
             if (!empty($search)) {
-                $searchFields = ['name', 'address', 'city', 'state', 'pincode', 'phone', 'email'];
+                $searchFields = ['center_name', 'address', 'city', 'state', 'pincode', 'phone', 'email'];
                 $searchResult = buildSearchQuery($searchFields, $search);
                 $where[] = "(" . $searchResult['conditions'] . ")";
                 $params = array_merge($params, $searchResult['params']);
@@ -142,9 +142,9 @@ try {
 
             $stmt = $pdo->prepare("
                 UPDATE training_centers 
-                SET partner_id = ?, name = ?, address = ?, city = ?, state = ?, pincode = ?,
+                SET partner_id = ?, center_name = ?, address = ?, city = ?, state = ?, pincode = ?,
                     phone = ?, email = ?, capacity = ?, status = ?, updated_at = NOW()
-                WHERE id = ?
+                WHERE center_id = ?
             ");
             $stmt->execute([
                 $partner_id, $name, $address, $city, $state, $pincode, $phone, $email, $capacity, $status, $id
@@ -168,7 +168,7 @@ try {
             }
 
             // Get center info for audit log
-            $stmt = $pdo->prepare("SELECT name, city, state FROM training_centers WHERE id = ?");
+            $stmt = $pdo->prepare("SELECT center_name, city, state FROM training_centers WHERE center_id = ?");
             $stmt->execute([$id]);
             $center = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -176,12 +176,12 @@ try {
                 sendJSONResponse(false, 'Training center not found');
             }
 
-            $stmt = $pdo->prepare("DELETE FROM training_centers WHERE id = ?");
+            $stmt = $pdo->prepare("DELETE FROM training_centers WHERE center_id = ?");
             $stmt->execute([$id]);
 
             logAudit($_SESSION['user']['id'], 'delete_center', [
                 'id' => $id,
-                'name' => $center['name'],
+                'name' => $center['center_name'],
                 'city' => $center['city'],
                 'state' => $center['state']
             ]);
@@ -197,7 +197,7 @@ try {
             }
 
             $stmt = $pdo->prepare("
-                SELECT tc.center_id as id, tc.center_name as name, tc.partner_id, 
+                SELECT tc.center_id, tc.center_name, tc.partner_id, 
                        tc.contact_person, tc.email, tc.phone, tc.address, 
                        tc.city, tc.state, tc.pincode, tc.status,
                        tp.partner_name
