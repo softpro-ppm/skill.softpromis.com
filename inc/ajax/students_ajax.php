@@ -246,6 +246,10 @@ try {
                 LEFT JOIN batches b ON s.batch_id = b.batch_id
                 ORDER BY s.created_at DESC');
             $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // Add full_name field for DataTables compatibility
+            foreach ($students as &$student) {
+                $student['full_name'] = trim(($student['first_name'] ?? '') . ' ' . ($student['last_name'] ?? ''));
+            }
             echo json_encode(['success' => true, 'data' => $students]);
             exit;
 
