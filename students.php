@@ -207,6 +207,18 @@ try {
                                     <option value="other">Other</option>
                                 </select>
                             </div>
+                            <div class="col-md-6">
+                                <label for="editPartner" class="form-label">Training Partner</label>
+                                <select class="form-control" id="editPartner" name="partner_id">
+                                    <option value="">Select Training Partner</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editCenter" class="form-label">Training Center</label>
+                                <select class="form-control" id="editCenter" name="center_id">
+                                    <option value="">Select Training Center</option>
+                                </select>
+                            </div>
                             <div class="col-12">
                                 <label for="editAddress" class="form-label">Address</label>
                                 <textarea class="form-control" id="editAddress" name="address"></textarea>
@@ -437,7 +449,6 @@ $(function () {
 
     $(document).on('click', '.edit-student-btn', function () {
         var studentId = $(this).data('student-id');
-        // Show loading spinner in modal
         var modal = document.getElementById('editStudentModal');
         var bsModal = bootstrap.Modal.getOrCreateInstance(modal);
         $('#editStudentForm')[0].reset();
@@ -456,9 +467,7 @@ $(function () {
                 $('#editStudentForm').find('[name]').each(function () {
                     var name = $(this).attr('name');
                     if (name !== 'full_name') {
-                        // For file inputs, do not set value (security restriction)
                         if ($(this).attr('type') === 'file') {
-                            // Show link if file exists
                             var fileField = name;
                             var fileVal = data[fileField];
                             var linkId = '#current_' + fileField + '_link';
@@ -474,6 +483,19 @@ $(function () {
                     }
                 });
                 $('#editFullName').val(fullName);
+                // Populate partner and center dropdowns
+                if (window.populatePartners && window.populateCenters) {
+                    populatePartners(data.partner_id);
+                    populateCenters(data.partner_id, data.center_id);
+                } else if (window.$ && $.fn.ready) {
+                    // fallback: trigger ready for students-partner-center.js
+                    $(function() {
+                        if (window.populatePartners && window.populateCenters) {
+                            populatePartners(data.partner_id);
+                            populateCenters(data.partner_id, data.center_id);
+                        }
+                    });
+                }
             } else {
                 $('#editStudentError').removeClass('d-none').text(response.message || 'Failed to fetch student details.');
             }
@@ -487,5 +509,6 @@ $(function () {
     });
 });
 </script>
+<script src="assets/js/students-partner-center.js"></script>
 </body>
 </html>
