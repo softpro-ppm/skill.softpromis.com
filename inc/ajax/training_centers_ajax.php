@@ -96,7 +96,7 @@ try {
                 'last_page' => ceil($total / $perPage)
             ];
 
-            $sql = "SELECT tc.center_id as id, tc.center_name as name 
+            $sql = "SELECT tc.center_id, tc.center_name 
                    FROM training_centers tc 
                    $whereClause 
                    ORDER BY tc.center_name ASC 

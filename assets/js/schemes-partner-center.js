@@ -47,7 +47,7 @@ $(document).ready(function() {
                 var centers = res.data && res.data.data ? res.data.data : [];
                 if(res.success && centers.length) {
                     $.each(centers, function(i, c) {
-                        $center.append(`<option value="${c.id}"${selectedId==c.id?' selected':''}>${c.name}</option>`);
+                        $center.append(`<option value="${c.center_id}"${selectedId==c.center_id?' selected':''}>${c.center_name}</option>`);
                     });
                 } else {
                     $center.append('<option value="">No centers found for this partner</option>');
