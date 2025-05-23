@@ -172,8 +172,10 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(res) {
                 if(res.success && res.data.length) {
+                    // Update the table header for Batch Students modal
+                    $('#batchStudentsTable thead').html('<tr><th>#</th><th>Enrollment No</th><th>Full Name</th><th>Email</th><th>Mobile</th><th>Gender</th></tr>');
                     $.each(res.data, function(i, s) {
-                        var fullName = ((s.first_name || '') + (s.last_name ? ' ' + s.last_name : '')).trim();
+                        var fullName = s.full_name ? s.full_name : ((s.first_name || '') + (s.last_name ? ' ' + s.last_name : '')).trim();
                         $tableBody.append('<tr>' +
                             '<td>' + (i+1) + '</td>' +
                             '<td>' + (s.enrollment_no || '') + '</td>' +
