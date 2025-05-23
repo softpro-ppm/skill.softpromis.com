@@ -76,6 +76,7 @@ $(document).ready(function() {
     // On training center change, load schemes
     $('#center_id').on('change', function() {
         var centerId = $(this).val();
+        console.log('Selected center_id:', centerId); // Debug: show selected center_id
         if (!centerId) {
             $('#scheme_id').empty().append('<option value="">Select Scheme</option>');
             return;
@@ -85,7 +86,11 @@ $(document).ready(function() {
             type: 'POST',
             data: { action: 'list_by_center', center_id: centerId },
             dataType: 'json',
+            beforeSend: function() {
+                console.log('Requesting schemes for center_id:', centerId);
+            },
             success: function(res) {
+                console.log('Schemes AJAX response:', res); // Debug: show response
                 var $scheme = $('#scheme_id');
                 $scheme.empty().append('<option value="">Select Scheme</option>');
                 if(res.success && res.data && res.data.length) {
