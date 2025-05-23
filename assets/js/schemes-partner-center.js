@@ -28,6 +28,7 @@ $(document).ready(function() {
             data: { action: 'list', partner_id: partnerId },
             dataType: 'json',
             success: function(res) {
+                console.log('Centers AJAX response:', res); // Debug log
                 var $center = $('#center_id');
                 $center.empty().append('<option value="">Select Training Center</option>');
                 if(res.data && res.data.length) {
@@ -35,6 +36,10 @@ $(document).ready(function() {
                         $center.append(`<option value="${c.center_id}"${selectedId==c.center_id?' selected':''}>${c.center_name}</option>`);
                     });
                 }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading centers:', error);
+                $('#center_id').empty().append('<option value="">Error loading centers</option>');
             }
         });
     }
