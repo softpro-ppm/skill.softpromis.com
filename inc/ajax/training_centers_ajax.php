@@ -96,14 +96,11 @@ try {
 
             // Get data with partner info
             $stmt = $pdo->prepare("
-                SELECT tc.center_id, tc.center_name, tc.partner_id, 
-                       tc.contact_person, tc.email, tc.phone, tc.address, 
-                       tc.city, tc.state, tc.pincode, tc.status,
-                       tp.partner_name
+                SELECT tc.center_id, tc.center_name, tc.partner_id
                 FROM training_centers tc
                 LEFT JOIN training_partners tp ON tc.partner_id = tp.partner_id
                 $whereClause
-                ORDER BY tc.created_at DESC
+                ORDER BY tc.center_id DESC
                 LIMIT ? OFFSET ?
             ");
             $stmt->execute([...$params, $pagination['per_page'], $pagination['offset']]);
