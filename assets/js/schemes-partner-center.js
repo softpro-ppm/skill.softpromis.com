@@ -37,7 +37,7 @@ $(document).ready(function() {
                 var $center = $('#center_id');
                 $center.empty().append('<option value="">Select Training Center</option>');
                 
-                if(res.status && res.data && res.data.length) {
+                if(res.success && res.data && res.data.length) {
                     $.each(res.data, function(i, c) {
                         $center.append(`<option value="${c.center_id}"${selectedId==c.center_id?' selected':''}>${c.center_name}</option>`);
                     });
