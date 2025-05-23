@@ -21,7 +21,7 @@ try {
     switch ($action) {
         case 'create':
             $partner_id = (int)($_POST['partner_id'] ?? 0);
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $center_name = sanitizeInput($_POST['center_name'] ?? '');
             $address = sanitizeInput($_POST['address'] ?? '');
             $city = sanitizeInput($_POST['city'] ?? '');
             $state = sanitizeInput($_POST['state'] ?? '');
@@ -31,7 +31,7 @@ try {
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'active');
 
-            if (empty($name) || empty($address) || empty($city) || empty($state) || empty($pincode)) {
+            if (empty($center_name) || empty($address) || empty($city) || empty($state) || empty($pincode)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
@@ -49,17 +49,17 @@ try {
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
             ");
             $stmt->execute([
-                $partner_id, $name, $address, $city, $state, $pincode, $phone, $email, $capacity, $status
+                $partner_id, $center_name, $address, $city, $state, $pincode, $phone, $email, $capacity, $status
             ]);
 
             logAudit($_SESSION['user']['id'], 'create_center', [
-                'name' => $name,
+                'center_name' => $center_name,
                 'city' => $city,
                 'state' => $state
             ]);
 
             sendJSONResponse(true, 'Training center created successfully', [
-                'id' => $pdo->lastInsertId()
+                'center_id' => $pdo->lastInsertId()
             ]);
             break;
 
@@ -118,7 +118,7 @@ try {
         case 'update':
             $id = (int)($_POST['id'] ?? 0);
             $partner_id = (int)($_POST['partner_id'] ?? 0);
-            $name = sanitizeInput($_POST['name'] ?? '');
+            $center_name = sanitizeInput($_POST['center_name'] ?? '');
             $address = sanitizeInput($_POST['address'] ?? '');
             $city = sanitizeInput($_POST['city'] ?? '');
             $state = sanitizeInput($_POST['state'] ?? '');
@@ -128,7 +128,7 @@ try {
             $capacity = (int)($_POST['capacity'] ?? 0);
             $status = sanitizeInput($_POST['status'] ?? 'active');
 
-            if (empty($id) || empty($name) || empty($address) || empty($city) || empty($state) || empty($pincode)) {
+            if (empty($id) || empty($center_name) || empty($address) || empty($city) || empty($state) || empty($pincode)) {
                 sendJSONResponse(false, 'Required fields are missing');
             }
 
@@ -147,12 +147,12 @@ try {
                 WHERE center_id = ?
             ");
             $stmt->execute([
-                $partner_id, $name, $address, $city, $state, $pincode, $phone, $email, $capacity, $status, $id
+                $partner_id, $center_name, $address, $city, $state, $pincode, $phone, $email, $capacity, $status, $id
             ]);
 
             logAudit($_SESSION['user']['id'], 'update_center', [
                 'id' => $id,
-                'name' => $name,
+                'center_name' => $center_name,
                 'city' => $city,
                 'state' => $state
             ]);
