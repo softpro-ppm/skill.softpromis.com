@@ -399,7 +399,45 @@ $(function () {
     });
   });
 
-  // Edit Course
+  // Helper for cascading select population in Edit Course modal using async/await
+  async function setEditCourseFields(course) {
+    function waitForOption($select, value, maxTries = 20) {
+      return new Promise((resolve) => {
+        let tries = 0;
+        function check() {
+          if ($select.find(`option[value='${value}']`).length > 0) {
+            $select.val(value).trigger('change');
+            setTimeout(resolve, 100);
+          } else if (++tries < maxTries) {
+            setTimeout(check, 100);
+          } else {
+            resolve();
+          }
+        }
+        check();
+      });
+    }
+    loadCoursePartners(course.partner_id, true);
+    await waitForOption($('#edit_partner_id'), course.partner_id);
+    loadCourseCenters(course.partner_id, course.center_id, true);
+    await waitForOption($('#edit_center_id'), course.center_id);
+    loadCourseSchemes(course.center_id, course.scheme_id, true);
+    await waitForOption($('#edit_scheme_id'), course.scheme_id);
+    loadCourseSectors(course.scheme_id, course.sector_id, true);
+    await waitForOption($('#edit_sector_id'), course.sector_id);
+    // Set all other fields
+    $('#edit_course_code').val(course.course_code);
+    $('#edit_course_name').val(course.course_name);
+    $('#edit_duration_hours').val(course.duration_hours);
+    $('#edit_fee').val(course.fee);
+    $('#edit_description').val(course.description);
+    $('#edit_prerequisites').val(course.prerequisites);
+    $('#edit_syllabus').val(course.syllabus);
+    $('#edit_status').val(course.status);
+    $('#editCourseModal').data('id', course.course_id).modal('show');
+  }
+
+  // Edit Course button click handler
   $(document).on('click', '.edit-course-btn', function () {
     var id = $(this).data('id');
     $.ajax({
@@ -419,8 +457,9 @@ $(function () {
       }
     });
   });
+
+  // Edit Course modal form validation
   $('#editCourseModal form').on('submit', function (e) {
-    // Validate select fields in order
     var partnerId = $('#edit_partner_id').val();
     var centerId = $('#edit_center_id').val();
     var schemeId = $('#edit_scheme_id').val();
