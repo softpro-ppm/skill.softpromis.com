@@ -10,17 +10,20 @@ $(document).ready(function() {
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
-            data: { action: 'list_by_center', center_id: centerId },
+            data: { action: 'list', center_id: centerId },
             dataType: 'json',
             success: function(res) {
                 var $scheme = $('#scheme_id');
                 $scheme.empty();
-                if(res.success && res.data && res.data.length) {
+                if(res.data && res.data.length) {
                     $scheme.append('<option value="">Select Scheme</option>');
                     $.each(res.data, function(i, s) {
-                        $scheme.append(`<option value="${s.scheme_id}"${selectedId==s.scheme_id?' selected':''}>${s.scheme_name}</option>`);
+                        if(s.center_id == centerId && s.status === 'active') {
+                            $scheme.append(`<option value="${s.scheme_id}"${selectedId==s.scheme_id?' selected':''}>${s.scheme_name}</option>`);
+                        }
                     });
-                } else {
+                }
+                if($scheme.children('option').length === 0) {
                     $scheme.append('<option value="">No schemes found for this center</option>');
                 }
             }
