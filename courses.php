@@ -410,18 +410,27 @@ $(function () {
       success: function (response) {
         if (response.success && response.data) {
           var c = response.data;
-          $('#edit_course_code').val(c.course_code);
-          $('#edit_course_name').val(c.course_name);
-          $('#edit_center_id').val(c.center_id).trigger('change');
-          $('#edit_sector_id').val(c.sector_id).trigger('change');
-          $('#edit_scheme_id').val(c.scheme_id).trigger('change');
-          $('#edit_duration_hours').val(c.duration_hours);
-          $('#edit_fee').val(c.fee);
-          $('#edit_description').val(c.description);
-          $('#edit_prerequisites').val(c.prerequisites);
-          $('#edit_syllabus').val(c.syllabus);
-          $('#edit_status').val(c.status);
-          $('#editCourseModal').data('id', c.course_id).modal('show');
+          // Load partners, then centers, then schemes, then sectors, setting each value in order
+          loadCoursePartners(c.partner_id, true);
+          setTimeout(function() {
+            loadCourseCenters(c.partner_id, c.center_id, true);
+            setTimeout(function() {
+              loadCourseSchemes(c.center_id, c.scheme_id, true);
+              setTimeout(function() {
+                loadCourseSectors(c.scheme_id, c.sector_id, true);
+                // Set all other fields
+                $('#edit_course_code').val(c.course_code);
+                $('#edit_course_name').val(c.course_name);
+                $('#edit_duration_hours').val(c.duration_hours);
+                $('#edit_fee').val(c.fee);
+                $('#edit_description').val(c.description);
+                $('#edit_prerequisites').val(c.prerequisites);
+                $('#edit_syllabus').val(c.syllabus);
+                $('#edit_status').val(c.status);
+                $('#editCourseModal').data('id', c.course_id).modal('show');
+              }, 300);
+            }, 300);
+          }, 300);
         } else {
           toastr.error('Could not fetch course details.');
         }
