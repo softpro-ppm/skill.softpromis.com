@@ -456,6 +456,44 @@ $(function () {
             $form.find('.is-invalid').removeClass('is-invalid');
         }
     });
+
+    // Handle TC change to load assigned schemes
+    $('#center_id, #edit_center_id').on('change', function() {
+        var centerId = $(this).val();
+        var $schemeSelect = $(this).attr('id') === 'center_id' ? $('#scheme_id') : $('#edit_scheme_id');
+        
+        $schemeSelect.empty().append('<option value="">Select Scheme</option>');
+        
+        if (!centerId) {
+            return;
+        }
+        
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: { 
+                action: 'list_by_center',
+                center_id: centerId
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.data) {
+                    response.data.forEach(function(scheme) {
+                        $schemeSelect.append(
+                            $('<option></option>')
+                                .val(scheme.scheme_id)
+                                .text(scheme.scheme_name)
+                        );
+                    });
+                } else {
+                    $schemeSelect.append('<option value="">No schemes assigned to this center</option>');
+                }
+            },
+            error: function() {
+                $schemeSelect.append('<option value="">Error loading schemes</option>');
+            }
+        });
+    });
 });
 </script>
 </body>
