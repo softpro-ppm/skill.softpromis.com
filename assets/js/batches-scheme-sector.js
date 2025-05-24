@@ -264,4 +264,129 @@ $(document).ready(function() {
             }
         });
     });
+    // Add Course Modal: cascading center -> scheme -> sector
+    $('#addCourseModal').on('show.bs.modal', function() {
+        var mainCenter = $('#center_id').val();
+        var mainScheme = $('#scheme_id').val();
+        var mainSector = $('#sector_id').val();
+        var $center = $('#parent_center_id_course');
+        var $scheme = $('#parent_scheme_id_course');
+        var $sector = $('#parent_sector_id_course');
+        // Copy or load all centers
+        if ($('#center_id option').length > 1) {
+            $center.empty();
+            $('#center_id option').each(function() {
+                $center.append($(this).clone());
+            });
+            $center.val(mainCenter);
+        } else {
+            // fallback: load all centers
+            $.ajax({
+                url: 'inc/ajax/training-centers.php',
+                type: 'POST',
+                data: { action: 'list' },
+                dataType: 'json',
+                success: function(res) {
+                    $center.empty();
+                    $center.append('<option value="">Select Training Center</option>');
+                    if(res.data && res.data.length) {
+                        $.each(res.data, function(i, c) {
+                            $center.append(`<option value="${c.center_id}">${c.center_name}</option>`);
+                        });
+                    }
+                    $center.val(mainCenter);
+                }
+            });
+        }
+        // Always filter scheme by selected center
+        var centerId = mainCenter;
+        $scheme.empty().append('<option value="">Processing...</option>').prop('disabled', true);
+        $sector.empty().append('<option value="">Select Sector</option>').prop('disabled', true);
+        if (!centerId) {
+            $scheme.empty().append('<option value="">Select Scheme</option>').prop('disabled', true);
+            $sector.empty().append('<option value="">Select Sector</option>').prop('disabled', true);
+            return;
+        }
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: { action: 'list', center_id: centerId },
+            dataType: 'json',
+            success: function(res) {
+                $scheme.empty().append('<option value="">Select Scheme</option>');
+                if(res.data && res.data.length) {
+                    $.each(res.data, function(i, s) {
+                        if(s.center_id == centerId && s.status === 'active') {
+                            $scheme.append(`<option value="${s.scheme_id}"${mainScheme==s.scheme_id?' selected':''}>${s.scheme_name}</option>`);
+                        }
+                    });
+                    $scheme.prop('disabled', false);
+                } else {
+                    $scheme.prop('disabled', true);
+                }
+                $scheme.trigger('change');
+            }
+        });
+    });
+    // When center changes in Add Course modal, filter scheme and reset sector
+    $('#parent_center_id_course').on('change', function() {
+        var centerId = $(this).val();
+        var $scheme = $('#parent_scheme_id_course');
+        var $sector = $('#parent_sector_id_course');
+        $scheme.empty().append('<option value="">Processing...</option>').prop('disabled', true);
+        $sector.empty().append('<option value="">Select Sector</option>').prop('disabled', true);
+        if (!centerId) {
+            $scheme.empty().append('<option value="">Select Scheme</option>').prop('disabled', true);
+            $sector.empty().append('<option value="">Select Sector</option>').prop('disabled', true);
+            return;
+        }
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: { action: 'list', center_id: centerId },
+            dataType: 'json',
+            success: function(res) {
+                $scheme.empty().append('<option value="">Select Scheme</option>');
+                if(res.data && res.data.length) {
+                    $.each(res.data, function(i, s) {
+                        if(s.center_id == centerId && s.status === 'active') {
+                            $scheme.append(`<option value="${s.scheme_id}">${s.scheme_name}</option>`);
+                        }
+                    });
+                    $scheme.prop('disabled', false);
+                } else {
+                    $scheme.prop('disabled', true);
+                }
+                $scheme.trigger('change');
+            }
+        });
+    });
+    // When scheme changes in Add Course modal, filter sector
+    $('#parent_scheme_id_course').on('change', function() {
+        var centerId = $('#parent_center_id_course').val();
+        var schemeId = $(this).val();
+        var $sector = $('#parent_sector_id_course');
+        $sector.empty().append('<option value="">Processing...</option>').prop('disabled', true);
+        if (!schemeId) {
+            $sector.empty().append('<option value="">Select Sector</option>').prop('disabled', true);
+            return;
+        }
+        $.ajax({
+            url: 'inc/ajax/sectors_ajax.php',
+            type: 'POST',
+            data: { action: 'list', scheme_id: schemeId, center_id: centerId },
+            dataType: 'json',
+            success: function(res) {
+                $sector.empty().append('<option value="">Select Sector</option>');
+                if(res.data && res.data.length) {
+                    $.each(res.data, function(i, s) {
+                        $sector.append(`<option value="${s.sector_id}">${s.sector_name}</option>`);
+                    });
+                    $sector.prop('disabled', false);
+                } else {
+                    $sector.prop('disabled', true);
+                }
+            }
+        });
+    });
 });
