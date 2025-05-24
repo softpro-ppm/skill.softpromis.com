@@ -195,3 +195,34 @@ $(document).on('submit', '#addAssessmentForm', function (e) {
     },
   });
 });
+
+// Helper for cascading select population in Edit Course modal
+function setEditCourseFields(course) {
+  // 1. Set Partner, then Center, then Scheme, then Sector, then other fields
+  loadCoursePartners(course.partner_id, true);
+  setTimeout(function() {
+    $('#edit_partner_id').val(course.partner_id).trigger('change');
+    loadCourseCenters(course.partner_id, course.center_id, true);
+    setTimeout(function() {
+      $('#edit_center_id').val(course.center_id).trigger('change');
+      loadCourseSchemes(course.center_id, course.scheme_id, true);
+      setTimeout(function() {
+        $('#edit_scheme_id').val(course.scheme_id).trigger('change');
+        loadCourseSectors(course.scheme_id, course.sector_id, true);
+        setTimeout(function() {
+          $('#edit_sector_id').val(course.sector_id).trigger('change');
+          // Set all other fields
+          $('#edit_course_code').val(course.course_code);
+          $('#edit_course_name').val(course.course_name);
+          $('#edit_duration_hours').val(course.duration_hours);
+          $('#edit_fee').val(course.fee);
+          $('#edit_description').val(course.description);
+          $('#edit_prerequisites').val(course.prerequisites);
+          $('#edit_syllabus').val(course.syllabus);
+          $('#edit_status').val(course.status);
+          $('#editCourseModal').data('id', course.course_id).modal('show');
+        }, 300);
+      }, 300);
+    }, 300);
+  }, 300);
+}
