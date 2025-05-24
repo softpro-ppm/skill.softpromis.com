@@ -420,6 +420,35 @@ $(function () {
     });
   });
   $('#editCourseModal form').on('submit', function (e) {
+    // Validate select fields in order
+    var partnerId = $('#edit_partner_id').val();
+    var centerId = $('#edit_center_id').val();
+    var schemeId = $('#edit_scheme_id').val();
+    var sectorId = $('#edit_sector_id').val();
+    if (!partnerId) {
+      alert('Please select a Training Partner.');
+      $('#edit_partner_id').focus();
+      e.preventDefault();
+      return false;
+    }
+    if (!centerId) {
+      alert('Please select a Training Center.');
+      $('#edit_center_id').focus();
+      e.preventDefault();
+      return false;
+    }
+    if (!schemeId) {
+      alert('Please select a Scheme.');
+      $('#edit_scheme_id').focus();
+      e.preventDefault();
+      return false;
+    }
+    if (!sectorId) {
+      alert('Please select a Sector.');
+      $('#edit_sector_id').focus();
+      e.preventDefault();
+      return false;
+    }
     e.preventDefault();
     var $form = $(this);
     var id = $('#editCourseModal').data('id');
