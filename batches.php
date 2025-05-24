@@ -107,32 +107,32 @@ require_once 'includes/sidebar.php';
                             <option value="">Select Training Center</option>
                         </select>
                     </div>
+                    <div class="row g-3">
+                        <div class="col-md-4 mb-3">
+                            <label for="scheme_id" class="form-label">Scheme <span class="text-danger">*</span></label>
+                            <select class="form-control" id="scheme_id" name="scheme_id" required>
+                                <option value="">Select Scheme</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="sector_id" class="form-label">Sector <span class="text-danger">*</span></label>
+                            <select class="form-control" id="sector_id" name="sector_id" required>
+                                <option value="">Select Sector</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="course_id" class="form-label">Course <span class="text-danger">*</span></label>
+                            <select class="form-control" id="course_id" name="course_id" required>
+                                <option value="">Select Course</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label for="batch_name" class="form-label">Batch Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="batch_name" name="batch_name" required>
                     </div>
                     <div style="display:none">
                         <input type="text" class="form-control" id="batch_code" name="batch_code" value="" readonly>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-6 mb-3">
-                            <label for="scheme_id" class="form-label">Scheme <span class="text-danger">*</span></label>
-                            <select class="form-control" id="scheme_id" name="scheme_id" required>
-                                <option value="">Select Scheme</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="sector_id" class="form-label">Sector <span class="text-danger">*</span></label>
-                            <select class="form-control" id="sector_id" name="sector_id" required>
-                                <option value="">Select Sector</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="course_id" class="form-label">Course <span class="text-danger">*</span></label>
-                        <select class="form-control" id="course_id" name="course_id" required>
-                            <option value="">Select Course</option>
-                        </select>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6 mb-3">
@@ -156,6 +156,65 @@ require_once 'includes/sidebar.php';
             </form>
         </div>
     </div>
+</div>
+
+<!-- View Batch Modal -->
+<div class="modal fade" id="viewBatchModal" tabindex="-1" aria-labelledby="viewBatchModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="viewBatchModalLabel">View Batch</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Training Partner</label>
+            <div id="view_partner_name" class="form-control-plaintext"></div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Training Center</label>
+            <div id="view_center_name" class="form-control-plaintext"></div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Scheme</label>
+            <div id="view_scheme_name" class="form-control-plaintext"></div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Sector</label>
+            <div id="view_sector_name" class="form-control-plaintext"></div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Course</label>
+            <div id="view_course_name" class="form-control-plaintext"></div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Batch Name</label>
+            <div id="view_batch_name" class="form-control-plaintext"></div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Batch Code</label>
+            <div id="view_batch_code" class="form-control-plaintext"></div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Start Date</label>
+            <div id="view_start_date" class="form-control-plaintext"></div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">End Date</label>
+            <div id="view_end_date" class="form-control-plaintext"></div>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label fw-bold">Capacity</label>
+            <div id="view_capacity" class="form-control-plaintext"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Student List Modal -->
