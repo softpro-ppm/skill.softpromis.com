@@ -95,13 +95,13 @@ require_once 'includes/sidebar.php';
             <form id="batchForm">
                 <div class="modal-body">
                     <input type="hidden" id="batch_id" name="batch_id">
-                    <div class="mb-3">
+                    <div class="mb-3 col-md-6">
                         <label for="partner_id" class="form-label">Training Partner <span class="text-danger">*</span></label>
                         <select class="form-control" id="partner_id" name="partner_id" required>
                             <option value="">Select Training Partner</option>
                         </select>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 col-md-6">
                         <label for="center_id" class="form-label">Training Center <span class="text-danger">*</span></label>
                         <select class="form-control" id="center_id" name="center_id" required>
                             <option value="">Select Training Center</option>
