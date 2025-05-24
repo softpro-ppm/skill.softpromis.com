@@ -133,6 +133,7 @@ $(document).ready(function() {
     // Helper: Load options and set value, returns a Promise
     function loadSelectOptions($select, ajaxUrl, ajaxData, valueKey, labelKey, selectedValue) {
       return new Promise((resolve) => {
+        console.log('Loading', $select.attr('id'), 'with value', selectedValue, 'from', ajaxUrl, ajaxData);
         $.ajax({
           url: ajaxUrl,
           type: 'POST',
@@ -148,6 +149,7 @@ $(document).ready(function() {
               });
               $select.val(selectedValue);
             }
+            console.log('Set', $select.attr('id'), 'to', selectedValue, 'options:', $select.html());
             resolve();
           }
         });
