@@ -204,6 +204,33 @@ try {
             }
             break;
 
+        case 'assign_scheme_to_center':
+            $scheme_id = (int)($_POST['scheme_id'] ?? 0);
+            $center_id = (int)($_POST['center_id'] ?? 0);
+            
+            if (!$scheme_id || !$center_id) {
+                sendJSONResponse(false, 'Scheme ID and Center ID are required');
+            }
+            
+            try {
+                // Check if already assigned
+                $stmt = $pdo->prepare("SELECT id FROM assigned_schemes WHERE scheme_id = ? AND center_id = ?");
+                $stmt->execute([$scheme_id, $center_id]);
+                if ($stmt->fetch()) {
+                    sendJSONResponse(false, 'This scheme is already assigned to this center');
+                }
+                
+                // Insert the assignment
+                $stmt = $pdo->prepare("INSERT INTO assigned_schemes (scheme_id, center_id, assigned_at) VALUES (?, ?, NOW())");
+                $stmt->execute([$scheme_id, $center_id]);
+                
+                sendJSONResponse(true, 'Scheme assigned to center successfully');
+            } catch (PDOException $e) {
+                error_log("Error assigning scheme: " . $e->getMessage());
+                sendJSONResponse(false, 'Error assigning scheme to center');
+            }
+            break;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }

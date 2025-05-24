@@ -221,6 +221,42 @@ require_once 'includes/sidebar.php';
     </div>
   </div>
 
+  <!-- Add Assign Scheme Modal -->
+  <div class="modal fade" id="assignSchemeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Assign Scheme to Training Center</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="assignSchemeForm">
+                <input type="hidden" id="assignSchemeId" name="scheme_id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Scheme Name</label>
+                        <p id="assignSchemeName" class="form-control-static"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignCenterId">Training Center</label>
+                        <select class="form-control" id="assignCenterId" name="center_id" required>
+                            <option value="">Select Training Center</option>
+                            <?php foreach (TrainingCenter::getAll() as $center): ?>
+                                <option value="<?= htmlspecialchars($center['center_id']) ?>">
+                                    <?= htmlspecialchars($center['center_name']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Assign Scheme</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <?php include 'includes/js.php'; ?>
 <script src="assets/js/schemes-partner-center.js"></script>
 <script>
@@ -254,6 +290,7 @@ $(function () {
                 return '<div class="btn-group btn-group-sm">' +
                     '<button type="button" class="btn btn-info view-scheme-btn" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-eye"></i></button>' +
                     '<button type="button" class="btn btn-primary edit-scheme-btn" data-bs-toggle="modal" data-bs-target="#editSchemeModal" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-edit"></i></button>' +
+                    '<button type="button" class="btn btn-success assign-scheme-btn" data-scheme-id="' + row.scheme_id + '" data-scheme-name="' + row.scheme_name + '"><i class="fas fa-link"></i></button>' +
                     '<button type="button" class="btn btn-danger delete-scheme-btn" data-scheme-id="' + row.scheme_id + '"><i class="fas fa-trash"></i></button>' +
                     '</div>';
             } }
@@ -487,6 +524,52 @@ $(function () {
         setTimeout(function() {
             $('#schemesTable').DataTable().ajax.reload(null, false);
         }, 200);
+    });
+
+    // Handle Assign Scheme button click
+    $(document).on('click', '.assign-scheme-btn', function() {
+        var schemeId = $(this).data('scheme-id');
+        var schemeName = $(this).data('scheme-name');
+        $('#assignSchemeId').val(schemeId);
+        $('#assignSchemeName').text(schemeName);
+        $('#assignCenterId').val('');
+        $('#assignSchemeModal').modal('show');
+    });
+
+    // Handle Assign Scheme form submit
+    $('#assignSchemeForm').on('submit', function(e) {
+        e.preventDefault();
+        var $form = $(this);
+        var schemeId = $('#assignSchemeId').val();
+        var centerId = $('#assignCenterId').val();
+        
+        if (!centerId) {
+            toastr.error('Please select a Training Center');
+            return;
+        }
+        
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: {
+                action: 'assign_scheme_to_center',
+                scheme_id: schemeId,
+                center_id: centerId
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    $('#assignSchemeModal').modal('hide');
+                    toastr.success(response.message || 'Scheme assigned successfully');
+                    table.ajax.reload(null, false);
+                } else {
+                    toastr.error(response.message || 'Error assigning scheme');
+                }
+            },
+            error: function() {
+                toastr.error('Error assigning scheme');
+            }
+        });
     });
 });
 </script>
