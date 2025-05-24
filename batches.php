@@ -677,6 +677,11 @@ $(function() {
             error: function() { toastr.error('Failed to add course'); }
         });
     });
+
+    // Prevent parent modal from closing when + icon is clicked
+    $('#addSchemeBtn, #addSectorBtn, #addCourseBtn').on('click', function(e) {
+        e.stopPropagation();
+    });
 });
 </script>
 </body>
