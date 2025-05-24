@@ -78,30 +78,27 @@ require_once 'includes/sidebar.php';
         <div class="modal-body">
           <div class="row g-3 mb-3">
             <div class="col-md-4">
+              <label for="partner_id" class="form-label fw-bold">Training Partner</label>
+              <select class="form-select form-control" id="partner_id" name="partner_id" required>
+                <option value="">Select Training Partner</option>
+              </select>
+            </div>
+            <div class="col-md-4">
               <label for="center_id" class="form-label fw-bold">Training Center</label>
               <select class="form-select form-control" id="center_id" name="center_id" required>
                 <option value="">Select Training Center</option>
-                <?php foreach ($centers as $center): ?>
-                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
-                <?php endforeach; ?>
               </select>
             </div>
             <div class="col-md-4">
               <label for="scheme_id" class="form-label fw-bold">Scheme</label>
               <select class="form-select form-control" id="scheme_id" name="scheme_id">
                 <option value="">Select Scheme</option>
-                <?php foreach ($schemes as $scheme): ?>
-                  <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
-                <?php endforeach; ?>
               </select>
             </div>
             <div class="col-md-4">
               <label for="sector_id" class="form-label fw-bold">Sector</label>
               <select class="form-select form-control" id="sector_id" name="sector_id" required>
                 <option value="">Select Sector</option>
-                <?php foreach ($sectors as $sector): ?>
-                  <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
-                <?php endforeach; ?>
               </select>
             </div>
           </div>
@@ -211,30 +208,27 @@ require_once 'includes/sidebar.php';
         <div class="modal-body">
           <div class="row g-3 mb-3">
             <div class="col-md-4">
+              <label for="edit_partner_id" class="form-label fw-bold">Training Partner</label>
+              <select class="form-select form-control" id="edit_partner_id" name="partner_id" required>
+                <option value="">Select Training Partner</option>
+              </select>
+            </div>
+            <div class="col-md-4">
               <label for="edit_center_id" class="form-label fw-bold">Training Center</label>
               <select class="form-select form-control" id="edit_center_id" name="center_id" required>
                 <option value="">Select Training Center</option>
-                <?php foreach ($centers as $center): ?>
-                  <option value="<?= htmlspecialchars($center['center_id']) ?>"><?= htmlspecialchars($center['center_name']) ?></option>
-                <?php endforeach; ?>
               </select>
             </div>
             <div class="col-md-4">
               <label for="edit_scheme_id" class="form-label fw-bold">Scheme</label>
               <select class="form-select form-control" id="edit_scheme_id" name="scheme_id">
                 <option value="">Select Scheme</option>
-                <?php foreach ($schemes as $scheme): ?>
-                  <option value="<?= htmlspecialchars($scheme['scheme_id']) ?>"><?= htmlspecialchars($scheme['scheme_name']) ?></option>
-                <?php endforeach; ?>
               </select>
             </div>
             <div class="col-md-4">
               <label for="edit_sector_id" class="form-label fw-bold">Sector</label>
               <select class="form-select form-control" id="edit_sector_id" name="sector_id" required>
                 <option value="">Select Sector</option>
-                <?php foreach ($sectors as $sector): ?>
-                  <option value="<?= htmlspecialchars($sector['sector_id']) ?>"><?= htmlspecialchars($sector['sector_name']) ?></option>
-                <?php endforeach; ?>
               </select>
             </div>
           </div>
