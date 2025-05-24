@@ -196,59 +196,43 @@ $(document).on('submit', '#addAssessmentForm', function (e) {
   });
 });
 
-// Helper for cascading select population in Edit Course modal using promises
-async function setEditCourseFields(course) {
-  // Helper to load options for a select via AJAX and set the value
-  function loadSelectOptions($select, ajaxUrl, ajaxData, valueKey, labelKey, selectedValue) {
-    return new Promise((resolve) => {
-      $.ajax({
-        url: ajaxUrl,
-        type: 'POST',
-        data: ajaxData,
-        dataType: 'json',
-        success: function(res) {
-          $select.empty().append('<option value="">Select ' + $select.attr('name').replace('_id','').replace('_',' ').replace(/\b\w/g, l => l.toUpperCase()) + '</option>');
-          let found = false;
-          if(res.data && res.data.length) {
-            $.each(res.data, function(i, item) {
-              let val = item[valueKey];
-              let label = item[labelKey];
-              let selected = (val == selectedValue) ? ' selected' : '';
-              if(val == selectedValue) found = true;
-              $select.append(`<option value="${val}"${selected}>${label}</option>`);
-            });
-          }
-          if(found) {
-            $select.val(selectedValue);
-            console.log('Set value for', $select.attr('id'), selectedValue);
-          } else {
-            console.warn('Option not found for', $select.attr('id'), selectedValue);
-          }
-          resolve();
-        },
-        error: function() {
-          $select.empty().append('<option value="">Select ' + $select.attr('name') + '</option>');
-          resolve();
-        }
-      });
-    });
+// Add a CodePen-inspired glassmorphic animated loader overlay for Edit Course modal
+var courseLoadingOverlay = `
+<div id="courseLoadingOverlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(240,245,255,0.85);backdrop-filter:blur(6px);z-index:1051;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.4s;">
+  <div style="background:rgba(255,255,255,0.7);border-radius:2rem;box-shadow:0 8px 32px rgba(60,60,120,0.18);padding:3rem 4rem;display:flex;flex-direction:column;align-items:center;backdrop-filter:blur(8px);">
+    <svg width="80" height="80" viewBox="0 0 80 80" style="margin-bottom:2rem;">
+      <defs>
+        <linearGradient id="loaderGradientCourse" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#007bff"/>
+          <stop offset="100%" stop-color="#00c6ff"/>
+        </linearGradient>
+      </defs>
+      <circle cx="40" cy="40" r="32" stroke="url(#loaderGradientCourse)" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="180 100" stroke-dashoffset="0">
+        <animateTransform attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="1s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+    <div class="fw-bold text-primary" style="font-size:2rem;text-shadow:0 2px 8px #e0e7ef;letter-spacing:0.5px;">Loading Course Data...</div>
+  </div>
+</div>
+<style>@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }</style>`;
+
+// Show loader on Edit Course modal open
+$(document).on('click', '.edit-course-btn', function () {
+  if (!$('#courseLoadingOverlay').length) {
+    $('#editCourseModal .modal-content').append(courseLoadingOverlay);
+  } else {
+    $('#courseLoadingOverlay').show();
   }
-  // 1. Partner
-  await loadSelectOptions($('#edit_partner_id'), 'inc/ajax/training_partners_ajax.php', { action: 'list' }, 'partner_id', 'partner_name', course.partner_id);
-  // 2. Center
-  await loadSelectOptions($('#edit_center_id'), 'inc/ajax/training-centers.php', { action: 'list', partner_id: course.partner_id }, 'center_id', 'center_name', course.center_id);
-  // 3. Scheme
-  await loadSelectOptions($('#edit_scheme_id'), 'inc/ajax/schemes_ajax.php', { action: 'list', center_id: course.center_id }, 'scheme_id', 'scheme_name', course.scheme_id);
-  // 4. Sector
-  await loadSelectOptions($('#edit_sector_id'), 'inc/ajax/sectors_ajax.php', { action: 'list', scheme_id: course.scheme_id }, 'sector_id', 'sector_name', course.sector_id);
-  // 5. Set all other fields
-  $('#edit_course_code').val(course.course_code);
-  $('#edit_course_name').val(course.course_name);
-  $('#edit_duration_hours').val(course.duration_hours);
-  $('#edit_fee').val(course.fee);
-  $('#edit_description').val(course.description);
-  $('#edit_prerequisites').val(course.prerequisites);
-  $('#edit_syllabus').val(course.syllabus);
-  $('#edit_status').val(course.status);
-  $('#editCourseModal').data('id', course.course_id).modal('show');
+});
+// Hide loader after all select fields are loaded (call this at the end of setEditCourseFields)
+function hideCourseLoader() {
+  $('#courseLoadingOverlay').fadeOut(200);
 }
+// In setEditCourseFields, call hideCourseLoader() after all selects are set
+var originalSetEditCourseFields = window.setEditCourseFields;
+window.setEditCourseFields = async function(course) {
+  if (typeof originalSetEditCourseFields === 'function') {
+    await originalSetEditCourseFields(course);
+    hideCourseLoader();
+  }
+};
