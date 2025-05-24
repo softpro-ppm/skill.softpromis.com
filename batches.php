@@ -447,6 +447,86 @@ $(function() {
             }
         });
     });
+
+    // Add Scheme AJAX
+    $('#addSchemeForm').on('submit', function(e) {
+        e.preventDefault();
+        var name = $('#new_scheme_name').val().trim();
+        if (!name) return;
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: { action: 'add', scheme_name: name },
+            dataType: 'json',
+            success: function(res) {
+                if (res.success) {
+                    // Add to select and select it
+                    var $select = $('#scheme_id');
+                    var newOption = $('<option>').val(res.scheme_id || name).text(name);
+                    $select.append(newOption).val(res.scheme_id || name);
+                    $('#addSchemeModal').modal('hide');
+                    $('#new_scheme_name').val('');
+                    toastr.success('Scheme added!');
+                } else {
+                    toastr.error(res.message || 'Failed to add scheme');
+                }
+            },
+            error: function() { toastr.error('Failed to add scheme'); }
+        });
+    });
+
+    // Add Sector AJAX
+    $('#addSectorForm').on('submit', function(e) {
+        e.preventDefault();
+        var name = $('#new_sector_name').val().trim();
+        if (!name) return;
+        $.ajax({
+            url: 'inc/ajax/sectors_ajax.php',
+            type: 'POST',
+            data: { action: 'add', sector_name: name, center_id: $('#center_id').val(), scheme_id: $('#scheme_id').val() },
+            dataType: 'json',
+            success: function(res) {
+                if (res.success) {
+                    var $select = $('#sector_id');
+                    var newOption = $('<option>').val(res.sector_id || name).text(name);
+                    $select.append(newOption).val(res.sector_id || name);
+                    $('#addSectorModal').modal('hide');
+                    $('#new_sector_name').val('');
+                    toastr.success('Sector added!');
+                } else {
+                    toastr.error(res.message || 'Failed to add sector');
+                }
+            },
+            error: function() { toastr.error('Failed to add sector'); }
+        });
+    });
+
+    // Add Course AJAX
+    $('#addCourseForm').on('submit', function(e) {
+        e.preventDefault();
+        var name = $('#new_course_name').val().trim();
+        if (!name) return;
+        // For demo, only course_name is sent; expand as needed
+        $.ajax({
+            url: 'inc/ajax/courses_ajax.php',
+            type: 'POST',
+            data: { action: 'create', course_name: name, course_code: name, center_id: $('#center_id').val(), scheme_id: $('#scheme_id').val(), sector_id: $('#sector_id').val(), duration_hours: 1 },
+            dataType: 'json',
+            success: function(res) {
+                if (res.success) {
+                    var $select = $('#course_id');
+                    var newOption = $('<option>').val(res.course_id || name).text(name);
+                    $select.append(newOption).val(res.course_id || name);
+                    $('#addCourseModal').modal('hide');
+                    $('#new_course_name').val('');
+                    toastr.success('Course added!');
+                } else {
+                    toastr.error(res.message || 'Failed to add course');
+                }
+            },
+            error: function() { toastr.error('Failed to add course'); }
+        });
+    });
 });
 </script>
 </body>
