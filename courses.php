@@ -399,47 +399,23 @@ $(function () {
     });
   });
 
-  // Helper for cascading select population in Edit Course modal using async/await
-  async function setEditCourseFields(course) {
-    function waitForOption($select, value, maxTries = 20) {
-      return new Promise((resolve) => {
-        let tries = 0;
-        function check() {
-          if ($select.find(`option[value='${value}']`).length > 0) {
-            $select.val(value).trigger('change');
-            setTimeout(resolve, 100);
-          } else if (++tries < maxTries) {
-            setTimeout(check, 100);
-          } else {
-            resolve();
-          }
-        }
-        check();
-      });
-    }
-    loadCoursePartners(course.partner_id, true);
-    await waitForOption($('#edit_partner_id'), course.partner_id);
-    loadCourseCenters(course.partner_id, course.center_id, true);
-    await waitForOption($('#edit_center_id'), course.center_id);
-    loadCourseSchemes(course.center_id, course.scheme_id, true);
-    await waitForOption($('#edit_scheme_id'), course.scheme_id);
-    loadCourseSectors(course.scheme_id, course.sector_id, true);
-    await waitForOption($('#edit_sector_id'), course.sector_id);
-    // Set all other fields
-    $('#edit_course_code').val(course.course_code);
-    $('#edit_course_name').val(course.course_name);
-    $('#edit_duration_hours').val(course.duration_hours);
-    $('#edit_fee').val(course.fee);
-    $('#edit_description').val(course.description);
-    $('#edit_prerequisites').val(course.prerequisites);
-    $('#edit_syllabus').val(course.syllabus);
-    $('#edit_status').val(course.status);
-    $('#editCourseModal').data('id', course.course_id).modal('show');
-  }
+  // Add a loading overlay to the Edit Course modal
+  var editCourseLoadingOverlay = `<div id="editCourseLoadingOverlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.7);z-index:1051;display:flex;align-items:center;justify-content:center;"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>`;
 
-  // Edit Course button click handler
+  // Refactored Edit Course logic for fast modal open and async select population
   $(document).on('click', '.edit-course-btn', function () {
     var id = $(this).data('id');
+    // Open modal immediately and show overlay
+    $('#editCourseModal').modal('show');
+    if (!$('#editCourseLoadingOverlay').length) {
+      $('#editCourseModal .modal-content').append(editCourseLoadingOverlay);
+    } else {
+      $('#editCourseLoadingOverlay').show();
+    }
+    // Clear selects and fields
+    $('#edit_partner_id, #edit_center_id, #edit_scheme_id, #edit_sector_id').empty().append('<option value="">Loading...</option>');
+    $('#editCourseModal form')[0].reset();
+    // Fetch course data
     $.ajax({
       url: 'inc/ajax/courses_ajax.php',
       type: 'POST',
@@ -447,13 +423,101 @@ $(function () {
       dataType: 'json',
       success: function (response) {
         if (response.success && response.data) {
-          setEditCourseFields(response.data);
+          var course = response.data;
+          // Start loading selects in parallel where possible
+          var partnerPromise = $.ajax({
+            url: 'inc/ajax/training_partners_ajax.php',
+            type: 'POST',
+            data: { action: 'list' },
+            dataType: 'json',
+            success: function(res) {
+              var $partner = $('#edit_partner_id');
+              $partner.empty().append('<option value="">Select Training Partner</option>');
+              if(res.data && res.data.length) {
+                $.each(res.data, function(i, p) {
+                  $partner.append(`<option value="${p.partner_id}"${course.partner_id==p.partner_id?' selected':''}>${p.partner_name}</option>`);
+                });
+                $partner.val(course.partner_id);
+              }
+            }
+          });
+          var centerPromise = partnerPromise.then(function() {
+            return $.ajax({
+              url: 'inc/ajax/training-centers.php',
+              type: 'POST',
+              data: { action: 'list', partner_id: course.partner_id },
+              dataType: 'json',
+              success: function(res) {
+                var $center = $('#edit_center_id');
+                $center.empty().append('<option value="">Select Training Center</option>');
+                if(res.data && res.data.length) {
+                  $.each(res.data, function(i, c) {
+                    $center.append(`<option value="${c.center_id}"${course.center_id==c.center_id?' selected':''}>${c.center_name}</option>`);
+                  });
+                  $center.val(course.center_id);
+                }
+              }
+            });
+          });
+          var schemePromise = centerPromise.then(function() {
+            return $.ajax({
+              url: 'inc/ajax/schemes_ajax.php',
+              type: 'POST',
+              data: { action: 'list', center_id: course.center_id },
+              dataType: 'json',
+              success: function(res) {
+                var $scheme = $('#edit_scheme_id');
+                $scheme.empty().append('<option value="">Select Scheme</option>');
+                if(res.data && res.data.length) {
+                  $.each(res.data, function(i, s) {
+                    if(s.center_id == course.center_id && s.status === 'active') {
+                      $scheme.append(`<option value="${s.scheme_id}"${course.scheme_id==s.scheme_id?' selected':''}>${s.scheme_name}</option>`);
+                    }
+                  });
+                  $scheme.val(course.scheme_id);
+                }
+              }
+            });
+          });
+          var sectorPromise = schemePromise.then(function() {
+            return $.ajax({
+              url: 'inc/ajax/sectors_ajax.php',
+              type: 'POST',
+              data: { action: 'list', scheme_id: course.scheme_id },
+              dataType: 'json',
+              success: function(res) {
+                var $sector = $('#edit_sector_id');
+                $sector.empty().append('<option value="">Select Sector</option>');
+                if(res.data && res.data.length) {
+                  $.each(res.data, function(i, s) {
+                    $sector.append(`<option value="${s.sector_id}"${course.sector_id==s.sector_id?' selected':''}>${s.sector_name}</option>`);
+                  });
+                  $sector.val(course.sector_id);
+                }
+              }
+            });
+          });
+          // When all selects are ready, set the rest of the fields and hide overlay
+          sectorPromise.then(function() {
+            $('#edit_course_code').val(course.course_code);
+            $('#edit_course_name').val(course.course_name);
+            $('#edit_duration_hours').val(course.duration_hours);
+            $('#edit_fee').val(course.fee);
+            $('#edit_description').val(course.description);
+            $('#edit_prerequisites').val(course.prerequisites);
+            $('#edit_syllabus').val(course.syllabus);
+            $('#edit_status').val(course.status);
+            $('#editCourseModal').data('id', course.course_id);
+            $('#editCourseLoadingOverlay').fadeOut(200);
+          });
         } else {
           toastr.error('Could not fetch course details.');
+          $('#editCourseLoadingOverlay').hide();
         }
       },
       error: function() {
         toastr.error('Could not fetch course details.');
+        $('#editCourseLoadingOverlay').hide();
       }
     });
   });
