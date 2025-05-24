@@ -198,14 +198,14 @@ $(document).on('submit', '#addAssessmentForm', function (e) {
 
 // Helper for cascading select population in Edit Course modal using promises
 function setEditCourseFields(course) {
-  // Helper to wait for select options to be loaded
-  function waitForOption($select, value, maxTries = 10) {
+  // Helper to wait for select options to be loaded and set value
+  function waitForOption($select, value, maxTries = 20) {
     return new Promise((resolve) => {
       let tries = 0;
       function check() {
         if ($select.find(`option[value='${value}']`).length > 0) {
           $select.val(value).trigger('change');
-          resolve();
+          setTimeout(resolve, 100); // Give time for dependent loads
         } else if (++tries < maxTries) {
           setTimeout(check, 100);
         } else {
@@ -215,18 +215,22 @@ function setEditCourseFields(course) {
       check();
     });
   }
+  // 1. Partner
   loadCoursePartners(course.partner_id, true);
   waitForOption($('#edit_partner_id'), course.partner_id).then(() => {
+    // 2. Center
     loadCourseCenters(course.partner_id, course.center_id, true);
     return waitForOption($('#edit_center_id'), course.center_id);
   }).then(() => {
+    // 3. Scheme
     loadCourseSchemes(course.center_id, course.scheme_id, true);
     return waitForOption($('#edit_scheme_id'), course.scheme_id);
   }).then(() => {
+    // 4. Sector
     loadCourseSectors(course.scheme_id, course.sector_id, true);
     return waitForOption($('#edit_sector_id'), course.sector_id);
   }).then(() => {
-    // Set all other fields
+    // 5. Set all other fields
     $('#edit_course_code').val(course.course_code);
     $('#edit_course_name').val(course.course_name);
     $('#edit_duration_hours').val(course.duration_hours);
