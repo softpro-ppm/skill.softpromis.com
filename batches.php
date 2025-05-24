@@ -95,58 +95,52 @@ require_once 'includes/sidebar.php';
             <form id="batchForm">
                 <div class="modal-body">
                     <input type="hidden" id="batch_id" name="batch_id">
-                    <div class="form-group">
-                        <label for="batch_name">Batch Name</label>
+                    <div class="mb-3">
+                        <label for="batch_name" class="form-label">Batch Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="batch_name" name="batch_name" required>
                     </div>
-                    <div class="form-group">
-                        <!-- <label for="batch_code">Batch Code</label> -->
-                        <input type="text" class="form-control" id="batch_code" name="batch_code" value="" style="display:none" readonly>
+                    <div style="display:none">
+                        <input type="text" class="form-control" id="batch_code" name="batch_code" value="" readonly>
                     </div>
-                    <div class="form-group">
-                        <label for="partner_id"><strong>Training Partner</strong></label>
-                        <select class="form-control" id="partner_id" name="partner_id" required>
-                            <option value="">Select Training Partner</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="center_id"><strong>Training Center</strong></label>
+                    <div class="mb-3">
+                        <label for="center_id" class="form-label">Training Center <span class="text-danger">*</span></label>
                         <select class="form-control" id="center_id" name="center_id" required>
                             <option value="">Select Training Center</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="scheme_id"><strong>Scheme</strong></label>
-                        <select class="form-control" id="scheme_id" name="scheme_id" required>
-                            <option value="">Select Scheme</option>
-                        </select>
+                    <div class="row g-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="scheme_id" class="form-label">Scheme <span class="text-danger">*</span></label>
+                            <select class="form-control" id="scheme_id" name="scheme_id" required>
+                                <option value="">Select Scheme</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="sector_id" class="form-label">Sector <span class="text-danger">*</span></label>
+                            <select class="form-control" id="sector_id" name="sector_id" required>
+                                <option value="">Select Sector</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="sector_id"><strong>Sector</strong></label>
-                        <select class="form-control" id="sector_id" name="sector_id" required>
-                            <option value="">Select Sector</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="course_id"><strong>Course</strong></label>
+                    <div class="mb-3">
+                        <label for="course_id" class="form-label">Course <span class="text-danger">*</span></label>
                         <select class="form-control" id="course_id" name="course_id" required>
                             <option value="">Select Course</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="start_date">Start Date</label>
-                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                    <div class="row g-3">
+                        <div class="col-md-6 mb-3">
+                            <label for="start_date" class="form-label">Start Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="start_date" name="start_date" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="end_date" class="form-label">End Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="end_date" name="end_date" required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="end_date">End Date</label>
-                        <input type="date" class="form-control" id="end_date" name="end_date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="capacity">Capacity</label>
+                    <div class="mb-3">
+                        <label for="capacity" class="form-label">Capacity <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" id="capacity" name="capacity" required>
-                    </div>
-                    <div class="form-group">
-                        <!-- Status is now determined automatically by start/end date -->
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">

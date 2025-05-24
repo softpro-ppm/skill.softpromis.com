@@ -97,7 +97,7 @@ $(document).ready(function() {
                     $('#start_date').val(b.start_date);
                     $('#end_date').val(b.end_date);
                     $('#capacity').val(b.capacity);
-                    // $('#status').val(b.status); // Status is now automatic
+                    // No partner_id logic needed
                     loadCourses(b.course_id);
                     $('#batchModal').modal('show');
                 } else {
