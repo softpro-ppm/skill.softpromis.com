@@ -196,33 +196,45 @@ $(document).on('submit', '#addAssessmentForm', function (e) {
   });
 });
 
-// Helper for cascading select population in Edit Course modal
+// Helper for cascading select population in Edit Course modal using promises
 function setEditCourseFields(course) {
-  // 1. Set Partner, then Center, then Scheme, then Sector, then other fields
+  // Helper to wait for select options to be loaded
+  function waitForOption($select, value, maxTries = 10) {
+    return new Promise((resolve) => {
+      let tries = 0;
+      function check() {
+        if ($select.find(`option[value='${value}']`).length > 0) {
+          $select.val(value).trigger('change');
+          resolve();
+        } else if (++tries < maxTries) {
+          setTimeout(check, 100);
+        } else {
+          resolve();
+        }
+      }
+      check();
+    });
+  }
   loadCoursePartners(course.partner_id, true);
-  setTimeout(function() {
-    $('#edit_partner_id').val(course.partner_id).trigger('change');
+  waitForOption($('#edit_partner_id'), course.partner_id).then(() => {
     loadCourseCenters(course.partner_id, course.center_id, true);
-    setTimeout(function() {
-      $('#edit_center_id').val(course.center_id).trigger('change');
-      loadCourseSchemes(course.center_id, course.scheme_id, true);
-      setTimeout(function() {
-        $('#edit_scheme_id').val(course.scheme_id).trigger('change');
-        loadCourseSectors(course.scheme_id, course.sector_id, true);
-        setTimeout(function() {
-          $('#edit_sector_id').val(course.sector_id).trigger('change');
-          // Set all other fields
-          $('#edit_course_code').val(course.course_code);
-          $('#edit_course_name').val(course.course_name);
-          $('#edit_duration_hours').val(course.duration_hours);
-          $('#edit_fee').val(course.fee);
-          $('#edit_description').val(course.description);
-          $('#edit_prerequisites').val(course.prerequisites);
-          $('#edit_syllabus').val(course.syllabus);
-          $('#edit_status').val(course.status);
-          $('#editCourseModal').data('id', course.course_id).modal('show');
-        }, 300);
-      }, 300);
-    }, 300);
-  }, 300);
+    return waitForOption($('#edit_center_id'), course.center_id);
+  }).then(() => {
+    loadCourseSchemes(course.center_id, course.scheme_id, true);
+    return waitForOption($('#edit_scheme_id'), course.scheme_id);
+  }).then(() => {
+    loadCourseSectors(course.scheme_id, course.sector_id, true);
+    return waitForOption($('#edit_sector_id'), course.sector_id);
+  }).then(() => {
+    // Set all other fields
+    $('#edit_course_code').val(course.course_code);
+    $('#edit_course_name').val(course.course_name);
+    $('#edit_duration_hours').val(course.duration_hours);
+    $('#edit_fee').val(course.fee);
+    $('#edit_description').val(course.description);
+    $('#edit_prerequisites').val(course.prerequisites);
+    $('#edit_syllabus').val(course.syllabus);
+    $('#edit_status').val(course.status);
+    $('#editCourseModal').data('id', course.course_id).modal('show');
+  });
 }
