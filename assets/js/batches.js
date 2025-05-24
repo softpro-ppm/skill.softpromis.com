@@ -70,16 +70,27 @@ $(document).ready(function() {
         });
     }
 
-    // Add a premium modern loading overlay to the modal
+    // Add a CodePen-inspired glassmorphic animated loader overlay to the modal
     var batchLoadingOverlay = `
-    <div id="batchLoadingOverlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#f8fafc 0%,#e0e7ef 100%);z-index:1051;display:flex;align-items:center;justify-content:center;">
-      <div style="background:rgba(255,255,255,0.95);border-radius:1.5rem;box-shadow:0 8px 32px rgba(60,60,120,0.15);padding:3rem 4rem;display:flex;flex-direction:column;align-items:center;">
-        <div class="spinner-border text-primary" style="width:5rem;height:5rem;border-width:0.6rem;" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <div class="mt-4 fw-bold text-primary" style="font-size:2rem;text-shadow:0 2px 8px #e0e7ef;">Loading Batch Data...</div>
+    <div id="batchLoadingOverlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(240,245,255,0.85);backdrop-filter:blur(6px);z-index:1051;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.4s;">
+      <div style="background:rgba(255,255,255,0.7);border-radius:2rem;box-shadow:0 8px 32px rgba(60,60,120,0.18);padding:3rem 4rem;display:flex;flex-direction:column;align-items:center;backdrop-filter:blur(8px);">
+        <svg width="80" height="80" viewBox="0 0 80 80" style="margin-bottom:2rem;">
+          <defs>
+            <linearGradient id="loaderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#007bff"/>
+              <stop offset="100%" stop-color="#00c6ff"/>
+            </linearGradient>
+          </defs>
+          <circle cx="40" cy="40" r="32" stroke="url(#loaderGradient)" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="180 100" stroke-dashoffset="0">
+            <animateTransform attributeName="transform" type="rotate" from="0 40 40" to="360 40 40" dur="1s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+        <div class="fw-bold text-primary" style="font-size:2rem;text-shadow:0 2px 8px #e0e7ef;letter-spacing:0.5px;">Loading Batch Data...</div>
       </div>
-    </div>`;
+    </div>
+    <style>
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>`;
 
     // Open modal for add
     $('#addBatchBtn').on('click', function() {
