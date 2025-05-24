@@ -342,6 +342,10 @@ require_once 'includes/sidebar.php';
       <form id="addSchemeForm">
         <div class="modal-body">
           <div class="mb-3">
+            <label for="parent_center_id" class="form-label">Training Center</label>
+            <select class="form-control" id="parent_center_id" name="center_id" required></select>
+          </div>
+          <div class="mb-3">
             <label for="new_scheme_name" class="form-label">Scheme Name</label>
             <input type="text" class="form-control" id="new_scheme_name" name="new_scheme_name" required>
           </div>
@@ -365,6 +369,14 @@ require_once 'includes/sidebar.php';
       <form id="addSectorForm">
         <div class="modal-body">
           <div class="mb-3">
+            <label for="parent_center_id_sector" class="form-label">Training Center</label>
+            <select class="form-control" id="parent_center_id_sector" name="center_id" required></select>
+          </div>
+          <div class="mb-3">
+            <label for="parent_scheme_id_sector" class="form-label">Scheme</label>
+            <select class="form-control" id="parent_scheme_id_sector" name="scheme_id" required></select>
+          </div>
+          <div class="mb-3">
             <label for="new_sector_name" class="form-label">Sector Name</label>
             <input type="text" class="form-control" id="new_sector_name" name="new_sector_name" required>
           </div>
@@ -387,6 +399,18 @@ require_once 'includes/sidebar.php';
       </div>
       <form id="addCourseForm">
         <div class="modal-body">
+          <div class="mb-3">
+            <label for="parent_center_id_course" class="form-label">Training Center</label>
+            <select class="form-control" id="parent_center_id_course" name="center_id" required></select>
+          </div>
+          <div class="mb-3">
+            <label for="parent_scheme_id_course" class="form-label">Scheme</label>
+            <select class="form-control" id="parent_scheme_id_course" name="scheme_id" required></select>
+          </div>
+          <div class="mb-3">
+            <label for="parent_sector_id_course" class="form-label">Sector</label>
+            <select class="form-control" id="parent_sector_id_course" name="sector_id" required></select>
+          </div>
           <div class="mb-3">
             <label for="new_course_name" class="form-label">Course Name</label>
             <input type="text" class="form-control" id="new_course_name" name="new_course_name" required>
@@ -448,19 +472,40 @@ $(function() {
         });
     });
 
-    // Add Scheme AJAX
+    // Helper to copy options and set value
+    function copySelectOptions($from, $to, selectedVal) {
+        $to.empty();
+        $from.find('option').each(function() {
+            $to.append($(this).clone());
+        });
+        $to.val(selectedVal);
+    }
+    // Pre-fill parent selects when opening modals
+    $('#addSchemeModal').on('show.bs.modal', function() {
+        copySelectOptions($('#center_id'), $('#parent_center_id'), $('#center_id').val());
+    });
+    $('#addSectorModal').on('show.bs.modal', function() {
+        copySelectOptions($('#center_id'), $('#parent_center_id_sector'), $('#center_id').val());
+        copySelectOptions($('#scheme_id'), $('#parent_scheme_id_sector'), $('#scheme_id').val());
+    });
+    $('#addCourseModal').on('show.bs.modal', function() {
+        copySelectOptions($('#center_id'), $('#parent_center_id_course'), $('#center_id').val());
+        copySelectOptions($('#scheme_id'), $('#parent_scheme_id_course'), $('#scheme_id').val());
+        copySelectOptions($('#sector_id'), $('#parent_sector_id_course'), $('#sector_id').val());
+    });
+    // Update AJAX for parent fields
     $('#addSchemeForm').on('submit', function(e) {
         e.preventDefault();
         var name = $('#new_scheme_name').val().trim();
-        if (!name) return;
+        var centerId = $('#parent_center_id').val();
+        if (!name || !centerId) return;
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
-            data: { action: 'add', scheme_name: name },
+            data: { action: 'add', scheme_name: name, center_id: centerId },
             dataType: 'json',
             success: function(res) {
                 if (res.success) {
-                    // Add to select and select it
                     var $select = $('#scheme_id');
                     var newOption = $('<option>').val(res.scheme_id || name).text(name);
                     $select.append(newOption).val(res.scheme_id || name);
@@ -474,16 +519,16 @@ $(function() {
             error: function() { toastr.error('Failed to add scheme'); }
         });
     });
-
-    // Add Sector AJAX
     $('#addSectorForm').on('submit', function(e) {
         e.preventDefault();
         var name = $('#new_sector_name').val().trim();
-        if (!name) return;
+        var centerId = $('#parent_center_id_sector').val();
+        var schemeId = $('#parent_scheme_id_sector').val();
+        if (!name || !centerId || !schemeId) return;
         $.ajax({
             url: 'inc/ajax/sectors_ajax.php',
             type: 'POST',
-            data: { action: 'add', sector_name: name, center_id: $('#center_id').val(), scheme_id: $('#scheme_id').val() },
+            data: { action: 'add', sector_name: name, center_id: centerId, scheme_id: schemeId },
             dataType: 'json',
             success: function(res) {
                 if (res.success) {
@@ -500,17 +545,17 @@ $(function() {
             error: function() { toastr.error('Failed to add sector'); }
         });
     });
-
-    // Add Course AJAX
     $('#addCourseForm').on('submit', function(e) {
         e.preventDefault();
         var name = $('#new_course_name').val().trim();
-        if (!name) return;
-        // For demo, only course_name is sent; expand as needed
+        var centerId = $('#parent_center_id_course').val();
+        var schemeId = $('#parent_scheme_id_course').val();
+        var sectorId = $('#parent_sector_id_course').val();
+        if (!name || !centerId || !schemeId || !sectorId) return;
         $.ajax({
             url: 'inc/ajax/courses_ajax.php',
             type: 'POST',
-            data: { action: 'create', course_name: name, course_code: name, center_id: $('#center_id').val(), scheme_id: $('#scheme_id').val(), sector_id: $('#sector_id').val(), duration_hours: 1 },
+            data: { action: 'create', course_name: name, course_code: name, center_id: centerId, scheme_id: schemeId, sector_id: sectorId, duration_hours: 1 },
             dataType: 'json',
             success: function(res) {
                 if (res.success) {
