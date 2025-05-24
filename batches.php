@@ -349,6 +349,10 @@ require_once 'includes/sidebar.php';
             <label for="new_scheme_name" class="form-label">Scheme Name</label>
             <input type="text" class="form-control" id="new_scheme_name" name="new_scheme_name" required>
           </div>
+          <div class="mb-3">
+            <label for="new_scheme_desc" class="form-label">Description</label>
+            <textarea class="form-control" id="new_scheme_desc" name="new_scheme_desc"></textarea>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -379,6 +383,10 @@ require_once 'includes/sidebar.php';
           <div class="mb-3">
             <label for="new_sector_name" class="form-label">Sector Name</label>
             <input type="text" class="form-control" id="new_sector_name" name="new_sector_name" required>
+          </div>
+          <div class="mb-3">
+            <label for="new_sector_desc" class="form-label">Description</label>
+            <textarea class="form-control" id="new_sector_desc" name="new_sector_desc"></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -414,6 +422,10 @@ require_once 'includes/sidebar.php';
           <div class="mb-3">
             <label for="new_course_name" class="form-label">Course Name</label>
             <input type="text" class="form-control" id="new_course_name" name="new_course_name" required>
+          </div>
+          <div class="mb-3">
+            <label for="new_course_desc" class="form-label">Description</label>
+            <textarea class="form-control" id="new_course_desc" name="new_course_desc"></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -480,29 +492,82 @@ $(function() {
         });
         $to.val(selectedVal);
     }
-    // Pre-fill parent selects when opening modals
+    // Helper to load schemes for a center
+    function loadSchemesForCenter(centerId, $select, selectedId) {
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: { action: 'list_by_center', center_id: centerId },
+            dataType: 'json',
+            success: function(res) {
+                $select.empty();
+                if(res.success && res.data && res.data.length) {
+                    $select.append('<option value="">Select Scheme</option>');
+                    $.each(res.data, function(i, s) {
+                        $select.append(`<option value="${s.scheme_id}"${selectedId==s.scheme_id?' selected':''}>${s.scheme_name}</option>`);
+                    });
+                } else {
+                    $select.append('<option value="">No schemes found</option>');
+                }
+                if(selectedId) $select.val(selectedId);
+            }
+        });
+    }
+    // Helper to load sectors for a scheme
+    function loadSectorsForScheme(schemeId, $select, selectedId) {
+        $.ajax({
+            url: 'inc/ajax/sectors_ajax.php',
+            type: 'POST',
+            data: { action: 'list', scheme_id: schemeId },
+            dataType: 'json',
+            success: function(res) {
+                $select.empty();
+                if(res.data && res.data.length) {
+                    $select.append('<option value="">Select Sector</option>');
+                    $.each(res.data, function(i, s) {
+                        $select.append(`<option value="${s.sector_id}"${selectedId==s.sector_id?' selected':''}>${s.sector_name}</option>`);
+                    });
+                } else {
+                    $select.append('<option value="">No sectors found</option>');
+                }
+                if(selectedId) $select.val(selectedId);
+            }
+        });
+    }
+    // Pre-fill and filter parent selects when opening modals
     $('#addSchemeModal').on('show.bs.modal', function() {
         copySelectOptions($('#center_id'), $('#parent_center_id'), $('#center_id').val());
     });
     $('#addSectorModal').on('show.bs.modal', function() {
         copySelectOptions($('#center_id'), $('#parent_center_id_sector'), $('#center_id').val());
-        copySelectOptions($('#scheme_id'), $('#parent_scheme_id_sector'), $('#scheme_id').val());
+        loadSchemesForCenter($('#center_id').val(), $('#parent_scheme_id_sector'), $('#scheme_id').val());
+    });
+    $('#parent_center_id_sector').on('change', function() {
+        loadSchemesForCenter($(this).val(), $('#parent_scheme_id_sector'));
     });
     $('#addCourseModal').on('show.bs.modal', function() {
         copySelectOptions($('#center_id'), $('#parent_center_id_course'), $('#center_id').val());
-        copySelectOptions($('#scheme_id'), $('#parent_scheme_id_course'), $('#scheme_id').val());
-        copySelectOptions($('#sector_id'), $('#parent_sector_id_course'), $('#sector_id').val());
+        loadSchemesForCenter($('#center_id').val(), $('#parent_scheme_id_course'), $('#scheme_id').val());
+        loadSectorsForScheme($('#scheme_id').val(), $('#parent_sector_id_course'), $('#sector_id').val());
+    });
+    $('#parent_center_id_course').on('change', function() {
+        loadSchemesForCenter($(this).val(), $('#parent_scheme_id_course'));
+        $('#parent_sector_id_course').empty().append('<option value="">Select Sector</option>');
+    });
+    $('#parent_scheme_id_course').on('change', function() {
+        loadSectorsForScheme($(this).val(), $('#parent_sector_id_course'));
     });
     // Update AJAX for parent fields
     $('#addSchemeForm').on('submit', function(e) {
         e.preventDefault();
         var name = $('#new_scheme_name').val().trim();
         var centerId = $('#parent_center_id').val();
+        var desc = $('#new_scheme_desc').val().trim();
         if (!name || !centerId) return;
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
-            data: { action: 'add', scheme_name: name, center_id: centerId },
+            data: { action: 'add', scheme_name: name, center_id: centerId, description: desc },
             dataType: 'json',
             success: function(res) {
                 if (res.success) {
@@ -511,6 +576,7 @@ $(function() {
                     $select.append(newOption).val(res.scheme_id || name);
                     $('#addSchemeModal').modal('hide');
                     $('#new_scheme_name').val('');
+                    $('#new_scheme_desc').val('');
                     toastr.success('Scheme added!');
                 } else {
                     toastr.error(res.message || 'Failed to add scheme');
@@ -524,11 +590,12 @@ $(function() {
         var name = $('#new_sector_name').val().trim();
         var centerId = $('#parent_center_id_sector').val();
         var schemeId = $('#parent_scheme_id_sector').val();
+        var desc = $('#new_sector_desc').val().trim();
         if (!name || !centerId || !schemeId) return;
         $.ajax({
             url: 'inc/ajax/sectors_ajax.php',
             type: 'POST',
-            data: { action: 'add', sector_name: name, center_id: centerId, scheme_id: schemeId },
+            data: { action: 'add', sector_name: name, center_id: centerId, scheme_id: schemeId, description: desc },
             dataType: 'json',
             success: function(res) {
                 if (res.success) {
@@ -537,6 +604,7 @@ $(function() {
                     $select.append(newOption).val(res.sector_id || name);
                     $('#addSectorModal').modal('hide');
                     $('#new_sector_name').val('');
+                    $('#new_sector_desc').val('');
                     toastr.success('Sector added!');
                 } else {
                     toastr.error(res.message || 'Failed to add sector');
@@ -551,11 +619,12 @@ $(function() {
         var centerId = $('#parent_center_id_course').val();
         var schemeId = $('#parent_scheme_id_course').val();
         var sectorId = $('#parent_sector_id_course').val();
+        var desc = $('#new_course_desc').val().trim();
         if (!name || !centerId || !schemeId || !sectorId) return;
         $.ajax({
             url: 'inc/ajax/courses_ajax.php',
             type: 'POST',
-            data: { action: 'create', course_name: name, course_code: name, center_id: centerId, scheme_id: schemeId, sector_id: sectorId, duration_hours: 1 },
+            data: { action: 'create', course_name: name, course_code: name, center_id: centerId, scheme_id: schemeId, sector_id: sectorId, duration_hours: 1, description: desc },
             dataType: 'json',
             success: function(res) {
                 if (res.success) {
@@ -564,6 +633,7 @@ $(function() {
                     $select.append(newOption).val(res.course_id || name);
                     $('#addCourseModal').modal('hide');
                     $('#new_course_name').val('');
+                    $('#new_course_desc').val('');
                     toastr.success('Course added!');
                 } else {
                     toastr.error(res.message || 'Failed to add course');
