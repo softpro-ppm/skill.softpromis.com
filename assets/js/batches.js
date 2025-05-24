@@ -70,8 +70,16 @@ $(document).ready(function() {
         });
     }
 
-    // Add a modern loading overlay to the modal
-    var batchLoadingOverlay = `<div id="batchLoadingOverlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:1051;display:flex;align-items:center;justify-content:center;"><div class="text-center"><div class="spinner-border text-primary" style="width:4rem;height:4rem;" role="status"><span class="visually-hidden">Loading...</span></div><div class="mt-3 fw-bold text-primary" style="font-size:1.5rem;">Loading Batch Data...</div></div></div>`;
+    // Add a premium modern loading overlay to the modal
+    var batchLoadingOverlay = `
+    <div id="batchLoadingOverlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#f8fafc 0%,#e0e7ef 100%);z-index:1051;display:flex;align-items:center;justify-content:center;">
+      <div style="background:rgba(255,255,255,0.95);border-radius:1.5rem;box-shadow:0 8px 32px rgba(60,60,120,0.15);padding:3rem 4rem;display:flex;flex-direction:column;align-items:center;">
+        <div class="spinner-border text-primary" style="width:5rem;height:5rem;border-width:0.6rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="mt-4 fw-bold text-primary" style="font-size:2rem;text-shadow:0 2px 8px #e0e7ef;">Loading Batch Data...</div>
+      </div>
+    </div>`;
 
     // Open modal for add
     $('#addBatchBtn').on('click', function() {
