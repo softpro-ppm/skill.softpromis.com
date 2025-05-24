@@ -70,8 +70,8 @@ $(document).ready(function() {
         });
     }
 
-    // Add a loading overlay to the modal
-    var batchLoadingOverlay = `<div id="batchLoadingOverlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.7);z-index:1051;display:flex;align-items:center;justify-content:center;"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>`;
+    // Add a modern loading overlay to the modal
+    var batchLoadingOverlay = `<div id="batchLoadingOverlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.85);z-index:1051;display:flex;align-items:center;justify-content:center;"><div class="text-center"><div class="spinner-border text-primary" style="width:4rem;height:4rem;" role="status"><span class="visually-hidden">Loading...</span></div><div class="mt-3 fw-bold text-primary" style="font-size:1.5rem;">Loading Batch Data...</div></div></div>`;
 
     // Open modal for add
     $('#addBatchBtn').on('click', function() {
