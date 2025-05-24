@@ -112,21 +112,30 @@ require_once 'includes/sidebar.php';
                     <div class="row g-3 mb-3">
                         <div class="col-md-4">
                             <label for="scheme_id" class="form-label fw-bold">Scheme <span class="text-danger">*</span></label>
-                            <select class="form-control" id="scheme_id" name="scheme_id" required>
-                                <option value="">Select Scheme</option>
-                            </select>
+                            <div class="input-group">
+                                <select class="form-control" id="scheme_id" name="scheme_id" required>
+                                    <option value="">Select Scheme</option>
+                                </select>
+                                <button type="button" class="btn btn-outline-primary" id="addSchemeBtn" data-bs-toggle="modal" data-bs-target="#addSchemeModal"><i class="fas fa-plus"></i></button>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <label for="sector_id" class="form-label fw-bold">Sector <span class="text-danger">*</span></label>
-                            <select class="form-control" id="sector_id" name="sector_id" required>
-                                <option value="">Select Sector</option>
-                            </select>
+                            <div class="input-group">
+                                <select class="form-control" id="sector_id" name="sector_id" required>
+                                    <option value="">Select Sector</option>
+                                </select>
+                                <button type="button" class="btn btn-outline-primary" id="addSectorBtn" data-bs-toggle="modal" data-bs-target="#addSectorModal"><i class="fas fa-plus"></i></button>
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <label for="course_id" class="form-label fw-bold">Course <span class="text-danger">*</span></label>
-                            <select class="form-control" id="course_id" name="course_id" required>
-                                <option value="">Select Course</option>
-                            </select>
+                            <div class="input-group">
+                                <select class="form-control" id="course_id" name="course_id" required>
+                                    <option value="">Select Course</option>
+                                </select>
+                                <button type="button" class="btn btn-outline-primary" id="addCourseBtn" data-bs-toggle="modal" data-bs-target="#addCourseModal"><i class="fas fa-plus"></i></button>
+                            </div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -320,6 +329,76 @@ require_once 'includes/sidebar.php';
             </form>
         </div>
     </div>
+</div>
+
+<!-- Add Scheme Modal -->
+<div class="modal fade" id="addSchemeModal" tabindex="-1" aria-labelledby="addSchemeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="addSchemeModalLabel">Add Scheme</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="addSchemeForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="new_scheme_name" class="form-label">Scheme Name</label>
+            <input type="text" class="form-control" id="new_scheme_name" name="new_scheme_name" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Scheme</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Add Sector Modal -->
+<div class="modal fade" id="addSectorModal" tabindex="-1" aria-labelledby="addSectorModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="addSectorModalLabel">Add Sector</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="addSectorForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="new_sector_name" class="form-label">Sector Name</label>
+            <input type="text" class="form-control" id="new_sector_name" name="new_sector_name" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Sector</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Add Course Modal -->
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="addCourseModalLabel">Add Course</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="addCourseForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="new_course_name" class="form-label">Course Name</label>
+            <input type="text" class="form-control" id="new_course_name" name="new_course_name" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <?php include 'includes/js.php'; ?>
