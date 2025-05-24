@@ -69,6 +69,12 @@ $(document).ready(function() {
         $('#sector_id').empty().append('<option value="">Select Sector</option>');
         $('#course_id').empty().append('<option value="">Select Course</option>');
     });
+    // On center change, load schemes
+    $('#center_id').on('change', function() {
+        loadSchemes();
+        $('#sector_id').empty().append('<option value="">Select Sector</option>');
+        $('#course_id').empty().append('<option value="">Select Course</option>');
+    });
     // On scheme change, load sectors
     $('#scheme_id').on('change', function() {
         var schemeId = $(this).val();

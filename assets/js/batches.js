@@ -75,7 +75,14 @@ $(document).ready(function() {
         $('#batchModalTitle').text('Add New Batch');
         $('#batchForm')[0].reset();
         $('#batch_id').val('');
-        loadCourses();
+        // Load partners and clear centers
+        if (typeof loadPartners === 'function') {
+            loadPartners();
+        }
+        $('#center_id').empty().append('<option value="">Select Training Center</option>');
+        $('#scheme_id').empty().append('<option value="">Select Scheme</option>');
+        $('#sector_id').empty().append('<option value="">Select Sector</option>');
+        $('#course_id').empty().append('<option value="">Select Course</option>');
         $('#batchModal').modal('show');
     });
 
@@ -93,12 +100,22 @@ $(document).ready(function() {
                     $('#batchModalTitle').text('Edit Batch');
                     $('#batch_id').val(b.batch_id);
                     $('#batch_name').val(b.batch_name);
-                    // $('#batch_code').val(b.batch_code); // No need to set batch_code in modal
+                    // Set partner and center
+                    if (typeof loadPartners === 'function') {
+                        loadPartners(b.partner_id);
+                        setTimeout(function() {
+                            loadCenters(b.partner_id, b.center_id);
+                            setTimeout(function() {
+                                $('#center_id').val(b.center_id).trigger('change');
+                            }, 200);
+                        }, 200);
+                    }
+                    // Set other fields
                     $('#start_date').val(b.start_date);
                     $('#end_date').val(b.end_date);
                     $('#capacity').val(b.capacity);
                     // No partner_id logic needed
-                    loadCourses(b.course_id);
+                    // Courses, schemes, sectors will be loaded by their own change events
                     $('#batchModal').modal('show');
                 } else {
                     alert(res.message || 'Could not fetch batch details.');

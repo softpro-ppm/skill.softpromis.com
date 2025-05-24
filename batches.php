@@ -96,17 +96,23 @@ require_once 'includes/sidebar.php';
                 <div class="modal-body">
                     <input type="hidden" id="batch_id" name="batch_id">
                     <div class="mb-3">
-                        <label for="batch_name" class="form-label">Batch Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="batch_name" name="batch_name" required>
-                    </div>
-                    <div style="display:none">
-                        <input type="text" class="form-control" id="batch_code" name="batch_code" value="" readonly>
+                        <label for="partner_id" class="form-label">Training Partner <span class="text-danger">*</span></label>
+                        <select class="form-control" id="partner_id" name="partner_id" required>
+                            <option value="">Select Training Partner</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="center_id" class="form-label">Training Center <span class="text-danger">*</span></label>
                         <select class="form-control" id="center_id" name="center_id" required>
                             <option value="">Select Training Center</option>
                         </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="batch_name" class="form-label">Batch Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="batch_name" name="batch_name" required>
+                    </div>
+                    <div style="display:none">
+                        <input type="text" class="form-control" id="batch_code" name="batch_code" value="" readonly>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6 mb-3">
