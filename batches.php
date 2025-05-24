@@ -492,43 +492,58 @@ $(function() {
         });
         $to.val(selectedVal);
     }
-    // Helper to load schemes for a center
-    function loadSchemesForCenter(centerId, $select, selectedId) {
+    // Helper to load all centers
+    function loadAllCenters($select, selectedId) {
         $.ajax({
-            url: 'inc/ajax/schemes_ajax.php',
+            url: 'inc/ajax/training-centers.php',
             type: 'POST',
-            data: { action: 'list_by_center', center_id: centerId },
+            data: { action: 'list' },
             dataType: 'json',
             success: function(res) {
                 $select.empty();
-                if(res.success && res.data && res.data.length) {
-                    $select.append('<option value="">Select Scheme</option>');
-                    $.each(res.data, function(i, s) {
-                        $select.append(`<option value="${s.scheme_id}"${selectedId==s.scheme_id?' selected':''}>${s.scheme_name}</option>`);
+                $select.append('<option value="">Select Training Center</option>');
+                if(res.data && res.data.length) {
+                    $.each(res.data, function(i, c) {
+                        $select.append(`<option value="${c.center_id}"${selectedId==c.center_id?' selected':''}>${c.center_name}</option>`);
                     });
-                } else {
-                    $select.append('<option value="">No schemes found</option>');
                 }
                 if(selectedId) $select.val(selectedId);
             }
         });
     }
-    // Helper to load sectors for a scheme
-    function loadSectorsForScheme(schemeId, $select, selectedId) {
+    // Helper to load all schemes
+    function loadAllSchemes($select, selectedId) {
         $.ajax({
-            url: 'inc/ajax/sectors_ajax.php',
+            url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
-            data: { action: 'list', scheme_id: schemeId },
+            data: { action: 'list' },
             dataType: 'json',
             success: function(res) {
                 $select.empty();
+                $select.append('<option value="">Select Scheme</option>');
                 if(res.data && res.data.length) {
-                    $select.append('<option value="">Select Sector</option>');
+                    $.each(res.data, function(i, s) {
+                        $select.append(`<option value="${s.scheme_id}"${selectedId==s.scheme_id?' selected':''}>${s.scheme_name}</option>`);
+                    });
+                }
+                if(selectedId) $select.val(selectedId);
+            }
+        });
+    }
+    // Helper to load all sectors
+    function loadAllSectors($select, selectedId) {
+        $.ajax({
+            url: 'inc/ajax/sectors_ajax.php',
+            type: 'POST',
+            data: { action: 'list' },
+            dataType: 'json',
+            success: function(res) {
+                $select.empty();
+                $select.append('<option value="">Select Sector</option>');
+                if(res.data && res.data.length) {
                     $.each(res.data, function(i, s) {
                         $select.append(`<option value="${s.sector_id}"${selectedId==s.sector_id?' selected':''}>${s.sector_name}</option>`);
                     });
-                } else {
-                    $select.append('<option value="">No sectors found</option>');
                 }
                 if(selectedId) $select.val(selectedId);
             }
@@ -536,26 +551,46 @@ $(function() {
     }
     // Pre-fill and filter parent selects when opening modals
     $('#addSchemeModal').on('show.bs.modal', function() {
-        copySelectOptions($('#center_id'), $('#parent_center_id'), $('#center_id').val());
+        var mainVal = $('#center_id').val();
+        if ($('#center_id option').length > 1) {
+            copySelectOptions($('#center_id'), $('#parent_center_id'), mainVal);
+        } else {
+            loadAllCenters($('#parent_center_id'), mainVal);
+        }
     });
     $('#addSectorModal').on('show.bs.modal', function() {
-        copySelectOptions($('#center_id'), $('#parent_center_id_sector'), $('#center_id').val());
-        loadSchemesForCenter($('#center_id').val(), $('#parent_scheme_id_sector'), $('#scheme_id').val());
-    });
-    $('#parent_center_id_sector').on('change', function() {
-        loadSchemesForCenter($(this).val(), $('#parent_scheme_id_sector'));
+        var mainCenter = $('#center_id').val();
+        var mainScheme = $('#scheme_id').val();
+        if ($('#center_id option').length > 1) {
+            copySelectOptions($('#center_id'), $('#parent_center_id_sector'), mainCenter);
+        } else {
+            loadAllCenters($('#parent_center_id_sector'), mainCenter);
+        }
+        if ($('#scheme_id option').length > 1) {
+            copySelectOptions($('#scheme_id'), $('#parent_scheme_id_sector'), mainScheme);
+        } else {
+            loadAllSchemes($('#parent_scheme_id_sector'), mainScheme);
+        }
     });
     $('#addCourseModal').on('show.bs.modal', function() {
-        copySelectOptions($('#center_id'), $('#parent_center_id_course'), $('#center_id').val());
-        loadSchemesForCenter($('#center_id').val(), $('#parent_scheme_id_course'), $('#scheme_id').val());
-        loadSectorsForScheme($('#scheme_id').val(), $('#parent_sector_id_course'), $('#sector_id').val());
-    });
-    $('#parent_center_id_course').on('change', function() {
-        loadSchemesForCenter($(this).val(), $('#parent_scheme_id_course'));
-        $('#parent_sector_id_course').empty().append('<option value="">Select Sector</option>');
-    });
-    $('#parent_scheme_id_course').on('change', function() {
-        loadSectorsForScheme($(this).val(), $('#parent_sector_id_course'));
+        var mainCenter = $('#center_id').val();
+        var mainScheme = $('#scheme_id').val();
+        var mainSector = $('#sector_id').val();
+        if ($('#center_id option').length > 1) {
+            copySelectOptions($('#center_id'), $('#parent_center_id_course'), mainCenter);
+        } else {
+            loadAllCenters($('#parent_center_id_course'), mainCenter);
+        }
+        if ($('#scheme_id option').length > 1) {
+            copySelectOptions($('#scheme_id'), $('#parent_scheme_id_course'), mainScheme);
+        } else {
+            loadAllSchemes($('#parent_scheme_id_course'), mainScheme);
+        }
+        if ($('#sector_id option').length > 1) {
+            copySelectOptions($('#sector_id'), $('#parent_sector_id_course'), mainSector);
+        } else {
+            loadAllSectors($('#parent_sector_id_course'), mainSector);
+        }
     });
     // Update AJAX for parent fields
     $('#addSchemeForm').on('submit', function(e) {
