@@ -94,28 +94,25 @@ $(document).ready(function() {
             type: 'POST',
             data: { action: 'get', batch_id: batchId },
             dataType: 'json',
-            success: function(res) {
+            success: async function(res) {
                 if(res.success) {
                     var b = res.data;
                     $('#batchModalTitle').text('Edit Batch');
                     $('#batch_id').val(b.batch_id);
                     $('#batch_name').val(b.batch_name);
-                    // Set partner and center
-                    if (typeof loadPartners === 'function') {
-                        loadPartners(b.partner_id);
-                        setTimeout(function() {
-                            loadCenters(b.partner_id, b.center_id);
-                            setTimeout(function() {
-                                $('#center_id').val(b.center_id).trigger('change');
-                            }, 200);
-                        }, 200);
-                    }
-                    // Set other fields
                     $('#start_date').val(b.start_date);
                     $('#end_date').val(b.end_date);
                     $('#capacity').val(b.capacity);
-                    // No partner_id logic needed
-                    // Courses, schemes, sectors will be loaded by their own change events
+                    // 1. Partner
+                    await loadSelectOptions($('#partner_id'), 'inc/ajax/training_partners_ajax.php', { action: 'list' }, 'partner_id', 'partner_name', b.partner_id);
+                    // 2. Center
+                    await loadSelectOptions($('#center_id'), 'inc/ajax/training-centers.php', { action: 'list', partner_id: b.partner_id }, 'center_id', 'center_name', b.center_id);
+                    // 3. Scheme
+                    await loadSelectOptions($('#scheme_id'), 'inc/ajax/schemes_ajax.php', { action: 'list', center_id: b.center_id }, 'scheme_id', 'scheme_name', b.scheme_id);
+                    // 4. Sector
+                    await loadSelectOptions($('#sector_id'), 'inc/ajax/sectors_ajax.php', { action: 'list', scheme_id: b.scheme_id }, 'sector_id', 'sector_name', b.sector_id);
+                    // 5. Course
+                    await loadSelectOptions($('#course_id'), 'inc/ajax/courses_ajax.php', { action: 'list', scheme_id: b.scheme_id, sector_id: b.sector_id }, 'course_id', 'course_name', b.course_id);
                     $('#batchModal').modal('show');
                 } else {
                     alert(res.message || 'Could not fetch batch details.');
@@ -123,6 +120,30 @@ $(document).ready(function() {
             }
         });
     });
+
+    // Helper: Load options and set value, returns a Promise
+    function loadSelectOptions($select, ajaxUrl, ajaxData, valueKey, labelKey, selectedValue) {
+      return new Promise((resolve) => {
+        $.ajax({
+          url: ajaxUrl,
+          type: 'POST',
+          data: ajaxData,
+          dataType: 'json',
+          success: function(res) {
+            $select.empty().append('<option value="">Select</option>');
+            if(res.data && res.data.length) {
+              $.each(res.data, function(i, item) {
+                let val = item[valueKey];
+                let label = item[labelKey];
+                $select.append(`<option value="${val}"${val==selectedValue?' selected':''}>${label}</option>`);
+              });
+              $select.val(selectedValue);
+            }
+            resolve();
+          }
+        });
+      });
+    }
 
     // Save (add/edit) batch
     $('#batchForm').on('submit', function(e) {
