@@ -44,6 +44,7 @@ $(document).ready(function() {
                         $sector.append(`<option value="${s.sector_id}"${selectedId==s.sector_id?' selected':''}>${s.sector_name}</option>`);
                     });
                 }
+                enableIfOptions($sector);
             }
         });
     }
@@ -61,38 +62,57 @@ $(document).ready(function() {
                         $course.append(`<option value="${c.course_id}"${selectedId==c.course_id?' selected':''}>${c.course_name}</option>`);
                     });
                 }
+                enableIfOptions($course);
             }
         });
     }
     // Helper: Show 'Processing...' in a select
     function showProcessing($select, text) {
         $select.empty().append(`<option>${text||'Processing...'}</option>`);
+        $select.prop('disabled', true);
     }
-    // On modal open, reset all selects
+    // Helper: Enable select if options exist
+    function enableIfOptions($select) {
+        if ($select.children('option').length > 1) {
+            $select.prop('disabled', false);
+        } else {
+            $select.prop('disabled', true);
+        }
+    }
+    // On modal open, reset all selects and disable
     $('#addBatchBtn, .edit-batch-btn').on('click', function() {
         loadSchemes();
-        $('#sector_id').empty().append('<option value="">Select Sector</option>');
-        $('#course_id').empty().append('<option value="">Select Course</option>');
+        $('#sector_id').empty().append('<option>Please select a scheme first</option>').prop('disabled', true);
+        $('#course_id').empty().append('<option>Please select a sector first</option>').prop('disabled', true);
     });
     // On center change, load schemes and reset children
     $('#center_id').on('change', function() {
         showProcessing($('#scheme_id'));
-        showProcessing($('#sector_id'));
-        showProcessing($('#course_id'));
+        $('#sector_id').empty().append('<option>Please select a scheme first</option>').prop('disabled', true);
+        $('#course_id').empty().append('<option>Please select a sector first</option>').prop('disabled', true);
         loadSchemes();
     });
     // On scheme change, load sectors and reset course
     $('#scheme_id').on('change', function() {
-        showProcessing($('#sector_id'));
-        showProcessing($('#course_id'));
         var schemeId = $(this).val();
+        if (!schemeId) {
+            $('#sector_id').empty().append('<option>Please select a scheme first</option>').prop('disabled', true);
+            $('#course_id').empty().append('<option>Please select a sector first</option>').prop('disabled', true);
+            return;
+        }
+        showProcessing($('#sector_id'));
+        $('#course_id').empty().append('<option>Please select a sector first</option>').prop('disabled', true);
         loadSectors(schemeId);
     });
     // On sector change, load courses
     $('#sector_id').on('change', function() {
-        showProcessing($('#course_id'));
         var schemeId = $('#scheme_id').val();
         var sectorId = $(this).val();
+        if (!sectorId) {
+            $('#course_id').empty().append('<option>Please select a sector first</option>').prop('disabled', true);
+            return;
+        }
+        showProcessing($('#course_id'));
         loadCourses(schemeId, sectorId);
     });
     // On modal open, clear scheme dropdown
