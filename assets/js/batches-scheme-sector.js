@@ -30,10 +30,11 @@ $(document).ready(function() {
         });
     }
     function loadSectors(schemeId, selectedId) {
+        var centerId = $('#center_id').val();
         $.ajax({
             url: 'inc/ajax/sectors_ajax.php',
             type: 'POST',
-            data: { action: 'list', scheme_id: schemeId },
+            data: { action: 'list', scheme_id: schemeId, center_id: centerId },
             dataType: 'json',
             success: function(res) {
                 var $sector = $('#sector_id');

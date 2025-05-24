@@ -14,14 +14,28 @@ try {
     $pdo = getDBConnection();
     switch ($action) {
         case 'list':
-            $stmt = $pdo->query("SELECT s.sector_id, s.sector_name, s.description, s.status, s.center_id, s.scheme_id, 
+            $scheme_id = isset($_POST['scheme_id']) ? (int)$_POST['scheme_id'] : 0;
+            $center_id = isset($_POST['center_id']) ? (int)$_POST['center_id'] : 0;
+            $query = "SELECT s.sector_id, s.sector_name, s.description, s.status, s.center_id, s.scheme_id, 
                 tc.center_name, sch.scheme_name, 
                 DATE_FORMAT(s.created_at, '%Y-%m-%d %H:%i:%s') as created_at, 
                 DATE_FORMAT(s.updated_at, '%Y-%m-%d %H:%i:%s') as updated_at 
                 FROM sectors s 
                 LEFT JOIN training_centers tc ON s.center_id = tc.center_id 
                 LEFT JOIN schemes sch ON s.scheme_id = sch.scheme_id 
-                ORDER BY s.created_at DESC");
+                WHERE 1";
+            $params = [];
+            if ($scheme_id) {
+                $query .= " AND s.scheme_id = ?";
+                $params[] = $scheme_id;
+            }
+            if ($center_id) {
+                $query .= " AND s.center_id = ?";
+                $params[] = $center_id;
+            }
+            $query .= " ORDER BY s.created_at DESC";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute($params);
             $sectors = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['status' => 'success', 'data' => $sectors]);
             exit;
