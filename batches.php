@@ -86,7 +86,7 @@ require_once 'includes/sidebar.php';
 
 <!-- Add/Edit Batch Modal -->
 <div class="modal fade" id="batchModal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="batchModalTitle">Add New Batch</h4>
