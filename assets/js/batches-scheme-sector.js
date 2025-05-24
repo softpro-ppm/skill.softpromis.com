@@ -81,16 +81,41 @@ $(document).ready(function() {
     }
     // On modal open, reset all selects and disable
     $('#addBatchBtn, .edit-batch-btn').on('click', function() {
-        loadSchemes();
+        $('#scheme_id').empty().append('<option value="">Select Scheme</option>').prop('disabled', true);
         $('#sector_id').empty().append('<option>Please select a scheme first</option>').prop('disabled', true);
         $('#course_id').empty().append('<option>Please select a sector first</option>').prop('disabled', true);
     });
     // On center change, load schemes and reset children
     $('#center_id').on('change', function() {
+        var centerId = $(this).val();
+        if (!centerId) {
+            $('#scheme_id').empty().append('<option value="">Select Scheme</option>').prop('disabled', true);
+            $('#sector_id').empty().append('<option>Please select a scheme first</option>').prop('disabled', true);
+            $('#course_id').empty().append('<option>Please select a sector first</option>').prop('disabled', true);
+            return;
+        }
         showProcessing($('#scheme_id'));
         $('#sector_id').empty().append('<option>Please select a scheme first</option>').prop('disabled', true);
         $('#course_id').empty().append('<option>Please select a sector first</option>').prop('disabled', true);
-        loadSchemes();
+        // Only use one loader for schemes
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: { action: 'list', center_id: centerId },
+            dataType: 'json',
+            success: function(res) {
+                var $scheme = $('#scheme_id');
+                $scheme.empty().append('<option value="">Select Scheme</option>');
+                if(res.data && res.data.length) {
+                    $.each(res.data, function(i, s) {
+                        if(s.center_id == centerId && s.status === 'active') {
+                            $scheme.append(`<option value="${s.scheme_id}">${s.scheme_name}</option>`);
+                        }
+                    });
+                }
+                enableIfOptions($scheme);
+            }
+        });
     });
     // On scheme change, load sectors and reset course
     $('#scheme_id').on('change', function() {
