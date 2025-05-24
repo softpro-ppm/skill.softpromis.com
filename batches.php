@@ -682,6 +682,20 @@ $(function() {
     $('#addSchemeBtn, #addSectorBtn, #addCourseBtn').on('click', function(e) {
         e.stopPropagation();
     });
+
+    // Show 'Processing...' in child selects on parent change for fast feedback
+    $('#center_id').on('change', function() {
+        $('#scheme_id').empty().append('<option>Processing...</option>');
+        $('#sector_id').empty().append('<option>Processing...</option>');
+        $('#course_id').empty().append('<option>Processing...</option>');
+    });
+    $('#scheme_id').on('change', function() {
+        $('#sector_id').empty().append('<option>Processing...</option>');
+        $('#course_id').empty().append('<option>Processing...</option>');
+    });
+    $('#sector_id').on('change', function() {
+        $('#course_id').empty().append('<option>Processing...</option>');
+    });
 });
 </script>
 </body>
