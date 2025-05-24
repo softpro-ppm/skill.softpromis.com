@@ -107,13 +107,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
         case 'list':
             try {
+                $partner_id = isset($_POST['partner_id']) ? intval($_POST['partner_id']) : 0;
                 $sql = "SELECT tc.*, tp.partner_name 
                         FROM training_centers tc 
-                        LEFT JOIN training_partners tp ON tc.partner_id = tp.partner_id 
-                        ORDER BY tc.center_id DESC";
-                
+                        LEFT JOIN training_partners tp ON tc.partner_id = tp.partner_id ";
+                if ($partner_id > 0) {
+                    $sql .= "WHERE tc.partner_id = $partner_id ";
+                }
+                $sql .= "ORDER BY tc.center_id DESC";
                 $result = $conn->query($sql);
-                
                 if ($result) {
                     $data = array();
                     while ($row = $result->fetch_assoc()) {
@@ -132,7 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                             'status' => $row['status']
                         );
                     }
-                    
                     echo json_encode([
                         'status' => 'success',
                         'data' => $data,
