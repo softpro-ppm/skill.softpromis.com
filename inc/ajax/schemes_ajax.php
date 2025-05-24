@@ -180,20 +180,28 @@ try {
 
         case 'list_by_center':
             $center_id = (int)($_POST['center_id'] ?? 0);
+            error_log("DEBUG: Received center_id for list_by_center: " . $center_id);
+            
             if (!$center_id) {
                 sendJSONResponse(false, 'Training Center ID is required');
             }
             
-            $stmt = $pdo->prepare("
-                SELECT DISTINCT s.scheme_id, s.scheme_name 
-                FROM schemes s
-                INNER JOIN assigned_schemes a ON s.scheme_id = a.scheme_id
-                WHERE a.center_id = ? AND s.status = 'active'
-                ORDER BY s.scheme_name
-            ");
-            $stmt->execute([$center_id]);
-            $schemes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            sendJSONResponse(true, 'Schemes fetched successfully', $schemes);
+            try {
+                $stmt = $pdo->prepare("
+                    SELECT DISTINCT s.scheme_id, s.scheme_name 
+                    FROM schemes s
+                    INNER JOIN assigned_schemes a ON s.scheme_id = a.scheme_id
+                    WHERE a.center_id = ? AND s.status = 'active'
+                    ORDER BY s.scheme_name
+                ");
+                $stmt->execute([$center_id]);
+                $schemes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                error_log("DEBUG: Found schemes for center_id {$center_id}: " . json_encode($schemes));
+                sendJSONResponse(true, 'Schemes fetched successfully', $schemes);
+            } catch (PDOException $e) {
+                error_log("DEBUG: Database error in list_by_center: " . $e->getMessage());
+                sendJSONResponse(false, 'Database error occurred');
+            }
             break;
 
         default:

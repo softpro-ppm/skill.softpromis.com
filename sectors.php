@@ -462,12 +462,15 @@ $(function () {
         var centerId = $(this).val();
         var $schemeSelect = $(this).attr('id') === 'center_id' ? $('#scheme_id') : $('#edit_scheme_id');
         
+        console.log('TC changed. Selected center_id:', centerId);
         $schemeSelect.empty().append('<option value="">Select Scheme</option>');
         
         if (!centerId) {
+            console.log('No center_id selected, returning');
             return;
         }
         
+        console.log('Making AJAX call to fetch schemes for center_id:', centerId);
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
@@ -476,8 +479,13 @@ $(function () {
                 center_id: centerId
             },
             dataType: 'json',
+            beforeSend: function() {
+                console.log('Sending AJAX request...');
+            },
             success: function(response) {
+                console.log('Received AJAX response:', response);
                 if (response.success && response.data) {
+                    console.log('Found schemes:', response.data);
                     response.data.forEach(function(scheme) {
                         $schemeSelect.append(
                             $('<option></option>')
@@ -486,10 +494,12 @@ $(function () {
                         );
                     });
                 } else {
+                    console.log('No schemes found or error in response');
                     $schemeSelect.append('<option value="">No schemes assigned to this center</option>');
                 }
             },
-            error: function() {
+            error: function(xhr, status, error) {
+                console.error('AJAX error:', {xhr: xhr, status: status, error: error});
                 $schemeSelect.append('<option value="">Error loading schemes</option>');
             }
         });
