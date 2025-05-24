@@ -206,7 +206,7 @@ try {
                 sendJSONResponse(false, 'Course ID is required');
             }
             $stmt = $pdo->prepare("
-                SELECT c.*, s.sector_name, sc.scheme_name, tc.center_name
+                SELECT c.*, s.sector_name, sc.scheme_name, tc.center_name, tc.partner_id as partner_id
                 FROM courses c
                 LEFT JOIN sectors s ON c.sector_id = s.sector_id
                 LEFT JOIN schemes sc ON c.scheme_id = sc.scheme_id
