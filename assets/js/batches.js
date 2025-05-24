@@ -70,6 +70,9 @@ $(document).ready(function() {
         });
     }
 
+    // Add a loading overlay to the modal
+    var batchLoadingOverlay = `<div id="batchLoadingOverlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.7);z-index:1051;display:flex;align-items:center;justify-content:center;"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>`;
+
     // Open modal for add
     $('#addBatchBtn').on('click', function() {
         $('#batchModalTitle').text('Add New Batch');
@@ -89,6 +92,13 @@ $(document).ready(function() {
     // Open modal for edit
     $(document).on('click', '.edit-batch-btn', function() {
         var batchId = $(this).data('batch-id');
+        // Open modal immediately and show overlay
+        $('#batchModal').modal('show');
+        if (!$('#batchLoadingOverlay').length) {
+            $('#batchModal .modal-content').append(batchLoadingOverlay);
+        } else {
+            $('#batchLoadingOverlay').show();
+        }
         $.ajax({
             url: 'inc/ajax/batches_ajax.php',
             type: 'POST',
@@ -103,20 +113,19 @@ $(document).ready(function() {
                     $('#start_date').val(b.start_date);
                     $('#end_date').val(b.end_date);
                     $('#capacity').val(b.capacity);
-                    // 1. Partner
                     await loadSelectOptions($('#partner_id'), 'inc/ajax/training_partners_ajax.php', { action: 'list' }, 'partner_id', 'partner_name', b.partner_id);
-                    // 2. Center
                     await loadSelectOptions($('#center_id'), 'inc/ajax/training-centers.php', { action: 'list', partner_id: b.partner_id }, 'center_id', 'center_name', b.center_id);
-                    // 3. Scheme
                     await loadSelectOptions($('#scheme_id'), 'inc/ajax/schemes_ajax.php', { action: 'list', center_id: b.center_id }, 'scheme_id', 'scheme_name', b.scheme_id);
-                    // 4. Sector
                     await loadSelectOptions($('#sector_id'), 'inc/ajax/sectors_ajax.php', { action: 'list', scheme_id: b.scheme_id }, 'sector_id', 'sector_name', b.sector_id);
-                    // 5. Course
                     await loadSelectOptions($('#course_id'), 'inc/ajax/courses_ajax.php', { action: 'list', scheme_id: b.scheme_id, sector_id: b.sector_id }, 'course_id', 'course_name', b.course_id);
-                    $('#batchModal').modal('show');
+                    $('#batchLoadingOverlay').fadeOut(200);
                 } else {
                     alert(res.message || 'Could not fetch batch details.');
+                    $('#batchLoadingOverlay').hide();
                 }
+            },
+            error: function() {
+                $('#batchLoadingOverlay').hide();
             }
         });
     });
