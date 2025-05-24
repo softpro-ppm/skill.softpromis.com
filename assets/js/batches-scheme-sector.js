@@ -177,41 +177,90 @@ $(document).ready(function() {
             }
         });
     });
-    // On modal open, clear scheme dropdown
+    // Add Sector Modal: filter scheme by center
     $('#addSectorModal').on('show.bs.modal', function() {
-        $('#scheme_id').empty().append('<option value="">Select Scheme</option>');
-    });
-    // On training center change, load schemes
-    $('#center_id').on('change', function() {
-        var centerId = $(this).val();
-        console.log('Selected center_id:', centerId); // Debug: show selected center_id
+        var mainCenter = $('#center_id').val();
+        var $center = $('#parent_center_id_sector');
+        var $scheme = $('#parent_scheme_id_sector');
+        // Copy or load all centers
+        if ($('#center_id option').length > 1) {
+            $center.empty();
+            $('#center_id option').each(function() {
+                $center.append($(this).clone());
+            });
+            $center.val(mainCenter);
+        } else {
+            // fallback: load all centers
+            $.ajax({
+                url: 'inc/ajax/training-centers.php',
+                type: 'POST',
+                data: { action: 'list' },
+                dataType: 'json',
+                success: function(res) {
+                    $center.empty();
+                    $center.append('<option value="">Select Training Center</option>');
+                    if(res.data && res.data.length) {
+                        $.each(res.data, function(i, c) {
+                            $center.append(`<option value="${c.center_id}">${c.center_name}</option>`);
+                        });
+                    }
+                    $center.val(mainCenter);
+                }
+            });
+        }
+        // Always filter scheme by selected center
+        var centerId = mainCenter;
+        $scheme.empty().append('<option value="">Processing...</option>').prop('disabled', true);
         if (!centerId) {
-            $('#scheme_id').empty().append('<option value="">Select Scheme</option>');
+            $scheme.empty().append('<option value="">Select Scheme</option>').prop('disabled', true);
             return;
         }
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
-            data: { action: 'list_by_center', center_id: centerId },
+            data: { action: 'list', center_id: centerId },
             dataType: 'json',
-            beforeSend: function() {
-                console.log('Requesting schemes for center_id:', centerId);
-            },
             success: function(res) {
-                console.log('Schemes AJAX response:', res); // Debug: show response
-                var $scheme = $('#scheme_id');
                 $scheme.empty().append('<option value="">Select Scheme</option>');
-                if(res.success && res.data && res.data.length) {
+                if(res.data && res.data.length) {
                     $.each(res.data, function(i, s) {
-                        $scheme.append(`<option value="${s.scheme_id}">${s.scheme_name}</option>`);
+                        if(s.center_id == centerId && s.status === 'active') {
+                            $scheme.append(`<option value="${s.scheme_id}">${s.scheme_name}</option>`);
+                        }
                     });
+                    $scheme.prop('disabled', false);
                 } else {
-                    $scheme.append('<option value="">No schemes found for this center</option>');
+                    $scheme.prop('disabled', true);
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error loading schemes:', error);
-                $('#scheme_id').empty().append('<option value="">Error loading schemes</option>');
+            }
+        });
+    });
+    // When center changes in Add Sector modal, filter scheme
+    $('#parent_center_id_sector').on('change', function() {
+        var centerId = $(this).val();
+        var $scheme = $('#parent_scheme_id_sector');
+        $scheme.empty().append('<option value="">Processing...</option>').prop('disabled', true);
+        if (!centerId) {
+            $scheme.empty().append('<option value="">Select Scheme</option>').prop('disabled', true);
+            return;
+        }
+        $.ajax({
+            url: 'inc/ajax/schemes_ajax.php',
+            type: 'POST',
+            data: { action: 'list', center_id: centerId },
+            dataType: 'json',
+            success: function(res) {
+                $scheme.empty().append('<option value="">Select Scheme</option>');
+                if(res.data && res.data.length) {
+                    $.each(res.data, function(i, s) {
+                        if(s.center_id == centerId && s.status === 'active') {
+                            $scheme.append(`<option value="${s.scheme_id}">${s.scheme_name}</option>`);
+                        }
+                    });
+                    $scheme.prop('disabled', false);
+                } else {
+                    $scheme.prop('disabled', true);
+                }
             }
         });
     });
