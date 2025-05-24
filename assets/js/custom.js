@@ -197,48 +197,113 @@ $(document).on('submit', '#addAssessmentForm', function (e) {
 });
 
 // Helper for cascading select population in Edit Course modal using promises
-function setEditCourseFields(course) {
-  // Helper to wait for select options to be loaded and set value
+async function setEditCourseFields(course) {
   function waitForOption($select, value, maxTries = 20) {
     return new Promise((resolve) => {
       let tries = 0;
       function check() {
         if ($select.find(`option[value='${value}']`).length > 0) {
-          $select.val(value).trigger('change');
-          setTimeout(resolve, 100); // Give time for dependent loads
+          $select.val(value);
+          console.log('Set value for', $select.attr('id'), value);
+          resolve();
         } else if (++tries < maxTries) {
           setTimeout(check, 100);
         } else {
+          console.warn('Option not found for', $select.attr('id'), value);
           resolve();
         }
       }
       check();
     });
   }
-  // 1. Partner
-  loadCoursePartners(course.partner_id, true);
-  waitForOption($('#edit_partner_id'), course.partner_id).then(() => {
-    // 2. Center
-    loadCourseCenters(course.partner_id, course.center_id, true);
-    return waitForOption($('#edit_center_id'), course.center_id);
-  }).then(() => {
-    // 3. Scheme
-    loadCourseSchemes(course.center_id, course.scheme_id, true);
-    return waitForOption($('#edit_scheme_id'), course.scheme_id);
-  }).then(() => {
-    // 4. Sector
-    loadCourseSectors(course.scheme_id, course.sector_id, true);
-    return waitForOption($('#edit_sector_id'), course.sector_id);
-  }).then(() => {
-    // 5. Set all other fields
-    $('#edit_course_code').val(course.course_code);
-    $('#edit_course_name').val(course.course_name);
-    $('#edit_duration_hours').val(course.duration_hours);
-    $('#edit_fee').val(course.fee);
-    $('#edit_description').val(course.description);
-    $('#edit_prerequisites').val(course.prerequisites);
-    $('#edit_syllabus').val(course.syllabus);
-    $('#edit_status').val(course.status);
-    $('#editCourseModal').data('id', course.course_id).modal('show');
+  // 1. Load all partners, set value
+  await new Promise((resolve) => {
+    $.ajax({
+      url: 'inc/ajax/training_partners_ajax.php',
+      type: 'POST',
+      data: { action: 'list' },
+      dataType: 'json',
+      success: function(res) {
+        var $partner = $('#edit_partner_id');
+        $partner.empty().append('<option value="">Select Training Partner</option>');
+        if(res.data && res.data.length) {
+          $.each(res.data, function(i, p) {
+            $partner.append(`<option value="${p.partner_id}">${p.partner_name}</option>`);
+          });
+        }
+        resolve();
+      }
+    });
   });
+  await waitForOption($('#edit_partner_id'), course.partner_id);
+  // 2. Load all centers for this partner, set value
+  await new Promise((resolve) => {
+    $.ajax({
+      url: 'inc/ajax/training-centers.php',
+      type: 'POST',
+      data: { action: 'list', partner_id: course.partner_id },
+      dataType: 'json',
+      success: function(res) {
+        var $center = $('#edit_center_id');
+        $center.empty().append('<option value="">Select Training Center</option>');
+        if(res.data && res.data.length) {
+          $.each(res.data, function(i, c) {
+            $center.append(`<option value="${c.center_id}">${c.center_name}</option>`);
+          });
+        }
+        resolve();
+      }
+    });
+  });
+  await waitForOption($('#edit_center_id'), course.center_id);
+  // 3. Load all schemes for this center, set value
+  await new Promise((resolve) => {
+    $.ajax({
+      url: 'inc/ajax/schemes_ajax.php',
+      type: 'POST',
+      data: { action: 'list', center_id: course.center_id },
+      dataType: 'json',
+      success: function(res) {
+        var $scheme = $('#edit_scheme_id');
+        $scheme.empty().append('<option value="">Select Scheme</option>');
+        if(res.data && res.data.length) {
+          $.each(res.data, function(i, s) {
+            $scheme.append(`<option value="${s.scheme_id}">${s.scheme_name}</option>`);
+          });
+        }
+        resolve();
+      }
+    });
+  });
+  await waitForOption($('#edit_scheme_id'), course.scheme_id);
+  // 4. Load all sectors for this scheme, set value
+  await new Promise((resolve) => {
+    $.ajax({
+      url: 'inc/ajax/sectors_ajax.php',
+      type: 'POST',
+      data: { action: 'list', scheme_id: course.scheme_id },
+      dataType: 'json',
+      success: function(res) {
+        var $sector = $('#edit_sector_id');
+        $sector.empty().append('<option value="">Select Sector</option>');
+        if(res.data && res.data.length) {
+          $.each(res.data, function(i, s) {
+            $sector.append(`<option value="${s.sector_id}">${s.sector_name}</option>`);
+          });
+        }
+        resolve();
+      }
+    });
+  });
+  await waitForOption($('#edit_sector_id'), course.sector_id);
+  // 5. Set all other fields
+  $('#edit_course_code').val(course.course_code);
+  $('#edit_course_name').val(course.course_name);
+  $('#edit_duration_hours').val(course.duration_hours);
+  $('#edit_fee').val(course.fee);
+  $('#edit_description').val(course.description);
+  $('#edit_prerequisites').val(course.prerequisites);
+  $('#edit_syllabus').val(course.syllabus);
+  $('#edit_status').val(course.status);
+  $('#editCourseModal').data('id', course.course_id).modal('show');
 }
