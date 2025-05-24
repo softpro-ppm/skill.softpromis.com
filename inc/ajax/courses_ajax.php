@@ -251,6 +251,26 @@ try {
             sendJSONResponse(true, 'Assignments fetched', $assignments);
             break;
 
+        case 'list':
+            $scheme_id = isset($_POST['scheme_id']) && $_POST['scheme_id'] !== '' ? (int)$_POST['scheme_id'] : 0;
+            $sector_id = isset($_POST['sector_id']) && $_POST['sector_id'] !== '' ? (int)$_POST['sector_id'] : 0;
+            $where = ['status = "active"'];
+            $params = [];
+            if ($scheme_id > 0) {
+                $where[] = 'scheme_id = ?';
+                $params[] = $scheme_id;
+            }
+            if ($sector_id > 0) {
+                $where[] = 'sector_id = ?';
+                $params[] = $sector_id;
+            }
+            $whereClause = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+            $stmt = $pdo->prepare("SELECT course_id, course_name FROM courses $whereClause ORDER BY course_name ASC");
+            $stmt->execute($params);
+            $courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            sendJSONResponse(true, 'Courses fetched', $courses);
+            break;
+
         default:
             sendJSONResponse(false, 'Invalid action');
     }
