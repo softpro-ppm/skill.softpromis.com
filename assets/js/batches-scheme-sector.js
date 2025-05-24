@@ -64,26 +64,33 @@ $(document).ready(function() {
             }
         });
     }
-    // On modal open, load schemes
+    // Helper: Show 'Processing...' in a select
+    function showProcessing($select, text) {
+        $select.empty().append(`<option>${text||'Processing...'}</option>`);
+    }
+    // On modal open, reset all selects
     $('#addBatchBtn, .edit-batch-btn').on('click', function() {
         loadSchemes();
         $('#sector_id').empty().append('<option value="">Select Sector</option>');
         $('#course_id').empty().append('<option value="">Select Course</option>');
     });
-    // On center change, load schemes
+    // On center change, load schemes and reset children
     $('#center_id').on('change', function() {
+        showProcessing($('#scheme_id'));
+        showProcessing($('#sector_id'));
+        showProcessing($('#course_id'));
         loadSchemes();
-        $('#sector_id').empty().append('<option value="">Select Sector</option>');
-        $('#course_id').empty().append('<option value="">Select Course</option>');
     });
-    // On scheme change, load sectors
+    // On scheme change, load sectors and reset course
     $('#scheme_id').on('change', function() {
+        showProcessing($('#sector_id'));
+        showProcessing($('#course_id'));
         var schemeId = $(this).val();
         loadSectors(schemeId);
-        $('#course_id').empty().append('<option value="">Select Course</option>');
     });
     // On sector change, load courses
     $('#sector_id').on('change', function() {
+        showProcessing($('#course_id'));
         var schemeId = $('#scheme_id').val();
         var sectorId = $(this).val();
         loadCourses(schemeId, sectorId);
