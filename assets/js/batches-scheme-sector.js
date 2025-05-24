@@ -112,8 +112,10 @@ $(document).ready(function() {
                             $scheme.append(`<option value="${s.scheme_id}">${s.scheme_name}</option>`);
                         }
                     });
+                    $scheme.prop('disabled', false);
+                } else {
+                    $scheme.prop('disabled', true);
                 }
-                enableIfOptions($scheme);
             }
         });
     });
@@ -127,7 +129,25 @@ $(document).ready(function() {
         }
         showProcessing($('#sector_id'));
         $('#course_id').empty().append('<option>Please select a sector first</option>').prop('disabled', true);
-        loadSectors(schemeId);
+        var centerId = $('#center_id').val();
+        $.ajax({
+            url: 'inc/ajax/sectors_ajax.php',
+            type: 'POST',
+            data: { action: 'list', scheme_id: schemeId, center_id: centerId },
+            dataType: 'json',
+            success: function(res) {
+                var $sector = $('#sector_id');
+                $sector.empty().append('<option value="">Select Sector</option>');
+                if(res.data && res.data.length) {
+                    $.each(res.data, function(i, s) {
+                        $sector.append(`<option value="${s.sector_id}">${s.sector_name}</option>`);
+                    });
+                    $sector.prop('disabled', false);
+                } else {
+                    $sector.prop('disabled', true);
+                }
+            }
+        });
     });
     // On sector change, load courses
     $('#sector_id').on('change', function() {
@@ -138,7 +158,24 @@ $(document).ready(function() {
             return;
         }
         showProcessing($('#course_id'));
-        loadCourses(schemeId, sectorId);
+        $.ajax({
+            url: 'inc/ajax/courses_ajax.php',
+            type: 'POST',
+            data: { action: 'list', scheme_id: schemeId, sector_id: sectorId },
+            dataType: 'json',
+            success: function(res) {
+                var $course = $('#course_id');
+                $course.empty().append('<option value="">Select Course</option>');
+                if(res.data && res.data.length) {
+                    $.each(res.data, function(i, c) {
+                        $course.append(`<option value="${c.course_id}">${c.course_name}</option>`);
+                    });
+                    $course.prop('disabled', false);
+                } else {
+                    $course.prop('disabled', true);
+                }
+            }
+        });
     });
     // On modal open, clear scheme dropdown
     $('#addSectorModal').on('show.bs.modal', function() {

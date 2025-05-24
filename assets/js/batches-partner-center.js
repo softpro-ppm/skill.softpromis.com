@@ -18,8 +18,10 @@ $(document).ready(function() {
         });
     }
     function loadCenters(partnerId, selectedId) {
+        var $center = $('#center_id');
+        $center.empty().append('<option value="">Processing...</option>').prop('disabled', true);
         if (!partnerId) {
-            $('#center_id').empty().append('<option value="">Select Training Center</option>');
+            $center.empty().append('<option value="">Select Training Center</option>').prop('disabled', true);
             return;
         }
         $.ajax({
@@ -28,30 +30,31 @@ $(document).ready(function() {
             data: { action: 'list', partner_id: partnerId },
             dataType: 'json',
             success: function(res) {
-                var $center = $('#center_id');
                 $center.empty().append('<option value="">Select Training Center</option>');
                 if(res.data && res.data.length) {
                     $.each(res.data, function(i, c) {
                         $center.append(`<option value="${c.center_id}"${selectedId==c.center_id?' selected':''}>${c.center_name}</option>`);
                     });
+                    $center.prop('disabled', false);
+                } else {
+                    $center.prop('disabled', true);
                 }
             }
         });
     }
-    // On modal open, load partners and clear centers
+    // On modal open, load partners and clear/disable centers
     $('#addBatchBtn, .edit-batch-btn').on('click', function() {
         loadPartners();
-        $('#center_id').empty().append('<option value="">Select Training Center</option>');
+        $('#center_id').empty().append('<option value="">Select Training Center</option>').prop('disabled', true);
     });
-    // On partner change, load centers
+    // On partner change, load centers and reset children
     $('#partner_id').on('change', function() {
         var partnerId = $(this).val();
         loadCenters(partnerId);
-        $('#center_id').trigger('change'); // To trigger scheme reload if needed
+        $('#center_id').empty().append('<option value="">Select Training Center</option>').prop('disabled', true);
+        $('#scheme_id').empty().append('<option value="">Select Scheme</option>').prop('disabled', true);
+        $('#sector_id').empty().append('<option>Please select a scheme first</option>').prop('disabled', true);
+        $('#course_id').empty().append('<option>Please select a sector first</option>').prop('disabled', true);
     });
-    // On center change, trigger scheme reload
-    $('#center_id').on('change', function() {
-        $('#scheme_id').empty().append('<option value="">Select Scheme</option>');
-        $('#scheme_id').trigger('change');
-    });
+    // On center change, trigger scheme reload (handled by batches-scheme-sector.js)
 });
