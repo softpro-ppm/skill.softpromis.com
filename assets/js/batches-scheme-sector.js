@@ -1,18 +1,27 @@
 // JS for populating scheme, sector, and course dropdowns in Add/Edit Batch modal
 $(document).ready(function() {
     function loadSchemes(selectedId) {
+        var centerId = $('#center_id').val();
+        if (!centerId) {
+            var $scheme = $('#scheme_id');
+            $scheme.empty().append('<option value="">Select Scheme</option>');
+            return;
+        }
         $.ajax({
             url: 'inc/ajax/schemes_ajax.php',
             type: 'POST',
-            data: { action: 'list' },
+            data: { action: 'list_by_center', center_id: centerId },
             dataType: 'json',
             success: function(res) {
                 var $scheme = $('#scheme_id');
-                $scheme.empty().append('<option value="">Select Scheme</option>');
-                if(res.data && res.data.length) {
+                $scheme.empty();
+                if(res.success && res.data && res.data.length) {
+                    $scheme.append('<option value="">Select Scheme</option>');
                     $.each(res.data, function(i, s) {
                         $scheme.append(`<option value="${s.scheme_id}"${selectedId==s.scheme_id?' selected':''}>${s.scheme_name}</option>`);
                     });
+                } else {
+                    $scheme.append('<option value="">No schemes found for this center</option>');
                 }
             }
         });
